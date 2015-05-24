@@ -343,15 +343,9 @@ def link(path, absolute=False, exclude=False):
 
 def upload(app):
     # Upload css files
-    for ex_css_lib in G.css_config['excluded_libs']:  # Excluded css libs
-        if not ex_css_lib.startswith('http'):
-            _upload_asset(os.path.join(G.static_path, ex_css_lib))
     _upload_asset(os.path.join(app.static_folder, APP_CSS))
 
     # Upload js files
-    for ex_js_lib in G.js_config['excluded_libs']:  # Excluded js libs
-        if not ex_js_lib.startswith('http'):
-            _upload_asset(os.path.join(G.static_path, ex_js_lib))
     _upload_asset(os.path.join(G.static_path, LIBS_JS))
     _upload_asset(os.path.join(G.static_path, PAGE_JS))
 
