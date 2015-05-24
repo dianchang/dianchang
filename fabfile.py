@@ -17,6 +17,7 @@ def deploy():
                 run('pip install -r requirements.txt')
                 run('python manage.py db upgrade')
                 run('python manage.py build_assets')
+                run('python manage.py upload_assets')
             run('supervisorctl restart dianchang')
 
 

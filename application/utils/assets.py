@@ -222,7 +222,7 @@ def libs_js():
         if ex_lib.startswith('http'):
             script_tags += script(ex_lib, absolute=True)
         else:
-            script_tags += script(ex_lib)
+            script_tags += script(ex_lib, exclude=True)
 
     # if False:
     if G.debug:
@@ -259,7 +259,7 @@ def app_css(template_reference):
         if ex_lib.startswith('http'):
             link_tags += link(ex_lib, absolute=True)
         else:
-            link_tags += link(ex_lib)
+            link_tags += link(ex_lib, exclude=True)
 
     # if False:
     if G.debug:
@@ -286,7 +286,7 @@ def app_css(template_reference):
     return Markup(link_tags)
 
 
-def static(filename):
+def static(filename, exclude=False):
     """Generate static resource url.
 
     Hash asset content as query string, and cache it.
@@ -307,38 +307,69 @@ def static(filename):
         hash = hashlib.md5(content).hexdigest()
 
     url = '%s?v=%s' % (url, hash[:10])
+    if not current_app.debug and not exclude:
+        cdn_url = current_app.config.get('CDN_URL')
+        if cdn_url:
+            url = cdn_url + url
     current_app._static_hash[filename] = url
     return url
 
 
-def script(path, absolute=False):
+def script(path, absolute=False, exclude=False):
     """Generate script tag."""
     if absolute:
         return "<script type='text/javascript' src='%s'></script>" % path
     else:
-        script_path = static(path)
+        script_path = static(path, exclude)
         if script_path:
             return "<script type='text/javascript' src='%s'></script>" % script_path
         else:
             return "<!-- 404: %s -->" % path
 
 
-def link(path, absolute=False):
+def link(path, absolute=False, exclude=False):
     """Generate link tag."""
     if absolute:
         return "<link rel='stylesheet' href='%s'>" % path
     else:
-        link_path = static(path)
+        link_path = static(path, exclude)
         if link_path:
             return "<link rel='stylesheet' href='%s'>" % link_path
         else:
             return "<!-- 404: %s -->" % path
 
 
+def upload(app):
+    # Upload css files
+    for ex_css_lib in G.css_config['excluded_libs']:  # Excluded css libs
+        if not ex_css_lib.startswith('http'):
+            _upload_static_file(os.path.join(G.static_path, ex_css_lib))
+    _upload_static_file(os.path.join(app.static_folder, APP_CSS))
+
+    # Upload js files
+    for ex_js_lib in G.js_config['excluded_libs']:  # Excluded js libs
+        if not ex_js_lib.startswith('http'):
+            _upload_static_file(os.path.join(G.static_path, ex_js_lib))
+    _upload_static_file(os.path.join(G.static_path, LIBS_JS))
+    _upload_static_file(os.path.join(G.static_path, PAGE_JS))
+
+    # Upload images
+    for image in glob2.glob(os.path.join(G.static_path, "image/**/*.*")):
+        _upload_static_file(image)
+
+
 def page_id(template_reference):
     """Generate page with format: page-<controller>-<action>."""
     template_name = _get_template_name(template_reference)
     return "page-%s" % template_name.replace('.html', '').replace('/', '-').replace('_', '-')
+
+
+def _upload_static_file(filepath):
+    from ._qiniu import qiniu
+
+    filename = "static%s" % filepath.split(G.static_path)[1]
+    qiniu.upload_file(filename, filepath)
+    print('Uploaded: %s' % filename)
 
 
 def _get_immediate_subdirectories(_dir):
@@ -368,6 +399,9 @@ def _rewrite_relative_url(content, asset_path, static_path):
         else:
             dir_path = dirname(asset_path)
             absolute_path = "%s/%s" % (dir_path, inner_url)
+
+        # Upload the dependent assets
+        _upload_static_file(absolute_path.split('?')[0].split('#')[0])
 
         absolute_url = "/static%s" % absolute_path.split(static_path)[1]
         result = "url('%s')" % absolute_url
