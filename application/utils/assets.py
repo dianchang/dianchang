@@ -365,6 +365,7 @@ def page_id(template_reference):
 
 
 def _upload_static_file(filepath):
+    """Upload static file to Qiniu."""
     from ._qiniu import qiniu
 
     filename = "static%s" % filepath.split(G.static_path)[1]
@@ -384,6 +385,7 @@ def _get_template_name(template_reference):
 
 
 def _rewrite_relative_url(content, asset_path, static_path):
+    """Rewrite relative url in `url('')` of css file to absolute url."""
     from os.path import dirname
 
     content = cssmin(content)
