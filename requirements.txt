@@ -25,4 +25,3 @@ glob2
 # deploy
 gunicorn
 fabric
-git+https://github.com/dianchang/flask-qiniu.git

@@ -293,24 +293,26 @@ def static(filename, exclude=False):
     """
     from flask import current_app
 
-    url = url_for('static', filename=filename)
-
     if filename in current_app._static_hash:
         return current_app._static_hash[filename]
+
+    url = url_for('static', filename=filename)
 
     path = os.path.join(current_app.static_folder, filename)
     if not os.path.exists(path):
         return None
 
-    with open(path, 'r') as f:
-        content = f.read()
-        hash = hashlib.md5(content).hexdigest()
+    if current_app.debug:
+        return url
 
-    url = '%s?v=%s' % (url, hash[:10])
-    if not current_app.debug and not exclude:
-        cdn_url = current_app.config.get('CDN_URL')
-        if cdn_url:
-            url = cdn_url + url
+    file_hash = _get_file_hash(path)
+
+    cdn_url = current_app.config.get('CDN_URL')
+    if cdn_url and not exclude:
+        url = "%s%s" % (cdn_url, _append_hash(url, file_hash))
+    else:
+        url = '%s?v=%s' % (url, file_hash[:10])
+
     current_app._static_hash[filename] = url
     return url
 
@@ -343,19 +345,19 @@ def upload(app):
     # Upload css files
     for ex_css_lib in G.css_config['excluded_libs']:  # Excluded css libs
         if not ex_css_lib.startswith('http'):
-            _upload_static_file(os.path.join(G.static_path, ex_css_lib))
-    _upload_static_file(os.path.join(app.static_folder, APP_CSS))
+            _upload_asset(os.path.join(G.static_path, ex_css_lib))
+    _upload_asset(os.path.join(app.static_folder, APP_CSS))
 
     # Upload js files
     for ex_js_lib in G.js_config['excluded_libs']:  # Excluded js libs
         if not ex_js_lib.startswith('http'):
-            _upload_static_file(os.path.join(G.static_path, ex_js_lib))
-    _upload_static_file(os.path.join(G.static_path, LIBS_JS))
-    _upload_static_file(os.path.join(G.static_path, PAGE_JS))
+            _upload_asset(os.path.join(G.static_path, ex_js_lib))
+    _upload_asset(os.path.join(G.static_path, LIBS_JS))
+    _upload_asset(os.path.join(G.static_path, PAGE_JS))
 
     # Upload images
     for image in glob2.glob(os.path.join(G.static_path, "image/**/*.*")):
-        _upload_static_file(image)
+        _upload_asset(image)
 
 
 def page_id(template_reference):
@@ -364,12 +366,14 @@ def page_id(template_reference):
     return "page-%s" % template_name.replace('.html', '').replace('/', '-').replace('_', '-')
 
 
-def _upload_static_file(filepath):
+def _upload_asset(file_path, with_hash=True):
     """Upload static file to Qiniu."""
     from ._qiniu import qiniu
 
-    filename = "static%s" % filepath.split(G.static_path)[1]
-    qiniu.upload_file(filename, filepath)
+    file_hash = _get_file_hash(file_path)
+    filename = "static%s" % file_path.split(G.static_path)[1]
+    filename = _append_hash(filename, file_hash)
+    qiniu.upload_file(filename, file_path)
     print('Uploaded: %s' % filename)
 
 
@@ -382,6 +386,21 @@ def _get_immediate_subdirectories(_dir):
 def _get_template_name(template_reference):
     """Get current template name."""
     return template_reference._TemplateReference__context.name
+
+
+def _get_file_hash(filepath):
+    """Generate file hash."""
+    with open(filepath, 'r') as f:
+        content = f.read()
+        return hashlib.md5(content).hexdigest()[:10]
+
+
+def _append_hash(path, file_hash):
+    basename = os.path.basename(path)
+    parent_path = path.split(basename)[0]
+    basename_prefix = basename.split('.')[0]
+    basename_suffix = basename.split('.')[1]
+    return "%s%s_%s.%s" % (parent_path, basename_prefix, file_hash, basename_suffix)
 
 
 def _rewrite_relative_url(content, asset_path, static_path):
@@ -402,10 +421,12 @@ def _rewrite_relative_url(content, asset_path, static_path):
             dir_path = dirname(asset_path)
             absolute_path = "%s/%s" % (dir_path, inner_url)
 
+        absolute_path = absolute_path.split('?')[0].split('#')[0]
+
         # Upload the dependent assets
-        _upload_static_file(absolute_path.split('?')[0].split('#')[0])
+        _upload_asset(absolute_path)
 
         absolute_url = "/static%s" % absolute_path.split(static_path)[1]
-        result = "url('%s')" % absolute_url
+        result = "url('%s')" % _append_hash(absolute_url, _get_file_hash(absolute_path))
         content = content.replace(full, result)
     return content
