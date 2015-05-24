@@ -1,0 +1,28 @@
+Flask
+Flask-WTF
+Flask-Script
+Flask-SQLAlchemy
+flask-debugtoolbar
+Flask-Uploads
+Flask-Migrate
+PyMySQL
+itsdangerous
+permission
+Pillow
+six
+raven
+
+# dev
+livereload
+nose
+coverage
+pylint
+PyYAML
+cssmin
+lesscpy
+glob2
+
+# deploy
+gunicorn
+fabric
+git+https://github.com/dianchang/flask-qiniu.git
