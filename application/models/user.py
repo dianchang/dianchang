@@ -47,12 +47,14 @@ class FollowUser(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     follower = db.relationship('User', backref=db.backref('followings',
                                                           lazy='dynamic',
-                                                          order_by='desc(FollowUser.created_at)'))
+                                                          order_by='desc(FollowUser.created_at)'),
+                               foreign_keys=[follower_id])
 
     following_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     following = db.relationship('User', backref=db.backref('followers',
                                                            lazy='dynamic',
-                                                           order_by='desc(FollowUser.created_at)'))
+                                                           order_by='desc(FollowUser.created_at)'),
+                                foreign_keys=[following_id])
 
     def __repr__(self):
         return '<FollowUser %s>' % self.id
