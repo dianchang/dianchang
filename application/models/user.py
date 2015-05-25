@@ -9,10 +9,17 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(50), unique=True)
+    desc = db.Column(db.String(200), )
     avatar = db.Column(db.String(200), default='default.png')
     password = db.Column(db.String(200))
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    followers_count = db.Column(db.Integer, default=0)
+    followings_count = db.Column(db.Integer, default=0)
+    thanks_count = db.Column(db.Integer, default=0)
+    questions_count = db.Column(db.Integer, default=0)
+    answers_count = db.Column(db.Integer, default=0)
 
     def __setattr__(self, name, value):
         # Hash password when set it.
@@ -48,3 +55,28 @@ class FollowUser(db.Model):
 
     def __repr__(self):
         return '<FollowUser %s>' % self.id
+
+
+class InvitationCode(db.Model):
+    """"""
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(200))
+    email = db.Column(db.String(100))
+    used = db.Column(db.Boolean, default=False)
+    sended_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    # 当用户使用此邀请码注册后，填充user_id字段
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=None)
+    user = db.relationship('User',
+                           backref=db.backref('invitation_code',
+                                              cascade="all, delete, delete-orphan",
+                                              uselist=False),
+                           foreign_keys=[user_id])
+
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=None)
+    sender = db.relationship('User',
+                             backref=db.backref('sended_invitation_codes',
+                                                cascade="all, delete, delete-orphan",
+                                                uselist=False),
+                             foreign_keys=[sender_id])
