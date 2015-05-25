@@ -14,6 +14,16 @@ class Topic(db.Model):
         return '<Topic %s>' % self.name
 
 
+class TopicClosure(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ancestor_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+    descendant_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+    path_length = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<TopicClosure %d-%d>' % (self.ancestor_id, self.descendant_id)
+
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
