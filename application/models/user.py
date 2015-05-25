@@ -6,6 +6,7 @@ from ..utils.uploadsets import avatars
 
 
 class User(db.Model):
+    """用户"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(50), unique=True)
@@ -58,7 +59,7 @@ class FollowUser(db.Model):
 
 
 class InvitationCode(db.Model):
-    """"""
+    """邀请码"""
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(200))
     email = db.Column(db.String(100))
