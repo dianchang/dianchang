@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
-{% from "macros/_question.html" import render_questions %}
+{% from "macros/_question.html" import render_answers %}
 
 {% block page_title %}电场{% endblock %}
 {% block page_content %}
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {{ render_questions(questions) }}
+                {{ render_answers(answers) }}
             </div>
         </div>
     </div>

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block page_title %}回答{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <div class="question">
+            <div class="title">
+                <a href="{{ url_for('question.view', uid=answer.question_id) }}">{{ answer.question.title }}</a>
+            </div>
+
+            {% if answer.question.desc %}
+                <div class="desc">{{ answer.question.desc|safe }}</div>
+            {% endif %}
+        </div>
+
+        <hr/>
+
+        <div class="answer">
+            {{ answer.content|safe }}
+
+            <div class="time">
+                发布于 <span title="{{ answer.created_at }}">{{ answer.created_at|timesince }}</span>
+            </div>
+        </div>
+
+        <div class="answerer media">
+            <div class="media-left">
+                <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+            </div>
+            <div class="media-body">
+                <a href="{{ url_for('people.profile', uid=answer.user.id) }}">
+                    {{ answer.user.name }}
+                </a>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div>{{ answer.comments.count() }} 条评论</div>
+
+        <form action="" method="post"></form>
+    </div>
+{% endblock %}

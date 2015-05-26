@@ -1,11 +1,31 @@
 {% macro render_questions(questions) %}
     {% for question in questions %}
         <div class="dc-question">
-            <div>{{ question.title }}</div>
+            <div>
+                <a href="{{ url_for('question.view', uid=question.id) }}">{{ question.title }}</a>
+            </div>
             <div>{{ question.user.name }}</div>
             <div>{{ question.desc|safe }}</div>
             <div class="time" title="{{ question.created_at }}">
                 {{ question.created_at|timesince }}
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+
+{% macro render_answers(answers) %}
+    {% for answer in answers %}
+        <div class="dc-answer">
+            <div>
+                <a href="{{ url_for('answer.view', uid=answer.id) }}">{{ answer.question.title }}</a>
+            </div>
+            <div>
+                {{ answer.user.name }}{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
+            </div>
+            <div>{{ answer.content|safe }}</div>
+            <div class="time" title="{{ answer.created_at }}">
+                {{ answer.created_at|timesince }}
             </div>
         </div>
     {% endfor %}

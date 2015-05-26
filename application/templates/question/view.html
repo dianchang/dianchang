@@ -5,6 +5,49 @@
     <div class="container">
         <h1>{{ question.title }}</h1>
 
-        <p>{{ question.desc|safe }}</p>
+        <div>{{ question.desc|safe }}</div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div>
+                    {{ question.answers.count() }}人回答
+
+                    {% for answer in question.answers %}
+                        <div class="answer">
+                            <div class="answerer-info media">
+                                <div class="media-left">
+                                    <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+                                </div>
+
+                                <div class="media-body">
+                                    <div>
+                                        <a href="{{ url_for('people.profile', uid=answer.user.id) }}">
+                                            {{ answer.user.name }}
+                                        </a>{% if answer.user.desc %}，{{ answer.content }}{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <form action="" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                    <div class="form-group">
+                        <textarea name="answer" id="" cols="30" rows="10" class="form-control"
+                                  placeholder="在这里撰写答案"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-default btn-primary pull-right">
+                        发布回答
+                    </button>
+                </form>
+            </div>
+
+            <div class="col-md-4">
+                <h3>相关问题</h3>
+            </div>
+        </div>
     </div>
 {% endblock %}
