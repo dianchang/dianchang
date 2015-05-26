@@ -1,5 +1,6 @@
 # coding: utf-8
 from flask import render_template, Blueprint
+from ..models import db, Question
 
 bp = Blueprint('site', __name__)
 
@@ -7,7 +8,8 @@ bp = Blueprint('site', __name__)
 @bp.route('/')
 def index():
     """Index page."""
-    return render_template('site/index.html')
+    questions = Question.query.limit(5)
+    return render_template('site/index.html', questions=questions)
 
 
 @bp.route('/about')

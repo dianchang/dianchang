@@ -61,7 +61,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if g.user %}
                     <li id="nav-settings">
-                        <a href="#">
+                        <a href="{{ url_for('question.add') }}">
                             <span class="fa fa-plus"></span> 提问
                         </a>
                     </li>

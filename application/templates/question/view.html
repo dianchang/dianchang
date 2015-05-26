@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{{ question.title }}{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <h1>{{ question.title }}</h1>
+
+        <p>{{ question.desc|safe }}</p>
+    </div>
+{% endblock %}

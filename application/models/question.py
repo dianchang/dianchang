@@ -49,9 +49,14 @@ class Question(db.Model):
     """问题"""
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
-    content = db.Column(db.Text)
+    desc = db.Column(db.Text)
     clicks = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('questions',
+                                                      lazy='dynamic',
+                                                      order_by='desc(Question.created_at)'))
 
     def __repr__(self):
         return '<Question %s>' % self.name

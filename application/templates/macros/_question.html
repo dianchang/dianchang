@@ -1,0 +1,12 @@
+{% macro render_questions(questions) %}
+    {% for question in questions %}
+        <div class="dc-question">
+            <div>{{ question.title }}</div>
+            <div>{{ question.user.name }}</div>
+            <div>{{ question.desc|safe }}</div>
+            <div class="time" title="{{ question.created_at }}">
+                {{ question.created_at|timesince }}
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}

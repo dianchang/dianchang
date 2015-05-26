@@ -1,8 +1,13 @@
 {% extends "layout.html" %}
+{% from "macros/_question.html" import render_questions %}
 
 {% block page_title %}电场{% endblock %}
 {% block page_content %}
-   <div class="container">
-      <h1>Home</h1>
-   </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {{ render_questions(questions) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
