@@ -1,11 +1,37 @@
 {% extends "layout.html" %}
+{% from "macros/_topic.html" import render_topic_wap %}
 
 {% block page_title %}{{ question.title }}{% endblock %}
+{% block page_vars %}
+    <script type="text/javascript">
+        registerContext({
+            questionId: {{ question.id }}
+        });
+    </script>
+{% endblock %}
 {% block page_content %}
     <div class="container">
         <h1>{{ question.title }}</h1>
 
         <div>{{ question.desc|safe }}</div>
+
+        <div class="topics-wap {% if not question.topics.count() %}empty{% endif %}">
+            <div class="topics">
+                {% for topic in question.topics %}
+                    {{ render_topic_wap(topic, attr="topic") }}
+                {% endfor %}
+                <a href="javascript: void(0)" class="btn-edit-topic">编辑</a>
+            </div>
+
+            <div class="form-wap">
+                <input type="text" name="topic" placeholder="按回车添加"/>
+                <a href="#" class="btn-finish-add-topic">完成</a>
+            </div>
+
+            <button type="button" class="btn btn-default btn-add-topic">
+                <span class="fa fa-plus"></span> 添加话题
+            </button>
+        </div>
 
         <div class="row">
             <div class="col-md-8">

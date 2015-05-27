@@ -1,0 +1,37 @@
+.topics-wap {
+  .btn-add-topic,
+  .btn-edit-topic,
+  .form-wap {
+    display: none;
+  }
+
+  .topic-wap {
+    margin-right: 10px;
+  }
+
+  &.edit {
+    .btn-add-topic,
+    .btn-edit-topic {
+      display: none !important;
+    }
+
+    .form-wap {
+      display: block;
+    }
+  }
+
+  &.empty {
+    .btn-edit-topic {
+      display: none;
+    }
+    .btn-add-topic {
+      display: block;
+    }
+  }
+
+  &:hover {
+    .btn-edit-topic {
+      display: inline-block;
+    }
+  }
+}

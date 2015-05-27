@@ -1,12 +1,14 @@
 # coding: utf-8
-from flask import Blueprint, render_template, redirect, url_for, request, g
+from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
-from ..models import db, Question, Answer
+from ..models import db, Question, Answer, Topic, QuestionTopic
+from ..utils.permissions import UserPermission
 
 bp = Blueprint('question', __name__)
 
 
 @bp.route('/question/add', methods=['GET', 'POST'])
+@UserPermission()
 def add():
     form = AddQuestionForm()
     if form.validate_on_submit():
@@ -27,3 +29,38 @@ def view(uid):
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
     return render_template('question/view.html', question=question)
+
+
+@bp.route('/question/<int:uid>/add_to_topic', methods=['POST'])
+@UserPermission()
+def add_to_topic(uid):
+    question = Question.query.get_or_404(uid)
+    name = request.form.get('name')
+    topic_id = request.form.get('topic_id')
+
+    topic = None
+    if name:
+        topic = Topic.get_by_name(name, create_if_not_exist=True)
+    elif topic_id:
+        topic = Topic.query.get_or_404(topic_id)
+
+    if not topic:
+        abort(404)
+
+    # 若该句集尚未收录此句子，则收录
+    question_topic = QuestionTopic.query.filter(
+        QuestionTopic.topic_id == topic.id,
+        QuestionTopic.question_id == uid).first()
+    if not question_topic:
+        question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
+        # log
+        # log = PieceEditLog(piece_id=uid, user_id=g.user.id,
+        #                    after=topic.title, after_id=topic.id,
+        #                    kind=PIECE_EDIT_KIND.ADD_TO_COLLECTION)
+        # db.session.add(log)
+        db.session.add(question_topic)
+        db.session.commit()
+    macro = get_template_attribute('macros/_topic.html', 'render_topic_wap')
+    return json.dumps({'result': True,
+                       'id': topic.id,
+                       'html': macro(topic)})

@@ -1,0 +1,9 @@
+{% macro render_topic_wap(topic, attr=None) %}
+    {% if attr %}
+        {% set topic = topic[attr] %}
+    {% endif %}
+
+    <span class="label label-default topic-wap" data-id="{{ topic.id }}">
+        {{ topic.name }}
+    </span>
+{% endmacro %}

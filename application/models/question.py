@@ -1,4 +1,5 @@
 # coding: utf-8
+from flask import g
 from datetime import datetime
 from ._base import db
 
@@ -10,6 +11,24 @@ class Topic(db.Model):
     desc = db.Column(db.Text)
     clicks = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    @staticmethod
+    def get_by_name(name, create_if_not_exist=False):
+        """通过name获取句集"""
+        name = name or ""
+        name = name.strip()
+        if name:
+            # 若不存在该name的句集，则创建
+            topic = Topic.query.filter(Topic.name == name).first()
+            if not topic and create_if_not_exist:
+                topic = Topic(name=name)
+                # log = CollectionEditLog(user_id=g.user.id, kind=COLLECTION_EDIT_KIND.CREATE)
+                # topic.logs.append(log)
+                db.session.add(topic)
+                db.session.commit()
+            return topic
+        else:
+            return None
 
     def __repr__(self):
         return '<Topic %s>' % self.name
