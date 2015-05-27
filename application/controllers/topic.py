@@ -15,12 +15,12 @@ def square():
 @UserPermission()
 def query():
     q = request.form.get('q')
-    question_id = request.form.get('piece_id')
+    question_id = request.form.get('question_id')
     if q:
         topics = Topic.query.filter(Topic.name.like("%%%s%%" % q))
         if question_id:
             topics = topics.filter(
-                ~Topic.pieces.any(QuestionTopic.question_id == question_id))
+                ~Topic.questions.any(QuestionTopic.question_id == question_id))
         return json.dumps([{'name': topic.name,
                             'id': topic.id}
                            for topic in topics])
