@@ -69,7 +69,7 @@ def admin(uid):
     return render_template('topic/admin.html', topic=topic, form=form)
 
 
-@bp.route('/topic/<int:uid>/add_parent_topic/<int:parent_topic_id>', methods=['GET', 'POST'])
+@bp.route('/topic/<int:uid>/add_parent_topic/<int:parent_topic_id>', methods=['POST'])
 def add_parent_topic(uid, parent_topic_id):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
@@ -89,4 +89,27 @@ def remove_parent_topic(uid, parent_topic_id):
     topic = Topic.query.get_or_404(uid)
     parent_topic = Topic.query.get_or_404(parent_topic_id)
     topic.remove_parent_topic(parent_topic_id)
+    return json.dumps({'result': True})
+
+
+@bp.route('/topic/<int:uid>/add_child_topic/<int:child_topic_id>', methods=['POST'])
+def add_child_topic(uid, child_topic_id):
+    """添加直接子话题"""
+    topic = Topic.query.get_or_404(uid)
+    child_topic = Topic.query.get_or_404(child_topic_id)
+    topic.add_child_topic(child_topic_id)
+    macro = get_template_attribute('macros/_topic.html', 'child_topic_edit_wap')
+
+    return json.dumps({
+        'result': True,
+        'html': macro(child_topic)
+    })
+
+
+@bp.route('/topic/<int:uid>/remove_child_topic/<int:child_topic_id>', methods=['POST'])
+def remove_child_topic(uid, child_topic_id):
+    """删除直接子话题"""
+    topic = Topic.query.get_or_404(uid)
+    child_topic = Topic.query.get_or_404(child_topic_id)
+    topic.remove_child_topic(child_topic_id)
     return json.dumps({'result': True})

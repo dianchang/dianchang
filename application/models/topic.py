@@ -74,7 +74,7 @@ class Topic(db.Model):
                    TopicClosure.descendant_id != self.id,
                    TopicClosure.path_length == 1). \
             all()
-        sub_topics_id_list = [item.ancestor_id for item in sub_topics_id_list]
+        sub_topics_id_list = [item.descendant_id for item in sub_topics_id_list]
         return Topic.query.filter(Topic.id.in_(sub_topics_id_list))
 
     @property
@@ -84,7 +84,7 @@ class Topic(db.Model):
             filter(TopicClosure.ancestor_id == self.id,
                    TopicClosure.descendant_id != self.id). \
             all()
-        return [item.ancestor_id for item in descendant_topics_id_list]
+        return [item.descendant_id for item in descendant_topics_id_list]
 
     @property
     def descendant_topics(self):
@@ -126,7 +126,7 @@ class Topic(db.Model):
             for descendant_topic in TopicClosure.query.filter(TopicClosure.ancestor_id == child_topic_id):
                 closure = TopicClosure.query.filter(TopicClosure.ancestor_id == ancestor_topic.ancestor_id,
                                                     TopicClosure.descendant_id == descendant_topic.descendant_id)
-                db.session.delete(closure)
+                map(db.session.delete, closure)
         db.session.commit()
 
     def __repr__(self):

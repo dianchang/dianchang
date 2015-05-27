@@ -55,3 +55,13 @@
            data-parent-topic-id="{{ parent_topic.id }}">移除</a>
     </li>
 {% endmacro %}
+
+
+{% macro child_topic_edit_wap(child_topic) %}
+    <li class="child-topic-edit-wap">
+        <a href="{{ url_for('topic.view', uid=child_topic.id) }}">
+            {{ child_topic.name }}</a>
+        <a href="javascript: void(0)" class="btn-remove-child-topic"
+           data-child-topic-id="{{ child_topic.id }}">移除</a>
+    </li>
+{% endmacro %}
