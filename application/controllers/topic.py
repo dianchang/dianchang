@@ -113,3 +113,11 @@ def remove_child_topic(uid, child_topic_id):
     child_topic = Topic.query.get_or_404(child_topic_id)
     topic.remove_child_topic(child_topic_id)
     return json.dumps({'result': True})
+
+
+@bp.route('/topic/get_by_name/<string:name>', methods=['POST'])
+@UserPermission()
+def get_by_name(name):
+    """通过name获取话题，若不存在则创建"""
+    topic = Topic.get_by_name(name, create_if_not_exist=True)
+    return json.dumps({'id': topic.id, 'name': topic.name})

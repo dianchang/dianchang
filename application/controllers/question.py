@@ -12,8 +12,14 @@ bp = Blueprint('question', __name__)
 def add():
     form = AddQuestionForm()
     if form.validate_on_submit():
-        question = Question(**form.data)
-        question.user_id = g.user.id
+        question = Question(title=form.title.data, desc=form.desc.data, user_id=g.user.id)
+        # 添加话题
+        topics_id_list = request.form.getlist('topic')
+        for topic_id in topics_id_list:
+            topic = Topic.query.get(topic_id)
+            if topic:
+                question_topic = QuestionTopic(topic_id=topic_id)
+                question.topics.append(question_topic)
         db.session.add(question)
         db.session.commit()
         return redirect(url_for('.view', uid=question.id))

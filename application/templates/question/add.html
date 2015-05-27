@@ -12,6 +12,23 @@
                     {{ form.csrf_token() }}
                     {{ horizontal_field(form.title) }}
                     {{ horizontal_field(form.desc) }}
+
+                    <div class="form-group clearfix">
+                        <label for="" class="col-sm-2 control-label">话题</label>
+
+                        <div class="col-sm-10">
+                            <div class="topics-wap">
+                                <div class="topics">
+                                    <div class="topics-inner-wap"></div>
+                                </div>
+
+                                <div class="form-wap">
+                                    <input type="text" name="search-topic" class="form-control" placeholder="搜索话题，回车添加"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {{ form_submit('提交问题') }}
                 </form>
             </div>
