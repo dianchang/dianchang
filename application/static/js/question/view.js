@@ -93,7 +93,7 @@ function addToTopic(questionId, data) {
     }).done(function (response) {
         if (response.result) {
             if (!$(".topic-wap[data-id='" + response.id + "']").length) {
-                $(".topics").append(response.html);
+                $(".topics-inner-wap").append(response.html);
             }
             $topicInput.typeahead('val', '');
             checkTopicsCount();

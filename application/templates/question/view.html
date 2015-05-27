@@ -17,9 +17,11 @@
 
         <div class="topics-wap {% if not question.topics.count() %}empty{% endif %}">
             <div class="topics">
-                {% for topic in question.topics %}
-                    {{ render_topic_wap(topic, attr="topic") }}
-                {% endfor %}
+                <div class="topics-inner-wap">
+                    {% for topic in question.topics %}
+                        {{ render_topic_wap(topic, attr="topic") }}
+                    {% endfor %}
+                </div>
                 <a href="javascript: void(0)" class="btn-edit-topic">编辑</a>
             </div>
 
