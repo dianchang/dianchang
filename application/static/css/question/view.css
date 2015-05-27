@@ -1,14 +1,19 @@
 .topics-wap .btn-add-topic,
 .topics-wap .btn-edit-topic,
+.topics-wap .btn-delete-topic,
 .topics-wap .form-wap {
   display: none;
 }
 .topics-wap .topic-wap {
+  display: inline-block;
   margin-right: 10px;
 }
 .topics-wap.edit .btn-add-topic,
 .topics-wap.edit .btn-edit-topic {
   display: none !important;
+}
+.topics-wap.edit .btn-delete-topic {
+  display: inline-block;
 }
 .topics-wap.edit .form-wap {
   display: block;

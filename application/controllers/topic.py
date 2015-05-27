@@ -26,3 +26,9 @@ def query():
                            for topic in topics])
     else:
         return json.dumps({})
+
+
+@bp.route('/topic/<int:uid>')
+def view(uid):
+    topic = Topic.query.get_or_404(uid)
+    return render_template('topic/view.html', topic=topic)

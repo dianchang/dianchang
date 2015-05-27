@@ -64,3 +64,23 @@ def add_to_topic(uid):
     return json.dumps({'result': True,
                        'id': topic.id,
                        'html': macro(topic)})
+
+
+@bp.route('/question/<int:uid>/remove_from_topic/<int:topic_id>', methods=['POST'])
+@UserPermission()
+def remove_from_topic(uid, topic_id):
+    """将问题从话题中移除"""
+    question = Question.query.get_or_404(uid)
+    topic = Topic.query.get_or_404(topic_id)
+    topic_questions = QuestionTopic.query.filter(
+        QuestionTopic.topic_id == topic_id,
+        QuestionTopic.question_id == uid)
+    for topic_question in topic_questions:
+        db.session.delete(topic_question)
+        # log
+        # log = PieceEditLog(piece_id=uid, user_id=g.user.id,
+        #                    before=collection.title, before_id=collection_id,
+        #                    kind=PIECE_EDIT_KIND.REMOVE_FROM_COLLECTION)
+        # db.session.add(log)
+    db.session.commit()
+    return json.dumps({'result': True})

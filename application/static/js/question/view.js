@@ -1,17 +1,38 @@
 var timerForTypeahead = null;
 var $topicInput = $("input[name='topic']");
 
+// 添加话题
 $('.btn-add-topic').click(function () {
     $('.topics-wap').addClass('edit');
 });
 
+// 编辑话题
 $('.btn-edit-topic').click(function () {
     $('.topics-wap').addClass('edit');
 });
 
+// 完成话题编辑
 $('.btn-finish-add-topic').click(function () {
     $('.topics-wap').removeClass('edit');
 });
+
+// 删除话题
+$('.btn-delete-topic').click(function () {
+    var topicId = parseInt($(this).data('id'));
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('question.remove_from_topic', {uid: g.questionId, topic_id: topicId}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            _this.parent().detach();
+            checkTopicsCount();
+        }
+    });
+});
+
 
 // 启动Typeahead自动完成
 $topicInput.typeahead({
@@ -75,6 +96,18 @@ function addToTopic(questionId, data) {
                 $(".topics").append(response.html);
             }
             $topicInput.typeahead('val', '');
+            checkTopicsCount();
         }
     });
+}
+
+/**
+ * Check if there is no topics, and update elements status.
+ */
+function checkTopicsCount() {
+    if ($('.topic-wap').length === 0) {
+        $('.topics-wap').addClass('empty');
+    } else {
+        $('.topics-wap').removeClass('empty');
+    }
 }

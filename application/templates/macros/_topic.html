@@ -3,7 +3,12 @@
         {% set topic = topic[attr] %}
     {% endif %}
 
-    <span class="label label-default topic-wap" data-id="{{ topic.id }}">
-        {{ topic.name }}
-    </span>
+    <div class="topic-wap">
+        <a class="label label-default topic" href="{{ url_for('topic.view', uid=topic.id) }}"
+           data-id="{{ topic.id }}">
+            {{ topic.name }}</a>
+        <a href="javascript: void(0)" class="btn-delete-topic" data-id="{{ topic.id }}">
+            <span class="fa fa-close"></span>
+        </a>
+    </div>
 {% endmacro %}
