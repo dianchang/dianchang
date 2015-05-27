@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import Blueprint, render_template, request, json
+from flask import Blueprint, render_template, request, json, get_template_attribute
 from ..models import db, Topic, Question, QuestionTopic
 from ..utils.permissions import UserPermission
 from ..forms import AdminTopicForm
@@ -12,7 +12,7 @@ def square():
     return render_template('topic/square.html')
 
 
-@bp.route('/collection/query', methods=['POST'])
+@bp.route('/topic/query', methods=['POST'])
 @UserPermission()
 def query():
     q = request.form.get('q')
@@ -57,3 +57,26 @@ def admin(uid):
         db.session.add(topic)
         db.session.commit()
     return render_template('topic/admin.html', topic=topic, form=form)
+
+
+@bp.route('/topic/<int:uid>/add_parent_topic/<int:parent_topic_id>', methods=['GET', 'POST'])
+def add_parent_topic(uid, parent_topic_id):
+    """添加直接父话题"""
+    topic = Topic.query.get_or_404(uid)
+    parent_topic = Topic.query.get_or_404(parent_topic_id)
+    topic.add_parent_topic(parent_topic_id)
+    macro = get_template_attribute('macros/_topic.html', 'parent_topic_edit_wap')
+
+    return json.dumps({
+        'result': True,
+        'html': macro(parent_topic)
+    })
+
+
+@bp.route('/topic/<int:uid>/remove_parent_topic/<int:parent_topic_id>', methods=['POST'])
+def remove_parent_topic(uid, parent_topic_id):
+    """删除直接父话题"""
+    topic = Topic.query.get_or_404(uid)
+    parent_topic = Topic.query.get_or_404(parent_topic_id)
+    topic.remove_parent_topic(parent_topic_id)
+    return json.dumps({'result': True})

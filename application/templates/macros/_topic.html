@@ -17,7 +17,7 @@
 {% macro topic_header(topic, active='view') %}
     <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="pull-right btn btn-default">
         话题管理</a>
-    
+
     <div class="topic-wap">
         <div class="media">
             <div class="media-left">
@@ -44,4 +44,14 @@
             <a href="{{ url_for('topic.wiki', uid=topic.id) }}">百科</a>
         </li>
     </ul>
+{% endmacro %}
+
+
+{% macro parent_topic_edit_wap(parent_topic) %}
+    <li class="parent-topic-edit-wap">
+        <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">
+            {{ parent_topic.name }}</a>
+        <a href="javascript: void(0)" class="btn-remove-parent-topic"
+           data-parent-topic-id="{{ parent_topic.id }}">移除</a>
+    </li>
 {% endmacro %}

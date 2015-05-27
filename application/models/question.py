@@ -83,6 +83,44 @@ class Topic(db.Model):
         descendant_topics_id_list = [item.ancestor_id for item in descendant_topics_id_list]
         return Topic.query.filter(Topic.id.in_(descendant_topics_id_list))
 
+    def add_parent_topic(self, parent_topic_id):
+        """添加直接父话题"""
+        for ancestor_topic in TopicClosure.query.filter(TopicClosure.descendant_id == parent_topic_id):
+            for descendant_topic in TopicClosure.query.filter(TopicClosure.ancestor_id == self.id):
+                new_closure = TopicClosure(ancestor_id=ancestor_topic.ancestor_id,
+                                           descendant_id=descendant_topic.descendant_id,
+                                           path_length=ancestor_topic.path_length + descendant_topic.path_length + 1)
+                db.session.add(new_closure)
+        db.session.commit()
+
+    def remove_parent_topic(self, parent_topic_id):
+        """删除直接父话题"""
+        for ancestor_topic in TopicClosure.query.filter(TopicClosure.descendant_id == parent_topic_id):
+            for descendant_topic in TopicClosure.query.filter(TopicClosure.ancestor_id == self.id):
+                closure = TopicClosure.query.filter(TopicClosure.ancestor_id == ancestor_topic.ancestor_id,
+                                                    TopicClosure.descendant_id == descendant_topic.descendant_id)
+                map(db.session.delete, closure)
+        db.session.commit()
+
+    def add_child_topic(self, child_topic_id):
+        """添加直接子话题"""
+        for ancestor_topic in TopicClosure.query.filter(TopicClosure.descendant_id == self.id):
+            for descendant_topic in TopicClosure.query.filter(TopicClosure.ancestor_id == child_topic_id):
+                new_closure = TopicClosure(ancestor_id=ancestor_topic.ancestor_id,
+                                           descendant_id=descendant_topic.descendant_id,
+                                           path_length=ancestor_topic.path_length + descendant_topic.path_length + 1)
+                db.session.add(new_closure)
+        db.session.commit()
+
+    def remove_child_topic(self, child_topic_id):
+        """删除直接子话题"""
+        for ancestor_topic in TopicClosure.query.filter(TopicClosure.descendant_id == self.id):
+            for descendant_topic in TopicClosure.query.filter(TopicClosure.ancestor_id == child_topic_id):
+                closure = TopicClosure.query.filter(TopicClosure.ancestor_id == ancestor_topic.ancestor_id,
+                                                    TopicClosure.descendant_id == descendant_topic.descendant_id)
+                db.session.delete(closure)
+        db.session.commit()
+
     def __repr__(self):
         return '<Topic %s>' % self.name
 

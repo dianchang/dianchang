@@ -2,6 +2,13 @@
 {% from "macros/_form.html" import field_errors %}
 
 {% block page_title %}话题管理{% endblock %}
+{% block page_vars %}
+    <script>
+        registerContext({
+            topicId: {{ topic.id }}
+        })
+    </script>
+{% endblock %}
 {% block page_content %}
     <div class="container">
         <div class="row">
@@ -35,21 +42,20 @@
                             完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题
                         </p>
 
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="" placeholder="搜索话题">
+                        {#                        <div class="input-group">#}
+                        <input type="text" class="form-control" id="" name="parent-topic"
+                               placeholder="搜索话题，回车添加">
+                        {#                            <span class="input-group-btn">#}
+                        {#                                <button class="btn btn-default" type="button">添加父话题</button>#}
+                        {#                            </span>#}
+                        {#                        </div>#}
 
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">添加父话题</button>
-                            </span>
-                        </div>
-
-                        <ul>
+                        <ul class="parent-topics">
                             {% for parent_topic in topic.parent_topics %}
-                                <li>
+                                <li class="parent-topic-edit-wap">
                                     <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">
                                         {{ parent_topic.name }}</a>
                                     <a href="javascript: void(0)" class="btn-remove-parent-topic"
-                                       data-topic-id="{{ topic.id }}"
                                        data-parent-topic-id="{{ parent_topic.id }}">移除</a>
                                 </li>
                             {% endfor %}
