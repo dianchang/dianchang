@@ -16,12 +16,22 @@ def square():
 @UserPermission()
 def query():
     q = request.form.get('q')
-    question_id = request.form.get('question_id')
+    question_id = request.form.get('question_id')  # 不包括此问题的话题（用于给问题添加话题）
+    ancestor_topic_id = request.form.get('ancestor_topic_id')  # 不为此话题的子孙话题的话题（用于给话题添加子话题）
+    descendant_topic_id = request.form.get('descendant_topic_id')  # 不为此话题的祖先话题的话题（用于给话题添加父话题）
     if q:
         topics = Topic.query.filter(Topic.name.like("%%%s%%" % q))
         if question_id:
             topics = topics.filter(
                 ~Topic.questions.any(QuestionTopic.question_id == question_id))
+        if ancestor_topic_id:
+            ancestor_topic = Topic.query.get(ancestor_topic_id)
+            if ancestor_topic:
+                topics = topics.filter(Topic.id.notin_(ancestor_topic.descendant_topics_id_list))
+        if descendant_topic_id:
+            descendant_topic = Topic.query.get(descendant_topic_id)
+            if descendant_topic:
+                topics = topics.filter(Topic.id.notin_(descendant_topic.ancestor_topics_id_list))
         return json.dumps([{'name': topic.name,
                             'id': topic.id}
                            for topic in topics])

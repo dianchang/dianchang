@@ -53,14 +53,18 @@ class Topic(db.Model):
         return Topic.query.filter(Topic.id.in_(parent_topics_id_list))
 
     @property
-    def ancestor_topics(self):
-        """祖先话题"""
+    def ancestor_topics_id_list(self):
+        """祖先话题id列表"""
         ancestor_topics_id_list = db.session.query(TopicClosure.ancestor_id). \
             filter(TopicClosure.descendant_id == self.id,
                    TopicClosure.ancestor_id != self.id). \
             all()
-        ancestor_topics_id_list = [item.ancestor_id for item in ancestor_topics_id_list]
-        return Topic.query.filter(Topic.id.in_(ancestor_topics_id_list))
+        return [item.ancestor_id for item in ancestor_topics_id_list]
+
+    @property
+    def ancestor_topics(self):
+        """祖先话题"""
+        return Topic.query.filter(Topic.id.in_(self.ancestor_topics_id_list))
 
     @property
     def child_topics(self):
@@ -74,14 +78,18 @@ class Topic(db.Model):
         return Topic.query.filter(Topic.id.in_(sub_topics_id_list))
 
     @property
-    def descendant_topics(self):
-        """子孙话题"""
+    def descendant_topics_id_list(self):
+        """子孙话题id列表"""
         descendant_topics_id_list = db.session.query(TopicClosure.descendant_id). \
             filter(TopicClosure.ancestor_id == self.id,
                    TopicClosure.descendant_id != self.id). \
             all()
-        descendant_topics_id_list = [item.ancestor_id for item in descendant_topics_id_list]
-        return Topic.query.filter(Topic.id.in_(descendant_topics_id_list))
+        return [item.ancestor_id for item in descendant_topics_id_list]
+
+    @property
+    def descendant_topics(self):
+        """子孙话题"""
+        return Topic.query.filter(Topic.id.in_(self.descendant_topics_id_list))
 
     def add_parent_topic(self, parent_topic_id):
         """添加直接父话题"""

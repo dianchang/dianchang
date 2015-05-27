@@ -1,7 +1,7 @@
 var timerForParentTopicTypeahead = null;
 var $parentTopicInput = $("input[name='parent-topic']");
 
-// 启动Typeahead自动完成
+// parentTopicInput启用Typeahead自动完成
 $parentTopicInput.typeahead({
     minLength: 1,
     highlight: true,
@@ -19,7 +19,8 @@ $parentTopicInput.typeahead({
                 method: 'post',
                 dataType: 'json',
                 data: {
-                    q: q
+                    q: q,
+                    descendant_topic_id: g.topicId
                 }
             }).done(function (matchs) {
                 cb(matchs);
@@ -35,7 +36,7 @@ $parentTopicInput.typeahead({
 
 // 通过选择autocomplete菜单项添加句集
 $parentTopicInput.on('typeahead:selected', function (e, parentTopic) {
-    addToTopic(g.topicId, parentTopic.id);
+    addParentTopic(g.topicId, parentTopic.id);
 });
 
 // 删除直接父话题
@@ -59,7 +60,7 @@ $('.btn-remove-parent-topic').click(function () {
  * @param {int} topicId - 问题id
  * @param {int} parentTopicId - 问题id
  */
-function addToTopic(topicId, parentTopicId) {
+function addParentTopic(topicId, parentTopicId) {
     $.ajax({
         url: urlFor('topic.add_parent_topic', {uid: topicId, parent_topic_id: parentTopicId}),
         method: 'post',
