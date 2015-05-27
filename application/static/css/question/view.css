@@ -24,6 +24,6 @@
 .topics-wap.empty .btn-add-topic {
   display: block;
 }
-.topics-wap:hover .btn-edit-topic {
+.topics-wap .topics:hover .btn-edit-topic {
   display: inline-block;
 }
