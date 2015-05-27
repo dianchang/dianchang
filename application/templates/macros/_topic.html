@@ -12,3 +12,33 @@
         </a>
     </div>
 {% endmacro %}
+
+
+{% macro topic_header(topic, active='view') %}
+    <div class="topic-wap">
+        <div class="media">
+            <div class="media-left">
+                <img src="{{ topic.avatar_url }}" alt=""/>
+            </div>
+            <div class="media-body">
+                <h1>{{ topic.name }}</h1>
+
+                {% if topic.desc %}
+                    <div class="desc">{{ topic.desc }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" {% if active == 'view' %}class="active"{% endif %}>
+            <a href="{{ url_for('topic.view', uid=topic.id) }}">讨论</a>
+        </li>
+        <li role="presentation" {% if active == 'rank' %}class="active"{% endif %}>
+            <a href="{{ url_for('topic.rank', uid=topic.id) }}">榜单</a>
+        </li>
+        <li role="presentation" {% if active == 'wiki' %}class="active"{% endif %}>
+            <a href="{{ url_for('topic.wiki', uid=topic.id) }}">百科</a>
+        </li>
+    </ul>
+{% endmacro %}

@@ -6,6 +6,7 @@ from flask.ext.uploads import UploadSet, IMAGES, extension, ALL
 
 # UploadSets
 avatars = UploadSet('avatars', IMAGES)
+topic_avatars = UploadSet('topicAvatars', IMAGES)
 
 
 def process_user_avatar(file_storage, upload_set, border):

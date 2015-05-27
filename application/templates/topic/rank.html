@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import topic_header %}
 
-{% block page_title %}话题「{{ topic.name }}」{% endblock %}
+{% block page_title %}话题「{{ topic.name }}」榜单{% endblock %}
 {% block page_content %}
     <div class="container">
-        {{ topic_header(topic, active='view') }}
+        {{ topic_header(topic, active='rank') }}
     </div>
 {% endblock %}

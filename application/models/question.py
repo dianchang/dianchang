@@ -2,6 +2,7 @@
 from flask import g
 from datetime import datetime
 from ._base import db
+from ..utils.uploadsets import topic_avatars
 
 
 class Topic(db.Model):
@@ -9,8 +10,13 @@ class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     desc = db.Column(db.Text)
+    avatar = db.Column(db.String(200), default='default.png')
     clicks = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    @property
+    def avatar_url(self):
+        return topic_avatars.url(self.avatar)
 
     @staticmethod
     def get_by_name(name, create_if_not_exist=False):

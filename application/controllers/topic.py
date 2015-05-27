@@ -32,3 +32,15 @@ def query():
 def view(uid):
     topic = Topic.query.get_or_404(uid)
     return render_template('topic/view.html', topic=topic)
+
+
+@bp.route('/topic/<int:uid>/rank')
+def rank(uid):
+    topic = Topic.query.get_or_404(uid)
+    return render_template('topic/rank.html', topic=topic)
+
+
+@bp.route('/topic/<int:uid>/wiki')
+def wiki(uid):
+    topic = Topic.query.get_or_404(uid)
+    return render_template('topic/wiki.html', topic=topic)
