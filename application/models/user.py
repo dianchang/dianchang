@@ -14,6 +14,9 @@ class User(db.Model):
     avatar = db.Column(db.String(200), default='default.png')
     password = db.Column(db.String(200))
     is_admin = db.Column(db.Boolean, default=False)
+    organization = db.Column(db.String(100))
+    city = db.Column(db.String(100))
+    position = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     followers_count = db.Column(db.Integer, default=0)

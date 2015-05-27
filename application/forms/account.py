@@ -1,7 +1,7 @@
 # coding: utf-8
 from flask_wtf import Form
 from werkzeug.security import generate_password_hash
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo
 from ..models import User
 
@@ -60,3 +60,11 @@ class SignupForm(Form):
         user = User.query.filter(User.email == self.email.data).first()
         if user:
             raise ValueError('This email already exists.')
+
+
+class SettingsForm(Form):
+    """Form for settings"""
+    desc = TextAreaField('一句话简介')
+    city = StringField('城市')
+    organization = StringField('组织')
+    position = StringField('职位')

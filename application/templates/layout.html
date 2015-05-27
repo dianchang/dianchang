@@ -61,6 +61,11 @@
                 </li>
             </ul>
 
+            <a href="{{ url_for('question.add') }}"
+               class="btn btn-primary navbar-btn navbar-right">
+                <span class="fa fa-plus"></span> 提问
+            </a>
+
             <ul class="nav navbar-nav navbar-right">
                 {% if g.user %}
                     <li id="nav-noti">
@@ -69,15 +74,20 @@
                         </a>
                     </li>
                     <li id="nav-settings">
-                        <a href="{{ url_for('people.profile', uid=g.user.id) }}">{{ g.user.name }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('account.signout') }}">登出</a>
-                    </li>
-                    <li id="nav-settings">
-                        <a href="{{ url_for('question.add') }}">
-                            <span class="fa fa-plus"></span> 提问
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ g.user.name }} <span class="fa fa-angle-down"></span>
                         </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="{{ url_for('people.profile', uid=g.user.id) }}">我的主页</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('account.settings') }}">个人设置</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('account.signout') }}">登出</a>
+                            </li>
+                        </ul>
                     </li>
                 {% else %}
                     <li id="nav-signin">

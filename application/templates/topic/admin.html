@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_form.html" import field_errors %}
+{% from "macros/_form.html" import field_errors, form_submit %}
 {% from "macros/_topic.html" import parent_topic_edit_wap, child_topic_edit_wap %}
 
 {% block page_title %}话题管理{% endblock %}
@@ -16,62 +16,68 @@
             <div class="col-md-8">
                 <img src="{{ topic.avatar_url }}" alt=""/>
 
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="话题名称" value="{{ topic.name }}"/>
-                    {{ field_errors(form.name) }}
-                </div>
+                <form action="" method="post">
+                    {{ form.csrf_token() }}
 
-                <div class="form-group">
-                    <textarea name="desc" id="" cols="30" rows="10" placeholder="话题描述"
-                              class="form-control">{{ topic.desc or "" }}</textarea>
-                </div>
-
-                {#                <div class="form-group">#}
-                {#                    <label for="" class="col-sm-2 control-label">话题同义词</label>#}
-                {##}
-                {#                    <div class="col-sm-10">#}
-                {#                        <p class="help-block">同义词越多，越方便话题被检索到</p>#}
-                {#                        <input type="email" class="form-control" id="" placeholder="添加同义词">#}
-                {#                    </div>#}
-                {#                </div>#}
-
-                <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">父话题</label>
-
-                    <div class="col-sm-10">
-                        <p class="text-light">
-                            完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题。
-                        </p>
-
-                        <input type="text" class="form-control" id="" name="parent-topic"
-                               placeholder="搜索话题，回车添加">
-
-                        <ul class="parent-topics">
-                            {% for parent_topic in topic.parent_topics %}
-                                {{ parent_topic_edit_wap(parent_topic) }}
-                            {% endfor %}
-                        </ul>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="话题名称" value="{{ topic.name }}"/>
+                        {{ field_errors(form.name) }}
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="" class="col-sm-2 control-label">子话题</label>
-
-                    <div class="col-sm-10">
-                        <p class="text-light">
-                            完全隶属于本话题的细分话题。例如：「香蕉」可以是「水果」的子话题。
-                        </p>
-
-                        <input type="text" class="form-control" id="" name="child-topic"
-                               placeholder="搜索话题，回车添加">
-
-                        <ul class="child-topics">
-                            {% for child_topic in topic.child_topics %}
-                                {{ child_topic_edit_wap(child_topic) }}
-                            {% endfor %}
-                        </ul>
+                    <div class="form-group">
+                        <textarea name="desc" id="" cols="30" rows="10" placeholder="话题描述"
+                                  class="form-control">{{ topic.desc or "" }}</textarea>
                     </div>
-                </div>
+
+                    {#                <div class="form-group">#}
+                    {#                    <label for="" class="col-sm-2 control-label">话题同义词</label>#}
+                    {##}
+                    {#                    <div class="col-sm-10">#}
+                    {#                        <p class="help-block">同义词越多，越方便话题被检索到</p>#}
+                    {#                        <input type="email" class="form-control" id="" placeholder="添加同义词">#}
+                    {#                    </div>#}
+                    {#                </div>#}
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">父话题</label>
+
+                        <div class="col-sm-10">
+                            <p class="text-light">
+                                完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题。
+                            </p>
+
+                            <input type="text" class="form-control" id="" name="parent-topic"
+                                   placeholder="搜索话题，回车添加">
+
+                            <ul class="parent-topics">
+                                {% for parent_topic in topic.parent_topics %}
+                                    {{ parent_topic_edit_wap(parent_topic) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2 control-label">子话题</label>
+
+                        <div class="col-sm-10">
+                            <p class="text-light">
+                                完全隶属于本话题的细分话题。例如：「香蕉」可以是「水果」的子话题。
+                            </p>
+
+                            <input type="text" class="form-control" id="" name="child-topic"
+                                   placeholder="搜索话题，回车添加">
+
+                            <ul class="child-topics">
+                                {% for child_topic in topic.child_topics %}
+                                    {{ child_topic_edit_wap(child_topic) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {{ form_submit('保存') }}
+                </form>
             </div>
         </div>
     </div>
