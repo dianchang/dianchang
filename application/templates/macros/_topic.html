@@ -15,6 +15,9 @@
 
 
 {% macro topic_header(topic, active='view') %}
+    <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="pull-right btn btn-default">
+        话题管理</a>
+    
     <div class="topic-wap">
         <div class="media">
             <div class="media-left">

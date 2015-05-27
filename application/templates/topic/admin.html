@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% from "macros/_form.html" import field_errors %}
+
+{% block page_title %}话题管理{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <img src="{{ topic.avatar_url }}" alt=""/>
+
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="话题名称" value="{{ topic.name }}"/>
+                    {{ field_errors(form.name) }}
+                </div>
+
+                <div class="form-group">
+                    <textarea name="desc" id="" cols="30" rows="10" placeholder="话题描述"
+                              class="form-control">{{ topic.desc or "" }}</textarea>
+                </div>
+
+                {#                <div class="form-group">#}
+                {#                    <label for="" class="col-sm-2 control-label">话题同义词</label>#}
+                {##}
+                {#                    <div class="col-sm-10">#}
+                {#                        <p class="help-block">同义词越多，越方便话题被检索到</p>#}
+                {#                        <input type="email" class="form-control" id="" placeholder="添加同义词">#}
+                {#                    </div>#}
+                {#                </div>#}
+
+                <div class="form-group">
+                    <label for="" class="col-sm-2 control-label">父话题</label>
+
+                    <div class="col-sm-10">
+                        <p class="text-light">
+                            完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题
+                        </p>
+
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="" placeholder="搜索话题">
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">添加父话题</button>
+                            </span>
+                        </div>
+
+                        <ul>
+                            {% for parent_topic in topic.parent_topics %}
+                                <li>
+                                    <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">
+                                        {{ parent_topic.name }}</a>
+                                    <a href="javascript: void(0)" class="btn-remove-parent-topic"
+                                       data-topic-id="{{ topic.id }}"
+                                       data-parent-topic-id="{{ parent_topic.id }}">移除</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

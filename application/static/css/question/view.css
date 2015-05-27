@@ -21,6 +21,7 @@
 .topics-wap.edit .form-wap {
   display: block;
 }
+.topics-wap.empty .topics,
 .topics-wap.empty .btn-edit-topic {
   display: none;
 }

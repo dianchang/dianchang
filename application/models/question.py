@@ -32,6 +32,11 @@ class Topic(db.Model):
                 # topic.logs.append(log)
                 db.session.add(topic)
                 db.session.commit()
+
+                # Add topic closure
+                topic_closure = TopicClosure(ancestor_id=topic.id, descendant_id=topic.id, path_length=0)
+                db.session.add(topic_closure)
+                db.session.commit()
             return topic
         else:
             return None

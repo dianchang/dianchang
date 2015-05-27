@@ -1,7 +1,8 @@
 # coding: utf-8
 from flask import Blueprint, render_template, request, json
-from ..models import Topic, Question, QuestionTopic
+from ..models import db, Topic, Question, QuestionTopic
 from ..utils.permissions import UserPermission
+from ..forms import AdminTopicForm
 
 bp = Blueprint('topic', __name__)
 
@@ -44,3 +45,15 @@ def rank(uid):
 def wiki(uid):
     topic = Topic.query.get_or_404(uid)
     return render_template('topic/wiki.html', topic=topic)
+
+
+@bp.route('/topic/<int:uid>/admin', methods=['POST', 'GET'])
+def admin(uid):
+    """话题管理"""
+    topic = Topic.query.get_or_404(uid)
+    form = AdminTopicForm()
+    if form.validate_on_submit():
+        form.populate_obj(topic)
+        db.session.add(topic)
+        db.session.commit()
+    return render_template('topic/admin.html', topic=topic, form=form)
