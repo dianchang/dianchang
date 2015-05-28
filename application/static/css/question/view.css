@@ -31,3 +31,6 @@
 .topics-wap .topics:hover .btn-edit-topic {
   display: inline-block;
 }
+.dc-question-follow-wap {
+  float: right;
+}

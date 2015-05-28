@@ -1,5 +1,6 @@
 # coding: utf-8
 from datetime import datetime
+from flask import g
 from ._base import db
 
 
@@ -15,6 +16,10 @@ class Question(db.Model):
     user = db.relationship('User', backref=db.backref('questions',
                                                       lazy='dynamic',
                                                       order_by='desc(Question.created_at)'))
+
+    def followed_by_user(self):
+        """该问题是否被用户关注"""
+        return g.user and g.user.followed_questions.filter(FollowQuestion.question_id == self.id).count() > 0
 
     def __repr__(self):
         return '<Question %s>' % self.name

@@ -1,7 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
-from ..models import db, Question, Answer, Topic, QuestionTopic
+from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('question', __name__)
@@ -90,3 +90,21 @@ def remove_from_topic(uid, topic_id):
         # db.session.add(log)
     db.session.commit()
     return json.dumps({'result': True})
+
+
+@bp.route('/question/<int:uid>/follow', methods=['POST'])
+@UserPermission()
+def follow(uid):
+    """关注 & 取消关注话题"""
+    question = Question.query.get_or_404(uid)
+    follow_question = FollowQuestion.query.filter(FollowQuestion.question_id == uid,
+                                                  FollowQuestion.user_id == g.user.id)
+    if follow_question.count():
+        map(db.session.delete, follow_question)
+        db.session.commit()
+        return json.dumps({'result': True, 'followed': False, 'followers_count': question.followers.count()})
+    else:
+        follow_question = FollowQuestion(question_id=uid, user_id=g.user.id)
+        db.session.add(follow_question)
+        db.session.commit()
+        return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers.count()})

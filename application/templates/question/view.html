@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import render_topic_wap %}
+{% from "macros/_question.html" import follow_question %}
 
 {% block page_title %}{{ question.title }}{% endblock %}
 {% block page_vars %}
@@ -11,6 +12,8 @@
 {% endblock %}
 {% block page_content %}
     <div class="container">
+        {{ follow_question(question) }}
+
         <h1>{{ question.title }}</h1>
 
         <div>{{ question.desc|safe }}</div>

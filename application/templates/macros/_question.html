@@ -30,3 +30,42 @@
         </div>
     {% endfor %}
 {% endmacro %}
+
+{% macro follow_question(question) %}
+    <div class="dc-question-follow-wap btn-group {% if question.followed_by_user() %}followed{% endif %}">
+        <a href="javascript: void(0)"
+           class="btn btn-default btn-follow-question"
+           data-id="{{ question.id }}">
+            <span class="for-follow">关注</span><span class="for-unfollow">已关注</span>
+        </a>
+        <span class="followers-count btn btn-default">{{ question.followers.count() }}</span>
+    </div>
+
+    <script>
+        $('.btn-follow-question').click(function () {
+            var questionId = $(this).data('id');
+            var followed = $(this).parent().hasClass('followed');
+            var $wap = $(this).parent();
+            var $count = $(this).next();
+            var url = urlFor('question.follow', {uid: questionId});
+
+            $.ajax({
+                url: url,
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.followed) {
+                        if (!$wap.hasClass('followed')) {
+                            $wap.addClass('followed');
+                        }
+                    } else {
+                        $wap.removeClass('followed');
+                    }
+
+                    $count.text(response.followers_count);
+                }
+            });
+        });
+    </script>
+{% endmacro %}

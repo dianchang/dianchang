@@ -1,0 +1,17 @@
+.dc-question-follow-wap .btn {
+  background-color: #337ab7;
+  border-color: #2e6da4;
+  color: white;
+}
+.dc-question-follow-wap .for-follow {
+  display: inline-block;
+}
+.dc-question-follow-wap .for-unfollow {
+  display: none;
+}
+.dc-question-follow-wap.followed .for-follow {
+  display: none;
+}
+.dc-question-follow-wap.followed .for-unfollow {
+  display: inline-block;
+}
