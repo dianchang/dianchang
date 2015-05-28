@@ -138,3 +138,8 @@ def follow(uid):
         db.session.add(follow_topic)
         db.session.commit()
         return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
+
+
+@bp.route('/topic/edit_wiki')
+def edit_wiki():
+    return render_template('topic/edit_wiki.html')

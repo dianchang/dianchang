@@ -5,5 +5,27 @@
 {% block page_content %}
     <div class="container">
         {{ topic_page_header(topic, active='wiki') }}
+
+        <div class="row">
+            <div class="col-md-8">
+                {{ topic.wiki or ""|safe }}
+            </div>
+            <div class="col-md-4">
+                <h3>资料贡献者</h3>
+
+                {% for contributor in topic.wiki_contributors %}
+                    {% set user = contributor.user %}
+
+                    <a href="{{ url_for('people.profile', uid=user.id) }}">
+                        <img src="{{ user.avatar_url }}" alt=""/>
+                    </a>
+                {% endfor %}
+
+                <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}"
+                   class="btn btn-primary">
+                    编辑话题百科
+                </a>
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -10,6 +10,7 @@ class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     desc = db.Column(db.Text)
+    wiki = db.Column(db.Text(4294967295))
     avatar = db.Column(db.String(200), default='default.png')
     clicks = db.Column(db.Integer, default=0)
     locked = db.Column(db.Boolean, default=False)  # 话题锁定
@@ -167,3 +168,21 @@ class FollowTopic(db.Model):
 
     def __repr__(self):
         return '<FollowQuestion %s>' % self.id
+
+
+class TopicWikiContributor(db.Model):
+    """话题Wiki贡献者"""
+    id = db.Column(db.Integer, primary_key=True)
+    count = db.Column(db.Integer, default=0)
+    last_contributed_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+    topic = db.relationship('Topic', backref=db.backref('wiki_contributors',
+                                                        lazy='dynamic',
+                                                        order_by='desc(TopicWikiContributor.count)'))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('contributed_topics',
+                                                      lazy='dynamic',
+                                                      order_by='desc(TopicWikiContributor.count)'))
