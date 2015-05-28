@@ -13,3 +13,7 @@ class AdminTopicForm(Form):
         topic = Topic.get_by_name(field.data)
         if topic:
             raise ValueError('话题名称已存在')
+
+
+class EditTopicWikiForm(Form):
+    wiki = TextAreaField('Wiki', validators=[])

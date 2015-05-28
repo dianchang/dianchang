@@ -1,8 +1,9 @@
 # coding: utf-8
-from flask import Blueprint, render_template, request, json, get_template_attribute, g
-from ..models import db, Topic, Question, QuestionTopic, FollowTopic
+from datetime import datetime
+from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
+from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor
 from ..utils.permissions import UserPermission
-from ..forms import AdminTopicForm
+from ..forms import AdminTopicForm, EditTopicWikiForm
 
 bp = Blueprint('topic', __name__)
 
@@ -140,6 +141,25 @@ def follow(uid):
         return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
 
 
-@bp.route('/topic/edit_wiki')
-def edit_wiki():
-    return render_template('topic/edit_wiki.html')
+@bp.route('/topic/<int:uid>/edit_wiki', methods=['GET', 'POST'])
+@UserPermission()
+def edit_wiki(uid):
+    """编辑话题Wiki"""
+    topic = Topic.query.get_or_404(uid)
+    form = EditTopicWikiForm(obj=topic)
+    if form.validate_on_submit():
+        topic.wiki = form.wiki.data
+        db.session.add(topic)
+
+        # 记录贡献者
+        contributor = topic.wiki_contributors.filter(TopicWikiContributor.user_id == g.user.id).first()
+        if contributor:
+            contributor.count += 1
+            contributor.last_contributed_at = datetime.now()
+            db.session.add(contributor)
+        else:
+            contributor = TopicWikiContributor(topic_id=uid, user_id=g.user.id, count=1)
+            db.session.add(contributor)
+        db.session.commit()
+        return redirect(url_for('.wiki', uid=uid))
+    return render_template('topic/edit_wiki.html', topic=topic, form=form)
