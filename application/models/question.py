@@ -2,6 +2,7 @@
 from datetime import datetime
 from flask import g
 from ._base import db
+from ..utils.es import save_object_to_es, delete_object_from_es
 
 
 class Question(db.Model):
@@ -16,6 +17,18 @@ class Question(db.Model):
     user = db.relationship('User', backref=db.backref('questions',
                                                       lazy='dynamic',
                                                       order_by='desc(Question.created_at)'))
+
+    def save_to_es(self):
+        """保存此问题到elasticsearch"""
+        return save_object_to_es('question', self.id, {
+            'title': self.title,
+            'desc': self.desc,
+            'created_at': self.created_at
+        })
+
+    def delete_from_es(self):
+        """从elasticsearch中删除此问题"""
+        return delete_object_from_es('question', self.id)
 
     def followed_by_user(self):
         """该问题是否被用户关注"""

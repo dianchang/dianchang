@@ -10,6 +10,7 @@ bp = Blueprint('question', __name__)
 @bp.route('/question/add', methods=['GET', 'POST'])
 @UserPermission()
 def add():
+    """添加话题"""
     form = AddQuestionForm()
     if form.validate_on_submit():
         question = Question(title=form.title.data, desc=form.desc.data, user_id=g.user.id)
@@ -22,6 +23,7 @@ def add():
                 question.topics.append(question_topic)
         db.session.add(question)
         db.session.commit()
+        question.save_to_es()
         return redirect(url_for('.view', uid=question.id))
     return render_template('question/add.html', form=form)
 

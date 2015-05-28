@@ -9,6 +9,8 @@ PyMySQL
 itsdangerous
 permission
 Pillow
+elasticsearch
+elasticsearch-dsl
 six
 raven
 

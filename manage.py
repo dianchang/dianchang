@@ -62,5 +62,14 @@ def upload_assets():
     upload(app)
 
 
+@manager.command
+def save_to_es():
+    from application.models import Question
+
+    with app.app_context():
+        for question in Question.query:
+            question.save_to_es()
+
+
 if __name__ == "__main__":
     manager.run()
