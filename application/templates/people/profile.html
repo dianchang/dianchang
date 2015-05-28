@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
+{% from "macros/_people.html" import follow_user %}
 
 {% block page_title %}{{ user.name }}{% endblock %}
 {% block page_content %}
     <div class="container">
         <h1>{{ user.name }}</h1>
+
+        {{ follow_user(user) }}
     </div>
 {% endblock %}

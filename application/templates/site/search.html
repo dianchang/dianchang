@@ -2,6 +2,7 @@
 {% from "macros/_question.html" import follow_question %}
 {% from "macros/_topic.html" import follow_topic %}
 {% from "macros/_answer.html" import render_answer %}
+{% from "macros/_people.html" import follow_user %}
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
@@ -81,6 +82,7 @@
                                     </div>
                                     <div class="desc">
                                         {{ (user.highlight_desc or user.desc or "")|safe }}
+                                        {{ follow_user(user) }}
                                     </div>
                                 </div>
                             </div>

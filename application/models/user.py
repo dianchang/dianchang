@@ -1,5 +1,6 @@
 # coding: utf-8
 from datetime import datetime
+from flask import g
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars
@@ -34,6 +35,10 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def followed_by_user(self):
+        """该用户是否被当前用户关注"""
+        return g.user and g.user.followers.filter(FollowUser.follower_id == g.user.id).count() > 0
 
     @property
     def avatar_url(self):
