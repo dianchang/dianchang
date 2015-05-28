@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, request, json
 from ..models import db, Question, Answer
 
 bp = Blueprint('site', __name__)
@@ -16,3 +16,12 @@ def index():
 def about():
     """About page."""
     return render_template('site/about.html')
+
+
+@bp.route('/site/search')
+def search():
+    q = request.args.get('q')
+    _type = request.form.get('type', 'question')
+    if _type == 'question' and q:
+        questions = Question.query_from_es(q)
+    return render_template('site/search.html', q=q, questions=questions)

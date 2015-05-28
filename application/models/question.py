@@ -2,7 +2,7 @@
 from datetime import datetime
 from flask import g
 from ._base import db
-from ..utils.es import save_object_to_es, delete_object_from_es
+from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
 class Question(db.Model):
@@ -29,6 +29,36 @@ class Question(db.Model):
     def delete_from_es(self):
         """从elasticsearch中删除此问题"""
         return delete_object_from_es('question', self.id)
+
+    @staticmethod
+    def query_from_es(q):
+        """在elasticsearch中查询话题"""
+        results = search_objects_from_es(doc_type='question', body={
+            "query": {
+                "multi_match": {
+                    "query": q,
+                    "fields": ["title", "desc"]
+                }
+            },
+            "highlight": {
+                "fields": {
+                    "title": {}
+                }
+            }
+        })
+
+        result_questions = []
+
+        for result in results["hits"]["hits"]:
+            id = result["_id"]
+            question = Question.query.get(id)
+            if "title" in result["highlight"]:
+                question.title = result["highlight"]["title"][0]
+            if "desc" in result["highlight"]:
+                question.desc = result["highlight"]["desc"][0]
+            result_questions.append(question)
+
+        return result_questions
 
     def followed_by_user(self):
         """该问题是否被用户关注"""

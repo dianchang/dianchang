@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% from "macros/_question.html" import follow_question %}
+
+{% block page_title %}{{ q }} - 搜索结果{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <h1>搜索：{{ q }}</h1>
+
+        {% for question in questions %}
+            <div class="title">{{ question.title|safe }}</div>
+            <div class="desc">{{ question.desc|safe }}</div>
+            <div class="meta">
+                <span>{{ question.answers.count() }} 回答</span>
+                {{ follow_question(question) }}
+                <span>提问于 {{ question.created_at|timesince }}</span>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
