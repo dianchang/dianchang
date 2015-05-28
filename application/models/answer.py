@@ -1,12 +1,12 @@
 # coding: utf-8
 from datetime import datetime
 from ._base import db
+from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
 class Answer(db.Model):
     """回答"""
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100))
     content = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -19,6 +19,49 @@ class Answer(db.Model):
     user = db.relationship('User', backref=db.backref('answers',
                                                       lazy='dynamic',
                                                       order_by='desc(Answer.created_at)'))
+
+    def save_to_es(self):
+        """保存此回答到elasticsearch"""
+        return save_object_to_es('answer', self.id, {
+            'content': self.content,
+            'question_title': self.question.title,
+            'created_at': self.created_at
+        })
+
+    def delete_from_es(self):
+        """从elasticsearch中删除此回答"""
+        return delete_object_from_es('answer', self.id)
+
+    @staticmethod
+    def query_from_es(q):
+        """在elasticsearch中查询回答"""
+        results = search_objects_from_es(doc_type='answer', body={
+            "query": {
+                "multi_match": {
+                    "query": q,
+                    "fields": ["content", "question_title"]
+                }
+            },
+            "highlight": {
+                "fields": {
+                    "content": {},
+                    "question_title": {}
+                }
+            }
+        })
+
+        result_answers = []
+
+        for result in results["hits"]["hits"]:
+            id = result["_id"]
+            answer = Answer.query.get(id)
+            if "highlight" in result:
+                if "content" in result["highlight"]:
+                    answer.content = result["highlight"]["content"][0]
+                if "question_title" in result["highlight"]:
+                    answer.question.title = result["highlight"]["question_title"][0]
+            result_answers.append(answer)
+        return result_answers
 
     def __repr__(self):
         return '<Answer %s>' % self.name

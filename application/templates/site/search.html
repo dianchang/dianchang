@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from "macros/_question.html" import follow_question %}
 {% from "macros/_topic.html" import follow_topic %}
+{% from "macros/_answer.html" import render_answer %}
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
@@ -38,6 +39,12 @@
                             </div>
                         </div>
 
+                    {% endfor %}
+                {% elif _type == "answer" %}
+                    {% for answer in results %}
+                        <div class="search-result answer">
+                            {{ render_answer(answer) }}
+                        </div>
                     {% endfor %}
                 {% elif _type == "topic" %}
                     {% for topic in results %}

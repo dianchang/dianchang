@@ -28,4 +28,6 @@ def search():
         results = Question.query_from_es(q)
     elif _type == "topic":
         results = Topic.query_from_es(q)
+    elif _type == 'answer':
+        results = Answer.query_from_es(q)
     return render_template('site/search.html', q=q, results=results, _type=_type)

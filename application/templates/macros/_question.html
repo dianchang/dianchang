@@ -14,23 +14,6 @@
 {% endmacro %}
 
 
-{% macro render_answers(answers) %}
-    {% for answer in answers %}
-        <div class="dc-answer">
-            <div>
-                <a href="{{ url_for('answer.view', uid=answer.id) }}">{{ answer.question.title }}</a>
-            </div>
-            <div>
-                {{ answer.user.name }}{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
-            </div>
-            <div>{{ answer.content|safe }}</div>
-            <div class="time" title="{{ answer.created_at }}">
-                {{ answer.created_at|timesince }}
-            </div>
-        </div>
-    {% endfor %}
-{% endmacro %}
-
 {% macro follow_question(question) %}
     <div class="dc-question-follow-wap btn-group {% if question.followed_by_user() %}followed{% endif %}">
         <a href="javascript: void(0)"
