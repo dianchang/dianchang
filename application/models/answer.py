@@ -57,9 +57,9 @@ class Answer(db.Model):
             answer = Answer.query.get(id)
             if "highlight" in result:
                 if "content" in result["highlight"]:
-                    answer.content = result["highlight"]["content"][0]
+                    answer.highlight_content = result["highlight"]["content"][0]
                 if "question_title" in result["highlight"]:
-                    answer.question.title = result["highlight"]["question_title"][0]
+                    answer.highlight_question_title = result["highlight"]["question_title"][0]
             result_answers.append(answer)
         return result_answers
 

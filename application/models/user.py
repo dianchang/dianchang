@@ -3,6 +3,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars
+from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
 class User(db.Model):
@@ -37,6 +38,50 @@ class User(db.Model):
     @property
     def avatar_url(self):
         return avatars.url(self.avatar)
+
+    def save_to_es(self):
+        """保存此用户到elasticsearch"""
+        return save_object_to_es('user', self.id, {
+            'name': self.name,
+            'desc': self.desc,
+            'created_at': self.created_at
+        })
+
+    def delete_from_es(self):
+        """从elasticsearch中删除此用户"""
+        return delete_object_from_es('user', self.id)
+
+    @staticmethod
+    def query_from_es(q):
+        """在elasticsearch中查询用户"""
+        results = search_objects_from_es(doc_type='user', body={
+            "query": {
+                "multi_match": {
+                    "query": q,
+                    "fields": ["name", "desc"]
+                }
+            },
+            "highlight": {
+                "fields": {
+                    "name": {},
+                    "desc": {}
+                }
+            }
+        })
+
+        result_users = []
+
+        for result in results["hits"]["hits"]:
+            id = result["_id"]
+            user = User.query.get(id)
+            if "highlight" in result:
+                if "name" in result["highlight"]:
+                    user.highlight_name = result["highlight"]["name"][0]
+                if "desc" in result["highlight"]:
+                    user.highlight_desc = result["highlight"]["desc"][0]
+            result_users.append(user)
+
+        return result_users
 
     def __repr__(self):
         return '<User %s>' % self.name

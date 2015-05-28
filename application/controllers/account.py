@@ -52,6 +52,7 @@ def settings():
         form.populate_obj(g.user)
         db.session.add(g.user)
         db.session.commit()
+        g.user.save_to_es()
         flash('设置已更新')
         return redirect(url_for('.settings'))
     return render_template('account/settings.html', form=form)

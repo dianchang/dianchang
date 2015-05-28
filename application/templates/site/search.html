@@ -8,7 +8,6 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-
                 <ul class="nav nav-tabs">
                     <li {% if _type == 'question' %}class="active"{% endif %}>
                         <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
@@ -29,9 +28,11 @@
                         <div class="search-result question">
                             <div class="title">
                                 <a href="{{ url_for('question.view', uid=question.id) }}" target="_blank">
-                                    {{ question.title|safe }}</a>
+                                    {{ (question.highlight_title or question.title)|safe }}</a>
                             </div>
-                            <div class="desc">{{ question.desc|safe }}</div>
+                            <div class="desc">
+                                {{ (question.highlight_desc or question.desc or "")|safe }}
+                            </div>
                             <div class="meta">
                                 <span>{{ question.answers.count() }} 回答</span>
                                 {{ follow_question(question) }}
@@ -56,11 +57,31 @@
                                 <div class="media-body">
                                     <div class="name">
                                         <a href="{{ url_for('topic.view', uid=topic.id) }}" target="_blank">
-                                            {{ topic.name|safe }}
+                                            {{ (topic.highlight_name or topic.name)|safe }}
                                         </a>
                                     </div>
                                     <div class="desc">{{ topic.desc or "" }}</div>
                                     {{ follow_topic(topic) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% elif _type == "people" %}
+                    {% for user in results %}
+                        <div class="search-result user">
+                            <div class="media">
+                                <div class="media-left">
+                                    <img src="{{ user.avatar_url }}" alt=""/>
+                                </div>
+                                <div class="media-body">
+                                    <div class="meta">
+                                        <a href="{{ url_for('people.profile', uid=user.id) }}">
+                                            {{ (user.highlight_name or user.name)|safe }}</a>
+                                        <span>{{ user.answers.count() }} 个回答</span>
+                                    </div>
+                                    <div class="desc">
+                                        {{ (user.highlight_desc or user.desc or "")|safe }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

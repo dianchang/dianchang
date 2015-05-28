@@ -1,6 +1,6 @@
 # coding: utf-8
-from flask import render_template, Blueprint, request, redirect
-from ..models import db, Question, Answer, Topic
+from flask import render_template, Blueprint, request, redirect, abort
+from ..models import db, Question, Answer, Topic, User
 
 bp = Blueprint('site', __name__)
 
@@ -30,4 +30,8 @@ def search():
         results = Topic.query_from_es(q)
     elif _type == 'answer':
         results = Answer.query_from_es(q)
+    elif _type == 'people':
+        results = User.query_from_es(q)
+    else:
+        abort(404)
     return render_template('site/search.html', q=q, results=results, _type=_type)

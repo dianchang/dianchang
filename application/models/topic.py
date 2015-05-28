@@ -60,7 +60,7 @@ class Topic(db.Model):
             topic = Topic.query.get(id)
             if "highlight" in result:
                 if "name" in result["highlight"]:
-                    topic.name = result["highlight"]["name"][0]
+                    topic.highlight_name = result["highlight"]["name"][0]
             result_topics.append(topic)
 
         return result_topics

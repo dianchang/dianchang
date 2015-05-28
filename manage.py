@@ -64,7 +64,7 @@ def upload_assets():
 
 @manager.command
 def save_to_es():
-    from application.models import Question, Topic, Answer
+    from application.models import Question, Topic, Answer, User
 
     with app.app_context():
         for question in Question.query:
@@ -73,6 +73,8 @@ def save_to_es():
             topic.save_to_es()
         for answer in Answer.query:
             answer.save_to_es()
+        for user in User.query:
+            user.save_to_es()
 
 
 if __name__ == "__main__":

@@ -55,9 +55,9 @@ class Question(db.Model):
             question = Question.query.get(id)
             if "highlight" in result:
                 if "title" in result["highlight"]:
-                    question.title = result["highlight"]["title"][0]
+                    question.highlight_title = result["highlight"]["title"][0]
                 if "desc" in result["highlight"]:
-                    question.desc = result["highlight"]["desc"][0]
+                    question.highlight_desc = result["highlight"]["desc"][0]
             result_questions.append(question)
 
         return result_questions

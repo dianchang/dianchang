@@ -1,12 +1,16 @@
 {% macro render_answer(answer) %}
     <div class="dc-answer">
         <div>
-            <a href="{{ url_for('answer.view', uid=answer.id) }}">{{ answer.question.title|safe }}</a>
+            <a href="{{ url_for('answer.view', uid=answer.id) }}">
+                {{ (answer.highlight_question_title or answer.question.title)|safe }}
+            </a>
         </div>
         <div>
             {{ answer.user.name }}{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
         </div>
-        <div>{{ answer.content|safe }}</div>
+        <div>
+            {{ (answer.highlight_content or answer.content)|safe }}
+        </div>
         <div class="time" title="{{ answer.created_at }}">
             {{ answer.created_at|timesince }}
         </div>
