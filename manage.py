@@ -64,11 +64,13 @@ def upload_assets():
 
 @manager.command
 def save_to_es():
-    from application.models import Question
+    from application.models import Question, Topic
 
     with app.app_context():
         for question in Question.query:
             question.save_to_es()
+        for topic in Topic.query:
+            topic.save_to_es()
 
 
 if __name__ == "__main__":

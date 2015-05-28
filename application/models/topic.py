@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import g
 from ._base import db
 from ..utils.uploadsets import topic_avatars
+from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
 class Topic(db.Model):
@@ -24,6 +25,45 @@ class Topic(db.Model):
     def followed_by_user(self):
         """此话题是否被用户关注"""
         return g.user and g.user.followed_topics.filter(FollowTopic.topic_id == self.id).count() > 0
+
+    def save_to_es(self):
+        """保存此话题到elasticsearch"""
+        return save_object_to_es('topic', self.id, {
+            'name': self.name,
+            'created_at': self.created_at
+        })
+
+    def delete_from_es(self):
+        """从elasticsearch中删除此话题"""
+        return delete_object_from_es('topic', self.id)
+
+    @staticmethod
+    def query_from_es(q):
+        """在elasticsearch中查询话题"""
+        results = search_objects_from_es(doc_type='topic', body={
+            "query": {
+                "match": {
+                    "name": q
+                }
+            },
+            "highlight": {
+                "fields": {
+                    "name": {}
+                }
+            }
+        })
+
+        result_topics = []
+
+        for result in results["hits"]["hits"]:
+            id = result["_id"]
+            topic = Topic.query.get(id)
+            if "highlight" in result:
+                if "name" in result["highlight"]:
+                    topic.name = result["highlight"]["name"][0]
+            result_topics.append(topic)
+
+        return result_topics
 
     @staticmethod
     def get_by_name(name, create_if_not_exist=False):

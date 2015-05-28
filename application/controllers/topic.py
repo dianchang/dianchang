@@ -67,6 +67,8 @@ def admin(uid):
         form.populate_obj(topic)
         db.session.add(topic)
         db.session.commit()
+        topic.save_to_es()
+        return redirect(url_for('.view', uid=uid))
     return render_template('topic/admin.html', topic=topic, form=form)
 
 

@@ -25,7 +25,7 @@
     </div>
 
     <script>
-        $('.btn-follow-topic').click(function () {
+        $('.btn-follow-topic').onOnce('click', function () {
             var topicId = $(this).data('id');
             var followed = $(this).parent().hasClass('followed');
             var $wap = $(this).parent();

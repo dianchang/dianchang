@@ -1,6 +1,6 @@
 # coding: utf-8
-from flask import render_template, Blueprint, request, json
-from ..models import db, Question, Answer
+from flask import render_template, Blueprint, request, redirect
+from ..models import db, Question, Answer, Topic
 
 bp = Blueprint('site', __name__)
 
@@ -21,7 +21,11 @@ def about():
 @bp.route('/site/search')
 def search():
     q = request.args.get('q')
-    _type = request.form.get('type', 'question')
-    if _type == 'question' and q:
+    _type = request.args.get('type', 'question')
+    if not q:
+        return redirect(request.referrer)
+    if _type == "question":
         results = Question.query_from_es(q)
+    elif _type == "topic":
+        results = Topic.query_from_es(q)
     return render_template('site/search.html', q=q, results=results, _type=_type)

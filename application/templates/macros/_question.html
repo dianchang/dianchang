@@ -42,7 +42,7 @@
     </div>
 
     <script>
-        $('.btn-follow-question').click(function () {
+        $('.btn-follow-question').onOnce('click', function () {
             var questionId = $(this).data('id');
             var followed = $(this).parent().hasClass('followed');
             var $wap = $(this).parent();

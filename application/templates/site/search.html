@@ -1,37 +1,65 @@
 {% extends "layout.html" %}
 {% from "macros/_question.html" import follow_question %}
+{% from "macros/_topic.html" import follow_topic %}
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
     <div class="container">
-        <ul class="nav nav-tabs">
-            <li {% if _type == 'question' %}class="active"{% endif %}>
-                <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
-            </li>
-            <li {% if _type == 'answer' %}class="active"{% endif %}>
-                <a href="{{ url_for('site.search', type="answer", q=q) }}">回答</a>
-            </li>
-            <li {% if _type == 'topic' %}class="active"{% endif %}>
-                <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
-            </li>
-            <li {% if _type == 'people' %}class="active"{% endif %}>
-                <a href="{{ url_for('site.search', type="people", q=q) }}">人</a>
-            </li>
-        </ul>
+        <div class="row">
+            <div class="col-md-8">
 
-        {% if _type == "question" %}
-            {% for question in results %}
-                <div class="search-result question">
-                    <div class="title">{{ question.title|safe }}</div>
-                    <div class="desc">{{ question.desc|safe }}</div>
-                    <div class="meta">
-                        <span>{{ question.answers.count() }} 回答</span>
-                        {{ follow_question(question) }}
-                        <span>提问于 {{ question.created_at|timesince }}</span>
-                    </div>
-                </div>
-                <hr/>
-            {% endfor %}
-        {% endif %}
+                <ul class="nav nav-tabs">
+                    <li {% if _type == 'question' %}class="active"{% endif %}>
+                        <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
+                    </li>
+                    <li {% if _type == 'answer' %}class="active"{% endif %}>
+                        <a href="{{ url_for('site.search', type="answer", q=q) }}">回答</a>
+                    </li>
+                    <li {% if _type == 'topic' %}class="active"{% endif %}>
+                        <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
+                    </li>
+                    <li {% if _type == 'people' %}class="active"{% endif %}>
+                        <a href="{{ url_for('site.search', type="people", q=q) }}">人</a>
+                    </li>
+                </ul>
+
+                {% if _type == "question" %}
+                    {% for question in results %}
+                        <div class="search-result question">
+                            <div class="title">
+                                <a href="{{ url_for('question.view', uid=question.id) }}" target="_blank">
+                                    {{ question.title|safe }}</a>
+                            </div>
+                            <div class="desc">{{ question.desc|safe }}</div>
+                            <div class="meta">
+                                <span>{{ question.answers.count() }} 回答</span>
+                                {{ follow_question(question) }}
+                                <span>提问于 {{ question.created_at|timesince }}</span>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                {% elif _type == "topic" %}
+                    {% for topic in results %}
+                        <div class="search-result topic">
+                            <div class="media">
+                                <div class="media-left">
+                                    <img src="{{ topic.avatar_url }}" alt=""/>
+                                </div>
+                                <div class="media-body">
+                                    <div class="name">
+                                        <a href="{{ url_for('topic.view', uid=topic.id) }}" target="_blank">
+                                            {{ topic.name|safe }}
+                                        </a>
+                                    </div>
+                                    <div class="desc">{{ topic.desc or "" }}</div>
+                                    {{ follow_topic(topic) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}

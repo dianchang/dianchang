@@ -48,8 +48,6 @@ class Question(db.Model):
             }
         })
 
-        print(results)
-
         result_questions = []
 
         for result in results["hits"]["hits"]:

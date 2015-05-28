@@ -20,7 +20,8 @@
                     {{ form.csrf_token() }}
 
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="话题名称" value="{{ topic.name }}"/>
+                        <input type="text" class="form-control" name="name" placeholder="话题名称"
+                               value="{{ topic.name }}"/>
                         {{ field_errors(form.name) }}
                     </div>
 
