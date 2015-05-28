@@ -1,5 +1,6 @@
 # coding: utf-8
 from datetime import datetime
+from flask import g
 from ._base import db
 from ..utils.uploadsets import topic_avatars
 
@@ -16,7 +17,12 @@ class Topic(db.Model):
 
     @property
     def avatar_url(self):
+        """话题图像"""
         return topic_avatars.url(self.avatar)
+
+    def followed_by_user(self):
+        """此话题是否被用户关注"""
+        return g.user and g.user.followed_topics.filter(FollowTopic.topic_id == self.id).count() > 0
 
     @staticmethod
     def get_by_name(name, create_if_not_exist=False):

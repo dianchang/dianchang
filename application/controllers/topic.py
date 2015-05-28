@@ -1,6 +1,6 @@
 # coding: utf-8
-from flask import Blueprint, render_template, request, json, get_template_attribute
-from ..models import db, Topic, Question, QuestionTopic
+from flask import Blueprint, render_template, request, json, get_template_attribute, g
+from ..models import db, Topic, Question, QuestionTopic, FollowTopic
 from ..utils.permissions import UserPermission
 from ..forms import AdminTopicForm
 
@@ -121,3 +121,20 @@ def get_by_name(name):
     """通过name获取话题，若不存在则创建"""
     topic = Topic.get_by_name(name, create_if_not_exist=True)
     return json.dumps({'id': topic.id, 'name': topic.name})
+
+
+@bp.route('/topic/<int:uid>/follow', methods=['POST'])
+@UserPermission()
+def follow(uid):
+    """关注 & 取消关注话题"""
+    topic = Topic.query.get_or_404(uid)
+    follow_topic = FollowTopic.query.filter(FollowTopic.topic_id == uid, FollowTopic.user_id == g.user.id)
+    if follow_topic.count():
+        map(db.session.delete, follow_topic)
+        db.session.commit()
+        return json.dumps({'result': True, 'followed': False, 'followers_count': topic.followers.count()})
+    else:
+        follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
+        db.session.add(follow_topic)
+        db.session.commit()
+        return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
