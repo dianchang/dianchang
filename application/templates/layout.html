@@ -42,7 +42,7 @@
         <div class="collapse navbar-collapse">
             <form class="navbar-form navbar-left" role="search" method="get" action="{{ url_for('site.search') }}">
                 <div class="input-group">
-                    <input type="text" name="q" class="form-control input-sm"
+                    <input type="text" name="q" class="form-control input-sm" value="{{ q or "" }}"
                            placeholder="搜索问题、话题、回答和人">
                     <span class="input-group-btn">
                         <button class="btn btn-default btn-sm" type="submit">
@@ -56,9 +56,6 @@
                 <li id="nav-index">
                     <a href="{{ url_for('site.index') }}">首页</a>
                 </li>
-                {#                <li id="nav-square">#}
-                {#                    <a href="{{ url_for('topic.square') }}">话题广场</a>#}
-                {#                </li>#}
             </ul>
 
             <a href="{{ url_for('question.add') }}"

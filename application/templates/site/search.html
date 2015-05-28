@@ -4,16 +4,34 @@
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
     <div class="container">
-        <h1>搜索：{{ q }}</h1>
+        <ul class="nav nav-tabs">
+            <li {% if _type == 'question' %}class="active"{% endif %}>
+                <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
+            </li>
+            <li {% if _type == 'answer' %}class="active"{% endif %}>
+                <a href="{{ url_for('site.search', type="answer", q=q) }}">回答</a>
+            </li>
+            <li {% if _type == 'topic' %}class="active"{% endif %}>
+                <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
+            </li>
+            <li {% if _type == 'people' %}class="active"{% endif %}>
+                <a href="{{ url_for('site.search', type="people", q=q) }}">人</a>
+            </li>
+        </ul>
 
-        {% for question in questions %}
-            <div class="title">{{ question.title|safe }}</div>
-            <div class="desc">{{ question.desc|safe }}</div>
-            <div class="meta">
-                <span>{{ question.answers.count() }} 回答</span>
-                {{ follow_question(question) }}
-                <span>提问于 {{ question.created_at|timesince }}</span>
-            </div>
-        {% endfor %}
+        {% if _type == "question" %}
+            {% for question in results %}
+                <div class="search-result question">
+                    <div class="title">{{ question.title|safe }}</div>
+                    <div class="desc">{{ question.desc|safe }}</div>
+                    <div class="meta">
+                        <span>{{ question.answers.count() }} 回答</span>
+                        {{ follow_question(question) }}
+                        <span>提问于 {{ question.created_at|timesince }}</span>
+                    </div>
+                </div>
+                <hr/>
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}

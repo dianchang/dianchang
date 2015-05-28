@@ -42,20 +42,24 @@ class Question(db.Model):
             },
             "highlight": {
                 "fields": {
-                    "title": {}
+                    "title": {},
+                    "desc": {}
                 }
             }
         })
+
+        print(results)
 
         result_questions = []
 
         for result in results["hits"]["hits"]:
             id = result["_id"]
             question = Question.query.get(id)
-            if "title" in result["highlight"]:
-                question.title = result["highlight"]["title"][0]
-            if "desc" in result["highlight"]:
-                question.desc = result["highlight"]["desc"][0]
+            if "highlight" in result:
+                if "title" in result["highlight"]:
+                    question.title = result["highlight"]["title"][0]
+                if "desc" in result["highlight"]:
+                    question.desc = result["highlight"]["desc"][0]
             result_questions.append(question)
 
         return result_questions

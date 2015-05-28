@@ -23,5 +23,5 @@ def search():
     q = request.args.get('q')
     _type = request.form.get('type', 'question')
     if _type == 'question' and q:
-        questions = Question.query_from_es(q)
-    return render_template('site/search.html', q=q, questions=questions)
+        results = Question.query_from_es(q)
+    return render_template('site/search.html', q=q, results=results, _type=_type)
