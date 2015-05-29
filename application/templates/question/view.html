@@ -18,7 +18,6 @@
             <div class="title-wap">
                 <span class="title-inner-wap">
                     <span class="title">{{ question.title }}</span>
-
                     <a href="javascript: void(0)" class="btn-edit-title">编辑</a>
                 </span>
                 <input type="text" name="title"/>
@@ -26,7 +25,15 @@
             </div>
         </h1>
 
-        <div>{{ question.desc|safe }}</div>
+        <div class="desc-wap {% if not question.desc %}empty{% endif %}">
+            <span class="desc-inner-wap">
+                <span class="desc">{{ (question.desc or "")|safe }}</span>
+                <a href="javascript: void(0)" class="btn-edit-desc">编辑</a>
+            </span>
+            <textarea class="form-control" type="text" rows="3" name="desc"></textarea>
+            <a href="javascript: void(0)" class="btn-save-desc">保存</a>
+            <a href="javascript: void(0)" class="btn-add-desc">添加问题描述</a>
+        </div>
 
         <div class="topics-wap {% if not question.topics.count() %}empty{% endif %}">
             <div class="topics">

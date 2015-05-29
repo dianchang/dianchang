@@ -150,9 +150,7 @@ class QUESTION_EDIT_KIND(object):
     UPDATE_TITLE = "PaNulbw"
 
     # desc
-    ADD_DESC = "V4bBXzw"
     UPDATE_DESC = "RcTRjzz"
-    DELETE_DESC = "LGs1GxX"
 
 
 class QuestionEditLog(db.Model):

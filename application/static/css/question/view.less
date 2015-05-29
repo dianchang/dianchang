@@ -27,6 +27,42 @@
   }
 }
 
+.desc-wap {
+  .desc-inner-wap {
+    display: block;
+
+    &:hover {
+      .btn-edit-desc {
+        display: inline-block;
+      }
+    }
+  }
+
+  textarea,
+  .btn-add-desc,
+  .btn-edit-desc,
+  .btn-save-desc {
+    display: none;
+  }
+
+  &.edit {
+    .desc-inner-wap {
+      display: none;
+    }
+
+    textarea,
+    .btn-save-desc {
+      display: inline-block;
+    }
+  }
+
+  &.empty {
+    .btn-add-desc {
+      display: inline-block;
+    }
+  }
+}
+
 .topics-wap {
   .btn-add-topic,
   .btn-edit-topic,

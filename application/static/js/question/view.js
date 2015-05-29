@@ -29,6 +29,43 @@ $('.btn-save-title').click(function () {
     });
 });
 
+var $descWap = $('.desc-wap');
+var $descTextarea = $('.desc-wap textarea');
+var $desc = $('.desc-wap .desc');
+
+// 添加问题描述
+$('.btn-add-desc').click(function () {
+    $descWap.addClass('edit');
+});
+
+// 编辑问题描述
+$('.btn-edit-desc').click(function () {
+    $descWap.addClass('edit');
+    $descTextarea.val($.trim($desc.text()));
+});
+
+// 保存问题描述
+$('.btn-save-desc').click(function () {
+    var desc = $.trim($descTextarea.val());
+
+    $.ajax({
+        url: urlFor('question.update', {uid: g.questionId}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            desc: desc
+        }
+    }).done(function () {
+        $descWap.removeClass('edit');
+        $desc.text(desc);
+
+        if (desc === "") {
+            $descWap.addClass('empty');
+        } else {
+            $descWap.removeClass('empty');
+        }
+    });
+});
 
 var timerForTypeahead = null;
 var $topicInput = $("input[name='topic']");

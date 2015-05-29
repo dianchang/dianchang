@@ -134,15 +134,19 @@ def log(uid):
 def update(uid):
     """通过Ajax更新问题的title和desc"""
     question = Question.query.get_or_404(uid)
-    title = request.form.get('title')
-    desc = request.form.get('desc')
+    title = request.form.get('title', "")
+    desc = request.form.get('desc', "")
     if title and title != question.title:
         # Update title log
-        log = QuestionEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
-                              user_id=g.user.id, compare=generate_lcs_html(question.title, title))
-        question.logs.append(log)
+        title_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
+                                    user_id=g.user.id, compare=generate_lcs_html(question.title, title))
+        question.logs.append(title_log)
         question.title = title
-    if desc:
+    if desc != (question.desc or ""):
+        # Desc log
+        desc_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
+                                   user_id=g.user.id, compare=generate_lcs_html(question.desc, desc))
+        question.logs.append(desc_log)
         question.desc = desc
     db.session.add(question)
     db.session.commit()
