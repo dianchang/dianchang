@@ -64,6 +64,27 @@ class Question(db.Model):
 
         return result_questions, results["hits"]["total"], results['took']
 
+    @property
+    def relevant_questions(self):
+        """在elasticsearch中查询相关话题"""
+        results = search_objects_from_es(doc_type='question', body={
+            "query": {
+                "match": {
+                    "title": self.title
+                }
+            },
+            "min_score": 0.1
+        })
+
+        result_questions = []
+
+        for result in results["hits"]["hits"]:
+            id = result["_id"]
+            question = Question.query.get(id)
+            result_questions.append(question)
+
+        return result_questions
+
     def followed_by_user(self):
         """该问题是否被用户关注"""
         return g.user and g.user.followed_questions.filter(FollowQuestion.question_id == self.id).count() > 0

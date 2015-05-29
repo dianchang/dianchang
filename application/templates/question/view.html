@@ -81,6 +81,14 @@
                 <a href="{{ url_for('question.log', uid=question.id) }}">问题日志</a>
 
                 <h3>相关问题</h3>
+
+                {% for relevant_question in question.relevant_questions %}
+                    <div class="relevant-question">
+                        <a href="{{ url_for('question.view', uid=question.id) }}">
+                            {{ relevant_question.title }}</a>
+                        <small>{{ relevant_question.answers.count() }} 回答</small>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
