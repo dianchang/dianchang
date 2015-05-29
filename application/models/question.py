@@ -73,7 +73,14 @@ class Question(db.Model):
                     "title": self.title
                 }
             },
-            "min_score": 0.1
+            "filter": {
+                "not": {
+                    "term": {
+                        "_id": self.id
+                    }
+                }
+            },
+            "min_score": 0.05
         })
 
         result_questions = []

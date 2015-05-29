@@ -84,7 +84,7 @@
 
                 {% for relevant_question in question.relevant_questions %}
                     <div class="relevant-question">
-                        <a href="{{ url_for('question.view', uid=question.id) }}">
+                        <a href="{{ url_for('question.view', uid=relevant_question.id) }}">
                             {{ relevant_question.title }}</a>
                         <small>{{ relevant_question.answers.count() }} 回答</small>
                     </div>
