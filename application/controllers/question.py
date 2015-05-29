@@ -1,7 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
-from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, QuestionEditLog
+from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -16,7 +16,7 @@ def add():
     if form.validate_on_submit():
         question = Question(title=form.title.data, desc=form.desc.data, user_id=g.user.id)
         # Create question log
-        create_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
+        create_log = PublicEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
                                      original_title=question.title, original_desc=question.desc)
         question.logs.append(create_log)
 
@@ -28,7 +28,7 @@ def add():
                 question_topic = QuestionTopic(topic_id=topic_id)
                 question.topics.append(question_topic)
                 # Add topic log
-                add_topic_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.ADD_TOPIC, after=topic.name,
+                add_topic_log = PublicEditLog(kind=QUESTION_EDIT_KIND.ADD_TOPIC, after=topic.name,
                                                 after_id=topic_id, user_id=g.user.id)
                 question.logs.append(add_topic_log)
 
@@ -73,7 +73,7 @@ def add_topic(uid):
     if not question_topic:
         question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
         # Add toic log
-        log = QuestionEditLog(question_id=uid, user_id=g.user.id,
+        log = PublicEditLog(question_id=uid, user_id=g.user.id,
                               after=topic.name, after_id=topic.id,
                               kind=QUESTION_EDIT_KIND.ADD_TOPIC)
         db.session.add(log)
@@ -97,7 +97,7 @@ def remove_topic(uid, topic_id):
     for topic_question in topic_questions:
         db.session.delete(topic_question)
     # Remove topic log
-    log = QuestionEditLog(question_id=uid, user_id=g.user.id,
+    log = PublicEditLog(question_id=uid, user_id=g.user.id,
                           before=topic.name, before_id=topic_id,
                           kind=QUESTION_EDIT_KIND.REMOVE_TOPIC)
     db.session.add(log)
@@ -138,7 +138,7 @@ def update(uid):
     desc = request.form.get('desc', "")
     if title and title != question.title:
         # Update title log
-        title_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
+        title_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
                                     user_id=g.user.id, compare=generate_lcs_html(question.title, title))
         question.logs.append(title_log)
         question.title = title
@@ -147,7 +147,7 @@ def update(uid):
             answer.save_to_es()
     if desc != (question.desc or ""):
         # Desc log
-        desc_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
+        desc_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
                                    user_id=g.user.id, compare=generate_lcs_html(question.desc, desc))
         question.logs.append(desc_log)
         question.desc = desc
