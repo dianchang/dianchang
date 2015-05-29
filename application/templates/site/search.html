@@ -89,6 +89,23 @@
                         </div>
                     {% endfor %}
                 {% endif %}
+
+                <div class="info">
+                    共 {{ total }} 条结果，耗时 {{ took }} ms
+                </div>
+
+                <div class="pager btn-group">
+                    {% if pre_page %}
+                        <a href="{{ url_for_other_page(pre_page) }}" class="btn btn-default">
+                            <span class="fa fa-angle-left"></span>
+                        </a>
+                    {% endif %}
+                    {% if next_page %}
+                        <a href="{{ url_for_other_page(next_page) }}" class="btn btn-default">
+                            <span class="fa fa-angle-right"></span>
+                        </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

@@ -38,7 +38,7 @@ class Topic(db.Model):
         return delete_object_from_es('topic', self.id)
 
     @staticmethod
-    def query_from_es(q):
+    def query_from_es(q, page=1, per_page=10):
         """在elasticsearch中查询话题"""
         results = search_objects_from_es(doc_type='topic', body={
             "query": {
@@ -50,7 +50,9 @@ class Topic(db.Model):
                 "fields": {
                     "name": {}
                 }
-            }
+            },
+            "from": per_page * (page - 1),
+            "size": per_page
         })
 
         result_topics = []
@@ -63,7 +65,7 @@ class Topic(db.Model):
                     topic.highlight_name = result["highlight"]["name"][0]
             result_topics.append(topic)
 
-        return result_topics
+        return result_topics, results["hits"]["total"], results['took']
 
     @staticmethod
     def get_by_name(name, create_if_not_exist=False):

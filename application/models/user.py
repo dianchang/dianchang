@@ -57,7 +57,7 @@ class User(db.Model):
         return delete_object_from_es('user', self.id)
 
     @staticmethod
-    def query_from_es(q):
+    def query_from_es(q, page=1, per_page=10):
         """在elasticsearch中查询用户"""
         results = search_objects_from_es(doc_type='user', body={
             "query": {
@@ -71,7 +71,9 @@ class User(db.Model):
                     "name": {},
                     "desc": {}
                 }
-            }
+            },
+            "from": per_page * (page - 1),
+            "size": per_page
         })
 
         result_users = []
@@ -86,7 +88,7 @@ class User(db.Model):
                     user.highlight_desc = result["highlight"]["desc"][0]
             result_users.append(user)
 
-        return result_users
+        return result_users, results["hits"]["total"], results['took']
 
     def __repr__(self):
         return '<User %s>' % self.name

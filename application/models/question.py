@@ -31,7 +31,7 @@ class Question(db.Model):
         return delete_object_from_es('question', self.id)
 
     @staticmethod
-    def query_from_es(q):
+    def query_from_es(q, page=1, per_page=10):
         """在elasticsearch中查询话题"""
         results = search_objects_from_es(doc_type='question', body={
             "query": {
@@ -45,7 +45,9 @@ class Question(db.Model):
                     "title": {},
                     "desc": {}
                 }
-            }
+            },
+            "from": per_page * (page - 1),
+            "size": per_page
         })
 
         result_questions = []
@@ -60,7 +62,7 @@ class Question(db.Model):
                     question.highlight_desc = result["highlight"]["desc"][0]
             result_questions.append(question)
 
-        return result_questions
+        return result_questions, results["hits"]["total"], results['took']
 
     def followed_by_user(self):
         """该问题是否被用户关注"""

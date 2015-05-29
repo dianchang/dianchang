@@ -33,7 +33,7 @@ class Answer(db.Model):
         return delete_object_from_es('answer', self.id)
 
     @staticmethod
-    def query_from_es(q):
+    def query_from_es(q, page=1, per_page=10):
         """在elasticsearch中查询回答"""
         results = search_objects_from_es(doc_type='answer', body={
             "query": {
@@ -47,7 +47,9 @@ class Answer(db.Model):
                     "content": {},
                     "question_title": {}
                 }
-            }
+            },
+            "from": per_page * (page - 1),
+            "size": per_page
         })
 
         result_answers = []
@@ -61,7 +63,8 @@ class Answer(db.Model):
                 if "question_title" in result["highlight"]:
                     answer.highlight_question_title = result["highlight"]["question_title"][0]
             result_answers.append(answer)
-        return result_answers
+
+        return result_answers, results["hits"]["total"], results['took']
 
     def __repr__(self):
         return '<Answer %s>' % self.name
