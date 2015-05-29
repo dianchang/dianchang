@@ -1,7 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
-from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion
+from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, QuestionEditLog
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('question', __name__)
@@ -14,6 +14,11 @@ def add():
     form = AddQuestionForm()
     if form.validate_on_submit():
         question = Question(title=form.title.data, desc=form.desc.data, user_id=g.user.id)
+        # Create question log
+        create_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
+                                     original_title=question.title, original_desc=question.desc)
+        question.logs.append(create_log)
+
         # 添加话题
         topics_id_list = request.form.getlist('topic')
         for topic_id in topics_id_list:
@@ -21,6 +26,11 @@ def add():
             if topic:
                 question_topic = QuestionTopic(topic_id=topic_id)
                 question.topics.append(question_topic)
+                # Add topic log
+                add_topic_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.ADD_TOPIC, after=topic.name,
+                                                after_id=topic_id, user_id=g.user.id)
+                question.logs.append(add_topic_log)
+
         db.session.add(question)
         db.session.commit()
         question.save_to_es()
@@ -39,9 +49,9 @@ def view(uid):
     return render_template('question/view.html', question=question)
 
 
-@bp.route('/question/<int:uid>/add_to_topic', methods=['POST'])
+@bp.route('/question/<int:uid>/add_topic', methods=['POST'])
 @UserPermission()
-def add_to_topic(uid):
+def add_topic(uid):
     question = Question.query.get_or_404(uid)
     name = request.form.get('name')
     topic_id = request.form.get('topic_id')
@@ -74,9 +84,9 @@ def add_to_topic(uid):
                        'html': macro(topic)})
 
 
-@bp.route('/question/<int:uid>/remove_from_topic/<int:topic_id>', methods=['POST'])
+@bp.route('/question/<int:uid>/remove_topic/<int:topic_id>', methods=['POST'])
 @UserPermission()
-def remove_from_topic(uid, topic_id):
+def remove_topic(uid, topic_id):
     """将问题从话题中移除"""
     question = Question.query.get_or_404(uid)
     topic = Topic.query.get_or_404(topic_id)
@@ -85,11 +95,11 @@ def remove_from_topic(uid, topic_id):
         QuestionTopic.question_id == uid)
     for topic_question in topic_questions:
         db.session.delete(topic_question)
-        # log
-        # log = PieceEditLog(piece_id=uid, user_id=g.user.id,
-        #                    before=collection.title, before_id=collection_id,
-        #                    kind=PIECE_EDIT_KIND.REMOVE_FROM_COLLECTION)
-        # db.session.add(log)
+    # Remove topic log
+    log = QuestionEditLog(question_id=uid, user_id=g.user.id,
+                          before=topic.name, before_id=topic_id,
+                          kind=QUESTION_EDIT_KIND.REMOVE_TOPIC)
+    db.session.add(log)
     db.session.commit()
     return json.dumps({'result': True})
 
@@ -110,3 +120,9 @@ def follow(uid):
         db.session.add(follow_question)
         db.session.commit()
         return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers.count()})
+
+
+@bp.route('/question/<int:uid>/log')
+def log(uid):
+    question = Question.query.get_or_404(uid)
+    return render_template('question/log.html', question=question)

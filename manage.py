@@ -77,5 +77,12 @@ def save_to_es():
             user.save_to_es()
 
 
+@manager.command
+def salt():
+    from werkzeug.security import gen_salt
+
+    print(gen_salt(7))
+
+
 if __name__ == "__main__":
     manager.run()

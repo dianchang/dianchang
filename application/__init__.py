@@ -74,6 +74,7 @@ def create_app():
 def register_jinja(app):
     """Register jinja filters, vars, functions."""
     from .utils import filters, permissions, helpers, assets
+    from .models import QUESTION_EDIT_KIND
 
     app.jinja_env.filters.update({
         'timesince': filters.timesince
@@ -97,7 +98,8 @@ def register_jinja(app):
         'absolute_url_for': helpers.absolute_url_for,
         'url_for_other_page': url_for_other_page,
         'rules': rules,
-        'permissions': permissions
+        'permissions': permissions,
+        'QUESTION_EDIT_KIND': QUESTION_EDIT_KIND
     })
 
 

@@ -54,3 +54,15 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+ins {
+  text-decoration: none;
+  padding: 3px 0;
+  background: #EAF0DD;
+  color: #5B7918;
+}
+del {
+  text-decoration: line-through;
+  padding: 3px 0;
+  background: #f5dfdf;
+  color: #ac1414;
+}

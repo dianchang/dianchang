@@ -22,7 +22,7 @@ $('.btn-delete-topic').click(function () {
     var _this = $(this);
 
     $.ajax({
-        url: urlFor('question.remove_from_topic', {uid: g.questionId, topic_id: topicId}),
+        url: urlFor('question.remove_topic', {uid: g.questionId, topic_id: topicId}),
         method: 'post',
         dataType: 'json'
     }).done(function (response) {
@@ -86,7 +86,7 @@ $topicInput.on('keypress', function (e) {
  */
 function addToTopic(questionId, data) {
     $.ajax({
-        url: urlFor('question.add_to_topic', {uid: questionId}),
+        url: urlFor('question.add', {uid: questionId}),
         method: 'post',
         dataType: 'json',
         data: data

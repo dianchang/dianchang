@@ -37,7 +37,6 @@ def search():
         results, total, took = Question.query_from_es(q, page, per_page)
     pages = int(math.ceil(float(total) / per_page))
     pre_page = None if page <= 1 else page - 1
-    print(pre_page)
     next_page = None if page >= pages else page + 1
     return render_template('site/search.html', q=q, results=results, _type=_type,
                            page=page, pre_page=pre_page, next_page=next_page,

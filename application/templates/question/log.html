@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block page_title %}问题日志 - {{ question.title }}{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <h1>
+            <a href="{{ url_for('question.view', uid=question.id) }}" target="_blank">
+                {{ question.title }}
+            </a>
+        </h1>
+
+        <div>问题编辑日志：</div>
+
+        {% for log in question.logs %}
+            <div class="piece-log media">
+                <div class="media-left">
+                    <img src="{{ log.user.avatar_url }}" alt=""/>
+                </div>
+                <div class="media-body">
+                    <div class="title">
+                        <a href="{{ url_for('people.profile', uid=log.user_id) }}">
+                            {{ log.user.name }}
+                        </a>
+
+                        {% if log.kind == QUESTION_EDIT_KIND.CREATE %}
+                            添加了问题
+                        {% elif log.kind == QUESTION_EDIT_KIND.ADD_TOPIC %}
+                            添加了话题
+                        {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
+                            移除了话题
+                        {% elif log.kind == QUESTION_EDIT_KIND.ADD_DESC %}
+                            添加了问题描述
+                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TOPIC %}
+                            更新了问题描述
+                        {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_DESC %}
+                            移除了问题描述
+                        {% endif %}
+
+                        <span class="time">{{ log.created_at|timesince }}</span>
+                    </div>
+
+                    <div class="content">
+                        {% if log.kind == QUESTION_EDIT_KIND.CREATE %}
+                            <ins>{{ log.original_title }}</ins>
+
+                            {% if log.original_desc %}
+                                <br/><br/>
+                                问题描述：
+                                <ins>{{ log.original_desc }}</ins>
+                            {% endif %}
+                        {% elif log.kind == QUESTION_EDIT_KIND.ADD_TOPIC %}
+                            <ins>
+                                <a href="{{ url_for('topic.view', uid=log.after_id) }}">
+                                    {{ log.after }}
+                                </a>
+                            </ins>
+                        {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
+                            <del>
+                                <a href="{{ url_for('topic.view', uid=log.before_id) }}">
+                                    {{ log.before }}
+                                </a>
+                            </del>
+                        {% elif log.kind == QUESTION_EDIT_KIND.ADD_DESC %}
+                            添加了问题描述
+                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TOPIC %}
+                            更新了问题描述
+                        {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_DESC %}
+                            移除了问题描述
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
