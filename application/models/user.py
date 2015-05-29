@@ -138,3 +138,39 @@ class InvitationCode(db.Model):
                                                 cascade="all, delete, delete-orphan",
                                                 uselist=False),
                              foreign_keys=[sender_id])
+
+
+class USER_FEED_KIND(object):
+    """用户动态类型"""
+    ASK_QUESTION = "gN02m2F"
+    ANSWER_QUESTION = "J8AbTDT"
+    FOLLOW_QUESTION = "4MYN2Ui"
+    UPVOTE_ANSWER = "F9FqDKa"
+    FOLLOW_TOPIC = "wa3PMng"
+    FOLLOW_USER = "rDtV02F"
+
+
+class UserFeed(db.Model):
+    """用户动态"""
+    id = db.Column(db.Integer, primary_key=True)
+    kind = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), default=None)
+    user = db.relationship('User',
+                           backref=db.backref('feed',
+                                              lazy='dynamic',
+                                              order_by='desc(UserFeed.created_at)'),
+                           foreign_keys=[user_id])
+
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+    topic = db.relationship('Topic')
+
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question')
+
+    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
+    answer = db.relationship('Answer')
+
+    following_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    following = db.relationship('User', foreign_keys=[following_id])
