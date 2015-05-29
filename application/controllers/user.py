@@ -3,13 +3,13 @@ from flask import Blueprint, render_template, url_for, json, g
 from ..models import db, User, FollowUser
 from ..utils.permissions import UserPermission
 
-bp = Blueprint('people', __name__)
+bp = Blueprint('user', __name__)
 
 
 @bp.route('/people/<int:uid>')
 def profile(uid):
     user = User.query.get_or_404(uid)
-    return render_template('people/profile.html', user=user)
+    return render_template('user/profile.html', user=user)
 
 
 @bp.route('/people/<int:uid>/follow', methods=['POST'])

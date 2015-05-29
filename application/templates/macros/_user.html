@@ -1,0 +1,38 @@
+{% macro follow_user(user) %}
+    <div class="dc-user-follow-wap btn-group {% if user.followed_by_user() %}followed{% endif %}">
+        <a href="javascript: void(0)"
+           class="btn btn-default btn-follow-user"
+           data-id="{{ user.id }}">
+            <span class="for-follow">关注</span><span class="for-unfollow">已关注</span>
+        </a>
+        <span class="followers-count btn btn-default">{{ user.followers.count() }}</span>
+    </div>
+
+    <script>
+        $('.btn-follow-user').onOnce('click', function () {
+            var userId = $(this).data('id');
+            var followed = $(this).parent().hasClass('followed');
+            var $wap = $(this).parent();
+            var $count = $(this).next();
+            var url = urlFor('user.follow', {uid: userId});
+
+            $.ajax({
+                url: url,
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.followed) {
+                        if (!$wap.hasClass('followed')) {
+                            $wap.addClass('followed');
+                        }
+                    } else {
+                        $wap.removeClass('followed');
+                    }
+
+                    $count.text(response.followers_count);
+                }
+            });
+        });
+    </script>
+{% endmacro %}

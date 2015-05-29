@@ -2,7 +2,7 @@
 {% from "macros/_question.html" import follow_question %}
 {% from "macros/_topic.html" import follow_topic %}
 {% from "macros/_answer.html" import render_answer %}
-{% from "macros/_people.html" import follow_user %}
+{% from "macros/_user.html" import follow_user %}
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
@@ -19,8 +19,8 @@
                     <li {% if _type == 'topic' %}class="active"{% endif %}>
                         <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
                     </li>
-                    <li {% if _type == 'people' %}class="active"{% endif %}>
-                        <a href="{{ url_for('site.search', type="people", q=q) }}">人</a>
+                    <li {% if _type == 'user' %}class="active"{% endif %}>
+                        <a href="{{ url_for('site.search', type="user", q=q) }}">人</a>
                     </li>
                 </ul>
 
@@ -67,7 +67,7 @@
                             </div>
                         </div>
                     {% endfor %}
-                {% elif _type == "people" %}
+                {% elif _type == "user" %}
                     {% for user in results %}
                         <div class="search-result user">
                             <div class="media">
@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="media-body">
                                     <div class="meta">
-                                        <a href="{{ url_for('people.profile', uid=user.id) }}">
+                                        <a href="{{ url_for('user.profile', uid=user.id) }}">
                                             {{ (user.highlight_name or user.name)|safe }}</a>
                                         <span>{{ user.answers.count() }} 个回答</span>
                                     </div>

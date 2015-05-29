@@ -1,5 +1,5 @@
 from .account import *
-from .people import *
+from .user import *
 from .topic import *
 
 from .question import *

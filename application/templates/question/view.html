@@ -69,7 +69,7 @@
 
                                 <div class="media-body">
                                     <div>
-                                        <a href="{{ url_for('people.profile', uid=answer.user.id) }}">
+                                        <a href="{{ url_for('user.profile', uid=answer.user.id) }}">
                                             {{ answer.user.name }}
                                         </a>{% if answer.user.desc %}，{{ answer.content }}{% endif %}
                                     </div>

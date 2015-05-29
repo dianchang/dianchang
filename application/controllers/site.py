@@ -31,7 +31,7 @@ def search():
         results, total, took = Topic.query_from_es(q, page, per_page)
     elif _type == 'answer':
         results, total, took = Answer.query_from_es(q, page, per_page)
-    elif _type == 'people':
+    elif _type == 'user':
         results, total, took = User.query_from_es(q, page, per_page)
     else:
         results, total, took = Question.query_from_es(q, page, per_page)

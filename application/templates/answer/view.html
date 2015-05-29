@@ -28,7 +28,7 @@
                 <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
             </div>
             <div class="media-body">
-                <a href="{{ url_for('people.profile', uid=answer.user.id) }}">
+                <a href="{{ url_for('user.profile', uid=answer.user.id) }}">
                     {{ answer.user.name }}
                 </a>
             </div>
