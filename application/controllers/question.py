@@ -142,6 +142,9 @@ def update(uid):
                                     user_id=g.user.id, compare=generate_lcs_html(question.title, title))
         question.logs.append(title_log)
         question.title = title
+        # 更新es中的answer
+        for answer in question.answers:
+            answer.save_to_es()
     if desc != (question.desc or ""):
         # Desc log
         desc_log = QuestionEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
@@ -150,4 +153,6 @@ def update(uid):
         question.desc = desc
     db.session.add(question)
     db.session.commit()
+    # 更新es中的question
+    question.save_to_es()
     return json.dumps({'result': True})
