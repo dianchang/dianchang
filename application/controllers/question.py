@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, g, abo
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, QuestionEditLog
 from ..utils.permissions import UserPermission
+from ..utils.helpers import generate_lcs_html
 
 bp = Blueprint('question', __name__)
 
@@ -71,11 +72,11 @@ def add_topic(uid):
         QuestionTopic.question_id == uid).first()
     if not question_topic:
         question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
-        # log
-        # log = PieceEditLog(piece_id=uid, user_id=g.user.id,
-        #                    after=topic.title, after_id=topic.id,
-        #                    kind=PIECE_EDIT_KIND.ADD_TO_COLLECTION)
-        # db.session.add(log)
+        # Add toic log
+        log = QuestionEditLog(question_id=uid, user_id=g.user.id,
+                              after=topic.name, after_id=topic.id,
+                              kind=QUESTION_EDIT_KIND.ADD_TOPIC)
+        db.session.add(log)
         db.session.add(question_topic)
         db.session.commit()
     macro = get_template_attribute('macros/_topic.html', 'render_topic_wap')
@@ -126,3 +127,23 @@ def follow(uid):
 def log(uid):
     question = Question.query.get_or_404(uid)
     return render_template('question/log.html', question=question)
+
+
+@bp.route('/question/<int:uid>/update', methods=['POST'])
+@UserPermission()
+def update(uid):
+    """通过Ajax更新问题的title和desc"""
+    question = Question.query.get_or_404(uid)
+    title = request.form.get('title')
+    desc = request.form.get('desc')
+    if title and title != question.title:
+        # Update title log
+        log = QuestionEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
+                              user_id=g.user.id, compare=generate_lcs_html(question.title, title))
+        question.logs.append(log)
+        question.title = title
+    if desc:
+        question.desc = desc
+    db.session.add(question)
+    db.session.commit()
+    return json.dumps({'result': True})

@@ -28,6 +28,8 @@
                             添加了话题
                         {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
                             移除了话题
+                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TITLE %}
+                            更新了问题
                         {% elif log.kind == QUESTION_EDIT_KIND.ADD_DESC %}
                             添加了问题描述
                         {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TOPIC %}
@@ -60,6 +62,8 @@
                                     {{ log.before }}
                                 </a>
                             </del>
+                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TITLE %}
+                            {{ log.compare|safe }}
                         {% elif log.kind == QUESTION_EDIT_KIND.ADD_DESC %}
                             添加了问题描述
                         {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TOPIC %}

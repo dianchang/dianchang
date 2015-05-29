@@ -14,7 +14,17 @@
     <div class="container">
         {{ follow_question(question) }}
 
-        <h1>{{ question.title }}</h1>
+        <h1>
+            <div class="title-wap">
+                <span class="title-inner-wap">
+                    <span class="title">{{ question.title }}</span>
+
+                    <a href="javascript: void(0)" class="btn-edit-title">编辑</a>
+                </span>
+                <input type="text" name="title"/>
+                <a href="javascript: void(0)" class="btn-save-title">保存</a>
+            </div>
+        </h1>
 
         <div>{{ question.desc|safe }}</div>
 

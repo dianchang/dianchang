@@ -1,3 +1,32 @@
+.title-wap {
+  .title-inner-wap {
+    display: block;
+
+    &:hover {
+      .btn-edit-title {
+        display: inline-block;
+      }
+    }
+  }
+
+  input,
+  .btn-edit-title,
+  .btn-save-title {
+    display: none;
+  }
+
+  &.edit {
+    .title-inner-wap {
+      display: none;
+    }
+
+    input,
+    .btn-save-title {
+      display: inline-block;
+    }
+  }
+}
+
 .topics-wap {
   .btn-add-topic,
   .btn-edit-topic,

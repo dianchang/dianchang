@@ -1,3 +1,35 @@
+var $titleWap = $('.title-wap');
+var $titleInput = $('.title-wap input');
+var $title = $('.title-wap .title');
+
+// 编辑标题
+$('.btn-edit-title').click(function () {
+    $titleWap.addClass('edit');
+    $titleInput.val($.trim($title.text()));
+});
+
+// 保存标题
+$('.btn-save-title').click(function () {
+    var title = $.trim($titleInput.val());
+
+    if (title === "") {
+        return;
+    }
+
+    $.ajax({
+        url: urlFor('question.update', {uid: g.questionId}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            title: title
+        }
+    }).done(function () {
+        $titleWap.removeClass('edit');
+        $title.text(title);
+    });
+});
+
+
 var timerForTypeahead = null;
 var $topicInput = $("input[name='topic']");
 
@@ -80,13 +112,13 @@ $topicInput.on('keypress', function (e) {
 });
 
 /**
- * 将句子添加到句集
+ * 为问题添加话题
  * @param {int|string} questionId - 问题id
  * @param {Object} data - Ajax请求的data部分，key为title或collection_id
  */
 function addToTopic(questionId, data) {
     $.ajax({
-        url: urlFor('question.add', {uid: questionId}),
+        url: urlFor('question.add_topic', {uid: questionId}),
         method: 'post',
         dataType: 'json',
         data: data

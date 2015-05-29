@@ -1,3 +1,21 @@
+.title-wap .title-inner-wap {
+  display: block;
+}
+.title-wap .title-inner-wap:hover .btn-edit-title {
+  display: inline-block;
+}
+.title-wap input,
+.title-wap .btn-edit-title,
+.title-wap .btn-save-title {
+  display: none;
+}
+.title-wap.edit .title-inner-wap {
+  display: none;
+}
+.title-wap.edit input,
+.title-wap.edit .btn-save-title {
+  display: inline-block;
+}
 .topics-wap .btn-add-topic,
 .topics-wap .btn-edit-topic,
 .topics-wap .btn-delete-topic,
