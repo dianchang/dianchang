@@ -167,7 +167,7 @@ class QuestionEditLog(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User',
-                           backref=db.backref('edited_questions',
+                           backref=db.backref('edits',
                                               lazy='dynamic',
                                               order_by='desc(QuestionEditLog.created_at), desc(QuestionEditLog.id)'))
 

@@ -36,3 +36,77 @@
         });
     </script>
 {% endmacro %}
+
+
+{% macro user_page_header(user, active='profile') %}
+    <img src="{{ user.avatar_url }}" alt=""/>
+
+    <h1>
+        {{ user.name }}
+    </h1>
+
+    <div class="desc">
+        {% if user.desc %}
+            {{ user.desc }}
+        {% endif %}
+    </div>
+
+    <div class="meta">
+        {% for attr in ['city', 'organization', 'position'] %}
+            {% if user[attr] %}
+                {{ user[attr] }}
+            {% endif %}
+            <span class="divider">•</span>
+        {% endfor %}
+    </div>
+
+    {{ user.upvoted_answers.count() }} 赞同 |
+    {{ user.thanked_answers.count() }} 感谢 |
+    10 分享
+
+    <div>
+        {{ follow_user(user) }}
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li {% if active == 'profile' %}class="active"{% endif %}>
+            <a href="{{ url_for('user.profile', uid=user.id) }}">主页</a>
+        </li>
+        <li {% if active == 'profile' %}class="answers"{% endif %}>
+            <a href="{{ url_for('user.answers', uid=user.id) }}">
+                {{ user.answers.count() }}
+                回答
+            </a>
+        </li>
+        <li {% if active == 'profile' %}class="questions"{% endif %}>
+            <a href="{{ url_for('user.questions', uid=user.id) }}">
+                {{ user.questions.count() }}
+                提问
+            </a>
+        </li>
+        <li {% if active == 'profile' %}class="collects"{% endif %}>
+            <a href="{{ url_for('user.collects', uid=user.id) }}">
+                11
+                收藏
+            </a>
+        </li>
+        <li {% if active == 'profile' %}class="edits"{% endif %}>
+            <a href="{{ url_for('user.edits', uid=user.id) }}">
+                {{ user.edits.count() }}
+                公共编辑
+            </a>
+        </li>
+        <li {% if active == 'followings' %}class="active"{% endif %}>
+            <a href="{{ url_for('user.followings', uid=user.id) }}">
+                {{ user.followings.count() }}
+                关注
+            </a>
+        </li>
+        <li {% if active == 'followers' %}class="active"{% endif %}>
+            <a href="{{ url_for('user.followers', uid=user.id) }}">
+                {{ user.followers.count() }}
+                关注者
+            </a>
+        </li>
+    </ul>
+{% endmacro %}

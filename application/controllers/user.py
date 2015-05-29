@@ -35,3 +35,40 @@ def follow(uid):
             'followed': True,
             'followers_count': user.followers.count()
         })
+
+
+@bp.route('/user/<int:uid>/answers')
+def answers(uid):
+    user = User.query.get_or_404(uid)
+    return render_template('user/answers.html', user=user)
+    pass
+
+
+@bp.route('/user/<int:uid>/questions')
+def questions(uid):
+    user = User.query.get_or_404(uid)
+    return render_template('user/questions.html', user=user)
+
+
+@bp.route('/user/<int:uid>/collects')
+def collects(uid):
+    user = User.query.get_or_404(uid)
+    return render_template('user/collects.html', user=user)
+
+
+@bp.route('/user/<int:uid>/edits')
+def edits(uid):
+    user = User.query.get_or_404(uid)
+    return render_template('user/edits.html', user=user)
+
+
+@bp.route('/user/<int:uid>/followings')
+def followings(uid):
+    user = User.query.get_or_404(uid)
+    return render_template('user/followings.html', user=user)
+
+
+@bp.route('/user/<int:uid>/followers')
+def followers(uid):
+    user = User.query.get_or_404(uid)
+    return render_template('user/followers.html', user=user)
