@@ -96,7 +96,7 @@ class UpvoteAnswer(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    answer = db.relationship('Answer', backref=db.backref('upvoter',
+    answer = db.relationship('Answer', backref=db.backref('upvoters',
                                                           lazy='dynamic',
                                                           order_by='desc(UpvoteAnswer.created_at)'))
 

@@ -228,3 +228,71 @@ class TopicWikiContributor(db.Model):
     user = db.relationship('User', backref=db.backref('contributed_topics',
                                                       lazy='dynamic',
                                                       order_by='desc(TopicWikiContributor.count)'))
+
+
+class TopicExpert(db.Model):
+    """话题统计：用于分析某用户对某话题的擅长程度"""
+    id = db.Column(db.Integer, primary_key=True)
+    upvotes_count = db.Column(db.Integer, default=0)
+    answers_count = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+    topic = db.relationship('Topic')
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User')
+
+    @staticmethod
+    def add_answer_in_topic(user_id, topic_id):
+        """在某话题下回答"""
+        topic_expert = TopicExpert.query.filter(TopicExpert.topic_id == topic_id,
+                                                TopicExpert.user_id == user_id).first()
+        if topic_expert:
+            topic_expert.answers_count += 1
+        else:
+            topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id, answers_count=1)
+        db.session.add(topic_expert)
+        db.session.commit()
+
+    @staticmethod
+    def remove_answer_from_topic(user_id, topic_id):
+        """从某话题中移除回答"""
+        topic_expert = TopicExpert.query.filter(TopicExpert.topic_id == topic_id,
+                                                TopicExpert.user_id == user_id).first()
+        if topic_expert:
+            if topic_expert.answers_count > 0:
+                topic_expert.answers_count -= 1
+            else:
+                topic_expert.answers_count = 0
+        else:
+            topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id)
+        db.session.add(topic_expert)
+        db.session.commit()
+
+    @staticmethod
+    def upvote_answer_in_topic(user_id, topic_id, count=1):
+        """感谢某话题下的回答"""
+        topic_expert = TopicExpert.query.filter(TopicExpert.topic_id == topic_id,
+                                                TopicExpert.user_id == user_id).first()
+        if topic_expert:
+            topic_expert.upvotes_count += count
+        else:
+            topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id, upvotes_count=count)
+        db.session.add(topic_expert)
+        db.session.commit()
+
+    @staticmethod
+    def cancel_upvote_answer_in_topic(user_id, topic_id, count=1):
+        """取消感谢某话题下的回答"""
+        topic_expert = TopicExpert.query.filter(TopicExpert.topic_id == topic_id,
+                                                TopicExpert.user_id == user_id).first()
+        if topic_expert:
+            if topic_expert.upvotes_count >= count:
+                topic_expert.upvotes_count -= count
+            else:
+                topic_expert.upvotes_count = 0
+        else:
+            topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id)
+        db.session.add(topic_expert)
+        db.session.commit()

@@ -1,7 +1,8 @@
 # coding: utf-8
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
-from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog
+from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
+    TopicExpert
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -17,7 +18,7 @@ def add():
         question = Question(title=form.title.data, desc=form.desc.data, user_id=g.user.id)
         # Create question log
         create_log = PublicEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
-                                     original_title=question.title, original_desc=question.desc)
+                                   original_title=question.title, original_desc=question.desc)
         question.logs.append(create_log)
 
         # 添加话题
@@ -29,7 +30,7 @@ def add():
                 question.topics.append(question_topic)
                 # Add topic log
                 add_topic_log = PublicEditLog(kind=QUESTION_EDIT_KIND.ADD_TOPIC, after=topic.name,
-                                                after_id=topic_id, user_id=g.user.id)
+                                              after_id=topic_id, user_id=g.user.id)
                 question.logs.append(add_topic_log)
 
         db.session.add(question)
@@ -43,7 +44,11 @@ def add():
 def view(uid):
     question = Question.query.get_or_404(uid)
     if request.method == 'POST' and request.form.get('answer'):
+        # 回答话题
         answer = Answer(question_id=uid, content=request.form.get('answer'), user_id=g.user.id)
+        # 更新话题专精
+        for topic in question.topics:
+            TopicExpert.add_answer_in_topic(g.user.id, topic.topic_id)
         db.session.add(answer)
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
@@ -66,7 +71,7 @@ def add_topic(uid):
     if not topic:
         abort(404)
 
-    # 若该句集尚未收录此句子，则收录
+    # 添加话题
     question_topic = QuestionTopic.query.filter(
         QuestionTopic.topic_id == topic.id,
         QuestionTopic.question_id == uid).first()
@@ -74,11 +79,20 @@ def add_topic(uid):
         question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
         # Add toic log
         log = PublicEditLog(question_id=uid, user_id=g.user.id,
-                              after=topic.name, after_id=topic.id,
-                              kind=QUESTION_EDIT_KIND.ADD_TOPIC)
+                            after=topic.name, after_id=topic.id,
+                            kind=QUESTION_EDIT_KIND.ADD_TOPIC)
         db.session.add(log)
         db.session.add(question_topic)
         db.session.commit()
+
+    # 更新话题专精
+    answer = question.answers.filter(Answer.user_id == g.user.id).first()
+    if answer:
+        TopicExpert.add_answer_in_topic(g.user.id, topic.id)
+    answer_thankers_count = answer.thankers.count()
+    if answer_thankers_count > 0:
+        TopicExpert.upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
+
     macro = get_template_attribute('macros/_topic.html', 'render_topic_wap')
     return json.dumps({'result': True,
                        'id': topic.id,
@@ -96,12 +110,21 @@ def remove_topic(uid, topic_id):
         QuestionTopic.question_id == uid)
     for topic_question in topic_questions:
         db.session.delete(topic_question)
+
     # Remove topic log
     log = PublicEditLog(question_id=uid, user_id=g.user.id,
-                          before=topic.name, before_id=topic_id,
-                          kind=QUESTION_EDIT_KIND.REMOVE_TOPIC)
+                        before=topic.name, before_id=topic_id,
+                        kind=QUESTION_EDIT_KIND.REMOVE_TOPIC)
     db.session.add(log)
     db.session.commit()
+
+    # 更新话题专精
+    answer = question.answers.filter(Answer.user_id == g.user.id).first()
+    if answer:
+        TopicExpert.remove_answer_from_topic(g.user.id, topic.id)
+    answer_thankers_count = answer.thankers.count()
+    if answer_thankers_count > 0:
+        TopicExpert.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
     return json.dumps({'result': True})
 
 
@@ -139,7 +162,7 @@ def update(uid):
     if title and title != question.title:
         # Update title log
         title_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
-                                    user_id=g.user.id, compare=generate_lcs_html(question.title, title))
+                                  user_id=g.user.id, compare=generate_lcs_html(question.title, title))
         question.logs.append(title_log)
         question.title = title
         # 更新es中的answer
@@ -148,7 +171,7 @@ def update(uid):
     if desc != (question.desc or ""):
         # Desc log
         desc_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
-                                   user_id=g.user.id, compare=generate_lcs_html(question.desc, desc))
+                                 user_id=g.user.id, compare=generate_lcs_html(question.desc, desc))
         question.logs.append(desc_log)
         question.desc = desc
     db.session.add(question)
