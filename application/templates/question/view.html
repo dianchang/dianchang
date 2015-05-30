@@ -35,31 +35,31 @@
             <a href="javascript: void(0)" class="btn-add-desc">添加问题描述</a>
         </div>
 
-        <div class="meta">
-            <span>
-                <span class="fa fa-comment-o"></span> 评论 {{ question.comments.count() }}
-            </span>
+        {#        <div class="meta">#}
+        {#            <span>#}
+        {#                <span class="fa fa-comment-o"></span> 评论 {{ question.comments.count() }}#}
+        {#            </span>#}
 
-            <div class="topics-wap {% if not question.topics.count() %}empty{% endif %}">
-                <div class="topics">
-                    <div class="topics-inner-wap">
-                        {% for topic in question.topics %}
-                            {{ topic_wap(topic, attr="topic") }}
-                        {% endfor %}
-                    </div>
-                    <a href="javascript: void(0)" class="btn-edit-topic">编辑</a>
+        <div class="topics-wap {% if not question.topics.count() %}empty{% endif %}">
+            <div class="topics">
+                <div class="topics-inner-wap">
+                    {% for topic in question.topics %}
+                        {{ topic_wap(topic, attr="topic") }}
+                    {% endfor %}
                 </div>
-
-                <div class="form-wap">
-                    <input type="text" name="topic" placeholder="按回车添加"/>
-                    <a href="#" class="btn-finish-add-topic">完成</a>
-                </div>
-
-                <button type="button" class="btn btn-default btn-add-topic">
-                    <span class="fa fa-plus"></span> 添加话题
-                </button>
+                <a href="javascript: void(0)" class="btn-edit-topic">编辑</a>
             </div>
+
+            <div class="form-wap">
+                <input type="text" name="topic" placeholder="按回车添加"/>
+                <a href="#" class="btn-finish-add-topic">完成</a>
+            </div>
+
+            <button type="button" class="btn btn-default btn-add-topic">
+                <span class="fa fa-plus"></span> 添加话题
+            </button>
         </div>
+        {#        </div>#}
 
         <div class="row">
             <div class="col-md-8">

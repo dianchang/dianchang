@@ -38,10 +38,6 @@
 .desc-wap.empty .btn-add-desc {
   display: inline-block;
 }
-.topics-wap {
-  display: inline-block;
-  margin-left: 10px;
-}
 .topics-wap .btn-add-topic,
 .topics-wap .btn-edit-topic,
 .topics-wap .btn-delete-topic,
