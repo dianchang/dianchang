@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{{ title }} - 提示 - 壹经典{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <h3>{{ title }}</h3>
+
+        <div>{{ message|safe }}</div>
+    </div>
+{% endblock %}

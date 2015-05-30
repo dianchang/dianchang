@@ -1,8 +1,9 @@
 # coding: utf-8
 from flask import render_template, Blueprint, redirect, request, url_for, flash, g
-from ..forms import SigninForm, SignupForm, SettingsForm
+from ..forms import SigninForm, SignupForm, SettingsForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
+from ..utils.helpers import get_domain_from_email
 from ..models import db, User
 
 bp = Blueprint('account', __name__)
@@ -56,3 +57,25 @@ def settings():
         flash('设置已更新')
         return redirect(url_for('.settings'))
     return render_template('account/settings.html', form=form)
+
+
+@bp.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    """忘记密码"""
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():
+        user = User.query.filter(User.email == form.email.data).first()
+
+        if not user.is_active:
+            return render_template('site/message.html', title="提示", message='请先完成账号激活')
+        # send_reset_password_mail(user)
+
+        email_domain = get_domain_from_email(user.email)
+        if email_domain:
+            message = "请 <a href='%s' target='_blank'>登录邮箱</a> 完成密码重置" % email_domain
+        else:
+            message = "请登录邮箱完成密码重置"
+        return render_template('site/message.html',
+                               title="发送成功",
+                               message=message)
+    return render_template('account/forgot_password.html', form=form)

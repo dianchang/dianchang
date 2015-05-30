@@ -8,6 +8,8 @@
             <div class="col-sm-8">
                 <h1>注册</h1>
 
+                <a href="{{ url_for('account.signin') }}">去登陆</a>
+
                 <form id="form-login" method="post" class="form-horizontal" autocomplete="off"
                       action="{{ url_for('account.signup') }}">
                     {{ form.csrf_token() }}

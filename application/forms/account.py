@@ -1,6 +1,5 @@
 # coding: utf-8
 from flask_wtf import Form
-from werkzeug.security import generate_password_hash
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo
 from ..models import User
@@ -73,3 +72,17 @@ class SettingsForm(Form):
     city = StringField('城市')
     organization = StringField('组织')
     position = StringField('职位')
+
+
+class ForgotPasswordForm(Form):
+    email = StringField('注册邮箱',
+                        validators=[
+                            DataRequired(message="邮箱不能为空"),
+                            Email(message="无效的邮箱")
+                        ],
+                        description="输入你的注册邮箱")
+
+    def validate_email(self, field):
+        user = User.query.filter(User.email == self.email.data).first()
+        if not user:
+            raise ValueError('账号不存在')

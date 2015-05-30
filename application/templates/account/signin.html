@@ -8,6 +8,9 @@
             <div class="col-sm-8">
                 <h1>登录</h1>
 
+                <a href="{{ url_for('account.signup') }}">注册账号</a>
+                <a href="{{ url_for('account.forgot_password') }}">我忘了密码</a>
+
                 <form method="post" class="form-horizontal" action="{{ url_for('account.signin') }}">
                     {{ form.csrf_token() }}
 

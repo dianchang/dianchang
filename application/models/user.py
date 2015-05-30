@@ -15,6 +15,7 @@ class User(db.Model):
     desc = db.Column(db.String(200), )
     avatar = db.Column(db.String(200), default='default.png')
     password = db.Column(db.String(200))
+    is_active = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
     organization = db.Column(db.String(100))
     city = db.Column(db.String(100))
