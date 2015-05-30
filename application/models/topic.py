@@ -91,6 +91,15 @@ class Topic(db.Model):
             return None
 
     @property
+    def all_questions(self):
+        """该话题下的所有问题（包括子话题的问题）"""
+        from .question import QuestionTopic, Question
+
+        topics_id_list = self.descendant_topics_id_list
+        topics_id_list.append(self.id)
+        return Question.query.filter(Question.topics.any(QuestionTopic.topic_id.in_(topics_id_list)))
+
+    @property
     def parent_topics(self):
         """直接父话题"""
         parent_topics_id_list = db.session.query(TopicClosure.ancestor_id). \

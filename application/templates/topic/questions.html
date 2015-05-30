@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% from "macros/_utils.html" import pagination %}
+{% from "macros/_topic.html" import topic_page_header, topic_discuss_page_header,
+    topic_discuss_page_sidebar %}
+
+{% block page_title %}全部问题 - 话题「{{ topic.name }}」{% endblock %}
+{% block page_content %}
+    <div class="container">
+        {{ topic_page_header(topic) }}
+
+        <div class="row">
+            <div class="col-md-8">
+                {{ topic_discuss_page_header(topic, active='questions') }}
+
+                <h3>全部问题</h3>
+
+                {% for question in questions.items %}
+                    <div>
+                        <a href="{{ url_for('question.view', uid=question.id) }}">
+                            {{ question.title }}
+                        </a>
+                    </div>
+                {% endfor %}
+
+                {{ pagination(questions) }}
+            </div>
+
+            <div class="col-md-4">
+                {{ topic_discuss_page_sidebar(topic) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -11,6 +11,7 @@ class Question(db.Model):
     title = db.Column(db.String(100))
     desc = db.Column(db.Text)
     clicks = db.Column(db.Integer, default=0)
+    anonymous = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -136,4 +137,3 @@ class FollowQuestion(db.Model):
 
     def __repr__(self):
         return '<FollowQuestion %s>' % self.id
-

@@ -1,9 +1,21 @@
 {% extends "layout.html" %}
-{% from "macros/_topic.html" import topic_page_header %}
+{% from "macros/_topic.html" import topic_page_header, topic_discuss_page_header,
+    topic_discuss_page_sidebar %}
 
 {% block page_title %}话题「{{ topic.name }}」{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ topic_page_header(topic, active='view') }}
+
+        <div class="row">
+            <div class="col-md-8">
+                {{ topic_discuss_page_header(topic) }}
+                <h3>精彩回答</h3>
+            </div>
+
+            <div class="col-md-4">
+                {{ topic_discuss_page_sidebar(topic) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

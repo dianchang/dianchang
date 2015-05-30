@@ -165,3 +165,22 @@ def edit_wiki(uid):
         db.session.commit()
         return redirect(url_for('.wiki', uid=uid))
     return render_template('topic/edit_wiki.html', topic=topic, form=form)
+
+
+@bp.route('/topic/<int:uid>/questions')
+def questions(uid):
+    """话题下的全部问题"""
+    topic = Topic.query.get_or_404(uid)
+    page = request.args.get('page', 1, int)
+    questions = topic.all_questions.paginate(page, 15)
+    return render_template('topic/questions.html', topic=topic, questions=questions)
+
+
+@bp.route('/topic/<int:uid>/waiting')
+def waiting_for_answer(uid):
+    """话题下等待回答的问题"""
+    topic = Topic.query.get_or_404(uid)
+    page = request.args.get('page', 1, int)
+    waiting_for_answer_questions = topic.all_questions.paginate(page, 15)
+    return render_template('topic/waiting_for_answer.html', topic=topic,
+                           waiting_for_answer_questions=waiting_for_answer_questions)
