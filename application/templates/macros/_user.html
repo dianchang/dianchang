@@ -84,18 +84,18 @@
                 提问
             </a>
         </li>
-        <li {% if active == 'profile' %}class="collects"{% endif %}>
-            <a href="{{ url_for('user.collects', uid=user.id) }}">
-                11
-                收藏
-            </a>
-        </li>
-        <li {% if active == 'profile' %}class="edits"{% endif %}>
-            <a href="{{ url_for('user.edits', uid=user.id) }}">
-                {{ user.edits.count() }}
-                公共编辑
-            </a>
-        </li>
+        {#        <li {% if active == 'profile' %}class="collects"{% endif %}>#}
+        {#            <a href="{{ url_for('user.collects', uid=user.id) }}">#}
+        {#                11#}
+        {#                收藏#}
+        {#            </a>#}
+        {#        </li>#}
+        {#        <li {% if active == 'profile' %}class="edits"{% endif %}>#}
+        {#            <a href="{{ url_for('user.edits', uid=user.id) }}">#}
+        {#                {{ user.edits.count() }}#}
+        {#                公共编辑#}
+        {#            </a>#}
+        {#        </li>#}
         <li {% if active == 'followings' %}class="active"{% endif %}>
             <a href="{{ url_for('user.followings', uid=user.id) }}">
                 {{ user.followings.count() }}
