@@ -235,6 +235,7 @@ class TopicExpert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     upvotes_count = db.Column(db.Integer, default=0)
     answers_count = db.Column(db.Integer, default=0)
+    score = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
@@ -252,6 +253,7 @@ class TopicExpert(db.Model):
             topic_expert.answers_count += 1
         else:
             topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id, answers_count=1)
+        topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
 
@@ -267,6 +269,7 @@ class TopicExpert(db.Model):
                 topic_expert.answers_count = 0
         else:
             topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id)
+        topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
 
@@ -279,6 +282,7 @@ class TopicExpert(db.Model):
             topic_expert.upvotes_count += count
         else:
             topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id, upvotes_count=count)
+        topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
 
@@ -294,5 +298,10 @@ class TopicExpert(db.Model):
                 topic_expert.upvotes_count = 0
         else:
             topic_expert = TopicExpert(topic_id=topic_id, user_id=user_id)
+        topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
+
+    def calculate_score(self):
+        """计算擅长度"""
+        self.score = self.answers_count + self.upvotes_count
