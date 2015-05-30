@@ -1,6 +1,8 @@
 libs:
   - bower_components/bootstrap/dist/css/bootstrap.min.css
   - bower_components/font-awesome/css/font-awesome.min.css
+  - bower_components/simditor/styles/simditor.css
+  - bower_components/simditor-markdown/styles/simditor-markdown.css
 
 layout:
   - css/bootstrap.theme.css
