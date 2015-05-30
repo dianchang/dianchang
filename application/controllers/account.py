@@ -14,7 +14,7 @@ def signin():
     """登录"""
     form = SigninForm()
     if form.validate_on_submit():
-        signin_user(form.user)
+        signin_user(form.user, form.remember.data)
         return redirect(url_for('site.index'))
     return render_template('account/signin.html', form=form)
 
