@@ -190,6 +190,7 @@ def waiting_for_answer(uid):
     """话题下等待回答的问题"""
     topic = Topic.query.get_or_404(uid)
     page = request.args.get('page', 1, int)
-    waiting_for_answer_questions = topic.all_questions.paginate(page, 15)
+    waiting_for_answer_questions = topic.all_questions.filter(Question.answers_count == 0). \
+        paginate(page, 15)
     return render_template('topic/waiting_for_answer.html', topic=topic,
                            waiting_for_answer_questions=waiting_for_answer_questions)

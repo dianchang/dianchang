@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from "macros/_utils.html" import pagination %}
 {% from "macros/_topic.html" import topic_page_header %}
+{% from "macros/_user.html" import user_follow_wap %}
 
 {% block page_title %}话题「{{ topic.name }}」榜单{% endblock %}
 {% block page_content %}
@@ -9,8 +10,6 @@
 
         <div class="row">
             <div class="col-md-8">
-
-
                 {% for expert in experts.items %}
                     <div class="media">
                         <div class="media-left">
@@ -25,12 +24,13 @@
                                 </a>
                                 {% if expert.user.desc %}
                                     <span class="text-light">
-                                {{ expert.user.desc }}
-                            </span>
+                                        {{ expert.user.desc }}
+                                    </span>
                                 {% endif %}
                             </div>
                             <div>
                                 在该话题有 {{ expert.answers_count }} 个回答，收获 {{ expert.upvotes_count }} 个赞同
+                                {{ user_follow_wap(expert.user) }}
                             </div>
                         </div>
                     </div>
