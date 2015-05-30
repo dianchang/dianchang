@@ -111,7 +111,7 @@ class QuestionTopic(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question', backref=db.backref('topics',
                                                               lazy='dynamic',
-                                                              order_by='desc(QuestionTopic.created_at)'))
+                                                              order_by='asc(QuestionTopic.created_at)'))
 
     topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
     topic = db.relationship('Topic', backref=db.backref('questions',
