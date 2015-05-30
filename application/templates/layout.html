@@ -56,6 +56,9 @@
                 <li id="nav-index">
                     <a href="{{ url_for('site.index') }}">首页</a>
                 </li>
+                <li id="nav-compose">
+                    <a href="{{ url_for('user.compose') }}">撰写</a>
+                </li>
             </ul>
 
             <a href="{{ url_for('question.add') }}"
@@ -65,8 +68,8 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if g.user %}
-                    <li id="nav-noti">
-                        <a href="#">
+                    <li id="nav-notification">
+                        <a href="{{ url_for('user.notifications') }}">
                             <span class="fa fa-bell-o"></span>
                         </a>
                     </li>

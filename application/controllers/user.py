@@ -72,3 +72,16 @@ def followings(uid):
 def followers(uid):
     user = User.query.get_or_404(uid)
     return render_template('user/followers.html', user=user)
+
+
+@bp.route('/notifications')
+@UserPermission()
+def notifications():
+    """用户消息"""
+    return render_template('user/notifications.html')
+
+
+@bp.route('/user/compose')
+def compose():
+    """撰写"""
+    return render_template('user/compose.html')
