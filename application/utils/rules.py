@@ -17,7 +17,7 @@ class UserRule(Rule):
         return 'user_id' in session
 
     def deny(self):
-        flash('Sign in first.')
+        flash('请先登录账号')
         return redirect(url_for('account.signin'))
 
 
