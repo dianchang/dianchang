@@ -139,3 +139,23 @@ class FollowQuestion(db.Model):
 
     def __repr__(self):
         return '<FollowQuestion %s>' % self.id
+
+
+class QuestionComment(db.Model):
+    """对问题的评论"""
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question', backref=db.backref('comments',
+                                                              lazy='dynamic',
+                                                              order_by='desc(QuestionComment.created_at)'))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('question_comments',
+                                                      lazy='dynamic',
+                                                      order_by='desc(QuestionComment.created_at)'))
+
+    def __repr__(self):
+        return '<QuestionComment %s>' % self.id
