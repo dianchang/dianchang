@@ -141,7 +141,7 @@ class InvitationCode(db.Model):
 
 
 class USER_FEED_KIND(object):
-    """用户动态类型"""
+    """用户feed类型"""
     ASK_QUESTION = "gN02m2F"
     ANSWER_QUESTION = "J8AbTDT"
     FOLLOW_QUESTION = "4MYN2Ui"
@@ -151,7 +151,7 @@ class USER_FEED_KIND(object):
 
 
 class UserFeed(db.Model):
-    """用户动态"""
+    """用户feed"""
     id = db.Column(db.Integer, primary_key=True)
     kind = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -206,3 +206,55 @@ class Notification(db.Model):
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
     answer = db.relationship('Answer')
+
+
+class HOME_FEED_KIND(object):
+    """首页feed类型"""
+    FOLLOWING_UPVOTE_ANSWER = "UdW38Gw"
+    FOLLOWING_ASK_QUESTION = "groYn17"
+    FOLLOWING_ANSWER_QUESTION = "wFyvyTI"
+    ANSWER_FROM_FOLLOWED_TOPIC = "HVKEV0N"
+
+
+class HomeFeed(db.Model):
+    """登录用户的首页feed"""
+    id = db.Column(db.Integer, primary_key=True)
+    kind = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User',
+                           backref=db.backref('notifications',
+                                              lazy='dynamic',
+                                              order_by='desc(UserFeed.created_at)'),
+                           foreign_keys=[user_id])
+
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    sender = db.relationship('User', foreign_keys=[sender_id])
+
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question')
+
+    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
+    answer = db.relationship('Answer')
+
+
+class COMPOSE_FEED_KIND(object):
+    """撰写feed类型"""
+    pass
+
+
+class ComposeFeed(db.Model):
+    """撰写feed"""
+    id = db.Column(db.Integer, primary_key=True)
+    kind = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User',
+                           backref=db.backref('notifications',
+                                              lazy='dynamic',
+                                              order_by='desc(UserFeed.created_at)'))
+
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question')
