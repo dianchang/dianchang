@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
-{% from "macros/_question.html" import follow_question %}
-{% from "macros/_topic.html" import follow_topic %}
+{% from "macros/_question.html" import question_follow_wap %}
+{% from "macros/_topic.html" import topic_follow_wap %}
+{% from "macros/_user.html" import user_follow_wap %}
 {% from "macros/_answer.html" import render_answer %}
-{% from "macros/_user.html" import follow_user %}
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
@@ -36,7 +36,7 @@
                             </div>
                             <div class="meta">
                                 <span>{{ question.answers.count() }} 回答</span>
-                                {{ follow_question(question) }}
+                                {{ question_follow_wap(question) }}
                                 <span>提问于 {{ question.created_at|timesince }}</span>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                         </a>
                                     </div>
                                     <div class="desc">{{ topic.desc or "" }}</div>
-                                    {{ follow_topic(topic) }}
+                                    {{ topic_follow_wap(topic) }}
                                 </div>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                                     </div>
                                     <div class="desc">
                                         {{ (user.highlight_desc or user.desc or "")|safe }}
-                                        {{ follow_user(user) }}
+                                        {{ user_follow_wap(user) }}
                                     </div>
                                 </div>
                             </div>

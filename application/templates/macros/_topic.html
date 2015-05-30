@@ -1,5 +1,5 @@
 {# 问题的话题编辑框 #}
-{% macro render_topic_wap(topic, attr=None) %}
+{% macro topic_wap(topic, attr=None) %}
     {% if attr %}
         {% set topic = topic[attr] %}
     {% endif %}
@@ -16,7 +16,7 @@
 
 
 {# 关注话题组件 #}
-{% macro follow_topic(topic) %}
+{% macro topic_follow_wap(topic) %}
     <div class="dc-topic-follow-wap btn-group {% if topic.followed_by_user() %}followed{% endif %}">
         <a href="javascript: void(0)"
            class="btn btn-default btn-follow-topic"
@@ -62,7 +62,7 @@
         <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="pull-right btn btn-default">
             话题管理</a>
 
-        {{ follow_topic(topic) }}
+        {{ topic_follow_wap(topic) }}
 
         <div class="topic-wap">
             <div class="media">

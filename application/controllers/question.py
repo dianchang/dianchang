@@ -93,7 +93,7 @@ def add_topic(uid):
     if answer_thankers_count > 0:
         UserTopicStatistics.upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
 
-    macro = get_template_attribute('macros/_topic.html', 'render_topic_wap')
+    macro = get_template_attribute('macros/_topic.html', 'topic_wap')
     return json.dumps({'result': True,
                        'id': topic.id,
                        'html': macro(topic)})

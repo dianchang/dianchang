@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% from "macros/_topic.html" import render_topic_wap %}
-{% from "macros/_question.html" import follow_question %}
+{% from "macros/_topic.html" import topic_wap %}
+{% from "macros/_question.html" import question_follow_wap %}
 
 {% block page_title %}{{ question.title }}{% endblock %}
 {% block page_vars %}
@@ -12,7 +12,7 @@
 {% endblock %}
 {% block page_content %}
     <div class="container">
-        {{ follow_question(question) }}
+        {{ question_follow_wap(question) }}
 
         <h1>
             <div class="title-wap">
@@ -39,7 +39,7 @@
             <div class="topics">
                 <div class="topics-inner-wap">
                     {% for topic in question.topics %}
-                        {{ render_topic_wap(topic, attr="topic") }}
+                        {{ topic_wap(topic, attr="topic") }}
                     {% endfor %}
                 </div>
                 <a href="javascript: void(0)" class="btn-edit-topic">编辑</a>

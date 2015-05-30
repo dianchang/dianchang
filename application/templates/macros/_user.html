@@ -1,4 +1,4 @@
-{% macro follow_user(user) %}
+{% macro user_follow_wap(user) %}
     <div class="dc-user-follow-wap btn-group {% if user.followed_by_user() %}followed{% endif %}">
         <a href="javascript: void(0)"
            class="btn btn-default btn-follow-user"
@@ -65,7 +65,7 @@
     10 分享
 
     <div>
-        {{ follow_user(user) }}
+        {{ user_follow_wap(user) }}
     </div>
 
     <ul class="nav nav-tabs">
