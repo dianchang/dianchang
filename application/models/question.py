@@ -14,6 +14,8 @@ class Question(db.Model):
     anonymous = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
+    answers_count = db.Column(db.Integer, default=0)
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('questions',
                                                       lazy='dynamic',

@@ -10,6 +10,12 @@ class Answer(db.Model):
     content = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
+    comments_count = db.Column(db.Integer, default=0)
+    upvotes_count = db.Column(db.Integer, default=0)
+    downvotes_count = db.Column(db.Integer, default=0)
+    thanks_count = db.Column(db.Integer, default=0)
+    nohelps_count = db.Column(db.Integer, default=0)
+
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question', backref=db.backref('answers',
                                                               lazy='dynamic',
