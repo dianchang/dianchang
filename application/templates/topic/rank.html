@@ -1,9 +1,43 @@
 {% extends "layout.html" %}
+{% from "macros/_utils.html" import pagination %}
 {% from "macros/_topic.html" import topic_page_header %}
 
 {% block page_title %}话题「{{ topic.name }}」榜单{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ topic_page_header(topic, active='rank') }}
+
+        <div class="row">
+            <div class="col-md-8">
+
+
+                {% for expert in experts.items %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ url_for('user.profile', uid=expert.user_id) }}">
+                                <img src="{{ expert.user.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <div class="meta">
+                                <a href="{{ url_for('user.profile', uid=expert.user_id) }}">
+                                    {{ expert.user.name }}
+                                </a>
+                                {% if expert.user.desc %}
+                                    <span class="text-light">
+                                {{ expert.user.desc }}
+                            </span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                在该话题有 {{ expert.answers_count }} 个回答，收获 {{ expert.upvotes_count }} 个赞同
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {{ pagination(experts) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

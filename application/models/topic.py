@@ -262,7 +262,7 @@ class UserTopicStatistics(db.Model):
         if topic_expert:
             topic_expert.answers_count += 1
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, answers_count=1)
+            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, answers_count=1, upvotes_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
@@ -278,7 +278,7 @@ class UserTopicStatistics(db.Model):
             else:
                 topic_expert.answers_count = 0
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id)
+            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, answers_count=0, upvotes_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
@@ -291,7 +291,7 @@ class UserTopicStatistics(db.Model):
         if topic_expert:
             topic_expert.upvotes_count += count
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, upvotes_count=count)
+            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, upvotes_count=count, answers_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
@@ -307,7 +307,7 @@ class UserTopicStatistics(db.Model):
             else:
                 topic_expert.upvotes_count = 0
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id)
+            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, answers_count=0, upvotes_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()

@@ -1,7 +1,7 @@
 # coding: utf-8
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
-from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor
+from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistics
 from ..utils.permissions import UserPermission
 from ..forms import AdminTopicForm, EditTopicWikiForm
 
@@ -10,12 +10,14 @@ bp = Blueprint('topic', __name__)
 
 @bp.route('/topic/square')
 def square():
+    """话题广场"""
     return render_template('topic/square.html')
 
 
 @bp.route('/topic/query', methods=['POST'])
 @UserPermission()
 def query():
+    """查询话题"""
     q = request.form.get('q')
     question_id = request.form.get('question_id')  # 不包括此问题的话题（用于给问题添加话题）
     ancestor_topic_id = request.form.get('ancestor_topic_id')  # 不为此话题的子孙话题的话题（用于给话题添加子话题）
@@ -42,14 +44,21 @@ def query():
 
 @bp.route('/topic/<int:uid>')
 def view(uid):
+    """话题详情页"""
     topic = Topic.query.get_or_404(uid)
     return render_template('topic/view.html', topic=topic)
 
 
 @bp.route('/topic/<int:uid>/rank')
 def rank(uid):
+    """话题榜单"""
     topic = Topic.query.get_or_404(uid)
-    return render_template('topic/rank.html', topic=topic)
+    page = request.args.get('page', 1, int)
+    experts = UserTopicStatistics.query. \
+        filter(UserTopicStatistics.topic_id == uid,
+               UserTopicStatistics.score != 0). \
+        order_by(UserTopicStatistics.score.desc()).paginate(page, 15)
+    return render_template('topic/rank.html', topic=topic, experts=experts)
 
 
 @bp.route('/topic/<int:uid>/wiki')

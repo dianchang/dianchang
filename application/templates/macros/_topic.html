@@ -143,6 +143,7 @@
     {% endfor %}
 
     <h3>子话题</h3>
+
     {% for child_topic in topic.child_topics %}
         <a href="{{ url_for('topic.view', uid=child_topic.id) }}">
             {{ child_topic.name }}
