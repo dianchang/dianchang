@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask import Blueprint, render_template, json, g
-from ..models import db, Answer, UpvoteAnswer, TopicExpert
+from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('answer', __name__)
@@ -24,7 +24,7 @@ def upvote(uid):
         db.session.commit()
         # 更新话题专精
         for topic in answer.question.topics:
-            TopicExpert.downvote_answer_in_topic(answer.user_id, topic.topic_id)
+            UserTopicStatistics.downvote_answer_in_topic(answer.user_id, topic.topic_id)
         return json.dumps({
             'result': True,
             'thanked': False
@@ -36,7 +36,7 @@ def upvote(uid):
         db.session.commit()
         # 更新话题专精
         for topic in answer.question.topics:
-            TopicExpert.upvote_answer_in_topic(answer.user_id, topic.topic_id)
+            UserTopicStatistics.upvote_answer_in_topic(answer.user_id, topic.topic_id)
         return json.dumps({
             'result': True,
             'thanked': True

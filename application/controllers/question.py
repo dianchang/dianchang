@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
-    TopicExpert
+    UserTopicStatistics
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -48,7 +48,7 @@ def view(uid):
         answer = Answer(question_id=uid, content=request.form.get('answer'), user_id=g.user.id)
         # 更新话题专精
         for topic in question.topics:
-            TopicExpert.add_answer_in_topic(g.user.id, topic.topic_id)
+            UserTopicStatistics.add_answer_in_topic(g.user.id, topic.topic_id)
         db.session.add(answer)
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
@@ -88,10 +88,10 @@ def add_topic(uid):
     # 更新话题专精
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
-        TopicExpert.add_answer_in_topic(g.user.id, topic.id)
+        UserTopicStatistics.add_answer_in_topic(g.user.id, topic.id)
     answer_thankers_count = answer.thankers.count()
     if answer_thankers_count > 0:
-        TopicExpert.upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
+        UserTopicStatistics.upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
 
     macro = get_template_attribute('macros/_topic.html', 'render_topic_wap')
     return json.dumps({'result': True,
@@ -121,10 +121,10 @@ def remove_topic(uid, topic_id):
     # 更新话题专精
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
-        TopicExpert.remove_answer_from_topic(g.user.id, topic.id)
+        UserTopicStatistics.remove_answer_from_topic(g.user.id, topic.id)
     answer_thankers_count = answer.thankers.count()
     if answer_thankers_count > 0:
-        TopicExpert.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
+        UserTopicStatistics.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
     return json.dumps({'result': True})
 
 
