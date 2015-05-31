@@ -1,7 +1,7 @@
 {% macro render_answer(answer) %}
     <div class="dc-answer">
         <div>
-            <a href="{{ url_for('question.view', uid=answer.id) }}">
+            <a href="{{ url_for('question.view', uid=answer.question.id) }}">
                 {{ (answer.highlight_question_title or answer.question.title)|safe }}
             </a>
         </div>
