@@ -13,6 +13,7 @@ elasticsearch
 elasticsearch-dsl
 six
 raven
+qiniu
 
 # dev
 livereload
