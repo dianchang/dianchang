@@ -32,6 +32,7 @@ class PublicEditLog(db.Model):
     after = db.Column(db.String(200))
     after_id = db.Column(db.Integer)
     compare = db.Column(db.String(500))
+    original_name = db.Column(db.String(200))
     original_title = db.Column(db.String(200))
     original_desc = db.Column(db.Text())
 
