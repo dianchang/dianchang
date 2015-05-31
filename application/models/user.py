@@ -165,8 +165,8 @@ class USER_FEED_KIND(object):
     """用户feed类型"""
     ASK_QUESTION = "gN02m2F"
     ANSWER_QUESTION = "J8AbTDT"
-    FOLLOW_QUESTION = "4MYN2Ui"
     UPVOTE_ANSWER = "F9FqDKa"
+    FOLLOW_QUESTION = "4MYN2Ui"
     FOLLOW_TOPIC = "wa3PMng"
     FOLLOW_USER = "rDtV02F"
 
