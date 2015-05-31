@@ -146,10 +146,10 @@ def follow(uid):
         return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers.count()})
 
 
-@bp.route('/question/<int:uid>/log')
-def log(uid):
+@bp.route('/question/<int:uid>/logs')
+def logs(uid):
     question = Question.query.get_or_404(uid)
-    return render_template('question/log.html', question=question)
+    return render_template('question/logs.html', question=question)
 
 
 @bp.route('/question/<int:uid>/update', methods=['POST'])

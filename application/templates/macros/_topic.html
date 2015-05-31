@@ -134,6 +134,8 @@
 
 {# 话题讨论页sidebar #}
 {% macro topic_discuss_page_sidebar(topic) %}
+    <a href="{{ url_for('topic.logs', uid=topic.id) }}">话题日志</a>
+
     <h3>父话题</h3>
 
     {% for parent_topic in topic.parent_topics %}

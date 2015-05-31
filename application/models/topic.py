@@ -70,6 +70,8 @@ class Topic(db.Model):
     @staticmethod
     def get_by_name(name, create_if_not_exist=False):
         """通过name获取句集"""
+        from .log import PublicEditLog, TOPIC_EDIT_KIND
+
         name = name or ""
         name = name.strip()
         if name:
@@ -77,10 +79,13 @@ class Topic(db.Model):
             topic = Topic.query.filter(Topic.name == name).first()
             if not topic and create_if_not_exist:
                 topic = Topic(name=name)
-                # log = CollectionEditLog(user_id=g.user.id, kind=COLLECTION_EDIT_KIND.CREATE)
-                # topic.logs.append(log)
                 db.session.add(topic)
                 db.session.commit()
+
+                # Create topic log
+                log = PublicEditLog(user_id=g.user.id, kind=TOPIC_EDIT_KIND.CREATE, after=name, after_id=topic.id)
+                topic.logs.append(log)
+                db.session.add(topic)
 
                 # Add topic closure
                 topic_closure = TopicClosure(ancestor_id=topic.id, descendant_id=topic.id, path_length=0)

@@ -194,3 +194,10 @@ def waiting_for_answer(uid):
         paginate(page, 15)
     return render_template('topic/waiting_for_answer.html', topic=topic,
                            waiting_for_answer_questions=waiting_for_answer_questions)
+
+
+@bp.route('/topic/<int:uid>/logs')
+def logs(uid):
+    """话题日志"""
+    topic = Topic.query.get_or_404(uid)
+    return render_template('topic/logs.html', topic=topic)
