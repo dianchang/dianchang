@@ -26,8 +26,9 @@ def signup():
     """注册"""
     form = SignupForm()
     if form.validate_on_submit():
+        code = form.code.data
         params = form.data.copy()
-        params.pop('repassword')
+        params.pop('code')
         user = User(**params)
         db.session.add(user)
         db.session.commit()
