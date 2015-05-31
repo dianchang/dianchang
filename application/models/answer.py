@@ -8,6 +8,7 @@ class Answer(db.Model):
     """回答"""
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
+    hide = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     comments_count = db.Column(db.Integer, default=0)
