@@ -103,7 +103,19 @@ class Topic(db.Model):
 
         topics_id_list = self.descendant_topics_id_list
         topics_id_list.append(self.id)
-        return Question.query.filter(Question.topics.any(QuestionTopic.topic_id.in_(topics_id_list)))
+        return Question.query.filter(Question.topics.any(QuestionTopic.topic_id.in_(
+            topics_id_list)))
+
+    @property
+    def all_answers(self):
+        """该话题下的所有问题回答（包括子话题的问题回答）"""
+        from .answer import Answer
+        from .question import Question, QuestionTopic
+
+        topics_id_list = self.descendant_topics_id_list
+        topics_id_list.append(self.id)
+        return Answer.query.filter(Answer.question.has(Question.topics.any(
+            QuestionTopic.topic_id.in_(topics_id_list))))
 
     @property
     def parent_topics(self):

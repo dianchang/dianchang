@@ -8,6 +8,7 @@ class Answer(db.Model):
     """回答"""
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
+    score = db.Column(db.Integer, default=0)
     hide = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -26,6 +27,12 @@ class Answer(db.Model):
     user = db.relationship('User', backref=db.backref('answers',
                                                       lazy='dynamic',
                                                       order_by='desc(Answer.created_at)'))
+
+    def calculate_score(self):
+        """回答分值，体现该回答的精彩程度"""
+        # TODO: need to use original fields
+        self.score = self.upvotes.count() + self.thanks.count() + self.comments.count() \
+            - self.downvotes.count() - self.nohelps
 
     def save_to_es(self):
         """保存此回答到elasticsearch"""
@@ -103,7 +110,7 @@ class UpvoteAnswer(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    answer = db.relationship('Answer', backref=db.backref('upvoters',
+    answer = db.relationship('Answer', backref=db.backref('upvotes',
                                                           lazy='dynamic',
                                                           order_by='desc(UpvoteAnswer.created_at)'))
 
@@ -122,7 +129,7 @@ class DownvoteAnswer(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    answer = db.relationship('Answer', backref=db.backref('downvoter',
+    answer = db.relationship('Answer', backref=db.backref('downvotes',
                                                           lazy='dynamic',
                                                           order_by='desc(DownvoteAnswer.created_at)'))
 
@@ -141,7 +148,7 @@ class ThankAnswer(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    answer = db.relationship('Answer', backref=db.backref('thankers',
+    answer = db.relationship('Answer', backref=db.backref('thanks',
                                                           lazy='dynamic',
                                                           order_by='desc(ThankAnswer.created_at)'))
 
@@ -160,7 +167,7 @@ class NohelpAnswer(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    answer = db.relationship('Answer', backref=db.backref('nohelper',
+    answer = db.relationship('Answer', backref=db.backref('nohelps',
                                                           lazy='dynamic',
                                                           order_by='desc(NohelpAnswer.created_at)'))
 

@@ -2,7 +2,7 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistics, \
-    PublicEditLog, TOPIC_EDIT_KIND
+    PublicEditLog, TOPIC_EDIT_KIND, Answer
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 from ..forms import AdminTopicForm, EditTopicWikiForm
@@ -52,7 +52,9 @@ def query():
 def view(uid):
     """话题详情页"""
     topic = Topic.query.get_or_404(uid)
-    return render_template('topic/view.html', topic=topic)
+    page = request.args.get('page', 1, int)
+    answers = topic.all_answers.order_by(Answer.score.desc()).paginate(page, 15)
+    return render_template('topic/view.html', topic=topic, answers=answers)
 
 
 @bp.route('/topic/<int:uid>/rank')
@@ -69,6 +71,7 @@ def rank(uid):
 
 @bp.route('/topic/<int:uid>/wiki')
 def wiki(uid):
+    """话题wiki"""
     topic = Topic.query.get_or_404(uid)
     return render_template('topic/wiki.html', topic=topic)
 
@@ -97,6 +100,34 @@ def admin(uid):
         topic.save_to_es()
         return redirect(url_for('.view', uid=uid))
     return render_template('topic/admin.html', topic=topic, form=form)
+
+
+@bp.route('/topic/<int:uid>/questions')
+def questions(uid):
+    """话题下的全部问题"""
+    topic = Topic.query.get_or_404(uid)
+    page = request.args.get('page', 1, int)
+    questions = topic.all_questions.paginate(page, 15)
+    print(type(questions))
+    return render_template('topic/questions.html', topic=topic, questions=questions)
+
+
+@bp.route('/topic/<int:uid>/waiting')
+def waiting_for_answer(uid):
+    """话题下等待回答的问题"""
+    topic = Topic.query.get_or_404(uid)
+    page = request.args.get('page', 1, int)
+    waiting_for_answer_questions = topic.all_questions.filter(Question.answers_count == 0). \
+        paginate(page, 15)
+    return render_template('topic/waiting_for_answer.html', topic=topic,
+                           waiting_for_answer_questions=waiting_for_answer_questions)
+
+
+@bp.route('/topic/<int:uid>/logs')
+def logs(uid):
+    """话题日志"""
+    topic = Topic.query.get_or_404(uid)
+    return render_template('topic/logs.html', topic=topic)
 
 
 @bp.route('/topic/<int:uid>/add_parent_topic/<int:parent_topic_id>', methods=['POST'])
@@ -222,30 +253,3 @@ def edit_wiki(uid):
         db.session.commit()
         return redirect(url_for('.wiki', uid=uid))
     return render_template('topic/edit_wiki.html', topic=topic, form=form)
-
-
-@bp.route('/topic/<int:uid>/questions')
-def questions(uid):
-    """话题下的全部问题"""
-    topic = Topic.query.get_or_404(uid)
-    page = request.args.get('page', 1, int)
-    questions = topic.all_questions.paginate(page, 15)
-    return render_template('topic/questions.html', topic=topic, questions=questions)
-
-
-@bp.route('/topic/<int:uid>/waiting')
-def waiting_for_answer(uid):
-    """话题下等待回答的问题"""
-    topic = Topic.query.get_or_404(uid)
-    page = request.args.get('page', 1, int)
-    waiting_for_answer_questions = topic.all_questions.filter(Question.answers_count == 0). \
-        paginate(page, 15)
-    return render_template('topic/waiting_for_answer.html', topic=topic,
-                           waiting_for_answer_questions=waiting_for_answer_questions)
-
-
-@bp.route('/topic/<int:uid>/logs')
-def logs(uid):
-    """话题日志"""
-    topic = Topic.query.get_or_404(uid)
-    return render_template('topic/logs.html', topic=topic)

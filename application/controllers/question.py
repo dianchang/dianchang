@@ -47,7 +47,7 @@ def view(uid):
     if request.method == 'POST' and request.form.get('answer'):
         # 回答话题
         answer = Answer(question_id=uid, content=request.form.get('answer'), user_id=g.user.id)
-        # 更新话题专精
+        # 更新话题统计数据
         for topic in question.topics:
             UserTopicStatistics.add_answer_in_topic(g.user.id, topic.topic_id)
         db.session.add(answer)
@@ -86,7 +86,7 @@ def add_topic(uid):
         db.session.add(question_topic)
         db.session.commit()
 
-    # 更新话题专精
+    # 更新话题统计数据
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
         UserTopicStatistics.add_answer_in_topic(g.user.id, topic.id)
@@ -118,7 +118,7 @@ def remove_topic(uid, topic_id):
     db.session.add(log)
     db.session.commit()
 
-    # 更新话题专精
+    # 更新话题统计数据
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
         UserTopicStatistics.remove_answer_from_topic(g.user.id, topic.id)
