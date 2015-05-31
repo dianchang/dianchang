@@ -17,7 +17,7 @@ def view(uid):
 def upvote(uid):
     """赞同 & 取消赞同回答"""
     answer = Answer.query.get_or_404(uid)
-    upvote_answer = answer.upvoters.filter(UpvoteAnswer.user_id == g.user.id)
+    upvote_answer = answer.upvotes.filter(UpvoteAnswer.user_id == g.user.id)
     # 取消赞同
     if upvote_answer.count():
         map(db.session.delete, upvote_answer)
@@ -33,7 +33,7 @@ def upvote(uid):
         })
     else:  # 赞同
         upvote_answer = UpvoteAnswer(user_id=g.user.id)
-        answer.upvoters.append(upvote_answer)
+        answer.upvotes.append(upvote_answer)
         answer.calculate_score()  # 更新回答分值
         db.session.add(answer)
         db.session.commit()

@@ -90,9 +90,10 @@ def add_topic(uid):
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
         UserTopicStatistics.add_answer_in_topic(g.user.id, topic.id)
-    answer_thankers_count = answer.thankers.count()
-    if answer_thankers_count > 0:
-        UserTopicStatistics.upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
+    # TODO: need to use the original field `answer.thanks_count`
+    answer_thanks_count = answer.thanks.count()
+    if answer_thanks_count > 0:
+        UserTopicStatistics.upvote_answer_in_topic(g.user.id, topic.id, answer_thanks_count)
 
     macro = get_template_attribute('macros/_topic.html', 'topic_wap')
     return json.dumps({'result': True,
@@ -122,9 +123,10 @@ def remove_topic(uid, topic_id):
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
         UserTopicStatistics.remove_answer_from_topic(g.user.id, topic.id)
-    answer_thankers_count = answer.thankers.count()
-    if answer_thankers_count > 0:
-        UserTopicStatistics.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer_thankers_count)
+    # TODO: need to use the original field `answer.thanks_count`
+    answer_thanks_count = answer.thanks.count()
+    if answer_thanks_count > 0:
+        UserTopicStatistics.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer_thanks_count)
     return json.dumps({'result': True})
 
 
