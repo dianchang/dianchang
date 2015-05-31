@@ -150,3 +150,26 @@
         </a>
     {% endfor %}
 {% endmacro %}
+
+
+{# 擅长话题 #}
+{% macro render_expert_topics(expert_topics) %}
+    {% for expert_topic in expert_topics %}
+        {% set topic = expert_topic.topic %}
+        <div class="media">
+            <div class="media-left">
+                <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                    <img src="{{ topic.avatar_url }}" alt=""/>
+                </a>
+            </div>
+            <div class="media-body">
+                <div>
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}">{{ topic.name }}</a>
+                </div>
+                <div class="meta">
+                    {{ expert_topic.answers_count }} 个回答，收获 {{ expert_topic.upvotes_count }} 个赞同
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}

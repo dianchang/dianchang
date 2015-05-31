@@ -15,12 +15,14 @@ class User(db.Model):
     desc = db.Column(db.String(200), )
     avatar = db.Column(db.String(200), default='default.png')
     password = db.Column(db.String(200))
-    is_active = db.Column(db.Boolean, default=False)
-    is_admin = db.Column(db.Boolean, default=False)
     organization = db.Column(db.String(100))
     city = db.Column(db.String(100))
     position = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    is_active = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
+    has_seleted_expert_topics = db.Column(db.Boolean, default=False)
 
     followers_count = db.Column(db.Integer, default=0)
     followings_count = db.Column(db.Integer, default=0)
@@ -44,6 +46,24 @@ class User(db.Model):
     @property
     def avatar_url(self):
         return avatars.url(self.avatar)
+
+    @property
+    def expert_topics(self):
+        """用户擅长话题
+
+        当该用户未选择擅长话题时，返回score最高的话题；
+        当已选择时，返回选择的擅长话题。
+        """
+        from .topic import UserTopicStatistics
+
+        if self.has_seleted_expert_topics:
+            return UserTopicStatistics.query.filter(UserTopicStatistics.user_id == self.id,
+                                                    UserTopicStatistics.selected == True). \
+                order_by(UserTopicStatistics.show_order.desc()).limit(8)
+        else:
+            return UserTopicStatistics.query.filter(UserTopicStatistics.user_id == self.id,
+                                                    UserTopicStatistics.score != 0). \
+                order_by(UserTopicStatistics.score.desc()).limit(8)
 
     def save_to_es(self):
         """保存此用户到elasticsearch"""

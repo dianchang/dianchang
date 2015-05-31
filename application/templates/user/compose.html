@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "macros/_topic.html" import render_expert_topics %}
 
 {% block page_title %}Compose{% endblock %}
 {% block page_content %}
@@ -8,6 +9,8 @@
         </div>
         <div class="col-md-4">
             <h3>擅长话题</h3>
+
+            {{ render_expert_topics(g.user.expert_topics) }}
         </div>
     </div>
 {% endblock %}

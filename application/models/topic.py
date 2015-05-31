@@ -245,6 +245,8 @@ class UserTopicStatistics(db.Model):
     upvotes_count = db.Column(db.Integer, default=0)
     answers_count = db.Column(db.Integer, default=0)
     score = db.Column(db.Integer, default=0)
+    show_order = db.Column(db.Integer, default=0)
+    selected = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
@@ -315,18 +317,3 @@ class UserTopicStatistics(db.Model):
     def calculate_score(self):
         """计算擅长度"""
         self.score = self.answers_count + self.upvotes_count
-
-
-class UserExpertTopic(db.Model):
-    """用户擅长话题"""
-    id = db.Column(db.Integer, primary_key=True)
-    show_order = db.Column(db.Integer, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.now)
-
-    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
-    topic = db.relationship('Topic')
-
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('expert_topics',
-                                                      lazy='dynamic',
-                                                      order_by='asc(UserExpertTopic.show_order)'))

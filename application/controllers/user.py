@@ -82,6 +82,7 @@ def notifications():
 
 
 @bp.route('/user/compose')
+@UserPermission()
 def compose():
     """撰写"""
     return render_template('user/compose.html')
