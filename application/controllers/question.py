@@ -12,7 +12,7 @@ bp = Blueprint('question', __name__)
 @bp.route('/question/add', methods=['GET', 'POST'])
 @UserPermission()
 def add():
-    """添加话题"""
+    """添加问题"""
     form = AddQuestionForm()
     if form.validate_on_submit():
         question = Question(title=form.title.data, desc=form.desc.data, user_id=g.user.id)
@@ -42,6 +42,7 @@ def add():
 
 @bp.route('/question/<int:uid>', methods=['GET', 'POST'])
 def view(uid):
+    """话题首页"""
     question = Question.query.get_or_404(uid)
     if request.method == 'POST' and request.form.get('answer'):
         # 回答话题
@@ -58,6 +59,7 @@ def view(uid):
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])
 @UserPermission()
 def add_topic(uid):
+    """添加话题"""
     question = Question.query.get_or_404(uid)
     name = request.form.get('name')
     topic_id = request.form.get('topic_id')
@@ -77,9 +79,8 @@ def add_topic(uid):
         QuestionTopic.question_id == uid).first()
     if not question_topic:
         question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
-        # Add toic log
-        log = PublicEditLog(question_id=uid, user_id=g.user.id,
-                            after=topic.name, after_id=topic.id,
+        # Add topic log
+        log = PublicEditLog(question_id=uid, user_id=g.user.id, after=topic.name, after_id=topic.id,
                             kind=QUESTION_EDIT_KIND.ADD_TOPIC)
         db.session.add(log)
         db.session.add(question_topic)
@@ -102,7 +103,7 @@ def add_topic(uid):
 @bp.route('/question/<int:uid>/remove_topic/<int:topic_id>', methods=['POST'])
 @UserPermission()
 def remove_topic(uid, topic_id):
-    """将问题从话题中移除"""
+    """移除话题"""
     question = Question.query.get_or_404(uid)
     topic = Topic.query.get_or_404(topic_id)
     topic_questions = QuestionTopic.query.filter(
@@ -112,8 +113,7 @@ def remove_topic(uid, topic_id):
         db.session.delete(topic_question)
 
     # Remove topic log
-    log = PublicEditLog(question_id=uid, user_id=g.user.id,
-                        before=topic.name, before_id=topic_id,
+    log = PublicEditLog(question_id=uid, user_id=g.user.id, before=topic.name, before_id=topic_id,
                         kind=QUESTION_EDIT_KIND.REMOVE_TOPIC)
     db.session.add(log)
     db.session.commit()
@@ -169,13 +169,12 @@ def update(uid):
         for answer in question.answers:
             answer.save_to_es()
     if desc != (question.desc or ""):
-        # Desc log
+        # Update desc log
         desc_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
                                  user_id=g.user.id, compare=generate_lcs_html(question.desc, desc))
         question.logs.append(desc_log)
         question.desc = desc
     db.session.add(question)
     db.session.commit()
-    # 更新es中的question
-    question.save_to_es()
+    question.save_to_es()  # 更新es中的question
     return json.dumps({'result': True})
