@@ -8,7 +8,11 @@
 
         <div class="row">
             <div class="col-md-8">
-                关注
+                {% for following in user.followings %}
+                    <a href="{{ url_for('user.profile', uid=following.following.id) }}">
+                        <img src="{{ following.following.avatar_url }}" alt=""/>
+                    </a>
+                {% endfor %}
             </div>
             <div class="col-md-4">
             </div>

@@ -64,21 +64,23 @@
     {{ user.thanked_answers.count() }} 感谢 |
     10 分享
 
-    <div>
-        {{ user_follow_wap(user) }}
-    </div>
+    {% if not g.user or g.user.id != user.id %}
+        <div>
+            {{ user_follow_wap(user) }}
+        </div>
+    {% endif %}
 
     <ul class="nav nav-tabs">
         <li {% if active == 'profile' %}class="active"{% endif %}>
             <a href="{{ url_for('user.profile', uid=user.id) }}">主页</a>
         </li>
-        <li {% if active == 'profile' %}class="answers"{% endif %}>
+        <li {% if active == 'answers' %}class="active"{% endif %}>
             <a href="{{ url_for('user.answers', uid=user.id) }}">
                 {{ user.answers.count() }}
                 回答
             </a>
         </li>
-        <li {% if active == 'profile' %}class="questions"{% endif %}>
+        <li {% if active == 'questions' %}class="active"{% endif %}>
             <a href="{{ url_for('user.questions', uid=user.id) }}">
                 {{ user.questions.count() }}
                 提问

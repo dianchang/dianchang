@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% from "macros/_user.html" import user_page_header %}
+{% from "macros/_question.html" import render_questions %}
 
 {% block page_title %}提问 - {{ user.name }}{% endblock %}
 {% block page_content %}
@@ -8,7 +9,7 @@
 
         <div class="row">
             <div class="col-md-8">
-                提问
+                {{ render_questions(user.questions) }}
             </div>
             <div class="col-md-4">
             </div>
