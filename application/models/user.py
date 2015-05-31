@@ -163,12 +163,12 @@ class InvitationCode(db.Model):
 
 class USER_FEED_KIND(object):
     """用户feed类型"""
-    ASK_QUESTION = "gN02m2F"
-    ANSWER_QUESTION = "J8AbTDT"
-    UPVOTE_ANSWER = "F9FqDKa"
-    FOLLOW_QUESTION = "4MYN2Ui"
-    FOLLOW_TOPIC = "wa3PMng"
-    FOLLOW_USER = "rDtV02F"
+    ASK_QUESTION = "gN02m2F"  # 提问
+    ANSWER_QUESTION = "J8AbTDT"  # 回答问题
+    UPVOTE_ANSWER = "F9FqDKa"  # 赞同回答
+    FOLLOW_QUESTION = "4MYN2Ui"  # 关注问题
+    FOLLOW_TOPIC = "wa3PMng"  # 关注话题
+    FOLLOW_USER = "rDtV02F"  # 关注用户
 
 
 class UserFeed(db.Model):
@@ -199,11 +199,14 @@ class UserFeed(db.Model):
 
 class NOTIFICATION_KIND(object):
     """用户消息类型"""
-    UPVOTE_ANSWER = "Vu69o4V"
-    THANK_ANSWER = "gIWr7dg"
-    FOLLOW_YOU = "nK8BQ99"
-    INVITE_TO_ANSWER = "WaO3vxo"
-    ANSWER_QUESTION = "W4XBoRf"
+    GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "FAKeWIP"  # 关注的问题有了精彩的回答
+    ANSWER_FROM_ASKED_QUESTION = "WFHhwmW"  # 回答了我提出的问题
+    FOLLOW_ME = "nK8BQ99"  # 关注了我
+    UPVOTE_ANSWER = "Vu69o4V"  # 赞同了我的回答
+    THANK_ANSWER = "gIWr7dg"  # 感谢了我的回答
+    LIKE_ANSWER_COMMENT = "1oY78lq"  # 赞了我的评论
+    SYSTEM_NOTI = "ezjwiCu"  # 系统通知
+    HIDE_ANSWER = "E0CzTCk"  # 回答被折叠
 
 
 class Notification(db.Model):
@@ -231,10 +234,12 @@ class Notification(db.Model):
 
 class HOME_FEED_KIND(object):
     """首页feed类型"""
-    FOLLOWING_UPVOTE_ANSWER = "UdW38Gw"
-    FOLLOWING_ASK_QUESTION = "groYn17"
-    FOLLOWING_ANSWER_QUESTION = "wFyvyTI"
-    ANSWER_FROM_FOLLOWED_TOPIC = "HVKEV0N"
+    FOLLOWING_UPVOTE_ANSWER = "UdW38Gw"  # 我关注的人赞同某个回答
+    FOLLOWING_ASK_QUESTION = "groYn17"  # 我关注的人提出了问题
+    FOLLOWING_ANSWER_QUESTION = "wFyvyTI"  # 我关注的人回答了问题
+    WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC = "6UEXA9U"  # 我擅长的话题的热门待回答问题
+    GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "HVKEV0N"  # 关注的话题下的精彩回答
+    NEW_ANSWER_FROM_FOLLOWED_TOPIC = "VpuedTz"  # 关注的话题下的新人回答、刚出炉的回答
 
 
 class HomeFeed(db.Model):
@@ -262,7 +267,10 @@ class HomeFeed(db.Model):
 
 class COMPOSE_FEED_KIND(object):
     """撰写feed类型"""
-    pass
+    WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC = "v0KJCX3"  # 我擅长的话题下的待回答问题
+    INVITE_TO_ANSWER = "kdcKRfi"  # 别人邀请我回答的问题
+    WAITING_FOR_ANSWER_QUESTION_FROM_ALL = "4Q8wfm9"  # 全站热门的待回答问题
+    WAITING_FOR_ANSWER_QUESTION_FROM_ANSWERD_TOPIC = "JlPzjXf"  # 我没有写进擅长话题，但我之前有过回答的话题下的热门待回答问题
 
 
 class ComposeFeed(db.Model):
