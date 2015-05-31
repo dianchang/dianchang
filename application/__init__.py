@@ -47,9 +47,10 @@ def create_app():
 
     # Enable Sentry in production mode
     if app.production and app.config.get('SENTRY_DSN'):
-        from .utils.sentry import sentry
-
-        sentry.init_app(app, dsn=app.config.get('SENTRY_DSN'))
+        pass
+        # from .utils.sentry import sentry
+        #
+        # sentry.init_app(app, dsn=app.config.get('SENTRY_DSN'))
     else:
         DebugToolbarExtension(app)
 
