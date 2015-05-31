@@ -77,7 +77,7 @@
                                     <div>
                                         <a href="{{ url_for('user.profile', uid=answer.user.id) }}">
                                             {{ answer.user.name }}
-                                        </a>{% if answer.user.desc %}，{{ answer.content }}{% endif %}
+                                        </a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
                                     </div>
                                     <div>{{ answer.content }}</div>
                                 </div>
