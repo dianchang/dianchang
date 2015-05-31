@@ -32,7 +32,7 @@ class Answer(db.Model):
         """回答分值，体现该回答的精彩程度"""
         # TODO: need to use original fields
         self.score = self.upvotes.count() + self.thanks.count() + self.comments.count() \
-            - self.downvotes.count() - self.nohelps
+                     - self.downvotes.count() - self.nohelps
 
     def save_to_es(self):
         """保存此回答到elasticsearch"""
@@ -82,26 +82,6 @@ class Answer(db.Model):
 
     def __repr__(self):
         return '<Answer %s>' % self.name
-
-
-class AnswerComment(db.Model):
-    """对回答的评论"""
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.now)
-
-    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    answer = db.relationship('Answer', backref=db.backref('comments',
-                                                          lazy='dynamic',
-                                                          order_by='desc(AnswerComment.created_at)'))
-
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('answer_comments',
-                                                      lazy='dynamic',
-                                                      order_by='desc(AnswerComment.created_at)'))
-
-    def __repr__(self):
-        return '<AnswerComment %s>' % self.id
 
 
 class UpvoteAnswer(db.Model):
@@ -178,3 +158,42 @@ class NohelpAnswer(db.Model):
 
     def __repr__(self):
         return '<NohelpAnswer %s>' % self.id
+
+
+class AnswerComment(db.Model):
+    """对回答的评论"""
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
+    answer = db.relationship('Answer', backref=db.backref('comments',
+                                                          lazy='dynamic',
+                                                          order_by='desc(AnswerComment.created_at)'))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('answer_comments',
+                                                      lazy='dynamic',
+                                                      order_by='desc(AnswerComment.created_at)'))
+
+    def __repr__(self):
+        return '<AnswerComment %s>' % self.id
+
+
+class LikeAnswerComment(db.Model):
+    """赞回答评论"""
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
+    answer = db.relationship('Answer', backref=db.backref('likes',
+                                                          lazy='dynamic',
+                                                          order_by='desc(LikeAnswerComment.created_at)'))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('liked_answer_comments',
+                                                      lazy='dynamic',
+                                                      order_by='desc(LikeAnswerComment.created_at)'))
+
+    def __repr__(self):
+        return '<LikeAnswerComment %s>' % self.id
