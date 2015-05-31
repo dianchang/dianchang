@@ -18,7 +18,8 @@ CSS_CONFIG = "css.yml"
 
 # Output files
 LIBS_JS = "build/libs.js"
-PAGE_JS = "build/page.js"
+APP_JS = "build/app.js"
+LIBS_CSS = "build/libs.css"
 APP_CSS = "build/app.css"
 
 
@@ -77,7 +78,8 @@ def register_assets(app):
     app.jinja_env.globals.update({
         'static': static,
         'libs_js': libs_js,
-        'page_js': page_js,
+        'app_js': app_js,
+        'libs_css': libs_css,
         'app_css': app_css,
         'page_id': page_id
     })
@@ -93,7 +95,7 @@ def build(app):
 def build_js(app):
     """Build js files.
 
-    Include libs.js and page.js.
+    Include libs.js and app.js.
     """
     static_path = app.static_folder
     libs = G.js_config['libs']
@@ -114,15 +116,15 @@ def build_js(app):
     os.system("uglifyjs %s -o %s -c warnings=false -m" % (lib_js_output_path, lib_js_output_path))
     print('libs.js builded.')
 
-    # Build page.js
-    page_js_string = ""
+    # Build app.js
+    app_js_string = ""
 
     # layout
     layout_js_prefix = "(function(){"
     layout_js_suffix = "})();"
     for layout_path in layout:
         with open(os.path.join(static_path, layout_path)) as js_file:
-            page_js_string += layout_js_prefix + js_file.read() + layout_js_suffix
+            app_js_string += layout_js_prefix + js_file.read() + layout_js_suffix
 
     # page
     blueprints = app.blueprints.keys()
@@ -138,32 +140,29 @@ def build_js(app):
                     action = _file[:-3]
                     page_id = "page-%s-%s" % (subdir, action)
                     with open(os.path.join(subdir_path, _file)) as js_file:
-                        page_js_string += page_js_prefix % page_id
-                        page_js_string += js_file.read()
-                        page_js_string += page_js_suffix
+                        app_js_string += page_js_prefix % page_id
+                        app_js_string += js_file.read()
+                        app_js_string += page_js_suffix
 
-    page_js_output_path = os.path.join(static_path, PAGE_JS)
-    with open(page_js_output_path, "w") as text_file:
-        text_file.write(page_js_string)
-    os.system("uglifyjs %s -o %s -c warnings=false -m" % (page_js_output_path, page_js_output_path))
-    print('page.js builded.')
+    app_js_output_path = os.path.join(static_path, APP_JS)
+    with open(app_js_output_path, "w") as text_file:
+        text_file.write(app_js_string)
+    os.system("uglifyjs %s -o %s -c warnings=false -m" % (app_js_output_path, app_js_output_path))
+    print('app.js builded.')
 
 
 def build_css(app):
     """Build css files.
 
-    Include app.css.
+    Include libs.css and app.css.
     """
     static_path = app.static_folder
     libs = G.css_config['libs']
     layout = G.css_config['layout']
     page_root_path = G.css_config['page']
 
-    app_css_string = ""
-
-    # Build app.css
-
-    # libs
+    # Build libs.css
+    libs_css_string = ""
     for lib in libs:
         lib_path = os.path.join(static_path, lib)
 
@@ -171,7 +170,15 @@ def build_css(app):
             file_content = css_file.read()
             # Rewrite relative path to absolute path
             file_content = _rewrite_relative_url(file_content, lib_path, static_path)
-            app_css_string += file_content
+            libs_css_string += file_content
+
+    libs_css_string = libs_css_string.replace('\n', '').replace('\r', '')
+    with open(os.path.join(static_path, LIBS_CSS), "w") as text_file:
+        text_file.write(libs_css_string)
+    print('libs.css builded.')
+
+    # Build app.css
+    app_css_string = ""
 
     # layout
     for relative_layout_path in layout:
@@ -205,7 +212,6 @@ def build_css(app):
                         page_css_string += page_css_suffix
                         page_css_string = lesscpy.compile(StringIO(page_css_string), minify=True)
                         app_css_string += page_css_string
-                        # print(file)
 
     app_css_string = app_css_string.replace('\n', '').replace('\r', '')
     with open(os.path.join(static_path, APP_CSS), "w") as text_file:
@@ -232,8 +238,8 @@ def libs_js():
     return Markup(script_tags)
 
 
-def page_js(template_reference):
-    """Generate page js script tags for Flask app."""
+def app_js(template_reference):
+    """Generate app js script tags for Flask app."""
 
     # if False:
     if G.debug:
@@ -247,11 +253,11 @@ def page_js(template_reference):
         script_paths.append(page_js_path)
         return Markup(''.join(map(script, script_paths)))
     else:
-        return Markup(script(PAGE_JS))
+        return Markup(script(APP_JS))
 
 
-def app_css(template_reference):
-    """Generate app css link tags for Flask app."""
+def libs_css():
+    """Generate libs css link tags for Flask app."""
     link_tags = ""
 
     # Excluded css libs
@@ -265,7 +271,17 @@ def app_css(template_reference):
     if G.debug:
         # libs
         link_tags += ''.join(map(link, G.css_config['libs']))
+    else:
+        link_tags += link(LIBS_CSS)
+    return Markup(link_tags)
 
+
+def app_css(template_reference):
+    """Generate app css link tags for Flask app."""
+    link_tags = ""
+
+    # if False:
+    if G.debug:
         # layout
         for layout_path in G.css_config['layout']:
             # 支持通配符
@@ -343,11 +359,12 @@ def link(path, absolute=False, exclude=False):
 
 def upload(app):
     # Upload css files
+    _upload_asset(os.path.join(app.static_folder, LIBS_CSS))
     _upload_asset(os.path.join(app.static_folder, APP_CSS))
 
     # Upload js files
     _upload_asset(os.path.join(G.static_path, LIBS_JS))
-    _upload_asset(os.path.join(G.static_path, PAGE_JS))
+    _upload_asset(os.path.join(G.static_path, APP_JS))
 
     # Upload images
     for image in glob2.glob(os.path.join(G.static_path, "image/**/*.*")):
