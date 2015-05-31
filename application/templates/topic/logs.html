@@ -1,8 +1,105 @@
 {% extends "layout.html" %}
 
-{% block page_title %}Logs{% endblock %}
+{% block page_title %}日志 - 话题「{{ topic.name }}」{% endblock %}
 {% block page_content %}
     <div class="container">
-        <h1>Logs</h1>
+        <h1>
+            <a href="{{ url_for('topic.view', uid=topic.id) }}">{{ topic.name }}</a>
+        </h1>
+
+        <div class="row">
+            <div class="col-md-8">
+                <p>话题编辑日志</p>
+
+                {% for log in topic.logs %}
+                    <div class="topic-log media">
+                        <div class="media-left">
+                            <img src="{{ log.user.avatar_url }}" alt=""/>
+                        </div>
+                        <div class="media-body">
+                            <div class="title">
+                                <a href="{{ url_for('user.profile', uid=log.user_id) }}">
+                                    {{ log.user.name }}
+                                </a>
+
+                                {% if log.kind == TOPIC_EDIT_KIND.CREATE %}
+                                    创建了话题
+                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_AVATAR %}
+                                    更新了话题图片
+                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
+                                    更新了话题名称
+                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_DESC %}
+                                    更新了话题描述
+                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_PARENT_TOPIC %}
+                                    添加了父话题
+                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC %}
+                                    移除了父话题
+                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_CHILD_TOPIC %}
+                                    添加了子话题
+                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
+                                    移除了子话题
+                                {% endif %}
+
+                                <span class="time">{{ log.created_at|timesince }}</span>
+                            </div>
+
+                            <div class="content">
+                                {% if log.kind == TOPIC_EDIT_KIND.CREATE %}
+                                    <ins>{{ log.original_name }}</ins>
+
+                                    {% if log.original_desc %}
+                                        <br/><br/>
+                                        话题描述：
+                                        <ins>{{ log.original_desc }}</ins>
+                                    {% endif %}
+                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_AVATAR %}
+                                    <img src="{{ log.before }}" alt=""/>
+                                    <span class="fa fa-long-arrow-right"></span>
+                                    <img src="{{ log.after }}" alt=""/>
+                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
+                                    <del>
+                                        <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                                            {{ log.before }}
+                                        </a>
+                                    </del>
+                                    <span class="fa fa-long-arrow-right"></span>
+                                    <inc>
+                                        <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                                            {{ log.after }}
+                                        </a>
+                                    </inc>
+                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_DESC %}
+                                    {{ log.compare|safe }}
+                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_PARENT_TOPIC %}
+                                    <ins>
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}">
+                                            {{ log.after }}
+                                        </a>
+                                    </ins>
+                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC %}
+                                    <del>
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}">
+                                            {{ log.before }}
+                                        </a>
+                                    </del>
+                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_CHILD_TOPIC %}
+                                    <ins>
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}">
+                                            {{ log.after }}
+                                        </a>
+                                    </ins>
+                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
+                                    <del>
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}">
+                                            {{ log.before }}
+                                        </a>
+                                    </del>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}

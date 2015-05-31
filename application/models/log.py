@@ -15,10 +15,12 @@ class TOPIC_EDIT_KIND(object):
     CREATE = "RVa9saF"
     UPDATE_AVATAR = "Z0YVIUM"
     UPDATE_NAME = "4Rhuxhl"
-    UDPATE_WIKI = "dw8xA42"
     UPDATE_DESC = "kUQJwk2"
+    UDPATE_WIKI = "dw8xA42"
     ADD_PARENT_TOPIC = "vim7OUT"
+    REMOVE_PARENT_TOPIC = "fC3fNIl"
     ADD_CHILD_TOPIC = "D0qZIv7"
+    REMOVE_CHILD_TOPIC = "tCsTnWa"
 
 
 class PublicEditLog(db.Model):

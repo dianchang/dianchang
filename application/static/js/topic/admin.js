@@ -42,7 +42,7 @@ $parentTopicInput.on('typeahead:selected', function (e, parentTopic) {
 });
 
 // 删除直接父话题
-$('.btn-remove-parent-topic').click(function () {
+$(document).on('click', '.btn-remove-parent-topic', function () {
     var parentTopicId = parseInt($(this).data('parent-topic-id'));
     var _this = $(this);
 
@@ -96,7 +96,7 @@ $childTopicInput.on('typeahead:selected', function (e, childTopic) {
 });
 
 // 删除直接子话题
-$('.btn-remove-child-topic').click(function () {
+$(document).on('click', '.btn-remove-child-topic', function () {
     var childTopicId = parseInt($(this).data('child-topic-id'));
     var _this = $(this);
 

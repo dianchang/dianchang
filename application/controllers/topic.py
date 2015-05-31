@@ -1,8 +1,10 @@
 # coding: utf-8
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
-from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistics
+from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistics, \
+    PublicEditLog, TOPIC_EDIT_KIND
 from ..utils.permissions import UserPermission
+from ..utils.helpers import generate_lcs_html
 from ..forms import AdminTopicForm, EditTopicWikiForm
 
 bp = Blueprint('topic', __name__)
@@ -24,17 +26,21 @@ def query():
     descendant_topic_id = request.form.get('descendant_topic_id')  # 不为此话题的祖先话题的话题（用于给话题添加父话题）
     if q:
         topics = Topic.query.filter(Topic.name.like("%%%s%%" % q))
-        if question_id:
+        if question_id:  # 排除该问题的所有话题
             topics = topics.filter(
                 ~Topic.questions.any(QuestionTopic.question_id == question_id))
-        if ancestor_topic_id:
+        if ancestor_topic_id:  # 排除该话题及其所有子话题
             ancestor_topic = Topic.query.get(ancestor_topic_id)
             if ancestor_topic:
-                topics = topics.filter(Topic.id.notin_(ancestor_topic.descendant_topics_id_list))
-        if descendant_topic_id:
+                excluded_list = ancestor_topic.descendant_topics_id_list
+                excluded_list.append(ancestor_topic_id)
+                topics = topics.filter(Topic.id.notin_(excluded_list))
+        if descendant_topic_id:  # 排除该话题及其所有父话题
             descendant_topic = Topic.query.get(descendant_topic_id)
             if descendant_topic:
-                topics = topics.filter(Topic.id.notin_(descendant_topic.ancestor_topics_id_list))
+                excluded_list = descendant_topic.ancestor_topics_id_list
+                excluded_list.append(descendant_topic_id)
+                topics = topics.filter(Topic.id.notin_(excluded_list))
         return json.dumps([{'name': topic.name,
                             'id': topic.id}
                            for topic in topics])
@@ -68,11 +74,23 @@ def wiki(uid):
 
 
 @bp.route('/topic/<int:uid>/admin', methods=['POST', 'GET'])
+@UserPermission()
 def admin(uid):
     """话题管理"""
     topic = Topic.query.get_or_404(uid)
     form = AdminTopicForm()
     if form.validate_on_submit():
+        # Update name log
+        if topic.name != form.name.data:
+            log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_NAME, user_id=g.user.id, topic_id=uid, before=topic.name,
+                                after=form.name.data)
+            db.session.add(log)
+        # Update desc log
+        if (topic.desc or "") != form.desc.data:
+            log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_DESC, user_id=g.user.id, topic_id=uid,
+                                before=topic.desc, after=form.desc.data,
+                                compare=generate_lcs_html(topic.desc, form.desc.data))
+            db.session.add(log)
         form.populate_obj(topic)
         db.session.add(topic)
         db.session.commit()
@@ -82,13 +100,20 @@ def admin(uid):
 
 
 @bp.route('/topic/<int:uid>/add_parent_topic/<int:parent_topic_id>', methods=['POST'])
+@UserPermission()
 def add_parent_topic(uid, parent_topic_id):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
     parent_topic = Topic.query.get_or_404(parent_topic_id)
     topic.add_parent_topic(parent_topic_id)
-    macro = get_template_attribute('macros/_topic.html', 'parent_topic_edit_wap')
 
+    # Add parent topic log
+    log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
+                        after=parent_topic.name, after_id=parent_topic_id)
+    db.session.add(log)
+    db.session.commit()
+
+    macro = get_template_attribute('macros/_topic.html', 'parent_topic_edit_wap')
     return json.dumps({
         'result': True,
         'html': macro(parent_topic)
@@ -96,22 +121,37 @@ def add_parent_topic(uid, parent_topic_id):
 
 
 @bp.route('/topic/<int:uid>/remove_parent_topic/<int:parent_topic_id>', methods=['POST'])
+@UserPermission()
 def remove_parent_topic(uid, parent_topic_id):
     """删除直接父话题"""
     topic = Topic.query.get_or_404(uid)
     parent_topic = Topic.query.get_or_404(parent_topic_id)
     topic.remove_parent_topic(parent_topic_id)
+
+    # Remove parent topic log
+    log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
+                        before=parent_topic.name, before_id=parent_topic_id)
+    db.session.add(log)
+    db.session.commit()
+
     return json.dumps({'result': True})
 
 
 @bp.route('/topic/<int:uid>/add_child_topic/<int:child_topic_id>', methods=['POST'])
+@UserPermission()
 def add_child_topic(uid, child_topic_id):
     """添加直接子话题"""
     topic = Topic.query.get_or_404(uid)
     child_topic = Topic.query.get_or_404(child_topic_id)
     topic.add_child_topic(child_topic_id)
-    macro = get_template_attribute('macros/_topic.html', 'child_topic_edit_wap')
 
+    # Add child topic log
+    log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
+                        after=child_topic.name, after_id=child_topic_id)
+    db.session.add(log)
+    db.session.commit()
+
+    macro = get_template_attribute('macros/_topic.html', 'child_topic_edit_wap')
     return json.dumps({
         'result': True,
         'html': macro(child_topic)
@@ -119,11 +159,19 @@ def add_child_topic(uid, child_topic_id):
 
 
 @bp.route('/topic/<int:uid>/remove_child_topic/<int:child_topic_id>', methods=['POST'])
+@UserPermission()
 def remove_child_topic(uid, child_topic_id):
     """删除直接子话题"""
     topic = Topic.query.get_or_404(uid)
     child_topic = Topic.query.get_or_404(child_topic_id)
     topic.remove_child_topic(child_topic_id)
+
+    # Remove child topic log
+    log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
+                        before=child_topic.name, before_id=child_topic_id)
+    db.session.add(log)
+    db.session.commit()
+
     return json.dumps({'result': True})
 
 

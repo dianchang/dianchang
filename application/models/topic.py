@@ -83,7 +83,8 @@ class Topic(db.Model):
                 db.session.commit()
 
                 # Create topic log
-                log = PublicEditLog(user_id=g.user.id, kind=TOPIC_EDIT_KIND.CREATE, after=name, after_id=topic.id)
+                log = PublicEditLog(kind=TOPIC_EDIT_KIND.CREATE, user_id=g.user.id, after=name, after_id=topic.id,
+                                    original_name=topic.name)
                 topic.logs.append(log)
                 db.session.add(topic)
 

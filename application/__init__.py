@@ -74,7 +74,8 @@ def create_app():
 def register_jinja(app):
     """Register jinja filters, vars, functions."""
     from .utils import filters, permissions, helpers, assets
-    from .models import QUESTION_EDIT_KIND, USER_FEED_KIND, NOTIFICATION_KIND
+    from .models import QUESTION_EDIT_KIND, USER_FEED_KIND, NOTIFICATION_KIND, TOPIC_EDIT_KIND, HOME_FEED_KIND, \
+        COMPOSE_FEED_KIND
 
     app.jinja_env.filters.update({
         'timesince': filters.timesince
@@ -100,8 +101,11 @@ def register_jinja(app):
         'rules': rules,
         'permissions': permissions,
         'QUESTION_EDIT_KIND': QUESTION_EDIT_KIND,
+        'TOPIC_EDIT_KIND': TOPIC_EDIT_KIND,
+        'NOTIFICATION_KIND': NOTIFICATION_KIND,
         'USER_FEED_KIND': USER_FEED_KIND,
-        'NOTIFICATION_KIND': NOTIFICATION_KIND
+        'HOME_FEED_KIND': HOME_FEED_KIND,
+        'COMPOSE_FEED_KIND': COMPOSE_FEED_KIND
     })
 
 
