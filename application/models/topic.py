@@ -258,13 +258,17 @@ class TopicWikiContributor(db.Model):
 
 
 class UserTopicStatistics(db.Model):
-    """话题统计：用于分析某用户对某话题的擅长程度"""
+    """话题统计
+
+    记录用户在某话题下的数据。
+    """
     id = db.Column(db.Integer, primary_key=True)
-    upvotes_count = db.Column(db.Integer, default=0)
-    answers_count = db.Column(db.Integer, default=0)
-    score = db.Column(db.Integer, default=0)
-    show_order = db.Column(db.Integer, default=0)
-    selected = db.Column(db.Boolean, default=False)
+    answers_count = db.Column(db.Integer, default=0)  # 用户在该话题下的回答数
+    upvotes_count = db.Column(db.Integer, default=0)  # 用户在该话题下收获的赞同数
+    score = db.Column(db.Integer, default=0)  # 用户对该话题的擅长度
+    selected = db.Column(db.Boolean, default=False)  # 是否选择该话题作为擅长话题
+    show_order = db.Column(db.Integer, default=0)  # 擅长话题排列顺序（越大越排在后面）
+    experience = db.Column(db.String(200))  # 话题经验
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
