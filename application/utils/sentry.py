@@ -1,3 +1,3 @@
-# from raven.contrib.flask import Sentry
-#
-# sentry = Sentry()
+from raven.contrib.flask import Sentry
+
+sentry = Sentry()
