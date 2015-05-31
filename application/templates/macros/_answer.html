@@ -1,12 +1,21 @@
 {% macro render_answer(answer) %}
     <div class="dc-answer">
+        <div class="topics">
+            {% for topic in answer.question.topics %}
+                {% set topic = topic.topic %}
+                <a href="{{ url_for('topic.view', uid=topic.id) }}" class="label label-default">
+                    {{ topic.name }}
+                </a>
+            {% endfor %}
+        </div>
         <div>
             <a href="{{ url_for('question.view', uid=answer.question.id) }}">
                 {{ (answer.highlight_question_title or answer.question.title)|safe }}
             </a>
         </div>
         <div>
-            {{ answer.user.name }}{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
+            <a href="{{ url_for('user.profile', uid=answer.user_id) }}">
+                {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
         </div>
         <div>
             {{ (answer.highlight_content or answer.content)|safe }}
@@ -14,6 +23,7 @@
         <div class="time" title="{{ answer.created_at }}">
             {{ answer.created_at|timesince }}
         </div>
+        <hr/>
     </div>
 {% endmacro %}
 
