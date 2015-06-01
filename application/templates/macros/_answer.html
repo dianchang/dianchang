@@ -21,10 +21,31 @@
             {{ (answer.highlight_content or answer.content)|safe }}
         </div>
         <div class="time" title="{{ answer.created_at }}">
-            {{ answer.created_at|timesince }}
+            发布于 {{ answer.created_at|timesince }}
+        </div>
+
+        <div class="commands">
+            {% set upvoted =  %}
+            <span class="vote-wap">
+                <span class="upvote-wap">
+                    <a class="btn-upvote" href="javascript: void(0)">
+                        <span class="text-for-upvoted">已赞同</span>
+                        <span class="text-for-un-upvoted">赞同</span>
+                    </a>
+                    |
+                    {{ answer.upvotes.count() }}
+                </span>
+                <a href="javascript: void(0)" class="btn-downvote">
+                    反对
+                </a>
+            </span>
         </div>
         <hr/>
     </div>
+
+    <script>
+
+    </script>
 {% endmacro %}
 
 

@@ -1,5 +1,6 @@
 # coding: utf-8
 from datetime import datetime
+from flask import g
 from ._base import db
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
@@ -33,6 +34,22 @@ class Answer(db.Model):
         # TODO: need to use original fields
         self.score = self.upvotes.count() + self.thanks.count() + self.comments.count() \
                      - self.downvotes.count() - self.nohelps
+
+    def upvoted_by_user(self):
+        """该回答被当前用户赞同"""
+        return g.user and self.upvotes.filter(UpvoteAnswer.user_id == g.user.id).count() > 0
+
+    def downvoted_by_user(self):
+        """该回答被当前用户反对"""
+        return g.user and self.downvotes.filter(DownvoteAnswer.user_id == g.user.id).count() > 0
+
+    def thanked_by_user(self):
+        """该回答被当前用户感谢"""
+        return g.user and self.thanks.filter(ThankAnswer.user_id == g.user.id).count() > 0
+
+    def nohelped_by_user(self):
+        """该回答被当前用户标记为没有帮助"""
+        return g.user and self.nohelps.filter(NohelpAnswer.user_id == g.user.id).count() > 0
 
     def save_to_es(self):
         """保存此回答到elasticsearch"""
