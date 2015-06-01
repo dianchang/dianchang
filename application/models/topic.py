@@ -249,10 +249,14 @@ class Topic(db.Model):
         """添加直接子话题"""
         for ancestor_topic in TopicClosure.query.filter(TopicClosure.descendant_id == self.id):
             for descendant_topic in TopicClosure.query.filter(TopicClosure.ancestor_id == child_topic_id):
-                new_closure = TopicClosure(ancestor_id=ancestor_topic.ancestor_id,
-                                           descendant_id=descendant_topic.descendant_id,
-                                           path_length=ancestor_topic.path_length + descendant_topic.path_length + 1)
-                db.session.add(new_closure)
+                closure = TopicClosure.query. \
+                    filter(TopicClosure.ancestor_id == ancestor_topic.ancestor_id,
+                           TopicClosure.descendant_id == descendant_topic.descendant_id).first()
+                if not closure:
+                    new_closure = TopicClosure(ancestor_id=ancestor_topic.ancestor_id,
+                                               descendant_id=descendant_topic.descendant_id,
+                                               path_length=ancestor_topic.path_length + descendant_topic.path_length + 1)
+                    db.session.add(new_closure)
         db.session.commit()
 
     def remove_child_topic(self, child_topic_id):
