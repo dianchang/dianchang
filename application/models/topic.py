@@ -301,6 +301,12 @@ class TopicSynonym(db.Model):
                                                         lazy='dynamic',
                                                         order_by='desc(TopicSynonym.created_at)'))
 
+    def __setattr__(self, name, value):
+        """为synonym赋值时，自动设置其拼音"""
+        if name == 'synonym':
+            super(TopicSynonym, self).__setattr__('synonym_pinyin', pinyin(value))
+        super(TopicSynonym, self).__setattr__(name, value)
+
 
 class FollowTopic(db.Model):
     """关注话题"""
