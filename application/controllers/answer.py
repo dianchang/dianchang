@@ -27,11 +27,13 @@ def upvote(uid):
 
         # 更新话题统计数据
         for topic in answer.question.topics:
-            UserTopicStatistics.downvote_answer_in_topic(answer.user_id, topic.topic_id)
+            UserTopicStatistics.cancel_upvote_answer_in_topic(answer.user_id, topic.topic_id)
 
+        # TODO: need to change to answer.upvotes_count
         return json.dumps({
             'result': True,
-            'upvoted': False
+            'upvoted': False,
+            'count': answer.upvotes.count()
         })
     else:  # 赞同
         upvote_answer = UpvoteAnswer(user_id=g.user.id)
@@ -49,13 +51,15 @@ def upvote(uid):
         for topic in answer.question.topics:
             UserTopicStatistics.upvote_answer_in_topic(answer.user_id, topic.topic_id)
 
+        # TODO: need to change to answer.upvotes_count
         return json.dumps({
             'result': True,
-            'upvoted': True
+            'upvoted': True,
+            'count': answer.upvotes.count()
         })
 
 
-@bp.route('/answer/<int:uid>/downvote')
+@bp.route('/answer/<int:uid>/downvote', methods=['POST'])
 def downvote(uid):
     """反对 & 取消反对"""
     answer = Answer.query.get_or_404(uid)
@@ -89,7 +93,7 @@ def downvote(uid):
         })
 
 
-@bp.route('/answer/<int:uid>/thank')
+@bp.route('/answer/<int:uid>/thank', methods=['POST'])
 def thank(uid):
     """感谢 & 取消感谢"""
     answer = Answer.query.get_or_404(uid)
@@ -118,7 +122,7 @@ def thank(uid):
         })
 
 
-@bp.route('/answer/<int:uid>/nohelp')
+@bp.route('/answer/<int:uid>/nohelp', methods=['POST'])
 def nohelp(uid):
     """没有帮助 & 取消没有帮助"""
     answer = Answer.query.get_or_404(uid)

@@ -1,0 +1,24 @@
+.dc-answer .upvote-wap .for-un-upvoted {
+  display: inline-block;
+}
+.dc-answer .upvote-wap .for-upvoted {
+  display: none;
+}
+.dc-answer .upvote-wap.upvoted .for-un-upvoted {
+  display: none;
+}
+.dc-answer .upvote-wap.upvoted .for-upvoted {
+  display: inline-block;
+}
+.dc-answer .btn-downvote-answer .for-un-downvoted {
+  display: inline-block;
+}
+.dc-answer .btn-downvote-answer .for-downvoted {
+  display: none;
+}
+.dc-answer .btn-downvote-answer.downvoted .for-un-downvoted {
+  display: none;
+}
+.dc-answer .btn-downvote-answer.downvoted .for-downvoted {
+  display: inline-block;
+}

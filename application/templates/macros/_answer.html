@@ -1,56 +1,112 @@
-{% macro render_answer(answer) %}
-    <div class="dc-answer">
-        <div class="topics">
-            {% for topic in answer.question.topics %}
-                {% set topic = topic.topic %}
-                <a href="{{ url_for('topic.view', uid=topic.id) }}" class="label label-default">
-                    {{ topic.name }}
-                </a>
-            {% endfor %}
-        </div>
-        <div>
-            <a href="{{ url_for('question.view', uid=answer.question.id) }}">
-                {{ (answer.highlight_question_title or answer.question.title)|safe }}
-            </a>
-        </div>
-        <div>
-            <a href="{{ url_for('user.profile', uid=answer.user_id) }}">
-                {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
-        </div>
-        <div>
-            {{ (answer.highlight_content or answer.content)|safe }}
-        </div>
-        <div class="time" title="{{ answer.created_at }}">
-            发布于 {{ answer.created_at|timesince }}
-        </div>
-
-        <div class="commands">
-            {% set upvoted =  %}
-            <span class="vote-wap">
-                <span class="upvote-wap">
-                    <a class="btn-upvote" href="javascript: void(0)">
-                        <span class="text-for-upvoted">已赞同</span>
-                        <span class="text-for-un-upvoted">赞同</span>
-                    </a>
-                    |
-                    {{ answer.upvotes.count() }}
-                </span>
-                <a href="javascript: void(0)" class="btn-downvote">
-                    反对
-                </a>
-            </span>
-        </div>
-        <hr/>
-    </div>
-
-    <script>
-
-    </script>
-{% endmacro %}
-
-
 {% macro render_answers(answers) %}
     {% for answer in answers %}
-        {{ render_answer(answer) }}
+        <div class="dc-answer">
+            <div class="topics">
+                {% for topic in answer.question.topics %}
+                    {% set topic = topic.topic %}
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="label label-default">
+                        {{ topic.name }}
+                    </a>
+                {% endfor %}
+            </div>
+            <div>
+                <a href="{{ url_for('question.view', uid=answer.question.id) }}">
+                    {{ (answer.highlight_question_title or answer.question.title)|safe }}
+                </a>
+            </div>
+            <div>
+                <a href="{{ url_for('user.profile', uid=answer.user_id) }}">
+                    {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
+            </div>
+            <div>
+                {{ (answer.highlight_content or answer.content)|safe }}
+            </div>
+            <div class="time" title="{{ answer.created_at }}">
+                发布于 {{ answer.created_at|timesince }}
+            </div>
+
+            <div class="commands">
+                {% set upvoted = answer.upvoted_by_user() %}
+                {% set downvoted = answer.downvoted_by_user() %}
+                {% set thankd = answer.thanked_by_user() %}
+                {% set nohelped = answer.nohelped_by_user() %}
+
+            <span class="vote-wap">
+                <span class="upvote-wap {% if upvoted %}upvoted{% endif %}">
+                    <a class="btn-upvote-answer" href="javascript: void(0)" data-id="{{ answer.id }}">
+                        <span class="for-upvoted">已赞同</span>
+                        <span class="for-un-upvoted">赞同</span></a>
+                    |
+                    <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
+                </span>
+                <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
+                   data-id="{{ answer.id }}">
+                    <span class="for-downvoted">已反对</span>
+                    <span class="for-un-downvoted">反对</span>
+                </a>
+            </span>
+            </div>
+            <hr/>
+        </div>
     {% endfor %}
+
+    <script>
+        // 赞同回答
+        $(document).onOnce('click', '.dc-answer .btn-upvote-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var $voteWap = $(this).parents('.vote-wap').first();
+            var $upvoteWap = $(this).parent();
+            var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.upvote', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.upvoted) {
+                        $upvoteWap.addClass('upvoted');
+                        // 取消反对
+                        $downvoteBtn.removeClass('downvoted');
+                    } else {
+                        $upvoteWap.removeClass('upvoted');
+                    }
+
+                    $voteWap.find('.upvotes-count').text(response.count);
+                }
+            });
+        });
+
+        // 反对回答
+        $(document).onOnce('click', '.dc-answer .btn-downvote-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var $voteWap = $(this).parents('.vote-wap').first();
+            var $upvoteWap = $voteWap.find('.upvote-wap');
+            var $upvotesCount = $upvoteWap.find('.upvotes-count');
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.downvote', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.downvoted) {
+                        _this.addClass('downvoted');
+
+                        // 取消赞同
+                        if ($upvoteWap.hasClass('upvoted')) {
+                            $upvoteWap.removeClass('upvoted');
+
+                            var upvotesCount = parseInt($upvotesCount.text());
+                            $upvotesCount.text(upvotesCount > 0 ? upvotesCount - 1 : 0);
+                        }
+                    } else {
+                        _this.removeClass('downvoted');
+                    }
+                }
+            });
+        });
+    </script>
 {% endmacro %}

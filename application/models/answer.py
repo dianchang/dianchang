@@ -33,7 +33,7 @@ class Answer(db.Model):
         """回答分值，体现该回答的精彩程度"""
         # TODO: need to use original fields
         self.score = self.upvotes.count() + self.thanks.count() + self.comments.count() \
-                     - self.downvotes.count() - self.nohelps
+                     - self.downvotes.count() - self.nohelps.count()
 
     def upvoted_by_user(self):
         """该回答被当前用户赞同"""

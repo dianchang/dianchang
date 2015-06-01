@@ -2,7 +2,7 @@
 {% from "macros/_question.html" import question_follow_wap %}
 {% from "macros/_topic.html" import topic_follow_wap %}
 {% from "macros/_user.html" import user_follow_wap %}
-{% from "macros/_answer.html" import render_answer %}
+{% from "macros/_answer.html" import render_answers %}
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
@@ -43,11 +43,7 @@
 
                     {% endfor %}
                 {% elif _type == "answer" %}
-                    {% for answer in results %}
-                        <div class="search-result answer">
-                            {{ render_answer(answer) }}
-                        </div>
-                    {% endfor %}
+                    {{ render_answers(results) }}
                 {% elif _type == "topic" %}
                     {% for topic in results %}
                         <div class="search-result topic">

@@ -232,7 +232,6 @@ class Topic(db.Model):
                     new_closure = TopicClosure(ancestor_id=ancestor_topic.ancestor_id,
                                                descendant_id=descendant_topic.descendant_id,
                                                path_length=ancestor_topic.path_length + descendant_topic.path_length + 1)
-                    print("%d - %d" % (new_closure.ancestor_id, new_closure.descendant_id))
                     db.session.add(new_closure)
         db.session.commit()
 
