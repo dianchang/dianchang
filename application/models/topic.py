@@ -66,9 +66,15 @@ class Topic(db.Model):
 
     def save_to_es(self):
         """保存此话题到elasticsearch"""
+        synonyms = []
+        for synonym in self.synonyms:
+            synonyms.append(synonym.synonym)
+            synonyms.append(synonym.synonym_pinyin)
+
         return save_object_to_es('topic', self.id, {
             'name': self.name,
             'name_pinyin': self.name_pinyin,
+            'synonyms': synonyms,
             'created_at': self.created_at
         })
 
@@ -83,7 +89,7 @@ class Topic(db.Model):
             "query": {
                 "multi_match": {
                     "query": q,
-                    "fields": ["name", "name_pinyin"]
+                    "fields": ["name", "name_pinyin", "synonyms"]
                 }
             },
             "highlight": {

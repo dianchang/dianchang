@@ -283,4 +283,5 @@ def remove_synonym(uid):
     topic_synonym = TopicSynonym.query.get_or_404(uid)
     db.session.delete(topic_synonym)
     db.session.commit()
+    topic_synonym.topic.save_to_es()
     return json.dumps({'result': True})
