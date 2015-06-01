@@ -142,7 +142,7 @@ $topicInput.on('typeahead:selected', function (e, topic) {
 });
 
 // 通过回车添加句集
-$topicInput.on('keypress', function (e) {
+$topicInput.on('keyup', function (e) {
     if (e.which === 13) {
         addToTopic(g.questionId, {name: $(this).val()});
     }

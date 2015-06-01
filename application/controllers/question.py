@@ -182,3 +182,17 @@ def update(uid):
     db.session.commit()
     question.save_to_es()  # 更新es中的question
     return json.dumps({'result': True})
+
+
+@bp.route('/question/similar', methods=['POST'])
+def similar():
+    """类似问题"""
+    title = request.form.get('title')
+    if not title:
+        return ""
+    similar_questions, total, took = Question.query_from_es(title, only_title=True, page=1, per_page=5)
+    macro = get_template_attribute('macros/_question.html', 'similar_questions')
+    return json.dumps({
+        'count': len(similar_questions),
+        'html': macro(similar_questions)
+    })

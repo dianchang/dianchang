@@ -36,13 +36,18 @@ class Question(db.Model):
         return delete_object_from_es('question', self.id)
 
     @staticmethod
-    def query_from_es(q, page=1, per_page=10):
+    def query_from_es(q, only_title=False, page=1, per_page=10):
         """在elasticsearch中查询话题"""
+        if only_title:
+            query_fields = ["title"]
+        else:
+            query_fields = ["title", "desc"]
+
         results = search_objects_from_es(doc_type='question', body={
             "query": {
                 "multi_match": {
                     "query": q,
-                    "fields": ["title", "desc"]
+                    "fields": query_fields
                 }
             },
             "highlight": {

@@ -1,5 +1,14 @@
 var timerForTypeahead = null;
 var $topicInput = $("input[name='search-topic']");
+var $questionInput = $("input[name='question']");
+var $addQuestionWap = $('.add-question-wap');
+var $toSecondBtn = $('.btn-to-second');
+var $toFirstBtn = $('.btn-to-first');
+var $questionTitleInput = $("input[name='title']");
+var $firstAnonymousCheckbox = $("form.first input[name='anonymous']");
+var $secoundAnonymousCheckbox = $("form.second input[name='anonymous']");
+
+var timerForQuestion = null;
 
 // 删除话题
 $('.btn-delete-topic').click(function () {
@@ -26,8 +35,7 @@ $topicInput.typeahead({
                 method: 'post',
                 dataType: 'json',
                 data: {
-                    q: q,
-                    question_id: g.questionId
+                    q: q
                 }
             }).done(function (matchs) {
                 cb(matchs);
@@ -47,7 +55,7 @@ $topicInput.on('typeahead:selected', function (e, topic) {
 });
 
 // 通过回车添加句集
-$topicInput.on('keypress', function (e) {
+$topicInput.on('keyup', function (e) {
     var name = $.trim($(this).val());
 
     if (e.which === 13) {
@@ -66,6 +74,58 @@ $topicInput.on('keypress', function (e) {
             }
         );
     }
+});
+
+// 输入问题，返回类似问题
+$questionInput.on('keyup', function () {
+    var title = $.trim($(this).val());
+
+    if (timerForQuestion) {
+        clearTimeout(timerForQuestion);
+    }
+
+    if (title === "") {
+        return;
+    }
+
+    timerForQuestion = setTimeout(function () {
+        $.ajax({
+            url: urlFor('question.similar'),
+            method: 'post',
+            dataType: 'json',
+            data: {
+                title: title
+            }
+        }).done(function (response) {
+            if (response.count !== 0) {
+                $('.similar-questions').html("<p>类似问题：</p>" + response.html);
+                $toSecondBtn.text('我的问题是新的，下一步');
+            } else {
+                $('.similar-questions').empty();
+                $toSecondBtn.text('下一步');
+            }
+        });
+    }, 500);
+});
+
+// 进入提问的第二阶段
+$toSecondBtn.click(function () {
+    var title = $.trim($questionInput.val());
+
+    if (title === "") {
+        return;
+    }
+
+    $addQuestionWap.removeClass('first').addClass('second');
+    $questionTitleInput.val($.trim($questionInput.val()));
+    $secoundAnonymousCheckbox.prop('checked', $firstAnonymousCheckbox.is(':checked'));
+});
+
+// 退回到提问的第一阶段
+$toFirstBtn.click(function () {
+    $addQuestionWap.removeClass('second').addClass('first');
+    $firstAnonymousCheckbox.prop('checked', $secoundAnonymousCheckbox.is(':checked'));
+    $('.topics-inner-wap').empty();
 });
 
 /**

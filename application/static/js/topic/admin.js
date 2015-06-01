@@ -113,7 +113,7 @@ $(document).on('click', '.btn-remove-child-topic', function () {
 });
 
 // 添加话题同义词
-$synonymInput.on('keypress', function (e) {
+$synonymInput.on('keyup', function (e) {
     var name = $.trim($(this).val());
     var _this = $(this);
 
