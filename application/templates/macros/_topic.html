@@ -59,8 +59,10 @@
 {# 话题页header #}
 {% macro topic_page_header(topic, active='view') %}
     <div class="dc-topic-page-header">
-        <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="pull-right btn btn-default">
-            话题管理</a>
+        <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="pull-right btn btn-default"
+           title="话题管理">
+            <span class="fa fa-gear"></span>
+        </a>
 
         {{ topic_follow_wap(topic) }}
 
@@ -148,11 +150,15 @@
 
     <h3>父话题</h3>
 
-    {% for parent_topic in topic.parent_topics %}
-        <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">
-            {{ parent_topic.name }}
-        </a>
-    {% endfor %}
+    {% if topic.root %}
+        <span class="label label-primary">根话题</span>
+    {% else %}
+        {% for parent_topic in topic.parent_topics %}
+            <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">
+                {{ parent_topic.name }}
+            </a>
+        {% endfor %}
+    {% endif %}
 
     <h3>子话题</h3>
 
