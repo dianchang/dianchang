@@ -14,8 +14,15 @@ class Topic(db.Model):
     wiki = db.Column(db.Text(4294967295))
     avatar = db.Column(db.String(200), default='default.png')
     clicks = db.Column(db.Integer, default=0)
-    locked = db.Column(db.Boolean, default=False)  # 话题锁定
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    locked = db.Column(db.Boolean, default=False)  # 话题锁定，无法删除话题、合并话题
+    name_locked = db.Column(db.Boolean, default=False)
+    desc_locked = db.Column(db.Boolean, default=False)
+    wiki_locked = db.Column(db.Boolean, default=False)
+    avatar_locked = db.Column(db.Boolean, default=False)
+    parent_topics_locked = db.Column(db.Boolean, default=False)
+    child_topics_locked = db.Column(db.Boolean, default=False)
 
     @property
     def avatar_url(self):
