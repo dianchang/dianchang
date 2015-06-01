@@ -10,7 +10,8 @@ from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_
 class User(db.Model):
     """用户"""
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(200), unique=True)
+    name_pinyin = db.Column(db.String(200))
     email = db.Column(db.String(50), unique=True)
     desc = db.Column(db.String(200), )
     avatar = db.Column(db.String(200), default='default.png')
@@ -69,6 +70,7 @@ class User(db.Model):
         """保存此用户到elasticsearch"""
         return save_object_to_es('user', self.id, {
             'name': self.name,
+            'name_pinyin': self.name_pinyin,
             'desc': self.desc,
             'created_at': self.created_at
         })
@@ -84,7 +86,7 @@ class User(db.Model):
             "query": {
                 "multi_match": {
                     "query": q,
-                    "fields": ["name", "desc"]
+                    "fields": ["name", "name_pinyin", "desc"]
                 }
             },
             "highlight": {

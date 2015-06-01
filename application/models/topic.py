@@ -10,6 +10,7 @@ class Topic(db.Model):
     """话题"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
+    name_pinyin = db.Column(db.String(100))
     desc = db.Column(db.Text)
     wiki = db.Column(db.Text(4294967295))
     avatar = db.Column(db.String(200), default='default.png')
@@ -41,12 +42,14 @@ class Topic(db.Model):
         ancestor_topics_id_list = self.ancestor_topics_id_list[:]
         all_list = ancestor_topics_id_list[:]
         all_list.append(self.id)
+
         nodes = {}
         for ancestor_topic_id in ancestor_topics_id_list:
             ancestor_topic = Topic.query.get_or_404(ancestor_topic_id)
             child_topics_id_list = ancestor_topic.child_topics_id_list
             nodes[ancestor_topic_id] = _intersect_list(child_topics_id_list, all_list)
         paths = Topic.find_all_paths(nodes, ROOT_TOPIC_ID, self.id)
+
         topic_paths = []
         for path in paths:
             topic_path = Topic.query.filter(Topic.id.in_(path))
@@ -58,6 +61,7 @@ class Topic(db.Model):
         """保存此话题到elasticsearch"""
         return save_object_to_es('topic', self.id, {
             'name': self.name,
+            'name_pinyin': self.name_pinyin,
             'created_at': self.created_at
         })
 
@@ -70,8 +74,9 @@ class Topic(db.Model):
         """在elasticsearch中查询话题"""
         results = search_objects_from_es(doc_type='topic', body={
             "query": {
-                "match": {
-                    "name": q
+                "multi_match": {
+                    "query": q,
+                    "fields": ["name", "name_pinyin"]
                 }
             },
             "highlight": {
@@ -275,6 +280,19 @@ class TopicClosure(db.Model):
 
     def __repr__(self):
         return '<TopicClosure %d-%d>' % (self.ancestor_id, self.descendant_id)
+
+
+class TopicSynonym(db.Model):
+    """话题同义词"""
+    id = db.Column(db.Integer, primary_key=True)
+    synonym = db.Column(db.String(200))
+    synonym_pinyin = db.Column(db.String(200))
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+    topic = db.relationship('Topic', backref=db.backref('synonyms',
+                                                        lazy='dynamic',
+                                                        order_by='desc(TopicSynonym.created_at)'))
 
 
 class FollowTopic(db.Model):
