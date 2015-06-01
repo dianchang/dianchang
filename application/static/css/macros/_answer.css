@@ -1,24 +1,27 @@
-.dc-answer .upvote-wap .for-un-upvoted {
+.dc-answer .vote-wap {
+  border: 1px solid gray;
+}
+.dc-answer .vote-wap .upvote-wap .for-un-upvoted {
   display: inline-block;
 }
-.dc-answer .upvote-wap .for-upvoted {
+.dc-answer .vote-wap .upvote-wap .for-upvoted {
   display: none;
 }
-.dc-answer .upvote-wap.upvoted .for-un-upvoted {
+.dc-answer .vote-wap .upvote-wap.upvoted .for-un-upvoted {
   display: none;
 }
-.dc-answer .upvote-wap.upvoted .for-upvoted {
+.dc-answer .vote-wap .upvote-wap.upvoted .for-upvoted {
   display: inline-block;
 }
-.dc-answer .btn-downvote-answer .for-un-downvoted {
+.dc-answer .vote-wap .btn-downvote-answer .for-un-downvoted {
   display: inline-block;
 }
-.dc-answer .btn-downvote-answer .for-downvoted {
+.dc-answer .vote-wap .btn-downvote-answer .for-downvoted {
   display: none;
 }
-.dc-answer .btn-downvote-answer.downvoted .for-un-downvoted {
+.dc-answer .vote-wap .btn-downvote-answer.downvoted .for-un-downvoted {
   display: none;
 }
-.dc-answer .btn-downvote-answer.downvoted .for-downvoted {
+.dc-answer .vote-wap .btn-downvote-answer.downvoted .for-downvoted {
   display: inline-block;
 }

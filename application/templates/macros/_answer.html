@@ -31,20 +31,23 @@
                 {% set thankd = answer.thanked_by_user() %}
                 {% set nohelped = answer.nohelped_by_user() %}
 
-            <span class="vote-wap">
-                <span class="upvote-wap {% if upvoted %}upvoted{% endif %}">
-                    <a class="btn-upvote-answer" href="javascript: void(0)" data-id="{{ answer.id }}">
-                        <span class="for-upvoted">已赞同</span>
-                        <span class="for-un-upvoted">赞同</span></a>
-                    |
-                    <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
+                {# 赞同 & 反对 #}
+                <span class="vote-wap">
+                    <span class="upvote-wap {% if upvoted %}upvoted{% endif %}">
+                        <a class="btn-upvote-answer" href="javascript: void(0)" data-id="{{ answer.id }}">
+                            <span class="for-upvoted">已赞同</span>
+                            <span class="for-un-upvoted">赞同</span></a>
+                        |
+                        <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
+                    </span>
+                    <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
+                       data-id="{{ answer.id }}">
+                        <span class="for-downvoted">已反对</span>
+                        <span class="for-un-downvoted">反对</span>
+                    </a>
                 </span>
-                <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
-                   data-id="{{ answer.id }}">
-                    <span class="for-downvoted">已反对</span>
-                    <span class="for-un-downvoted">反对</span>
-                </a>
-            </span>
+
+                <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank">全屏阅读</a>
             </div>
             <hr/>
         </div>

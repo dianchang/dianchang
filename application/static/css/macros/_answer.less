@@ -1,37 +1,40 @@
 .dc-answer {
-  .upvote-wap {
-    .for-un-upvoted {
-      display: inline-block;
-    }
-    .for-upvoted {
-      display: none;
-    }
-
-    &.upvoted {
+  .vote-wap {
+    border: 1px solid gray;
+    .upvote-wap {
       .for-un-upvoted {
-        display: none;
+        display: inline-block;
       }
       .for-upvoted {
-        display: inline-block;
-      }
-    }
-
-  }
-
-  .btn-downvote-answer {
-    .for-un-downvoted {
-      display: inline-block;
-    }
-    .for-downvoted {
-      display: none;
-    }
-
-    &.downvoted {
-      .for-un-downvoted {
         display: none;
       }
-      .for-downvoted {
+
+      &.upvoted {
+        .for-un-upvoted {
+          display: none;
+        }
+        .for-upvoted {
+          display: inline-block;
+        }
+      }
+
+    }
+
+    .btn-downvote-answer {
+      .for-un-downvoted {
         display: inline-block;
+      }
+      .for-downvoted {
+        display: none;
+      }
+
+      &.downvoted {
+        .for-un-downvoted {
+          display: none;
+        }
+        .for-downvoted {
+          display: inline-block;
+        }
       }
     }
   }
