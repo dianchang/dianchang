@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import g, current_app
 from ._base import db
 from ..utils.uploadsets import topic_avatars
+from ..utils.helpers import pinyin
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
@@ -25,6 +26,12 @@ class Topic(db.Model):
     avatar_locked = db.Column(db.Boolean, default=False)
     parent_topics_locked = db.Column(db.Boolean, default=False)
     child_topics_locked = db.Column(db.Boolean, default=False)
+
+    def __setattr__(self, name, value):
+        """为name赋值时，自动设置其拼音"""
+        if name == 'name':
+            super(Topic, self).__setattr__('name_pinyin', pinyin(value))
+        super(Topic, self).__setattr__(name, value)
 
     @property
     def avatar_url(self):

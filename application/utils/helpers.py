@@ -2,6 +2,7 @@
 import os
 import errno
 from flask import current_app, url_for
+from pypinyin import lazy_pinyin
 
 
 def absolute_url_for(endpoint, **values):
@@ -164,3 +165,8 @@ def get_domain_from_email(email):
             break
 
     return email_domain
+
+
+def pinyin(text):
+    """将文本转换为拼音"""
+    return ''.join(lazy_pinyin(unicode(text)))

@@ -4,6 +4,7 @@ from flask import g
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars
+from ..utils.helpers import pinyin
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
@@ -35,6 +36,9 @@ class User(db.Model):
         # Hash password when set it.
         if name == 'password':
             value = generate_password_hash(value)
+        elif name == 'name':
+            # 为name赋值时，自动设置其拼音
+            super(User, self).__setattr__('name_pinyin', pinyin(value))
         super(User, self).__setattr__(name, value)
 
     def check_password(self, password):
