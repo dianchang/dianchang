@@ -2,7 +2,7 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistics, \
-    PublicEditLog, TOPIC_EDIT_KIND, Answer
+    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 from ..forms import AdminTopicForm, EditTopicWikiForm
@@ -253,3 +253,34 @@ def edit_wiki(uid):
         db.session.commit()
         return redirect(url_for('.wiki', uid=uid))
     return render_template('topic/edit_wiki.html', topic=topic, form=form)
+
+
+@bp.route('/topic/<int:uid>/add_synonym', methods=['POST'])
+def add_synonym(uid):
+    """添加话题同义词"""
+    topic = Topic.query.get_or_404(uid)
+    synonym = request.form.get('synonym')
+    if synonym:
+        topic_synonym = topic.synonyms.filter(TopicSynonym.synonym == synonym).first()
+        if not topic_synonym:
+            topic_synonym = TopicSynonym(synonym=synonym)
+            topic.synonyms.append(topic_synonym)
+            db.session.add(topic)
+            db.session.commit()
+            topic.save_to_es()
+        macro = get_template_attribute('macros/_topic.html', 'topic_synonym_edit_wap')
+        return json.dumps({
+            'result': True,
+            'html': macro(topic_synonym)
+        })
+    else:
+        return json.dumps({'result': False})
+
+
+@bp.route('/topic/synonym/<int:uid>/remove', methods=['POST'])
+def remove_synonym(uid):
+    """移除话题同义词"""
+    topic_synonym = TopicSynonym.query.get_or_404(uid)
+    db.session.delete(topic_synonym)
+    db.session.commit()
+    return json.dumps({'result': True})

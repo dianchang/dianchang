@@ -116,6 +116,16 @@
 {% endmacro %}
 
 
+{# 直接子话题编辑框 #}
+{% macro topic_synonym_edit_wap(topic_synonym) %}
+    <li class="child-topic-edit-wap">
+        <span>{{ topic_synonym.synonym }}</span>
+        <a href="javascript: void(0)" class="btn-remove-topic-synonym"
+           data-id="{{ topic_synonym.id }}">移除</a>
+    </li>
+{% endmacro %}
+
+
 {# 话题讨论页header #}
 {% macro topic_discuss_page_header(topic, active="top") %}
     <div class="btn-group">

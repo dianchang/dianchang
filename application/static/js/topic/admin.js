@@ -2,6 +2,7 @@ var timerForParentTopicTypeahead = null;
 var $parentTopicInput = $("input[name='parent-topic']");
 var timerForChildTopicTypeahead = null;
 var $childTopicInput = $("input[name='child-topic']");
+var $synonymInput = $("input[name='synonym']");
 
 // parentTopicInput启用Typeahead自动完成
 $parentTopicInput.typeahead({
@@ -102,6 +103,46 @@ $(document).on('click', '.btn-remove-child-topic', function () {
 
     $.ajax({
         url: urlFor('topic.remove_child_topic', {uid: g.topicId, child_topic_id: childTopicId}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            _this.parent().detach();
+        }
+    });
+});
+
+// 添加话题同义词
+$synonymInput.on('keypress', function (e) {
+    var name = $.trim($(this).val());
+    var _this = $(this);
+
+    if (e.which === 13) {
+        e.preventDefault();
+
+        $.ajax({
+            url: urlFor('topic.add_synonym', {uid: g.topicId}),
+            method: 'post',
+            dataType: 'json',
+            data: {
+                synonym: $(this).val()
+            }
+        }).done(function (response) {
+            if (response.result) {
+                $('.synonyms').append(response.html);
+                _this.val('').focus();
+            }
+        })
+    }
+});
+
+// 删除话题同义词
+$(document).on('click', '.btn-remove-topic-synonym', function () {
+    var id = $(this).data('id');
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('topic.remove_synonym', {uid: id}),
         method: 'post',
         dataType: 'json'
     }).done(function (response) {
