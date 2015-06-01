@@ -32,6 +32,7 @@ def signup():
         user = User(**params)
         db.session.add(user)
         db.session.commit()
+        user.save_to_es()  # 存储到elasticsearch
         signin_user(user)
         return redirect(url_for('site.index'))
     return render_template('account/signup.html', form=form)

@@ -47,6 +47,8 @@ def view(uid):
     if request.method == 'POST' and request.form.get('answer'):
         # 回答话题
         answer = Answer(question_id=uid, content=request.form.get('answer'), user_id=g.user.id)
+        answer.save_to_es()
+
         # 更新话题统计数据
         for topic in question.topics:
             UserTopicStatistics.add_answer_in_topic(g.user.id, topic.topic_id)
