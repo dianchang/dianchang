@@ -39,9 +39,22 @@ class Topic(db.Model):
 
     @property
     def ancestor_paths(self):
-        all_list = ancestor_topics_id_list = self.ancestor_topics_id_list
+        """寻找跟话题到该话题之间的所有路径"""
+        ancestor_topics_id_list = self.ancestor_topics_id_list[:]
+        all_list = ancestor_topics_id_list[:]
         all_list.append(self.id)
-        return []
+        nodes = {}
+        for ancestor_topic_id in ancestor_topics_id_list:
+            ancestor_topic = Topic.query.get_or_404(ancestor_topic_id)
+            child_topics_id_list = ancestor_topic.child_topics_id_list
+            nodes[ancestor_topic_id] = _intersect_list(child_topics_id_list, all_list)
+        paths = Topic.find_all_paths(nodes, ROOT_TOPIC_ID, self.id)
+        topic_paths = []
+        for path in paths:
+            topic_path = Topic.query.filter(Topic.id.in_(path))
+            print(topic_path)
+            topic_paths.append(topic_path)
+        return topic_paths
 
     def save_to_es(self):
         """保存此话题到elasticsearch"""
@@ -162,15 +175,19 @@ class Topic(db.Model):
         return Topic.query.filter(Topic.id.in_(self.ancestor_topics_id_list))
 
     @property
-    def child_topics(self):
-        """直接子话题"""
-        sub_topics_id_list = db.session.query(TopicClosure.descendant_id). \
+    def child_topics_id_list(self):
+        """直接子话题id列表"""
+        child_topics_id_list = db.session.query(TopicClosure.descendant_id). \
             filter(TopicClosure.ancestor_id == self.id,
                    TopicClosure.descendant_id != self.id,
                    TopicClosure.path_length == 1). \
             all()
-        sub_topics_id_list = [item.descendant_id for item in sub_topics_id_list]
-        return Topic.query.filter(Topic.id.in_(sub_topics_id_list))
+        return [item.descendant_id for item in child_topics_id_list]
+
+    @property
+    def child_topics(self):
+        """直接子话题"""
+        return Topic.query.filter(Topic.id.in_(self.child_topics_id_list))
 
     @property
     def descendant_topics_id_list(self):
@@ -190,10 +207,15 @@ class Topic(db.Model):
         """添加直接父话题"""
         for ancestor_topic in TopicClosure.query.filter(TopicClosure.descendant_id == parent_topic_id):
             for descendant_topic in TopicClosure.query.filter(TopicClosure.ancestor_id == self.id):
-                new_closure = TopicClosure(ancestor_id=ancestor_topic.ancestor_id,
-                                           descendant_id=descendant_topic.descendant_id,
-                                           path_length=ancestor_topic.path_length + descendant_topic.path_length + 1)
-                db.session.add(new_closure)
+                closure = TopicClosure.query. \
+                    filter(TopicClosure.ancestor_id == ancestor_topic.ancestor_id,
+                           TopicClosure.descendant_id == descendant_topic.descendant_id).first()
+                if not closure:
+                    new_closure = TopicClosure(ancestor_id=ancestor_topic.ancestor_id,
+                                               descendant_id=descendant_topic.descendant_id,
+                                               path_length=ancestor_topic.path_length + descendant_topic.path_length + 1)
+                    print("%d - %d" % (new_closure.ancestor_id, new_closure.descendant_id))
+                    db.session.add(new_closure)
         db.session.commit()
 
     def remove_parent_topic(self, parent_topic_id):
@@ -223,6 +245,22 @@ class Topic(db.Model):
                                                     TopicClosure.descendant_id == descendant_topic.descendant_id)
                 map(db.session.delete, closure)
         db.session.commit()
+
+    @staticmethod
+    def find_all_paths(graph, start, end, path=[]):
+        """获取图中节点A到节点B的所有路径"""
+        path = path + [start]
+        if start == end:
+            return [path]
+        if not graph.has_key(start):
+            return []
+        paths = []
+        for node in graph[start]:
+            if node not in path:
+                newpaths = Topic.find_all_paths(graph, node, end, path)
+                for newpath in newpaths:
+                    paths.append(newpath)
+        return paths
 
     def __repr__(self):
         return '<Topic %s>' % self.name
@@ -358,3 +396,8 @@ class UserTopicStatistics(db.Model):
     def calculate_score(self):
         """计算擅长度"""
         self.score = self.answers_count + self.upvotes_count
+
+
+def _intersect_list(a, b):
+    """求列表的并"""
+    return list(set(a).intersection(b))
