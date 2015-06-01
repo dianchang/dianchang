@@ -5,6 +5,9 @@ from ._base import db
 from ..utils.uploadsets import topic_avatars
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
+ROOT_TOPIC_ID = 8
+DEFAULT_PARENT_ID = 26
+
 
 class Topic(db.Model):
     """话题"""
@@ -14,6 +17,7 @@ class Topic(db.Model):
     wiki = db.Column(db.Text(4294967295))
     avatar = db.Column(db.String(200), default='default.png')
     clicks = db.Column(db.Integer, default=0)
+    root = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     locked = db.Column(db.Boolean, default=False)  # 话题锁定，无法删除话题、合并话题
@@ -32,6 +36,12 @@ class Topic(db.Model):
     def followed_by_user(self):
         """此话题是否被用户关注"""
         return g.user and g.user.followed_topics.filter(FollowTopic.topic_id == self.id).count() > 0
+
+    @property
+    def ancestor_paths(self):
+        all_list = ancestor_topics_id_list = self.ancestor_topics_id_list
+        all_list.append(self.id)
+        return []
 
     def save_to_es(self):
         """保存此话题到elasticsearch"""
@@ -88,6 +98,8 @@ class Topic(db.Model):
                 topic = Topic(name=name)
                 db.session.add(topic)
                 db.session.commit()
+                topic.save_to_es()  # save to elasticsearch
+                topic.add_parent_topic(DEFAULT_PARENT_ID)
 
                 # Create topic log
                 log = PublicEditLog(kind=TOPIC_EDIT_KIND.CREATE, user_id=g.user.id, after=name, after_id=topic.id,
