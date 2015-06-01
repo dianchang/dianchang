@@ -1,12 +1,9 @@
 # coding: utf-8
 from datetime import datetime
-from flask import g
+from flask import g, current_app
 from ._base import db
 from ..utils.uploadsets import topic_avatars
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
-
-ROOT_TOPIC_ID = 8
-DEFAULT_PARENT_ID = 26
 
 
 class Topic(db.Model):
@@ -40,6 +37,7 @@ class Topic(db.Model):
     @property
     def ancestor_paths(self):
         """寻找跟话题到该话题之间的所有路径"""
+        ROOT_TOPIC_ID = current_app.config.get('ROOT_TOPIC_ID')
         ancestor_topics_id_list = self.ancestor_topics_id_list[:]
         all_list = ancestor_topics_id_list[:]
         all_list.append(self.id)
@@ -102,6 +100,8 @@ class Topic(db.Model):
         """通过name获取句集"""
         from .log import PublicEditLog, TOPIC_EDIT_KIND
 
+        DEFAULT_PARENT_TOPIC_ID = current_app.config.get('DEFAULT_PARENT_TOPIC_ID')
+
         name = name or ""
         name = name.strip()
         if name:
@@ -112,7 +112,7 @@ class Topic(db.Model):
                 db.session.add(topic)
                 db.session.commit()
                 topic.save_to_es()  # save to elasticsearch
-                topic.add_parent_topic(DEFAULT_PARENT_ID)
+                topic.add_parent_topic(DEFAULT_PARENT_TOPIC_ID)
 
                 # Create topic log
                 log = PublicEditLog(kind=TOPIC_EDIT_KIND.CREATE, user_id=g.user.id, after=name, after_id=topic.id,
