@@ -49,6 +49,21 @@
 
                 •
 
+                <a href="#">
+                    <span class="fa fa-comment-o"></span>
+                    评论
+                    {{ answer.comments.count() }}
+                </a>
+
+                •
+
+                <a href="#">
+                    <span class="fa fa-share-square-o"></span>
+                    分享
+                </a>
+
+                •
+
                 {# 感谢 #}
                 <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
                    href="javascript: void(0)">
@@ -64,6 +79,7 @@
                     <span class="for-nohelped">已标记为没有帮助</span>
                     <span class="for-un-nohelped">没有帮助</span>
                 </a>
+
 
                 •
 
