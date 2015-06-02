@@ -183,7 +183,6 @@ class USER_FEED_KIND(object):
     UPVOTE_ANSWER = "F9FqDKa"  # 赞同回答
     FOLLOW_QUESTION = "4MYN2Ui"  # 关注问题
     FOLLOW_TOPIC = "wa3PMng"  # 关注话题
-    FOLLOW_USER = "rDtV02F"  # 关注用户
 
 
 class UserFeed(db.Model):
@@ -247,6 +246,9 @@ class Notification(db.Model):
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
     answer = db.relationship('Answer')
+
+    answer_comment_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
+    answer_comment = db.relationship('AnswerComment')
 
 
 class HOME_FEED_KIND(object):

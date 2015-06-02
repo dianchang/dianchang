@@ -255,6 +255,15 @@ def reply_comment(uid):
                                 content=comment_content)
     db.session.add(new_comment)
     db.session.commit()
+
+    # FEED: 插入到被回复者的NOTI
+    if g.user.id != parent_comment.user_id:
+        noti = Notification(kind=NOTIFICATION_KIND.REPLY_ANSWER_COMMENT, sender_id=g.user.id,
+                            answer_comment_id=new_comment.id)
+        parent_comment.user.notifications.append(noti)
+        db.session.add(parent_comment.user)
+        db.session.commit()
+
     macro = get_template_attribute('macros/_answer.html', 'render_answer_comment')
     return json.dumps({
         'result': True,
