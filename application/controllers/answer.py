@@ -17,10 +17,19 @@ def view(uid):
         if not permission.check():
             return permission.deny()
 
+        # 评论回答
         comment_content = request.form.get('comment')
         comment = AnswerComment(content=comment_content, user_id=g.user.id)
         answer.comments.append(comment)
         db.session.add(answer)
+
+        # FEED: 插入被评论回答者的NOTI
+        if g.user.id != answer.user_id:
+            noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, sender_id=g.user.id,
+                                answer_id=uid)
+            answer.user.notifications.append(noti)
+            db.session.add(answer.user)
+
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
     return render_template('answer/view.html', answer=answer)

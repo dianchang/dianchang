@@ -219,6 +219,8 @@ class NOTIFICATION_KIND(object):
     FOLLOW_ME = "nK8BQ99"  # 关注了我
     UPVOTE_ANSWER = "Vu69o4V"  # 赞同了我的回答
     THANK_ANSWER = "gIWr7dg"  # 感谢了我的回答
+    COMMENT_ANSWER = "Fk3cIIH"  # 评论了我的回答
+    REPLY_ANSWER_COMMENT = "ibWxLaC"  # 回复了我的评论
     LIKE_ANSWER_COMMENT = "1oY78lq"  # 赞了我的评论
     SYSTEM_NOTI = "ezjwiCu"  # 系统通知
     HIDE_ANSWER = "E0CzTCk"  # 回答被折叠
