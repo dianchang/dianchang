@@ -94,6 +94,7 @@ def upvote(uid):
 
 
 @bp.route('/answer/<int:uid>/downvote', methods=['POST'])
+@UserPermission()
 def downvote(uid):
     """反对 & 取消反对"""
     answer = Answer.query.get_or_404(uid)
@@ -128,6 +129,7 @@ def downvote(uid):
 
 
 @bp.route('/answer/<int:uid>/thank', methods=['POST'])
+@UserPermission()
 def thank(uid):
     """感谢 & 取消感谢"""
     answer = Answer.query.get_or_404(uid)
@@ -148,6 +150,14 @@ def thank(uid):
         answer.thanks.append(thank_answer)
         answer.calculate_score()  # 更新回答分值
         db.session.add(answer)
+
+        # FEED: 插入被感谢者的NOTI
+        if g.user.id != answer.user_id:
+            noti = Notification(kind=NOTIFICATION_KIND.THANK_ANSWER, sender_id=g.user.id,
+                                answer_id=uid)
+            answer.user.notifications.append(noti)
+            db.session.add(answer.user)
+
         db.session.commit()
 
         return json.dumps({
@@ -157,6 +167,7 @@ def thank(uid):
 
 
 @bp.route('/answer/<int:uid>/nohelp', methods=['POST'])
+@UserPermission()
 def nohelp(uid):
     """没有帮助 & 取消没有帮助"""
     answer = Answer.query.get_or_404(uid)
