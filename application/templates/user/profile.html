@@ -10,6 +10,25 @@
         <div class="row">
             <div class="col-md-8">
                 <h3>动态</h3>
+
+                {% for feed in user.feeds %}
+                    <div class="home-feed">
+                        {# 提问 #}
+                        {% if feed.kind == USER_FEED_KIND.ASK_QUESTION %}
+                            <div class="meta">
+                                <span>提出了问题</span>
+                                &nbsp;&nbsp;
+                                <span>{{ feed.created_at|timesince }}</span>
+                            </div>
+                            <div class="content">
+                                <a href="{{ url_for('question.view', uid=feed.question_id) }}">
+                                    {{ feed.question.title }}
+                                </a>
+                            </div>
+                        {% endif %}
+                        <hr/>
+                    </div>
+                {% endfor %}
             </div>
             <div class="col-md-4">
                 <h3>擅长话题</h3>

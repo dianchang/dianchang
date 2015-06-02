@@ -11,9 +11,7 @@ var $secoundAnonymousCheckbox = $("form.second input[name='anonymous']");
 var timerForQuestion = null;
 
 // 删除话题
-$('.btn-delete-topic').click(function () {
-    var topicId = parseInt($(this).data('id'));
-
+$(document).onOnce('click', '.btn-delete-topic', function () {
     $(this).parent().detach();
 });
 

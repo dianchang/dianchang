@@ -267,7 +267,7 @@ class HomeFeed(db.Model):
     user = db.relationship('User',
                            backref=db.backref('home_feeds',
                                               lazy='dynamic',
-                                              order_by='desc(UserFeed.created_at)'),
+                                              order_by='desc(HomeFeed.created_at)'),
                            foreign_keys=[user_id])
 
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -298,7 +298,7 @@ class ComposeFeed(db.Model):
     user = db.relationship('User',
                            backref=db.backref('compose_feeds',
                                               lazy='dynamic',
-                                              order_by='desc(UserFeed.created_at)'))
+                                              order_by='desc(ComposeFeed.created_at)'))
 
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question')

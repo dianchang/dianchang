@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
-    UserTopicStatistics, AnswerDraft
+    UserTopicStatistics, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -36,6 +36,21 @@ def add():
         db.session.add(question)
         db.session.commit()
         question.save_to_es()
+
+        # FEED: 插入本人的用户FEED
+        feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
+        g.user.feeds.append(feed)
+        db.session.add(g.user)
+
+        # FEED: 插入followers的首页FEED
+        # TODO: 采用消息队列进行插入操作
+        for follower in g.user.followers:
+            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
+                                 question_id=question.id)
+            follower.follower.home_feeds.append(home_feed)
+            db.session.add(follower.follower)
+
+        db.session.commit()
         return redirect(url_for('.view', uid=question.id))
     return render_template('question/add.html', form=form)
 
