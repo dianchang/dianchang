@@ -15,12 +15,10 @@ def timesince(value):
 
     if value > now:
         return "刚刚"
-    elif delta.days > 365:
-        return '%d 年前' % (delta.days / 365)
-    elif delta.days > 30:
-        return '%d 个月前' % (delta.days / 30)
-    elif delta.days > 0:
-        return '%d 天前' % delta.days
+    elif delta.days > 1:
+        return value.strftime("%Y-%m-%d")
+    elif delta.days == 1:
+        return "昨天"
     elif delta.seconds > 3600:
         return '%d 小时前' % (delta.seconds / 3600)
     elif delta.seconds > 60:
