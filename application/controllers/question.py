@@ -192,13 +192,21 @@ def follow(uid):
     question = Question.query.get_or_404(uid)
     follow_question = FollowQuestion.query.filter(FollowQuestion.question_id == uid,
                                                   FollowQuestion.user_id == g.user.id)
+    # 取消关注
     if follow_question.count():
         map(db.session.delete, follow_question)
         db.session.commit()
         return json.dumps({'result': True, 'followed': False, 'followers_count': question.followers.count()})
     else:
+        # 关注
         follow_question = FollowQuestion(question_id=uid, user_id=g.user.id)
         db.session.add(follow_question)
+
+        # FEED: 插入到本人的用户FEED
+        user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_QUESTION, question_id=uid)
+        g.user.feeds.append(user_feed)
+        db.session.add(g.user)
+
         db.session.commit()
         return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers.count()})
 
