@@ -59,8 +59,13 @@
                 •
 
                 {# 没有帮助 #}
-                <span class="nohelp-wap" data-id>
-                </span>
+                <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
+                   href="javascript: void(0)">
+                    <span class="for-nohelped">已标记为没有帮助</span>
+                    <span class="for-un-nohelped">没有帮助</span>
+                </a>
+
+                •
 
                 <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
                    class="btn-fullscreen">全屏阅读</a>
@@ -143,6 +148,26 @@
                         _this.addClass('thanked');
                     } else {
                         _this.removeClass('thanked');
+                    }
+                }
+            });
+        });
+
+        // 没有帮助
+        $(document).onOnce('click', '.dc-answer .btn-nohelp-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.nohelp', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.nohelped) {
+                        _this.addClass('nohelped');
+                    } else {
+                        _this.removeClass('nohelped');
                     }
                 }
             });

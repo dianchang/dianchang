@@ -37,3 +37,15 @@
 .dc-answer .btn-thank-answer.thanked .for-thanked {
   display: inline-block;
 }
+.dc-answer .btn-nohelp-answer .for-un-nohelped {
+  display: inline-block;
+}
+.dc-answer .btn-nohelp-answer .for-nohelped {
+  display: none;
+}
+.dc-answer .btn-nohelp-answer.nohelped .for-un-nohelped {
+  display: none;
+}
+.dc-answer .btn-nohelp-answer.nohelped .for-nohelped {
+  display: inline-block;
+}
