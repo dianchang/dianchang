@@ -52,6 +52,10 @@ def view(uid):
     else:
         draft = ""
     if request.method == 'POST' and request.form.get('answer'):
+        permission = UserPermission()
+        if not permission.check():
+            return permission.deny()
+
         # 回答话题
         answer = Answer(question_id=uid, content=request.form.get('answer'), user_id=g.user.id)
         answer.save_to_es()
