@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask import Blueprint, render_template, url_for, json, g
-from ..models import db, User, FollowUser
+from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('user', __name__)
@@ -26,6 +26,7 @@ def follow(uid):
     """关注 & 取消关注某用户"""
     user = User.query.get_or_404(uid)
     follow_user = g.user.followings.filter(FollowUser.following_id == uid)
+    # 取消关注
     if follow_user.count() > 0:
         map(db.session.delete, follow_user)
         db.session.commit()
@@ -35,14 +36,28 @@ def follow(uid):
             'followers_count': user.followers.count()
         })
     else:
-        follow_user = FollowUser(follower_id=g.user.id, following_id=uid)
-        db.session.add(follow_user)
-        db.session.commit()
-        return json.dumps({
-            'result': True,
-            'followed': True,
-            'followers_count': user.followers.count()
-        })
+        # 关注
+        if g.user.id != uid:
+            follow_user = FollowUser(follower_id=g.user.id, following_id=uid)
+            db.session.add(follow_user)
+
+            # FEED: 插入被关注者的NOTI
+            noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, sender_id=g.user.id)
+            user.notifications.append(noti)
+            db.session.add(user)
+
+            db.session.commit()
+            return json.dumps({
+                'result': True,
+                'followed': True,
+                'followers_count': user.followers.count()
+            })
+        else:
+            return json.dumps({
+                'result': False,
+                'followed': False,
+                'followers_count': user.followers.count()
+            })
 
 
 @bp.route('/people/<int:uid>/answers')
