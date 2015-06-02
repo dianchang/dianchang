@@ -2,7 +2,7 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistics, \
-    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym
+    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 from ..forms import AdminTopicForm, EditTopicWikiForm
@@ -220,13 +220,21 @@ def follow(uid):
     """关注 & 取消关注话题"""
     topic = Topic.query.get_or_404(uid)
     follow_topic = FollowTopic.query.filter(FollowTopic.topic_id == uid, FollowTopic.user_id == g.user.id)
+    # 取消关注
     if follow_topic.count():
         map(db.session.delete, follow_topic)
         db.session.commit()
         return json.dumps({'result': True, 'followed': False, 'followers_count': topic.followers.count()})
     else:
+        # 关注
         follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
         db.session.add(follow_topic)
+
+        # FEED: 插入本人的用户FEED
+        feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, topic_id=uid)
+        g.user.feeds.append(feed)
+        db.session.add(g.user)
+
         db.session.commit()
         return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
 
