@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import topic_wap %}
 {% from "macros/_question.html" import question_follow_wap %}
+{% from "macros/_answer.html" import render_answer_commands %}
 
 {% block page_title %}{{ question.title }}{% endblock %}
 {% block page_vars %}
@@ -79,7 +80,10 @@
                                             {{ answer.user.name }}
                                         </a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
                                     </div>
-                                    <div>{{ answer.content }}</div>
+
+                                    <div>{{ answer.content|safe }}</div>
+
+                                    {{ render_answer_commands(answer) }}
                                 </div>
                             </div>
                         </div>

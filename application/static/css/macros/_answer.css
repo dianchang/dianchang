@@ -1,51 +1,51 @@
-.dc-answer .vote-wap {
+.dc-answer-commands .vote-wap {
   border: 1px solid gray;
 }
-.dc-answer .vote-wap .upvote-wap .for-un-upvoted {
+.dc-answer-commands .vote-wap .upvote-wap .for-un-upvoted {
   display: inline-block;
 }
-.dc-answer .vote-wap .upvote-wap .for-upvoted {
+.dc-answer-commands .vote-wap .upvote-wap .for-upvoted {
   display: none;
 }
-.dc-answer .vote-wap .upvote-wap.upvoted .for-un-upvoted {
+.dc-answer-commands .vote-wap .upvote-wap.upvoted .for-un-upvoted {
   display: none;
 }
-.dc-answer .vote-wap .upvote-wap.upvoted .for-upvoted {
+.dc-answer-commands .vote-wap .upvote-wap.upvoted .for-upvoted {
   display: inline-block;
 }
-.dc-answer .vote-wap .btn-downvote-answer .for-un-downvoted {
+.dc-answer-commands .vote-wap .btn-downvote-answer .for-un-downvoted {
   display: inline-block;
 }
-.dc-answer .vote-wap .btn-downvote-answer .for-downvoted {
+.dc-answer-commands .vote-wap .btn-downvote-answer .for-downvoted {
   display: none;
 }
-.dc-answer .vote-wap .btn-downvote-answer.downvoted .for-un-downvoted {
+.dc-answer-commands .vote-wap .btn-downvote-answer.downvoted .for-un-downvoted {
   display: none;
 }
-.dc-answer .vote-wap .btn-downvote-answer.downvoted .for-downvoted {
+.dc-answer-commands .vote-wap .btn-downvote-answer.downvoted .for-downvoted {
   display: inline-block;
 }
-.dc-answer .btn-thank-answer .for-un-thanked {
+.dc-answer-commands .btn-thank-answer .for-un-thanked {
   display: inline-block;
 }
-.dc-answer .btn-thank-answer .for-thanked {
+.dc-answer-commands .btn-thank-answer .for-thanked {
   display: none;
 }
-.dc-answer .btn-thank-answer.thanked .for-un-thanked {
+.dc-answer-commands .btn-thank-answer.thanked .for-un-thanked {
   display: none;
 }
-.dc-answer .btn-thank-answer.thanked .for-thanked {
+.dc-answer-commands .btn-thank-answer.thanked .for-thanked {
   display: inline-block;
 }
-.dc-answer .btn-nohelp-answer .for-un-nohelped {
+.dc-answer-commands .btn-nohelp-answer .for-un-nohelped {
   display: inline-block;
 }
-.dc-answer .btn-nohelp-answer .for-nohelped {
+.dc-answer-commands .btn-nohelp-answer .for-nohelped {
   display: none;
 }
-.dc-answer .btn-nohelp-answer.nohelped .for-un-nohelped {
+.dc-answer-commands .btn-nohelp-answer.nohelped .for-un-nohelped {
   display: none;
 }
-.dc-answer .btn-nohelp-answer.nohelped .for-nohelped {
+.dc-answer-commands .btn-nohelp-answer.nohelped .for-nohelped {
   display: inline-block;
 }

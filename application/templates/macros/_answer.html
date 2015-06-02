@@ -1,3 +1,66 @@
+{% macro render_answer_commands(answer) %}
+    <div class="dc-answer-commands">
+        {% set upvoted = answer.upvoted_by_user() %}
+        {% set downvoted = answer.downvoted_by_user() %}
+        {% set thanked = answer.thanked_by_user() %}
+        {% set nohelped = answer.nohelped_by_user() %}
+
+        {# 赞同 & 反对 #}
+        <span class="vote-wap">
+            <span class="upvote-wap {% if upvoted %}upvoted{% endif %}">
+                <a class="btn-upvote-answer" href="javascript: void(0)" data-id="{{ answer.id }}">
+                    <span class="for-upvoted">已赞同</span>
+                    <span class="for-un-upvoted">赞同</span></a>
+                |
+                <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
+            </span>
+            <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
+               data-id="{{ answer.id }}">
+                <span class="for-downvoted">已反对</span>
+                <span class="for-un-downvoted">反对</span>
+            </a>
+        </span>
+
+        •
+
+        <a href="#">
+            <span class="fa fa-comment-o"></span>
+            评论
+            {{ answer.comments.count() }}
+        </a>
+
+        •
+
+        <a href="#">
+            <span class="fa fa-share-square-o"></span>
+            分享
+        </a>
+
+        •
+
+        {# 感谢 #}
+        <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
+           href="javascript: void(0)">
+            <span class="for-thanked">已感谢</span>
+            <span class="for-un-thanked">感谢</span>
+        </a>
+
+        •
+
+        {# 没有帮助 #}
+        <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
+           href="javascript: void(0)">
+            <span class="for-nohelped">已标记为没有帮助</span>
+            <span class="for-un-nohelped">没有帮助</span>
+        </a>
+
+        •
+
+        <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
+           class="btn-fullscreen">全屏阅读</a>
+    </div>
+{% endmacro %}
+
 {% macro render_answers(answers) %}
     {% for answer in answers %}
         <div class="dc-answer">
@@ -25,67 +88,8 @@
                 发布于 {{ answer.created_at|timesince }}
             </div>
 
-            <div class="commands">
-                {% set upvoted = answer.upvoted_by_user() %}
-                {% set downvoted = answer.downvoted_by_user() %}
-                {% set thanked = answer.thanked_by_user() %}
-                {% set nohelped = answer.nohelped_by_user() %}
+            {{ render_answer_commands(answer) }}
 
-                {# 赞同 & 反对 #}
-                <span class="vote-wap">
-                    <span class="upvote-wap {% if upvoted %}upvoted{% endif %}">
-                        <a class="btn-upvote-answer" href="javascript: void(0)" data-id="{{ answer.id }}">
-                            <span class="for-upvoted">已赞同</span>
-                            <span class="for-un-upvoted">赞同</span></a>
-                        |
-                        <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
-                    </span>
-                    <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
-                       data-id="{{ answer.id }}">
-                        <span class="for-downvoted">已反对</span>
-                        <span class="for-un-downvoted">反对</span>
-                    </a>
-                </span>
-
-                •
-
-                <a href="#">
-                    <span class="fa fa-comment-o"></span>
-                    评论
-                    {{ answer.comments.count() }}
-                </a>
-
-                •
-
-                <a href="#">
-                    <span class="fa fa-share-square-o"></span>
-                    分享
-                </a>
-
-                •
-
-                {# 感谢 #}
-                <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
-                   href="javascript: void(0)">
-                    <span class="for-thanked">已感谢</span>
-                    <span class="for-un-thanked">感谢</span>
-                </a>
-
-                •
-
-                {# 没有帮助 #}
-                <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
-                   href="javascript: void(0)">
-                    <span class="for-nohelped">已标记为没有帮助</span>
-                    <span class="for-un-nohelped">没有帮助</span>
-                </a>
-
-
-                •
-
-                <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
-                   class="btn-fullscreen">全屏阅读</a>
-            </div>
             <hr/>
         </div>
     {% endfor %}
