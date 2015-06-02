@@ -86,18 +86,24 @@
                     {% endfor %}
                 </div>
 
-                <form action="" method="post">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                {% if answered %}
+                    <p class="help-block">你已经回答过此问题</p>
+                {% else %}
+                    <a name="draft"></a>
+                    <form action="" method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
-                    <div class="form-group">
+                        <div class="form-group">
                         <textarea name="answer" id="" cols="30" rows="10" class="form-control"
-                                  placeholder="在这里撰写答案"></textarea>
-                    </div>
+                                  placeholder="在这里撰写答案">{{ draft or "" }}</textarea>
+                        </div>
+                        <div class="help-block tip-save-draft"></div>
 
-                    <button type="submit" class="btn btn-default btn-primary pull-right">
-                        发布回答
-                    </button>
-                </form>
+                        <button type="submit" class="btn btn-default btn-primary pull-right">
+                            发布回答
+                        </button>
+                    </form>
+                {% endif %}
             </div>
 
             <div class="col-md-4">

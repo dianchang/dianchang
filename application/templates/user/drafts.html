@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Drafts{% endblock %}
+{% block page_content %}
+    <div class="container">
+        <h1>我的草稿</h1>
+
+        {% for draft in drafts %}
+            <div class="draft">
+                <a href="{{ url_for('question.view', uid=draft.question_id) }}">
+                    {{ draft.question.title }}
+                </a>
+
+                <div>
+                    {{ draft.content|safe }}
+                </div>
+                <div class="meta">
+                    <a href="javascript: void(0)" class="btn-remove-draft" data-id="{{ draft.id }}">
+                        删除草稿</a>
+                    <a href="{{ url_for('question.view', uid=draft.question_id) }}#draft">编辑草稿</a>
+                <span title="{{ draft.created_at }}">
+                    {{ draft.created_at|timesince }}
+                </span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

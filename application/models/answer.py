@@ -101,6 +101,23 @@ class Answer(db.Model):
         return '<Answer %s>' % self.name
 
 
+class AnswerDraft(db.Model):
+    """回答草稿"""
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question', backref=db.backref('drafts',
+                                                              lazy='dynamic',
+                                                              order_by='desc(AnswerDraft.created_at)'))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('drafts',
+                                                      lazy='dynamic',
+                                                      order_by='desc(AnswerDraft.created_at)'))
+
+
 class UpvoteAnswer(db.Model):
     """赞同回答"""
     id = db.Column(db.Integer, primary_key=True)

@@ -81,8 +81,15 @@ def notifications():
     return render_template('user/notifications.html')
 
 
-@bp.route('/user/compose')
+@bp.route('/compose')
 @UserPermission()
 def compose():
     """撰写"""
     return render_template('user/compose.html')
+
+
+@bp.route('/drafts')
+def drafts():
+    """我的草稿"""
+    drafts = g.user.drafts
+    return render_template('user/drafts.html', drafts=drafts)

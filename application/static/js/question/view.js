@@ -1,6 +1,11 @@
 var $titleWap = $('.title-wap');
 var $titleInput = $('.title-wap input');
 var $title = $('.title-wap .title');
+var timerForTypeahead = null;
+var $topicInput = $("input[name='topic']");
+var $answerTextarea = $("textarea[name]");
+var timerForAnswer = null;
+var $draftTip = $('.tip-save-draft');
 
 // 编辑标题
 $('.btn-edit-title').click(function () {
@@ -67,8 +72,6 @@ $('.btn-save-desc').click(function () {
     });
 });
 
-var timerForTypeahead = null;
-var $topicInput = $("input[name='topic']");
 
 // 添加话题
 $('.btn-add-topic').click(function () {
@@ -136,16 +139,44 @@ $topicInput.typeahead({
     }
 });
 
-// 通过选择autocomplete菜单项添加句集
+// 通过选择autocomplete菜单项添加话题
 $topicInput.on('typeahead:selected', function (e, topic) {
     addToTopic(g.questionId, {topic_id: topic.id});
 });
 
-// 通过回车添加句集
+// 通过回车添加话题
 $topicInput.on('keyup', function (e) {
     if (e.which === 13) {
         addToTopic(g.questionId, {name: $(this).val()});
     }
+});
+
+// 自动保存
+$answerTextarea.on('keyup', function () {
+    var content = $.trim($(this).val());
+
+    if (timerForAnswer) {
+        clearTimeout(timerForAnswer);
+    }
+
+    $draftTip.text('保存中...');
+
+    timerForAnswer = setTimeout(function () {
+        $.ajax({
+            url: urlFor('question.save_answer_draft', {uid: g.questionId}),
+            method: 'post',
+            dataType: 'json',
+            data: {
+                content: content
+            }
+        }).done(function (response) {
+            if (response.result) {
+                $draftTip.text('已保存');
+            } else {
+                $draftTip.text('系统繁忙');
+            }
+        });
+    }, 4000);
 });
 
 /**

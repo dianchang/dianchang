@@ -1,6 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, json, g
-from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer
+from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
+    AnswerDraft
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('answer', __name__)
@@ -149,3 +150,12 @@ def nohelp(uid):
             'result': True,
             'nohelped': True
         })
+
+
+@bp.route('/answer/draft/<int:uid>/remove', methods=['POST'])
+def remove_draft(uid):
+    """移除草稿"""
+    draft = AnswerDraft.query.get_or_404(uid)
+    db.session.delete(draft)
+    db.session.commit()
+    return json.dumps({'result': True})

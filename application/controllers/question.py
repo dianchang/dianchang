@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
-    UserTopicStatistics
+    UserTopicStatistics, AnswerDraft
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -44,6 +44,13 @@ def add():
 def view(uid):
     """话题首页"""
     question = Question.query.get_or_404(uid)
+    answered = g.user and question.answers.filter(Answer.user_id == g.user.id).count() > 0
+    if g.user:
+        draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
+        if draft:
+            draft = draft.content
+    else:
+        draft = ""
     if request.method == 'POST' and request.form.get('answer'):
         # 回答话题
         answer = Answer(question_id=uid, content=request.form.get('answer'), user_id=g.user.id)
@@ -55,7 +62,7 @@ def view(uid):
         db.session.add(answer)
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
-    return render_template('question/view.html', question=question)
+    return render_template('question/view.html', question=question, draft=draft, answered=answered)
 
 
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])
@@ -196,3 +203,21 @@ def similar():
         'count': len(similar_questions),
         'html': macro(similar_questions)
     })
+
+
+@bp.route('/question/<int:uid>/save_answer_draft', methods=['POST'])
+@UserPermission()
+def save_answer_draft(uid):
+    """保存回答草稿"""
+    question = Question.query.get_or_404(uid)
+    content = request.form.get('content', '')
+    draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
+    if draft:
+        draft.content = content
+        db.session.add(draft)
+        db.session.commit()
+    else:
+        draft = AnswerDraft(user_id=g.user.id, question_id=uid, content=content)
+        db.session.add(draft)
+        db.session.commit()
+    return json.dumps({'result': True})
