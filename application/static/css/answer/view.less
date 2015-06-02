@@ -1,0 +1,31 @@
+.answer-comment {
+  .commands {
+    visibility: hidden;
+
+    .like-comment-wap {
+      .for-zero {
+        display: none;
+      }
+      .for-nonzero {
+        display: inline-block;
+      }
+
+      &.liked {
+        visibility: visible !important;
+      }
+
+      &.zero {
+        .for-zero {
+          display: inline-block;
+        }
+        .for-nonzero {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &:hover .commands {
+    visibility: visible;
+  }
+}

@@ -205,10 +205,17 @@ class AnswerComment(db.Model):
                                                           lazy='dynamic',
                                                           order_by='desc(AnswerComment.created_at)'))
 
+    parent_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
+    parent = db.relationship('AnswerComment', remote_side=[id])
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('answer_comments',
                                                       lazy='dynamic',
                                                       order_by='desc(AnswerComment.created_at)'))
+
+    def liked_by_user(self):
+        """该评论是否被用户赞过"""
+        return g.user and self.likes.filter(LikeAnswerComment.user_id == g.user.id).count() > 0
 
     def __repr__(self):
         return '<AnswerComment %s>' % self.id
@@ -219,10 +226,11 @@ class LikeAnswerComment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
-    answer = db.relationship('Answer', backref=db.backref('likes',
-                                                          lazy='dynamic',
-                                                          order_by='desc(LikeAnswerComment.created_at)'))
+    comment_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
+    comment = db.relationship('AnswerComment',
+                              backref=db.backref('likes',
+                                                 lazy='dynamic',
+                                                 order_by='desc(LikeAnswerComment.created_at)'))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('liked_answer_comments',

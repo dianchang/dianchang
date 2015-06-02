@@ -1,0 +1,21 @@
+.answer-comment .commands {
+  visibility: hidden;
+}
+.answer-comment .commands .like-comment-wap .for-zero {
+  display: none;
+}
+.answer-comment .commands .like-comment-wap .for-nonzero {
+  display: inline-block;
+}
+.answer-comment .commands .like-comment-wap.liked {
+  visibility: visible !important;
+}
+.answer-comment .commands .like-comment-wap.zero .for-zero {
+  display: inline-block;
+}
+.answer-comment .commands .like-comment-wap.zero .for-nonzero {
+  display: none;
+}
+.answer-comment:hover .commands {
+  visibility: visible;
+}

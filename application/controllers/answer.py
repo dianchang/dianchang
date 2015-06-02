@@ -1,7 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, json, g, request, redirect, url_for
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
-    AnswerDraft, AnswerComment
+    AnswerDraft, AnswerComment, LikeAnswerComment
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('answer', __name__)
@@ -165,9 +165,40 @@ def nohelp(uid):
 
 
 @bp.route('/answer/draft/<int:uid>/remove', methods=['POST'])
+@UserPermission()
 def remove_draft(uid):
     """移除草稿"""
     draft = AnswerDraft.query.get_or_404(uid)
     db.session.delete(draft)
     db.session.commit()
     return json.dumps({'result': True})
+
+
+@bp.route('/answer/comment/<int:uid>/like', methods=['POST'])
+@UserPermission()
+def like_comment(uid):
+    """赞评论"""
+    comment = AnswerComment.query.get_or_404(uid)
+    like = comment.likes.filter(LikeAnswerComment.user_id == g.user.id)
+    if like.count():  # 取消赞
+        map(db.session.delete, like)
+        db.session.commit()
+        # TODO: neet to use comment.likes_count
+        return json.dumps({
+            'result': True,
+            'liked': False,
+            'count': comment.likes.count()
+        })
+    else:
+        # 赞评论
+        like = LikeAnswerComment(user_id=g.user.id)
+        comment.likes.append(like)
+        db.session.add(comment)
+        db.session.commit()
+
+        # TODO: neet to use comment.likes_count
+        return json.dumps({
+            'result': True,
+            'liked': True,
+            'count': comment.likes.count()
+        })
