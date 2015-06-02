@@ -203,7 +203,7 @@ class AnswerComment(db.Model):
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
     answer = db.relationship('Answer', backref=db.backref('comments',
                                                           lazy='dynamic',
-                                                          order_by='desc(AnswerComment.created_at)'))
+                                                          order_by='asc(AnswerComment.created_at)'))
 
     parent_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
     parent = db.relationship('AnswerComment', remote_side=[id])

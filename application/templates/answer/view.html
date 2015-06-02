@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "macros/_answer.html" import render_answer_comment %}
 
 {% block page_title %}回答{% endblock %}
 {% block page_content %}
@@ -47,45 +48,7 @@
         </form>
 
         {% for comment in answer.comments %}
-            <div class="answer-comment media">
-                <div class="media-left">
-                    <a href="{{ comment.user.profile_url }}">
-                        <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
-                    </a>
-                </div>
-
-                <div class="media-body">
-                    <div class="meta">
-                        <a href="{{ comment.user.profile_url }}">
-                            {{ comment.user.name }}
-                        </a>
-
-                        <span title="{{ comment.created_at }}">
-                            {{ comment.created_at|timesince }}
-                        </span>
-
-                        <div class="commands pull-right">
-                            <a href="javascript: void(0)" data-comment-id="{{ comment.id }}">回复</a>
-                            •
-                            <span class="like-comment-wap
-                                {% if comment.liked_by_user() %}liked{% endif %}
-                                {% if comment.likes.count() == 0 %}zero{% endif %}">
-                                <a href="javascript: void(0)" data-id="{{ comment.id }}"
-                                   class="btn-like-comment">
-                                    <span class="for-zero">赞同</span>
-                                    <span class="for-nonzero">
-                                        <span class="likes-count">{{ comment.likes.count() }}</span> 赞
-                                    </span>
-                                </a>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div>
-                        {{ comment.content|safe }}
-                    </div>
-                </div>
-            </div>
+            {{ render_answer_comment(comment) }}
         {% endfor %}
     </div>
 {% endblock %}

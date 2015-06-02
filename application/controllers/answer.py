@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import Blueprint, render_template, json, g, request, redirect, url_for
+from flask import Blueprint, render_template, json, g, request, redirect, url_for, get_template_attribute
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
     AnswerDraft, AnswerComment, LikeAnswerComment
 from ..utils.permissions import UserPermission
@@ -202,3 +202,20 @@ def like_comment(uid):
             'liked': True,
             'count': comment.likes.count()
         })
+
+
+@bp.route('/answer/comment/<int:uid>/reply', methods=['POST'])
+@UserPermission()
+def reply_comment(uid):
+    """回复评论"""
+    parent_comment = AnswerComment.query.get_or_404(uid)
+    comment_content = request.form.get('content')
+    new_comment = AnswerComment(user_id=g.user.id, answer_id=parent_comment.answer_id, parent_id=uid,
+                                content=comment_content)
+    db.session.add(new_comment)
+    db.session.commit()
+    macro = get_template_attribute('macros/_answer.html', 'render_answer_comment')
+    return json.dumps({
+        'result': True,
+        'html': macro(new_comment)
+    })

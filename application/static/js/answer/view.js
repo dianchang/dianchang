@@ -26,3 +26,48 @@ $(document).onOnce('click', '.btn-like-comment', function () {
         }
     });
 });
+
+// 回复评论
+$(document).onOnce('click', '.btn-reply-comment', function () {
+    var id = parseInt($(this).data('id'));
+    var $commentBody = $(this).parents('.media-body');
+
+    $commentBody.append(
+        "<div class='comment-reply-wap'>"
+        + "<textarea name='comment' class='form-control' cols='30' rows='5'></textarea>"
+        + "<a class='btn-cancel-reply' href='javascript: void(0)'>取消</a>"
+        + "<button class='btn-submit-reply btn btn-primary' type='button' data-parent-id=" + id + ">评论</button>"
+        + "</div>"
+    );
+});
+
+// 取消回复
+$(document).onOnce('click', '.btn-cancel-reply', function () {
+    $(this).parents('.comment-reply-wap').first().detach()
+});
+
+// 提交回复
+$(document).onOnce('click', '.btn-submit-reply', function () {
+    var parentCommentId = parseInt($(this).data('parent-id'));
+    var $commentWap = $(this).parents('.answer-comment');
+    var $replyWap = $(this).parents('.comment-reply-wap').first();
+    var comment = $.trim($replyWap.find('textarea').val());
+
+    if (comment === '') {
+        return;
+    }
+
+    $.ajax({
+        url: urlFor('answer.reply_comment', {uid: parentCommentId}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            content: comment
+        }
+    }).done(function (response) {
+        if (response.result) {
+            $commentWap.after(response.html);
+            $replyWap.detach();
+        }
+    });
+});
