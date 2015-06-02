@@ -13,13 +13,13 @@
                 {% for expert in experts.items %}
                     <div class="media">
                         <div class="media-left">
-                            <a href="{{ url_for('user.profile', uid=expert.user_id) }}">
+                            <a href="{{ expert.user.profile_url }}">
                                 <img src="{{ expert.user.avatar_url }}" alt=""/>
                             </a>
                         </div>
                         <div class="media-body">
                             <div class="meta">
-                                <a href="{{ url_for('user.profile', uid=expert.user_id) }}">
+                                <a href="{{ expert.user.profile_url }}">
                                     {{ expert.user.name }}
                                 </a>
                                 {% if expert.user.desc %}

@@ -1,6 +1,6 @@
 # coding: utf-8
 from datetime import datetime
-from flask import g
+from flask import g, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars
@@ -19,6 +19,7 @@ class User(db.Model):
     password = db.Column(db.String(200))
     organization = db.Column(db.String(100))
     city = db.Column(db.String(100))
+    url_token = db.Column(db.String(100))
     position = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -47,6 +48,14 @@ class User(db.Model):
     def followed_by_user(self):
         """该用户是否被当前用户关注"""
         return g.user and g.user.followers.filter(FollowUser.follower_id == g.user.id).count() > 0
+
+    @property
+    def profile_url(self):
+        """用户个人主页url"""
+        if self.url_token:
+            return url_for('user.profile_with_url_token', url_token=self.url_token)
+        else:
+            return url_for('user.profile', uid=self.id)
 
     @property
     def avatar_url(self):

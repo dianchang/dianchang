@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="media-body">
                                     <div class="meta">
-                                        <a href="{{ url_for('user.profile', uid=user.id) }}">
+                                        <a href="{{ user.profile_url }}">
                                             {{ (user.highlight_name or user.name)|safe }}</a>
                                         <span>{{ user.answers.count() }} 个回答</span>
                                     </div>

@@ -86,7 +86,7 @@
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="{{ url_for('user.profile', uid=g.user.id) }}">我的主页</a>
+                                <a href="{{ g.user.profile_url }}">我的主页</a>
                             </li>
                             <li>
                                 <a href="{{ url_for('user.drafts') }}">我的草稿</a>

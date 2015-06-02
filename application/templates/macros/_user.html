@@ -77,7 +77,7 @@
 
     <ul class="nav nav-tabs">
         <li {% if active == 'profile' %}class="active"{% endif %}>
-            <a href="{{ url_for('user.profile', uid=user.id) }}">主页</a>
+            <a href="{{ user.profile_url }}">主页</a>
         </li>
         <li {% if active == 'answers' %}class="active"{% endif %}>
             <a href="{{ url_for('user.answers', uid=user.id) }}">

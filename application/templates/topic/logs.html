@@ -18,7 +18,7 @@
                         </div>
                         <div class="media-body">
                             <div class="title">
-                                <a href="{{ url_for('user.profile', uid=log.user_id) }}">
+                                <a href="{{ log.user.profile_url }}">
                                     {{ log.user.name }}
                                 </a>
 

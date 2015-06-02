@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_form.html" import form_submit, horizontal_field %}
+{% from "macros/_form.html" import form_submit, horizontal_field, field_errors %}
 {% from "macros/_account.html" import settings_page_header %}
 
 {% block page_title %}个人设置{% endblock %}
@@ -13,6 +13,21 @@
 
                 <form action="" method="post">
                     {{ form.csrf_token() }}
+
+                    <div class="form-group clearfix">
+                        <label class="col-md-2 control-label" for="city">个人主页网址</label>
+
+                        <div class="col-md-6">
+                            <input class="form-control" id="city" name="url_token" placeholder="" type="text"
+                                   value="{{ form.url_token.data or "" }}" autocomplete="off">
+
+                            <span class="personal-url">
+                                dianchang.com/people/<span class="url-token">{{ form.url_token.data or "" }}</span>
+                            </span>
+
+                            {{ field_errors(form.url_token) }}
+                        </div>
+                    </div>
 
                     {{ horizontal_field(form.desc) }}
                     {{ horizontal_field(form.city) }}

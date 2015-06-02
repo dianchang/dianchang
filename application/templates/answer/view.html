@@ -25,12 +25,12 @@
 
         <div class="answerer media">
             <div class="media-left">
-                <a href="{{ url_for('user.profile', uid=answer.user.id) }}">
+                <a href="{{ answer.user.profile_url }}">
                     <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
                 </a>
             </div>
             <div class="media-body">
-                <a href="{{ url_for('user.profile', uid=answer.user.id) }}">
+                <a href="{{ answer.user.profile_url }}">
                     {{ answer.user.name }}
                 </a>
             </div>
@@ -49,7 +49,7 @@
         {% for comment in answer.comments %}
             <div class="comment media">
                 <div class="media-left">
-                    <a href="{{ url_for('user.profile', uid=comment.user_id) }}">
+                    <a href="{{ comment.user.profile_url }}">
                         <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
 
                     </a>
@@ -57,7 +57,7 @@
 
                 <div class="media-body">
                     <div class="meta">
-                        <a href="{{ url_for('user.profile', uid=comment.user_id) }}">
+                        <a href="{{ comment.user.profile_url }}">
                             {{ comment.user.name }}
                         </a>
 
