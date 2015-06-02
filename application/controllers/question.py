@@ -2,7 +2,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
-    UserTopicStatistics, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND
+    UserTopicStatistics, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
+    NOTIFICATION_KIND
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -73,12 +74,34 @@ def view(uid):
 
         # 回答话题
         answer = Answer(question_id=uid, content=request.form.get('answer'), user_id=g.user.id)
+        db.session.add(answer)
+        db.session.commit()
         answer.save_to_es()
 
         # 更新话题统计数据
         for topic in question.topics:
             UserTopicStatistics.add_answer_in_topic(g.user.id, topic.topic_id)
-        db.session.add(answer)
+
+        # FEED: 插入本人的用户FEED
+        user_feed = UserFeed(kind=USER_FEED_KIND.ANSWER_QUESTION, answer_id=answer.id)
+        g.user.feeds.append(user_feed)
+        db.session.add(g.user)
+
+        # FEED: 插入提问者的用户NOTI
+        if g.user.id != question.user_id:
+            noti = Notification(kind=NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION, sender_id=g.user.id,
+                                answer_id=answer.id)
+            question.user.notifications.append(noti)
+            db.session.add(question.user)
+
+        # FEED: 插入followers的HOME FEED
+        # TODO: 使用消息队列
+        for follower in g.user.followers:
+            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,
+                                 answer_id=answer.id)
+            follower.follower.home_feeds.append(home_feed)
+            db.session.add(home_feed)
+
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
     return render_template('question/view.html', question=question, draft=draft, answered=answered)
