@@ -235,6 +235,14 @@ def like_comment(uid):
         like = LikeAnswerComment(user_id=g.user.id)
         comment.likes.append(like)
         db.session.add(comment)
+
+        # FEED: 插入被赞者的NOTI
+        if g.user.id != comment.user_id:
+            noti = Notification(kind=NOTIFICATION_KIND.LIKE_ANSWER_COMMENT, sender_id=g.user.id,
+                                answer_comment_id=uid)
+            comment.user.notifications.append(noti)
+            db.session.add(comment.user)
+
         db.session.commit()
 
         # TODO: neet to use comment.likes_count
