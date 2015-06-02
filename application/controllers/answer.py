@@ -1,15 +1,27 @@
 # coding: utf-8
-from flask import Blueprint, render_template, json, g
+from flask import Blueprint, render_template, json, g, request, redirect, url_for
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
-    AnswerDraft
+    AnswerDraft, AnswerComment
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('answer', __name__)
 
 
-@bp.route('/answer/<int:uid>')
+@bp.route('/answer/<int:uid>', methods=['POST', 'GET'])
 def view(uid):
+    """单个回答页"""
     answer = Answer.query.get_or_404(uid)
+    if request.method == 'POST' and request.form.get('comment'):
+        permission = UserPermission()
+        if not permission.check():
+            return permission.deny()
+
+        comment_content = request.form.get('comment')
+        comment = AnswerComment(content=comment_content, user_id=g.user.id)
+        answer.comments.append(comment)
+        db.session.add(answer)
+        db.session.commit()
+        return redirect(url_for('.view', uid=uid))
     return render_template('answer/view.html', answer=answer)
 
 

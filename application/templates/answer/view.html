@@ -25,7 +25,9 @@
 
         <div class="answerer media">
             <div class="media-left">
-                <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+                <a href="{{ url_for('user.profile', uid=answer.user.id) }}">
+                    <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+                </a>
             </div>
             <div class="media-body">
                 <a href="{{ url_for('user.profile', uid=answer.user.id) }}">
@@ -38,6 +40,37 @@
 
         <div>{{ answer.comments.count() }} 条评论</div>
 
-        <form action="" method="post"></form>
+        <form action="" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <textarea name="comment" id="" cols="30" rows="10" placeholder="写下你的评论" class="form-control"></textarea>
+            <button type="submit" class="btn btn-primary">提交</button>
+        </form>
+
+        {% for comment in answer.comments %}
+            <div class="comment media">
+                <div class="media-left">
+                    <a href="{{ url_for('user.profile', uid=comment.user_id) }}">
+                        <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
+
+                    </a>
+                </div>
+
+                <div class="media-body">
+                    <div class="meta">
+                        <a href="{{ url_for('user.profile', uid=comment.user_id) }}">
+                            {{ comment.user.name }}
+                        </a>
+
+                        <span title="{{ comment.created_at }}">
+                            {{ comment.created_at|timesince }}
+                        </span>
+                    </div>
+
+                    <div>
+                        {{ comment.content|safe }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
