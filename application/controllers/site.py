@@ -1,6 +1,6 @@
 # coding: utf-8
 import math
-from flask import render_template, Blueprint, request, redirect, abort
+from flask import render_template, Blueprint, request, redirect, abort, g
 from ..models import db, Question, Answer, Topic, User
 
 bp = Blueprint('site', __name__)
@@ -8,19 +8,23 @@ bp = Blueprint('site', __name__)
 
 @bp.route('/')
 def index():
-    """Index page."""
-    answers = Answer.query.limit(5)
-    return render_template('site/index.html', answers=answers)
+    """首页"""
+    if not g.user:
+        answers = Answer.query.limit(5)
+        return render_template('site/index.html', answers=answers)
+    else:
+        return render_template('site/index_signin.html')
 
 
 @bp.route('/about')
 def about():
-    """About page."""
+    """关于页"""
     return render_template('site/about.html')
 
 
 @bp.route('/search')
 def search():
+    """搜索页"""
     q = request.args.get('q')
     page = request.args.get('page', 1, int)
     per_page = 10

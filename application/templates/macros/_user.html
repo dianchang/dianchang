@@ -39,6 +39,11 @@
 
 
 {% macro user_page_header(user, active='profile') %}
+    {% if g.user and g.user.id == user.id %}
+        <a href="{{ url_for('account.settings') }}" class="pull-right btn btn-default">
+            编辑个人资料</a>
+    {% endif %}
+
     <img src="{{ user.avatar_url }}" alt=""/>
 
     <h1>

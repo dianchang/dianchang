@@ -3,13 +3,16 @@
 
 {% block page_title %}电场{% endblock %}
 {% block page_content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <h2>近期回答</h2>
+    <div class="row">
+        <div class="col-xs-5">
+            <h3>电场</h3>
 
-                {{ render_answers(answers) }}
-            </div>
+            <p>互联网职业领域问答社区</p>
+
+            <a href="{{ url_for('account.signin') }}">注册 / 登录</a>
+        </div>
+        <div class="col-xs-7">
+            {{ render_answers(answers) }}
         </div>
     </div>
 {% endblock %}
