@@ -38,4 +38,22 @@
       }
     }
   }
+
+  .btn-thank-answer {
+    .for-un-thanked {
+      display: inline-block;
+    }
+    .for-thanked {
+      display: none;
+    }
+
+    &.thanked {
+      .for-un-thanked {
+        display: none;
+      }
+      .for-thanked {
+        display: inline-block;
+      }
+    }
+  }
 }

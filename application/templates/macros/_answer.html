@@ -28,7 +28,7 @@
             <div class="commands">
                 {% set upvoted = answer.upvoted_by_user() %}
                 {% set downvoted = answer.downvoted_by_user() %}
-                {% set thankd = answer.thanked_by_user() %}
+                {% set thanked = answer.thanked_by_user() %}
                 {% set nohelped = answer.nohelped_by_user() %}
 
                 {# 赞同 & 反对 #}
@@ -45,6 +45,21 @@
                         <span class="for-downvoted">已反对</span>
                         <span class="for-un-downvoted">反对</span>
                     </a>
+                </span>
+
+                •
+
+                {# 感谢 #}
+                <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
+                   href="javascript: void(0)">
+                    <span class="for-thanked">已感谢</span>
+                    <span class="for-un-thanked">感谢</span>
+                </a>
+
+                •
+
+                {# 没有帮助 #}
+                <span class="nohelp-wap" data-id>
                 </span>
 
                 <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
@@ -108,6 +123,26 @@
                         }
                     } else {
                         _this.removeClass('downvoted');
+                    }
+                }
+            });
+        });
+
+        // 感谢回答
+        $(document).onOnce('click', '.dc-answer .btn-thank-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.thank', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.thanked) {
+                        _this.addClass('thanked');
+                    } else {
+                        _this.removeClass('thanked');
                     }
                 }
             });
