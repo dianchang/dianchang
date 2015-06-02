@@ -45,22 +45,6 @@ def signout():
     return redirect(request.referrer or url_for('site.index'))
 
 
-@bp.route('/account/settings', methods=['GET', 'POST'])
-@UserPermission()
-def settings():
-    """个人设置"""
-    form = SettingsForm(obj=g.user)
-
-    if form.validate_on_submit():
-        form.populate_obj(g.user)
-        db.session.add(g.user)
-        db.session.commit()
-        g.user.save_to_es()
-        flash('设置已更新')
-        return redirect(url_for('.settings'))
-    return render_template('account/settings.html', form=form)
-
-
 @bp.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     """忘记密码"""
@@ -81,3 +65,33 @@ def forgot_password():
                                title="发送成功",
                                message=message)
     return render_template('account/forgot_password.html', form=form)
+
+
+@bp.route('/settings', methods=['GET', 'POST'])
+@UserPermission()
+def settings():
+    """个人设置"""
+    form = SettingsForm(obj=g.user)
+
+    if form.validate_on_submit():
+        form.populate_obj(g.user)
+        db.session.add(g.user)
+        db.session.commit()
+        g.user.save_to_es()
+        flash('设置已更新')
+        return redirect(url_for('.settings'))
+    return render_template('account/settings.html', form=form)
+
+
+@bp.route('/account/notification_settings')
+@UserPermission()
+def notification_settings():
+    """消息设置"""
+    return render_template('account/notification_settings.html')
+
+
+@bp.route('/account/privacy_settings')
+@UserPermission()
+def privacy_settings():
+    """隐私设置"""
+    return render_template('account/privacy_settings.html')
