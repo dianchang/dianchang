@@ -1,7 +1,8 @@
 # coding: utf-8
 from flask import Blueprint, render_template, json, g, request, redirect, url_for, get_template_attribute
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
-    AnswerDraft, AnswerComment, LikeAnswerComment
+    AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
+    NOTIFICATION_KIND
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('answer', __name__)
@@ -58,6 +59,26 @@ def upvote(uid):
 
         answer.calculate_score()  # 更新回答分值
         db.session.add(answer)
+
+        # FEED: 插入到本人的用户FEED
+        user_feed = UserFeed(kind=USER_FEED_KIND.UPVOTE_ANSWER, answer_id=uid)
+        g.user.feeds.append(user_feed)
+        db.session.add(g.user)
+
+        # FEED: 插入到followers的首页FEED
+        for follower in g.user.followers:
+            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER, sender_id=g.user.id,
+                                 answer_id=uid)
+            follower.follower.home_feeds.append(home_feed)
+            db.session.add(follower.follower)
+
+        # FEED: 插入到被赞回答者的NOTI
+        if g.user.id != answer.user_id:
+            noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, sender_id=g.user.id,
+                                answer_id=uid)
+            answer.user.notifications.append(noti)
+            db.session.add(answer.user)
+
         db.session.commit()
 
         # 更新话题统计数据

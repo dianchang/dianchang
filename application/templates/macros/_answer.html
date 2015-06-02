@@ -59,7 +59,108 @@
         <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
            class="btn-fullscreen">全屏阅读</a>
     </div>
+
+    <script>
+        // 赞同回答
+        $(document).onOnce('click', '.dc-answer-commands .btn-upvote-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var $voteWap = $(this).parents('.vote-wap').first();
+            var $upvoteWap = $(this).parent();
+            var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.upvote', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.upvoted) {
+                        $upvoteWap.addClass('upvoted');
+                        // 取消反对
+                        $downvoteBtn.removeClass('downvoted');
+                    } else {
+                        $upvoteWap.removeClass('upvoted');
+                    }
+
+                    $voteWap.find('.upvotes-count').text(response.count);
+                }
+            });
+        });
+
+        // 反对回答
+        $(document).onOnce('click', '.dc-answer-commands .btn-downvote-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var $voteWap = $(this).parents('.vote-wap').first();
+            var $upvoteWap = $voteWap.find('.upvote-wap');
+            var $upvotesCount = $upvoteWap.find('.upvotes-count');
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.downvote', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.downvoted) {
+                        _this.addClass('downvoted');
+
+                        // 取消赞同
+                        if ($upvoteWap.hasClass('upvoted')) {
+                            $upvoteWap.removeClass('upvoted');
+
+                            var upvotesCount = parseInt($upvotesCount.text());
+                            $upvotesCount.text(upvotesCount > 0 ? upvotesCount - 1 : 0);
+                        }
+                    } else {
+                        _this.removeClass('downvoted');
+                    }
+                }
+            });
+        });
+
+        // 感谢回答
+        $(document).onOnce('click', '.dc-answer-commands .btn-thank-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.thank', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.thanked) {
+                        _this.addClass('thanked');
+                    } else {
+                        _this.removeClass('thanked');
+                    }
+                }
+            });
+        });
+
+        // 没有帮助
+        $(document).onOnce('click', '.dc-answer-commands .btn-nohelp-answer', function () {
+            var id = parseInt($(this).data('id'));
+            var _this = $(this);
+
+            $.ajax({
+                url: urlFor('answer.nohelp', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    if (response.nohelped) {
+                        _this.addClass('nohelped');
+                    } else {
+                        _this.removeClass('nohelped');
+                    }
+                }
+            });
+        });
+    </script>
 {% endmacro %}
+
 
 {% macro render_answers(answers) %}
     {% for answer in answers %}
@@ -93,106 +194,6 @@
             <hr/>
         </div>
     {% endfor %}
-
-    <script>
-        // 赞同回答
-        $(document).onOnce('click', '.dc-answer .btn-upvote-answer', function () {
-            var id = parseInt($(this).data('id'));
-            var $voteWap = $(this).parents('.vote-wap').first();
-            var $upvoteWap = $(this).parent();
-            var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
-            var _this = $(this);
-
-            $.ajax({
-                url: urlFor('answer.upvote', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.upvoted) {
-                        $upvoteWap.addClass('upvoted');
-                        // 取消反对
-                        $downvoteBtn.removeClass('downvoted');
-                    } else {
-                        $upvoteWap.removeClass('upvoted');
-                    }
-
-                    $voteWap.find('.upvotes-count').text(response.count);
-                }
-            });
-        });
-
-        // 反对回答
-        $(document).onOnce('click', '.dc-answer .btn-downvote-answer', function () {
-            var id = parseInt($(this).data('id'));
-            var $voteWap = $(this).parents('.vote-wap').first();
-            var $upvoteWap = $voteWap.find('.upvote-wap');
-            var $upvotesCount = $upvoteWap.find('.upvotes-count');
-            var _this = $(this);
-
-            $.ajax({
-                url: urlFor('answer.downvote', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.downvoted) {
-                        _this.addClass('downvoted');
-
-                        // 取消赞同
-                        if ($upvoteWap.hasClass('upvoted')) {
-                            $upvoteWap.removeClass('upvoted');
-
-                            var upvotesCount = parseInt($upvotesCount.text());
-                            $upvotesCount.text(upvotesCount > 0 ? upvotesCount - 1 : 0);
-                        }
-                    } else {
-                        _this.removeClass('downvoted');
-                    }
-                }
-            });
-        });
-
-        // 感谢回答
-        $(document).onOnce('click', '.dc-answer .btn-thank-answer', function () {
-            var id = parseInt($(this).data('id'));
-            var _this = $(this);
-
-            $.ajax({
-                url: urlFor('answer.thank', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.thanked) {
-                        _this.addClass('thanked');
-                    } else {
-                        _this.removeClass('thanked');
-                    }
-                }
-            });
-        });
-
-        // 没有帮助
-        $(document).onOnce('click', '.dc-answer .btn-nohelp-answer', function () {
-            var id = parseInt($(this).data('id'));
-            var _this = $(this);
-
-            $.ajax({
-                url: urlFor('answer.nohelp', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.nohelped) {
-                        _this.addClass('nohelped');
-                    } else {
-                        _this.removeClass('nohelped');
-                    }
-                }
-            });
-        });
-    </script>
 {% endmacro %}
 
 
