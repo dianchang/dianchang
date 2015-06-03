@@ -5,6 +5,7 @@ from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiC
     PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
+from ..utils.uploadsets import process_topic_avatar, topic_avatars
 from ..forms import AdminTopicForm, EditTopicWikiForm
 
 bp = Blueprint('topic', __name__)
@@ -293,3 +294,28 @@ def remove_synonym(uid):
     db.session.commit()
     topic_synonym.topic.save_to_es()
     return json.dumps({'result': True})
+
+
+@bp.route('/topic/<int:uid>/upload_avatar', methods=['POST'])
+@UserPermission()
+def upload_avatar(uid):
+    """上传话题头像"""
+    topic = Topic.query.get_or_404(uid)
+    try:
+        filename = process_topic_avatar(request.files['file'], 200)
+
+        # Update avatar log
+        log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_AVATAR, before=topic.avatar_url,
+                            after=topic_avatars.url(filename), user_id=g.user.id)
+        topic.logs.append(log)
+
+        topic.avatar = filename
+        db.session.add(topic)
+        db.session.commit()
+    except Exception, e:
+        return json.dumps({'result': False, 'error': e.__repr__()})
+    else:
+        return json.dumps({
+            'result': True,
+            'image_url': topic_avatars.url(filename),
+        })

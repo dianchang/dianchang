@@ -152,6 +152,29 @@ $(document).on('click', '.btn-remove-topic-synonym', function () {
     });
 });
 
+var uploader = simple.uploader({
+    url: urlFor('topic.upload_avatar', {uid: g.topicId}),
+    fileKey: 'file',
+    connectionCount: 1
+});
+
+// 上传头像
+$('.btn-upload-topic-avatar').click(function () {
+    $("input[name='avatar']").click();
+});
+
+$("input[name='avatar']").on('change', function (e) {
+    uploader.upload(this.files);
+});
+
+uploader.on('uploadsuccess', function (e, file, response) {
+    response = JSON.parse(response);
+    if (response.result) {
+        $('img.topic-avatar').attr('src', response.image_url);
+    }
+});
+
+
 /**
  * 添加直接父话题
  * @param {int} topicId - 问题id

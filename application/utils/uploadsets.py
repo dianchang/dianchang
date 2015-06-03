@@ -10,12 +10,26 @@ topic_avatars = UploadSet('topicAvatars', IMAGES)
 
 
 def process_user_avatar(file_storage, border):
-    """Center clipping, resize and then save the avatar."""
+    """处理并保存用户头像。
+
+    Center clipping, resize and then save the avatar."""
     image = open_image(file_storage)
     image = center_crop(image)
     image = resize_square(image, border)
     ext = extension(file_storage.filename)
     return save_image(image, avatars, ext)
+
+
+def process_topic_avatar(file_storage, border):
+    """处理并保存话题图标。
+
+    Center clipping, resize and then save the avatar.
+    """
+    image = open_image(file_storage)
+    image = center_crop(image)
+    image = resize_square(image, border)
+    ext = extension(file_storage.filename)
+    return save_image(image, topic_avatars, ext)
 
 
 def open_image(file_storage):

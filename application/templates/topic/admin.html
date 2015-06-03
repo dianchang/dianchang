@@ -14,7 +14,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <img src="{{ topic.avatar_url }}" alt=""/>
+                <img src="{{ topic.avatar_url }}" alt="" class="topic-avatar"/>
+                <button type="button" class="btn btn-primary btn-sm btn-upload-topic-avatar">
+                    更换头像
+                </button>
+                <input type="file" name="avatar"/>
 
                 <form action="" method="post">
                     {{ form.csrf_token() }}
