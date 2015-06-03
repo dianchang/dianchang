@@ -7,7 +7,7 @@
         <div class="col-md-8">
             <h3>可能适合你回答的问题</h3>
 
-            {% for feed in user.compose_feeds %}
+            {% for feed in g.user.compose_feeds %}
                 {% if feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}
                     {# TODO #}
                 {% elif feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER %}
