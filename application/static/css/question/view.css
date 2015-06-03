@@ -23,6 +23,7 @@
   display: inline-block;
 }
 .desc-wap textarea,
+.desc-wap .simditor,
 .desc-wap .btn-add-desc,
 .desc-wap .btn-edit-desc,
 .desc-wap .btn-save-desc {
@@ -31,9 +32,11 @@
 .desc-wap.edit .desc-inner-wap {
   display: none;
 }
-.desc-wap.edit textarea,
 .desc-wap.edit .btn-save-desc {
   display: inline-block;
+}
+.desc-wap.edit .simditor {
+  display: block;
 }
 .desc-wap.empty .btn-add-desc {
   display: inline-block;

@@ -151,9 +151,9 @@ def register_error_handle(app):
 
 def register_uploadsets(app):
     """Register UploadSets."""
-    from .utils.uploadsets import avatars, topic_avatars
+    from .utils.uploadsets import avatars, topic_avatars, images
 
-    configure_uploads(app, (avatars, topic_avatars))
+    configure_uploads(app, (avatars, topic_avatars, images))
 
 
 def register_hooks(app):

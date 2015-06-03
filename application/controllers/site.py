@@ -1,7 +1,9 @@
 # coding: utf-8
 import math
-from flask import render_template, Blueprint, request, redirect, abort, g
+from flask import render_template, Blueprint, request, redirect, abort, g, json
 from ..models import db, Question, Answer, Topic, User
+from ..utils.permissions import UserPermission
+from ..utils.uploadsets import process_site_image, images
 
 bp = Blueprint('site', __name__)
 
@@ -45,3 +47,18 @@ def search():
     return render_template('site/search.html', q=q, results=results, _type=_type,
                            page=page, pre_page=pre_page, next_page=next_page,
                            total=total, took=took)
+
+
+@bp.route('/upload_image', methods=['POST'])
+@UserPermission()
+def upload_image():
+    """上传通用图片"""
+    try:
+        filename = process_site_image(request.files['file'])
+    except Exception, e:
+        return json.dumps({'result': False, 'error': e.__repr__()})
+    else:
+        return json.dumps({
+            'success': True,
+            'file_path': images.url(filename),
+        })

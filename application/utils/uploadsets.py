@@ -5,8 +5,19 @@ from PIL import Image
 from flask.ext.uploads import UploadSet, IMAGES, extension, ALL
 
 # UploadSets
+images = UploadSet('images', IMAGES)
 avatars = UploadSet('avatars', IMAGES)
 topic_avatars = UploadSet('topicAvatars', IMAGES)
+
+
+def process_site_image(file_storage):
+    """处理并保存全站通用图片。
+
+    Center clipping, resize and then save the avatar."""
+    image = open_image(file_storage)
+    image = resize_with_max_width(image, 1000)
+    ext = extension(file_storage.filename)
+    return save_image(image, images, ext)
 
 
 def process_user_avatar(file_storage, border):
@@ -66,6 +77,32 @@ def center_crop(image):
 
 def resize_square(image, border):
     return image.resize((border, border), Image.ANTIALIAS)
+
+
+def resize_with_max_width(image, max_width):
+    """等比例调整图片大小，使其宽不超过某值"""
+    w, h = image.size
+    if w > max_width:
+        target_w = max_width
+        target_h = max_width * h / w
+        return image.resize((target_w, target_h), Image.ANTIALIAS)
+    else:
+        return image
+
+
+def resize_with_max(image, max_value):
+    """等比例调整图片大小，使其长与宽不超过某值"""
+    w, h = image.size
+    if w > h and w > max_value:
+        target_w = max_value
+        target_h = max_value * h / w
+        return image.resize((target_w, target_h), Image.ANTIALIAS)
+    elif h > w and h > max_value:
+        target_h = max_value
+        target_w = max_value * w / h
+        return image.resize((target_w, target_h), Image.ANTIALIAS)
+    else:
+        return image
 
 
 def random_filename():

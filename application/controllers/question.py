@@ -78,7 +78,9 @@ def view(uid):
 
         # 删除草稿
         draft = question.drafts.filter(AnswerDraft.user_id == g.user.id)
-        map(db.session.delete, draft)
+        if draft.count():
+            map(db.session.delete, draft)
+
         db.session.commit()
         answer.save_to_es()
 

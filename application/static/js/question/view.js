@@ -38,6 +38,19 @@ var $descWap = $('.desc-wap');
 var $descTextarea = $('.desc-wap textarea');
 var $desc = $('.desc-wap .desc');
 
+// 初始化描述富文本编辑器
+var descEditor = new Simditor({
+    textarea: $descTextarea,
+    toolbarFloat: false,
+    toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
+    upload: {
+        url: urlFor('site.upload_image'),
+        fileKey: 'file',
+        connectionCount: 1,
+        leaveConfirm: '正在上传文件，如果离开上传会自动取消'
+    }
+});
+
 // 添加问题描述
 $('.btn-add-desc').click(function () {
     $descWap.addClass('edit');
@@ -46,7 +59,7 @@ $('.btn-add-desc').click(function () {
 // 编辑问题描述
 $('.btn-edit-desc').click(function () {
     $descWap.addClass('edit');
-    $descTextarea.val($.trim($desc.text()));
+    descEditor.setValue($.trim($desc.html()));
 });
 
 // 保存问题描述
@@ -62,7 +75,7 @@ $('.btn-save-desc').click(function () {
         }
     }).done(function () {
         $descWap.removeClass('edit');
-        $desc.text(desc);
+        $desc.html(desc);
 
         if (desc === "") {
             $descWap.addClass('empty');
@@ -71,7 +84,6 @@ $('.btn-save-desc').click(function () {
         }
     });
 });
-
 
 // 添加话题
 $('.btn-add-topic').click(function () {
@@ -177,6 +189,18 @@ $answerTextarea.on('keyup', function () {
             }
         });
     }, 4000);
+});
+
+// 初始化回答富文本编辑器
+var answerEditor = new Simditor({
+    textarea: $("textarea[name='answer']"),
+    toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
+    upload: {
+        url: urlFor('site.upload_image'),
+        fileKey: 'file',
+        connectionCount: 1,
+        leaveConfirm: '正在上传文件，如果离开上传会自动取消'
+    }
 });
 
 /**
