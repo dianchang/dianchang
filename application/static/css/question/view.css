@@ -77,3 +77,6 @@
 .dc-question-follow-wap {
   float: right;
 }
+.hided-answers {
+  display: none;
+}

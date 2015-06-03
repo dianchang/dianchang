@@ -7,10 +7,34 @@
 {% block page_vars %}
     <script type="text/javascript">
         registerContext({
-            questionId: {{ question.id }}
+            questionId: {{ question.id }},
+            answered: {{ answered }}
         });
     </script>
 {% endblock %}
+{% macro _render_answers(answers) %}
+    {% for answer in answers %}
+        <div class="answer">
+            <div class="answerer-info media">
+                <div class="media-left">
+                    <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+                </div>
+
+                <div class="media-body">
+                    <div>
+                        <a href="{{ answer.user.profile_url }}">
+                            {{ answer.user.name }}
+                        </a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
+                    </div>
+
+                    <div>{{ answer.content|safe }}</div>
+
+                    {{ render_answer_commands(answer) }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
 {% block page_content %}
     <div class="container">
         {{ question_follow_wap(question) }}
@@ -67,27 +91,18 @@
                 <div>
                     {{ question.answers.count() }}人回答
 
-                    {% for answer in question.answers %}
-                        <div class="answer">
-                            <div class="answerer-info media">
-                                <div class="media-left">
-                                    <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
-                                </div>
+                    {{ _render_answers(answers) }}
 
-                                <div class="media-body">
-                                    <div>
-                                        <a href="{{ answer.user.profile_url }}">
-                                            {{ answer.user.name }}
-                                        </a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
-                                    </div>
+                    {% if hided_answers.count() %}
+                        <a href="javascript:void(0)" class="btn-toggle-hided-answers">
+                            {{ hided_answers.count() }} 个回答被折叠
+                        </a>
+                        （<a target="_blank" href="http://www.zhihu.com/question/20120168">为什么</a>）
+                    {% endif %}
 
-                                    <div>{{ answer.content|safe }}</div>
-
-                                    {{ render_answer_commands(answer) }}
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                    <div class="hided-answers">
+                        {{ _render_answers(answers) }}
+                    </div>
                 </div>
 
                 {% if answered %}

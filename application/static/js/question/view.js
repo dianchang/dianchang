@@ -192,15 +192,23 @@ $answerTextarea.on('keyup', function () {
 });
 
 // 初始化回答富文本编辑器
-var answerEditor = new Simditor({
-    textarea: $("textarea[name='answer']"),
-    toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
-    upload: {
-        url: urlFor('site.upload_image'),
-        fileKey: 'file',
-        connectionCount: 1,
-        leaveConfirm: '正在上传文件，如果离开上传会自动取消'
-    }
+if (g.answered) {
+    var answerEditor = new Simditor({
+        textarea: $("textarea[name='answer']"),
+        toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
+        upload: {
+            url: urlFor('site.upload_image'),
+            fileKey: 'file',
+            connectionCount: 1,
+            leaveConfirm: '正在上传文件，如果离开上传会自动取消'
+        }
+    });
+}
+
+// 显示 & 隐藏被折叠的回答
+$('.btn-toggle-hided-answers').click(function () {
+    $('.hided-answers').toggle();
+    console.log(1);
 });
 
 /**

@@ -58,9 +58,11 @@ def add():
 
 @bp.route('/question/<int:uid>', methods=['GET', 'POST'])
 def view(uid):
-    """话题首页"""
+    """问题首页"""
     question = Question.query.get_or_404(uid)
     answered = g.user and question.answers.filter(Answer.user_id == g.user.id).count() > 0
+    answers = question.answers.filter(~Answer.hide)
+    hided_answers = question.answers.filter(Answer.hide)
     if g.user:
         draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
         if draft:
@@ -110,7 +112,8 @@ def view(uid):
 
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
-    return render_template('question/view.html', question=question, draft=draft, answered=answered)
+    return render_template('question/view.html', question=question, draft=draft, answered=answered,
+                           answers=answers, hided_answers=hided_answers)
 
 
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])
