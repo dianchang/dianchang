@@ -1,9 +1,10 @@
 # coding: utf-8
-from flask import render_template, Blueprint, redirect, request, url_for, flash, g
+from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json
 from ..forms import SigninForm, SignupForm, SettingsForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email
+from ..utils.uploadsets import process_user_avatar, avatars
 from ..models import db, User
 
 bp = Blueprint('account', __name__)
@@ -95,3 +96,18 @@ def notification_settings():
 def privacy_settings():
     """隐私设置"""
     return render_template('account/privacy_settings.html')
+
+
+@bp.route('/account/upload_avatar', methods=['POST'])
+@UserPermission()
+def upload_avatar():
+    """上传用户头像"""
+    try:
+        filename = process_user_avatar(request.files['file'], 200)
+    except Exception, e:
+        return json.dumps({'result': False, 'error': e.__repr__()})
+    else:
+        return json.dumps({
+            'result': True,
+            'image_url': avatars.url(filename),
+        })
