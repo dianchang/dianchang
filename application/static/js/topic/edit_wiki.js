@@ -1,5 +1,5 @@
 // 初始化回答富文本编辑器
-var answerEditor = new Simditor({
+var wikiEditor = new Simditor({
     textarea: $("textarea[name='wiki']"),
     toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
     upload: {

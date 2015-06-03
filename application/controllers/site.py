@@ -34,13 +34,13 @@ def search():
     if not q:
         return redirect(request.referrer)
     if _type == "topic":
-        results, total, took = Topic.query_from_es(q, page, per_page)
+        results, total, took = Topic.query_from_es(q, page=page, per_page=per_page)
     elif _type == 'answer':
-        results, total, took = Answer.query_from_es(q, page, per_page)
+        results, total, took = Answer.query_from_es(q, page=page, per_page=per_page)
     elif _type == 'user':
-        results, total, took = User.query_from_es(q, page, per_page)
+        results, total, took = User.query_from_es(q, page=page, per_page=per_page)
     else:
-        results, total, took = Question.query_from_es(q, page, per_page)
+        results, total, took = Question.query_from_es(q, page=page, per_page=per_page)
     pages = int(math.ceil(float(total) / per_page))
     pre_page = None if page <= 1 else page - 1
     next_page = None if page >= pages else page + 1
