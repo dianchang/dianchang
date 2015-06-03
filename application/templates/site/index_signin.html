@@ -79,6 +79,12 @@
                                 </div>
                             </div>
                         </div>
+                    {% elif feed.kind == HOME_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}
+                        {# TODO #}
+                    {% elif feed.kind == HOME_FEED_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC %}
+                        {# TODO #}
+                    {% elif feed.kind == HOME_FEED_KIND.NEW_ANSWER_FROM_FOLLOWED_TOPIC %}
+                        {# TODO #}
                     {% endif %}
                 {% endfor %}
             </div>

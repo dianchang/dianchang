@@ -26,7 +26,7 @@ def view(uid):
         # FEED: 插入被评论回答者的NOTI
         if g.user.id != answer.user_id:
             noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, sender_id=g.user.id,
-                                answer_id=uid)
+                                answer_comment_id=comment.id)
             answer.user.notifications.append(noti)
             db.session.add(answer.user)
 

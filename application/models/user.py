@@ -213,7 +213,6 @@ class UserFeed(db.Model):
 
 class NOTIFICATION_KIND(object):
     """用户消息类型"""
-    GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "FAKeWIP"  # 关注的问题有了精彩的回答
     ANSWER_FROM_ASKED_QUESTION = "WFHhwmW"  # 回答了我提出的问题
     FOLLOW_ME = "nK8BQ99"  # 关注了我
     UPVOTE_ANSWER = "Vu69o4V"  # 赞同了我的回答
@@ -221,6 +220,7 @@ class NOTIFICATION_KIND(object):
     COMMENT_ANSWER = "Fk3cIIH"  # 评论了我的回答
     REPLY_ANSWER_COMMENT = "ibWxLaC"  # 回复了我的评论
     LIKE_ANSWER_COMMENT = "1oY78lq"  # 赞了我的评论
+    GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "FAKeWIP"  # 关注的问题有了精彩的回答
     SYSTEM_NOTI = "ezjwiCu"  # 系统通知
     HIDE_ANSWER = "E0CzTCk"  # 回答被折叠
 
@@ -235,7 +235,7 @@ class Notification(db.Model):
     user = db.relationship('User',
                            backref=db.backref('notifications',
                                               lazy='dynamic',
-                                              order_by='desc(UserFeed.created_at)'),
+                                              order_by='desc(Notification.created_at)'),
                            foreign_keys=[user_id])
 
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))

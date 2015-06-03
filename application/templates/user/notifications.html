@@ -1,10 +1,163 @@
 {% extends "layout.html" %}
+{% from "macros/_answer.html" import render_answer_commands %}
 
 {% block page_title %}Notifications{% endblock %}
 {% block page_content %}
     <div class="container">
         <div class="col-md-8">
             <h3>通知</h3>
+            {% for noti in g.user.notifications %}
+                {% if noti.kind == NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ noti.sender.profile_url }}">
+                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            回答了你提出的问题
+                            •
+                            <span>{{ noti.created_at|timesince }}</span>
+
+                            <div>
+                                <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                                    {{ noti.answer.question.title }}
+                                </a>
+
+                                <div>
+                                    {{ noti.answer.content|safe }}
+                                    {{ render_answer_commands(noti.answer) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif noti.kind == NOTIFICATION_KIND.FOLLOW_ME %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ noti.sender.profile_url }}">
+                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            关注了你
+                            •
+                            <span>{{ noti.created_at|timesince }}</span>
+                        </div>
+                    </div>
+                {% elif noti.kind == NOTIFICATION_KIND.UPVOTE_ANSWER %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ noti.sender.profile_url }}">
+                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            赞同了你的回答
+                            •
+                            <span>{{ noti.created_at|timesince }}</span>
+
+                            <div>
+                                <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                                    {{ noti.answer.question.title }}
+                                </a>
+
+                                <div>
+                                    {{ noti.answer.content|safe }}
+                                    {{ render_answer_commands(noti.answer) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif noti.kind == NOTIFICATION_KIND.THANK_ANSWER %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ noti.sender.profile_url }}">
+                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            感谢了你的回答
+                            •
+                            <span>{{ noti.created_at|timesince }}</span>
+
+                            <div>
+                                <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                                    {{ noti.answer.question.title }}
+                                </a>
+
+                                <div>
+                                    {{ noti.answer.content|safe }}
+                                    {{ render_answer_commands(noti.answer) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif noti.kind == NOTIFICATION_KIND.COMMENT_ANSWER %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ noti.sender.profile_url }}">
+                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            评论了你的回答
+                            •
+                            <span>{{ noti.created_at|timesince }}</span>
+
+                            <div>
+                                {{ noti.answer_comment.content|safe }}
+                            </div>
+                        </div>
+                    </div>
+                {% elif noti.kind == NOTIFICATION_KIND.REPLY_ANSWER_COMMENT %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ noti.sender.profile_url }}">
+                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            回复了你的评论
+                            •
+                            <span>{{ noti.created_at|timesince }}</span>
+
+                            <div>
+                                {{ noti.answer_comment.content|safe }}
+                            </div>
+                        </div>
+                    </div>
+                {% elif noti.kind == NOTIFICATION_KIND.LIKE_ANSWER_COMMENT %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ noti.sender.profile_url }}">
+                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            赞了你的评论
+                            •
+                            <span>{{ noti.created_at|timesince }}</span>
+
+                            <div>
+                                {{ noti.answer_comment.content }}
+                            </div>
+                        </div>
+                    </div>
+                {% elif noti.kind == NOTIFICATION_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC %}
+                    {# TODO #}
+                {% elif noti.kind == NOTIFICATION_KIND.SYSTEM_NOTI %}
+                    {# TODO #}
+                {% elif noti.kind == NOTIFICATION_KIND.HIDE_ANSWER %}
+                    {# TODO #}
+                {% endif %}
+            {% endfor %}
         </div>
         <div class="col-md-4">
         </div>
