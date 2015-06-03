@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_answer.html" import render_answers %}
+{% from "macros/_answer.html" import render_answers, render_answer_commands %}
 
 {% block page_title %}电场{% endblock %}
 {% block page_content %}
@@ -8,7 +8,78 @@
             <div class="col-md-8">
                 <h3>首页FEED</h3>
 
-                {% for feed in g.user.home_feed %}
+                {% for feed in g.user.home_feeds %}
+                    {% if feed.kind == HOME_FEED_KIND.FOLLOWING_ASK_QUESTION %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{{ feed.sender.profile_url }}">
+                                    <img src="{{ feed.sender.avatar_url }}" alt=""/>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{{ feed.sender.profile_url }}">{{ feed.sender.name }}</a>
+                                提出了问题
+                                •
+                                <span>{{ feed.created_at|timesince }}</span>
+
+                                <div>
+                                    <a href="{{ url_for('question.view', uid=feed.question_id) }}">
+                                        {{ feed.question.title }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{{ feed.sender.profile_url }}">
+                                    <img src="{{ feed.sender.avatar_url }}" alt=""/>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{{ feed.sender.profile_url }}">{{ feed.sender.name }}</a>
+                                回答了问题
+                                •
+                                <span>{{ feed.created_at|timesince }}</span>
+
+                                <div>
+                                    <a href="{{ url_for('question.view', uid=feed.answer.question_id) }}">
+                                        {{ feed.answer.question.title }}
+                                    </a>
+
+                                    <div>
+                                        {{ feed.answer.content|safe }}
+                                    </div>
+                                    {{ render_answer_commands(feed.answer) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{{ feed.sender.profile_url }}">
+                                    <img src="{{ feed.sender.avatar_url }}" alt=""/>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{{ feed.sender.profile_url }}">{{ feed.sender.name }}</a>
+                                赞同了回答
+                                •
+                                <span>{{ feed.created_at|timesince }}</span>
+
+                                <div>
+                                    <a href="{{ url_for('question.view', uid=feed.answer.question_id) }}">
+                                        {{ feed.answer.question.title }}
+                                    </a>
+
+                                    <div>
+                                        {{ feed.answer.content|safe }}
+                                    </div>
+                                    {{ render_answer_commands(feed.answer) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
             <div class="col-md-4">
