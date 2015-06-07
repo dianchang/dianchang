@@ -2,7 +2,16 @@
   color: red;
 }
 .text-light {
-  color: gray;
+  color: #999;
+}
+.link-no-underline:hover {
+  text-decoration: none;
+}
+.link-color {
+  color: #333;
+}
+.link-color:hover {
+  color: #009999;
 }
 .table-vertical-middle > tbody > tr > td {
   vertical-align: middle;

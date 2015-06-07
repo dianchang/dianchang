@@ -89,20 +89,26 @@
         <div class="row">
             <div class="col-md-8">
                 <div>
-                    {{ question.answers.count() }}人回答
+                    {% set answers_count = question.answers.count() %}
 
-                    {{ _render_answers(answers) }}
+                    {{ answers_count }}人回答
 
-                    {% if hided_answers.count() %}
-                        <a href="javascript:void(0)" class="btn-toggle-hided-answers">
-                            {{ hided_answers.count() }} 个回答被折叠
-                        </a>
-                        （<a target="_blank" href="http://www.zhihu.com/question/20120168">为什么</a>）
-                    {% endif %}
-
-                    <div class="hided-answers">
+                    {% if answers_count %}
                         {{ _render_answers(answers) }}
-                    </div>
+
+                        {% if hided_answers.count() %}
+                            <a href="javascript:void(0)" class="btn-toggle-hided-answers">
+                                {{ hided_answers.count() }} 个回答被折叠
+                            </a>
+                            （<a target="_blank" href="http://www.zhihu.com/question/20120168">为什么</a>）
+                        {% endif %}
+
+                        <div class="hided-answers">
+                            {{ _render_answers(answers) }}
+                        </div>
+                    {% else %}
+                        {# 邀请回答 #}
+                    {% endif %}
                 </div>
 
                 {% if answered %}

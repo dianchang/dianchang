@@ -2,3 +2,20 @@
 
 body {
 }
+
+.btn-primary {
+  background-color: @light-main;
+  color: @main-color;
+  border-color: #b7e1e2;
+  padding: 6px 15px;
+
+  a {
+    color: @main-color;
+  }
+
+  &:hover {
+    background-color: darken(@light-main, 5%);
+    border-color: darken(#b7e1e2, 5%);
+    color: @main-color;
+  }
+}

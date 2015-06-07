@@ -7,11 +7,11 @@
 
         {# 赞同 & 反对 #}
         <span class="vote-wap">
-            <span class="upvote-wap {% if upvoted %}upvoted{% endif %}">
+            <span class="upvote-wap btn btn-primary {% if upvoted %}upvoted{% endif %}">
                 <a class="btn-upvote-answer" href="javascript: void(0)" data-id="{{ answer.id }}">
                     <span class="for-upvoted">已赞同</span>
                     <span class="for-un-upvoted">赞同</span></a>
-                |
+                <span class="divider">|</span>
                 <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
             </span>
             <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
@@ -21,43 +21,40 @@
             </a>
         </span>
 
-        •
+        <div class="pull-right">
+            <a href="javascript:void(0)" class="btn-comments">
+                <span class="fa fa-comment-o"></span>
+                评论
+                {{ answer.comments.count() }}
+            </a>
 
-        <a href="#">
-            <span class="fa fa-comment-o"></span>
-            评论
-            {{ answer.comments.count() }}
-        </a>
+            <a href="javascript:void(0)" class="btn-share">
+                <span class="fa fa-share-square-o"></span>
+                分享
+                0
+            </a>
 
-        •
+            <span class="btn-more">
+                更多
 
-        <a href="#">
-            <span class="fa fa-share-square-o"></span>
-            分享
-        </a>
+                <span class="hide-commands">
+                    {# 感谢 #}
+                    <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
+                       href="javascript: void(0)">
+                        <span class="for-thanked">已感谢</span>
+                        <span class="for-un-thanked">感谢作者</span></a>
 
-        •
+                    {# 没有帮助 #}
+                    <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
+                       href="javascript: void(0)">
+                        <span class="for-nohelped">已标记为没有帮助</span>
+                        <span class="for-un-nohelped">没有帮助</span></a>
 
-        {# 感谢 #}
-        <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
-           href="javascript: void(0)">
-            <span class="for-thanked">已感谢</span>
-            <span class="for-un-thanked">感谢</span>
-        </a>
-
-        •
-
-        {# 没有帮助 #}
-        <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
-           href="javascript: void(0)">
-            <span class="for-nohelped">已标记为没有帮助</span>
-            <span class="for-un-nohelped">没有帮助</span>
-        </a>
-
-        •
-
-        <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
-           class="btn-fullscreen">全屏阅读</a>
+                    <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
+                       class="btn-fullscreen">全屏阅读</a>
+                </span>
+            </span>
+        </div>
     </div>
 
     <script>
@@ -168,30 +165,29 @@
             <div class="topics">
                 {% for topic in answer.question.topics %}
                     {% set topic = topic.topic %}
-                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="label label-default">
-                        {{ topic.name }}
-                    </a>
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="topic link-no-underline">
+                        {{ topic.name }}</a>
                 {% endfor %}
             </div>
-            <div>
-                <a href="{{ url_for('question.view', uid=answer.question.id) }}">
-                    {{ (answer.highlight_question_title or answer.question.title)|safe }}
-                </a>
-            </div>
-            <div>
+
+            <a href="{{ url_for('question.view', uid=answer.question.id) }}" class="title link-no-underline link-color">
+                {{ (answer.highlight_question_title or answer.question.title)|safe }}
+            </a>
+
+            <div class="answerer">
                 <a href="{{ answer.user.profile_url }}">
                     {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
             </div>
-            <div>
+
+            <div class="content">
                 {{ (answer.highlight_content or answer.content)|safe }}
             </div>
-            <div class="time" title="{{ answer.created_at }}">
+
+            <div class="time text-light" title="{{ answer.created_at }}">
                 发布于 {{ answer.created_at|timesince }}
             </div>
 
             {{ render_answer_commands(answer) }}
-
-            <hr/>
         </div>
     {% endfor %}
 {% endmacro %}

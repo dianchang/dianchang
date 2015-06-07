@@ -2,3 +2,44 @@ nav,
 #footer {
   display: none;
 }
+.market {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 40%;
+  background-color: #252e3c;
+}
+.market .inner-wap {
+  position: absolute;
+  right: 100px;
+  top: 50%;
+  margin-top: -100px;
+}
+.market .inner-wap .name {
+  font-size: 56px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+}
+.market .inner-wap .desc {
+  color: #959eac;
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+.market .inner-wap .btn-signin {
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #00cc99;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+}
+.market .inner-wap .btn-signin:hover {
+  background-color: #00b386;
+}
+.answers {
+  float: right;
+  width: 60%;
+  padding: 30px 20px 100px 50px;
+}

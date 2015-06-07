@@ -1,7 +1,15 @@
+@import "../utils";
+
+// 回答操作按钮组
 .dc-answer-commands {
   .vote-wap {
-    border: 1px solid gray;
     .upvote-wap {
+      padding: 6px 18px;
+
+      .btn-upvote-answer {
+        color: @main-color !important;
+      }
+
       .for-un-upvoted {
         display: inline-block;
       }
@@ -18,9 +26,15 @@
         }
       }
 
+      .divider {
+        color: #ccc;
+        margin: 0 10px;
+      }
     }
 
     .btn-downvote-answer {
+      margin-left: 10px;
+
       .for-un-downvoted {
         display: inline-block;
       }
@@ -39,7 +53,45 @@
     }
   }
 
+  .btn-comments,
+  .btn-share {
+    margin-right: 20px;
+  }
+
+  .btn-more {
+    position: relative;
+    color: #999;
+
+    &:hover {
+      .hide-commands {
+        display: block;
+      }
+    }
+
+    .hide-commands {
+      position: absolute;
+      right: 0;
+      top: 26px;
+      background-color: white;
+      border: 1px solid @border-color;
+
+      a {
+        color: #666;
+        display: block;
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 6px 18px;
+
+        &:hover {
+          color: @main-color;
+        }
+      }
+    }
+  }
+
   .btn-thank-answer {
+    border-bottom: 1px solid @border-color;
+
     .for-un-thanked {
       display: inline-block;
     }
@@ -58,6 +110,8 @@
   }
 
   .btn-nohelp-answer {
+    border-bottom: 1px solid @border-color;
+
     .for-un-nohelped {
       display: inline-block;
     }
@@ -73,5 +127,73 @@
         display: inline-block;
       }
     }
+  }
+
+  a {
+    text-decoration: none;
+    color: #999;
+
+    &:hover {
+      color: @main-color;
+    }
+  }
+
+  .pull-right {
+    margin-top: 6px;
+  }
+}
+
+// 回答
+.dc-answer {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid @border-color;
+
+  .topics {
+    margin-bottom: 20px;
+  }
+
+  .topic {
+    background-color: #F5F5FA;
+    color: #8187a8;
+    padding: 4px 10px;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1;
+    border-radius: 15px;
+    margin: 0 10px 10px 0;
+
+    &:hover {
+      background-color: darken(#F5F5FA, 5%);
+    }
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .answerer {
+    color: #999;
+    margin-bottom: 8px;
+
+    a {
+      color: #999;
+
+      &:hover {
+        color: #009999;
+      }
+    }
+  }
+
+  .content {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .time {
+    margin-bottom: 15px;
   }
 }

@@ -1,5 +1,8 @@
-.dc-answer-commands .vote-wap {
-  border: 1px solid gray;
+.dc-answer-commands .vote-wap .upvote-wap {
+  padding: 6px 18px;
+}
+.dc-answer-commands .vote-wap .upvote-wap .btn-upvote-answer {
+  color: #009999 !important;
 }
 .dc-answer-commands .vote-wap .upvote-wap .for-un-upvoted {
   display: inline-block;
@@ -13,6 +16,13 @@
 .dc-answer-commands .vote-wap .upvote-wap.upvoted .for-upvoted {
   display: inline-block;
 }
+.dc-answer-commands .vote-wap .upvote-wap .divider {
+  color: #ccc;
+  margin: 0 10px;
+}
+.dc-answer-commands .vote-wap .btn-downvote-answer {
+  margin-left: 10px;
+}
 .dc-answer-commands .vote-wap .btn-downvote-answer .for-un-downvoted {
   display: inline-block;
 }
@@ -24,6 +34,37 @@
 }
 .dc-answer-commands .vote-wap .btn-downvote-answer.downvoted .for-downvoted {
   display: inline-block;
+}
+.dc-answer-commands .btn-comments,
+.dc-answer-commands .btn-share {
+  margin-right: 20px;
+}
+.dc-answer-commands .btn-more {
+  position: relative;
+  color: #999;
+}
+.dc-answer-commands .btn-more:hover .hide-commands {
+  display: block;
+}
+.dc-answer-commands .btn-more .hide-commands {
+  position: absolute;
+  right: 0;
+  top: 26px;
+  background-color: white;
+  border: 1px solid #cccccc;
+}
+.dc-answer-commands .btn-more .hide-commands a {
+  color: #666;
+  display: block;
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 6px 18px;
+}
+.dc-answer-commands .btn-more .hide-commands a:hover {
+  color: #009999;
+}
+.dc-answer-commands .btn-thank-answer {
+  border-bottom: 1px solid #cccccc;
 }
 .dc-answer-commands .btn-thank-answer .for-un-thanked {
   display: inline-block;
@@ -37,6 +78,9 @@
 .dc-answer-commands .btn-thank-answer.thanked .for-thanked {
   display: inline-block;
 }
+.dc-answer-commands .btn-nohelp-answer {
+  border-bottom: 1px solid #cccccc;
+}
 .dc-answer-commands .btn-nohelp-answer .for-un-nohelped {
   display: inline-block;
 }
@@ -48,4 +92,58 @@
 }
 .dc-answer-commands .btn-nohelp-answer.nohelped .for-nohelped {
   display: inline-block;
+}
+.dc-answer-commands a {
+  text-decoration: none;
+  color: #999;
+}
+.dc-answer-commands a:hover {
+  color: #009999;
+}
+.dc-answer-commands .pull-right {
+  margin-top: 6px;
+}
+.dc-answer {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #cccccc;
+}
+.dc-answer .topics {
+  margin-bottom: 20px;
+}
+.dc-answer .topic {
+  background-color: #F5F5FA;
+  color: #8187a8;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1;
+  border-radius: 15px;
+  margin: 0 10px 10px 0;
+}
+.dc-answer .topic:hover {
+  background-color: #e4e4f2;
+}
+.dc-answer .title {
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+.dc-answer .answerer {
+  color: #999;
+  margin-bottom: 8px;
+}
+.dc-answer .answerer a {
+  color: #999;
+}
+.dc-answer .answerer a:hover {
+  color: #009999;
+}
+.dc-answer .content {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.dc-answer .time {
+  margin-bottom: 15px;
 }

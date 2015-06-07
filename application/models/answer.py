@@ -11,6 +11,7 @@ class Answer(db.Model):
     content = db.Column(db.Text)
     score = db.Column(db.Integer, default=0)
     hide = db.Column(db.Boolean, default=False)
+    topic_experience = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     comments_count = db.Column(db.Integer, default=0)
@@ -18,6 +19,7 @@ class Answer(db.Model):
     downvotes_count = db.Column(db.Integer, default=0)
     thanks_count = db.Column(db.Integer, default=0)
     nohelps_count = db.Column(db.Integer, default=0)
+    shares_count = db.Column(db.Integer, default=0)
 
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question', backref=db.backref('answers',
