@@ -1,13 +1,44 @@
+.btn {
+  border-radius: 2px;
+}
 .btn-primary {
+  background-color: #00cc99;
+  color: white;
+  border-color: #00cc99;
+  padding: 6px 15px;
+}
+.btn-primary a {
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #00b386;
+  border-color: #00b386;
+  color: white;
+}
+.btn-inverse {
+  background-color: transparent;
+  color: #00cc99;
+  border-color: #00cc99;
+  padding: 6px 15px;
+}
+.btn-inverse a {
+  color: #00cc99;
+}
+.btn-inverse:hover {
+  background-color: transparent;
+  color: #00b386;
+  border-color: #00b386;
+}
+.btn-light {
   background-color: #dcf8f1;
   color: #009999;
   border-color: #b7e1e2;
   padding: 6px 15px;
 }
-.btn-primary a {
+.btn-light a {
   color: #009999;
 }
-.btn-primary:hover {
+.btn-light:hover {
   background-color: #c7f4e9;
   border-color: #a5d9db;
   color: #009999;

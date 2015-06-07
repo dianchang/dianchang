@@ -1,0 +1,95 @@
+@import "../utils";
+
+nav,
+#footer {
+  display: none;
+}
+
+body {
+  background-color: @deep-main;
+  color: #717885;
+}
+
+.wap {
+  width: 280px;
+  margin: 40px auto;
+
+  .text-logo {
+    font-size: 50px;
+    font-weight: bold;
+    color: #434851;
+    text-align: center;
+    margin-bottom: 100px;
+    cursor: default;
+
+    &:hover {
+      color: lighten(#434851, 5%);
+    }
+  }
+
+  .signup-wap {
+    display: none;
+  }
+}
+
+.header {
+  position: relative;
+  margin-bottom: 20px;
+
+  .title {
+    font-size: 28px;
+    color: white;
+    font-weight: bold;
+  }
+
+  a {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    font-size: 16px;
+    color: #717885;
+
+    &:hover {
+      text-decoration: none;
+      color: lighten(#717885, 10%);
+    }
+  }
+}
+
+.form-control {
+  display: block;
+  margin-bottom: 15px;
+  border: 0;
+  background-color: #414855;
+  border-radius: 2px;
+  font-size: 16px;
+  padding: 12px 12px;
+  height: auto;
+  box-shadow: none;
+  outline: none;
+  color: white;
+
+  &:focus,
+  &:active {
+    box-shadow: none;
+  }
+}
+
+.btn-signin,
+.btn-signup {
+  padding: 10px 15px;
+  margin: 28px 0 10px 0;
+}
+
+.btn-forgot-pwd {
+  color: #717885;
+  float: right;
+
+  &:hover {
+    color: lighten(#717885, 10%);
+  }
+}
+
+label {
+  font-weight: normal;
+}

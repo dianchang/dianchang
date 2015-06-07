@@ -3,7 +3,45 @@
 body {
 }
 
+.btn {
+  border-radius: 2px;
+}
+
 .btn-primary {
+  background-color: #00cc99;
+  color: white;
+  border-color: #00cc99;
+  padding: 6px 15px;
+
+  a {
+    color: white;
+  }
+
+  &:hover {
+    background-color: darken(#00cc99, 5%);
+    border-color: darken(#00cc99, 5%);
+    color: white;
+  }
+}
+
+.btn-inverse {
+  background-color: transparent;
+  color: #00cc99;
+  border-color: #00cc99;
+  padding: 6px 15px;
+
+  a {
+    color: #00cc99;
+  }
+
+  &:hover {
+    background-color: transparent;
+    color: darken(#00cc99, 5%);
+    border-color: darken(#00cc99, 5%);
+  }
+}
+
+.btn-light {
   background-color: @light-main;
   color: @main-color;
   border-color: #b7e1e2;
@@ -19,3 +57,5 @@ body {
     color: @main-color;
   }
 }
+
+

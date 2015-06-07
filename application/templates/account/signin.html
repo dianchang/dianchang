@@ -3,26 +3,52 @@
 
 {% block page_title %}登录{% endblock %}
 {% block page_content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8">
-                <h1>登录</h1>
+    <div class="wap signin">
+        <div class="text-logo">电</div>
 
-                <a href="{{ url_for('account.signup') }}">注册账号</a>
-                <a href="{{ url_for('account.forgot_password') }}">我忘了密码</a>
+        <div class="inner-wap signin-wap">
+            <div class="header">
+                <div class="title">登录</div>
 
-                <form method="post" class="form-horizontal" action="{{ url_for('account.signin') }}">
-                    {{ form.csrf_token() }}
-
-                    {{ horizontal_field(form.email) }}
-
-                    {{ horizontal_field(form.password) }}
-
-                    {{ checkbox_field(form.remember) }}
-
-                    {{ form_submit('登录') }}
-                </form>
+                <a href="javascript: void(0)" class="btn-go-to-signup">注册账号→</a>
             </div>
+
+            <form>
+                <input type="text" name="email" class="form-control" placeholder="邮箱"/>
+
+                <input type="password" name="password" class="form-control" placeholder="密码"/>
+
+                <button type="button" class="btn-signin btn btn-primary btn-lg btn-block">登录</button>
+
+                <label>
+                    <input type="checkbox" name="remember"> 保持登录
+                </label>
+
+                <a href="{{ url_for('account.forgot_password') }}" class="btn-forgot-pwd link-no-underline">
+                    我忘了密码</a>
+            </form>
+        </div>
+
+        <div class="inner-wap signup-wap">
+            <div class="header">
+                <div class="title">注册</div>
+
+                <a href="javascript: void(0)" class="btn-go-to-signin">去登陆→</a>
+            </div>
+
+            <form autocomplete="off">
+                <input type="text" name="code" placeholder="邀请码" class="form-control"/>
+
+                <div class="next">
+                    <input type="text" name="name" placeholder="真实姓名 / 常用昵称" class="form-control"/>
+
+                    <input type="text" name="email" placeholder="邮箱" class="form-control"/>
+
+                    <input type="password" name="password" placeholder="设置密码" class="form-control"/>
+
+                    <button type="button" class="btn-signup btn btn-inverse btn-lg btn-block">注册账号</button>
+                </div>
+            </form>
         </div>
     </div>
 {% endblock %}
