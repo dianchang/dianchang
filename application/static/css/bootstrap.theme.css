@@ -10,10 +10,15 @@
 .btn-primary a {
   color: white;
 }
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:active:focus {
   background-color: #00b386;
   border-color: #00b386;
   color: white;
+  box-shadow: none;
+  outline: none;
 }
 .btn-inverse {
   background-color: transparent;
@@ -24,10 +29,15 @@
 .btn-inverse a {
   color: #00cc99;
 }
-.btn-inverse:hover {
+.btn-inverse:hover,
+.btn-inverse:active,
+.btn-inverse:focus,
+.btn-inverse:active:focus {
   background-color: transparent;
   color: #00b386;
   border-color: #00b386;
+  box-shadow: none;
+  outline: none;
 }
 .btn-light {
   background-color: #dcf8f1;
@@ -38,7 +48,12 @@
 .btn-light a {
   color: #009999;
 }
-.btn-light:hover {
+.btn-light:hover,
+.btn-light:active,
+.btn-light:focus,
+.btn-light:active:focus {
+  box-shadow: none;
+  outline: none;
   background-color: #c7f4e9;
   border-color: #a5d9db;
   color: #009999;

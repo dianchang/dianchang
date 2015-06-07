@@ -76,3 +76,11 @@ body {
 label {
   font-weight: normal;
 }
+.tooltip-inner {
+  background-color: white;
+  color: #252e3c;
+  border-radius: 2px;
+}
+.tooltip.right .tooltip-arrow {
+  border-right-color: white;
+}

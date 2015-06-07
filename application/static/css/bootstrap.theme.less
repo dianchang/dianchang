@@ -17,10 +17,15 @@ body {
     color: white;
   }
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
     background-color: darken(#00cc99, 5%);
     border-color: darken(#00cc99, 5%);
     color: white;
+    box-shadow: none;
+    outline: none;
   }
 }
 
@@ -34,10 +39,15 @@ body {
     color: #00cc99;
   }
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
     background-color: transparent;
     color: darken(#00cc99, 5%);
     border-color: darken(#00cc99, 5%);
+    box-shadow: none;
+    outline: none;
   }
 }
 
@@ -51,7 +61,12 @@ body {
     color: @main-color;
   }
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    box-shadow: none;
+    outline: none;
     background-color: darken(@light-main, 5%);
     border-color: darken(#b7e1e2, 5%);
     color: @main-color;

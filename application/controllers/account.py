@@ -15,10 +15,20 @@ bp = Blueprint('account', __name__)
 def signin():
     """登录"""
     form = SigninForm()
-    if form.validate_on_submit():
-        signin_user(form.user, form.remember.data)
-        return redirect(url_for('site.index'))
-    return render_template('account/signin.html', form=form)
+    if request.method == 'POST':
+        if form.validate():
+            signin_user(form.user, form.remember.data)
+            return json.dumps({
+                'result': True
+            })
+        else:
+            print(dir(form))
+            return json.dumps({
+                'result': False,
+                'email': form.email.errors[0] if len(form.email.errors) else "",
+                'password': form.password.errors[0] if len(form.password.errors) else ""
+            })
+    return render_template('account/signin.html')
 
 
 @bp.route('/signup', methods=['GET', 'POST'])
