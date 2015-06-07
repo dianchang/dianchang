@@ -42,12 +42,16 @@ def test_invitation_code():
             'code': '邀请码不能为空',
         })
 
-    invitation_code = InvitationCode.query.filter(InvitationCode.code == code,
-                                                  ~InvitationCode.used).first()
+    invitation_code = InvitationCode.query.filter(InvitationCode.code == code).first()
     if not invitation_code:
         return json.dumps({
             'result': False,
             'code': '无效的邀请码'
+        })
+    elif invitation_code.used:
+        return json.dumps({
+            'result': False,
+            'code': '邀请码已被使用'
         })
 
     return json.dumps({
