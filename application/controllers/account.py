@@ -5,7 +5,7 @@ from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email
 from ..utils.uploadsets import process_user_avatar, avatars
-from ..models import db, User
+from ..models import db, User, InvitationCode
 
 bp = Blueprint('account', __name__)
 
@@ -22,7 +22,6 @@ def signin():
                 'result': True
             })
         else:
-            print(dir(form))
             return json.dumps({
                 'result': False,
                 'email': form.email.errors[0] if len(form.email.errors) else "",
@@ -31,22 +30,62 @@ def signin():
     return render_template('account/signin.html')
 
 
-@bp.route('/signup', methods=['GET', 'POST'])
+@bp.route('/account/test_invitation_code', methods=['POST'])
+@VisitorPermission()
+def test_invitation_code():
+    """验证邀请码"""
+    code = request.form.get('code')
+
+    if not code:
+        return json.dumps({
+            'result': False,
+            'code': '邀请码不能为空',
+        })
+
+    invitation_code = InvitationCode.query.filter(InvitationCode.code == code,
+                                                  ~InvitationCode.used).first()
+    if not invitation_code:
+        return json.dumps({
+            'result': False,
+            'code': '无效的邀请码'
+        })
+
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/signup', methods=['POST'])
 @VisitorPermission()
 def signup():
     """注册"""
     form = SignupForm()
-    if form.validate_on_submit():
-        code = form.code.data
+    if form.validate():
         params = form.data.copy()
         params.pop('code')
         user = User(**params)
         db.session.add(user)
         db.session.commit()
+
+        invitation_code = form.invitation_code
+        invitation_code.used = True
+        invitation_code.user_id = user.id
+        db.session.add(invitation_code)
+        db.session.commit()
+
         user.save_to_es()  # 存储到elasticsearch
         signin_user(user)
-        return redirect(url_for('site.index'))
-    return render_template('account/signup.html', form=form)
+        return json.dumps({
+            'result': True,
+            'domain': get_domain_from_email(user.email)
+        })
+    else:
+        return json.dumps({
+            'result': False,
+            'name': form.name.errors[0] if len(form.name.errors) else "",
+            'email': form.email.errors[0] if len(form.email.errors) else "",
+            'password': form.password.errors[0] if len(form.password.errors) else ""
+        })
 
 
 @bp.route('/signout')

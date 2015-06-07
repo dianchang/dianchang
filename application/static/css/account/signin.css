@@ -24,6 +24,21 @@ body {
 .wap .signup-wap {
   display: none;
 }
+.wap .signup-wap input[name='code'] {
+  display: block;
+}
+.wap .signup-wap .next {
+  display: none;
+}
+.wap .signup-wap.on input[name='code'] {
+  display: none;
+}
+.wap .signup-wap.on .next {
+  display: block;
+}
+.signup-success-wap {
+  display: none;
+}
 .header {
   position: relative;
   margin-bottom: 20px;
@@ -83,4 +98,19 @@ label {
 }
 .tooltip.right .tooltip-arrow {
   border-right-color: white;
+}
+.message-wap {
+  text-align: center;
+}
+.message-wap h3 {
+  color: white;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+.message-wap p.message {
+  font-size: 16px;
+}
+.message-wap p.message a {
+  color: #00cc99;
+  text-decoration: none;
 }

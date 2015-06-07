@@ -1,6 +1,7 @@
 var $signinEmail = $(".signin-wap input[name='email']");
 var $signinPwd = $(".signin-wap input[name='password']");
 var $signinRemember = $(".signin-wap input[name='remember']");
+var $signupWap = $('.signup-wap');
 var $signupEmail = $(".signup-wap input[name='email']");
 var $signupName = $(".signup-wap input[name='email']");
 var $signupCode = $(".signup-wap input[name='code']");
@@ -8,10 +9,8 @@ var $signupPwd = $(".signup-wap input[name='password']");
 
 // 切换到注册
 $('.btn-go-to-signup').click(function () {
-    $('.signup-wap').show();
     $('.signin-wap').hide();
-    $signinEmail.val('');
-    $signinPwd.val('');
+    $('.signup-wap').show();
     hideTip($('.wap input'));
 });
 
@@ -21,9 +20,12 @@ $('.btn-go-to-signin').click(function () {
     $('.signup-wap').hide();
     $signupCode.val('');
     $signupEmail.val('');
-    $signupName.val('');
     $signupPwd.val('');
     hideTip($('.wap input'));
+});
+
+$('.btn-go-to-forgot-password').click(function () {
+
 });
 
 // 登录
@@ -34,10 +36,11 @@ $('.btn-signin').click(function () {
 
     if (email === "") {
         showTip($signinEmail, '邮箱不能为空');
+        return;
     }
-
     if (password === "") {
         showTip($signinPwd, '密码不能为空');
+        return;
     }
 
     $.ajax({
@@ -63,6 +66,100 @@ $('.btn-signin').click(function () {
                 } else {
                     hideTip($signinPwd);
                 }
+            }
+        }
+    });
+});
+
+// 输入邀请码
+$signupCode.blur(function () {
+    var code = $.trim($(this).val());
+
+    if (code === "") {
+        showTip($(this), '邀请码不能为空');
+        return;
+    }
+
+    $.ajax({
+        url: urlFor('account.test_invitation_code'),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            code: code
+        }
+    }).done(function (response) {
+        if (response.result) {
+            $signupWap.addClass('on');
+        } else {
+            if (response.code !== "") {
+                showTip($signupCode, response.code);
+            } else {
+                hideTip($signupCode);
+            }
+        }
+    });
+});
+
+// 注册
+$('.btn-signup').click(function () {
+    var code = $.trim($signupCode.val());
+    var name = $.trim($signupName.val());
+    var email = $.trim($signupEmail.val());
+    var password = $.trim($signupPwd.val());
+
+    if (name === "") {
+        showTip($signupName, '称谓不能为空');
+        return;
+    }
+    if (email === "") {
+        showTip($signupEmail, '邮箱不能为空');
+        return;
+    }
+    if (password === "") {
+        showTip($signupPwd, '密码不能为空');
+        return;
+    }
+
+    $.ajax({
+        url: urlFor('account.signup'),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            name: name,
+            email: email,
+            password: password,
+            code: code
+        }
+    }).done(function (response) {
+        if (response.result) {
+            var messageHtml = "账户激活邮件已发送到你的邮箱，";
+
+            // 显示邮件已发送的提示
+            $('.signup-wap').hide();
+            $('.signup-success-wap').show();
+
+            if (response.domain !== null) {
+                messageHtml += "请 <a href='" + response.domain + "' target='_blank'>登录</a> 激活";
+            } else {
+                messageHtml += "请登录激活";
+            }
+
+            $('.signup-success-wap .message').html(messageHtml);
+        } else {
+            if (response.name !== "") {
+                showTip($signupName, response.name);
+            } else {
+                hideTip($signupName);
+            }
+
+            if (response.email !== "") {
+                showTip($signupEmail, response.email);
+            } else {
+                hideTip($signupEmail);
+            }
+
+            if (response.password !== "") {
+                showTip($signupPwd, response.password);
             }
         }
     });

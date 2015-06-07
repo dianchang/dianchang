@@ -29,7 +29,29 @@ body {
 
   .signup-wap {
     display: none;
+
+    input[name='code'] {
+      display: block;
+    }
+
+    .next {
+      display: none;
+    }
+
+    &.on {
+      input[name='code'] {
+        display: none;
+      }
+
+      .next {
+        display: block;
+      }
+    }
   }
+}
+
+.signup-success-wap {
+  display: none;
 }
 
 .header {
@@ -103,3 +125,23 @@ label {
 .tooltip.right .tooltip-arrow {
   border-right-color: white;
 }
+
+.message-wap {
+  text-align: center;
+
+  h3 {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+
+  p.message {
+    font-size: 16px;
+
+    a {
+      color: #00cc99;
+      text-decoration: none;
+    }
+  }
+}
+
