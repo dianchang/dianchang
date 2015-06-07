@@ -12,6 +12,7 @@ $('.btn-go-to-signup').click(function () {
     $('.signin-wap').hide();
     $('.signup-wap').removeClass('on').show();
     hideTip($('.wap input'));
+    hideTip($signupCode);
     $signupCode.find('input').first().focus();
 });
 
@@ -23,6 +24,7 @@ $('.btn-go-to-signin').click(function () {
     $signupEmail.val('');
     $signupPwd.val('');
     hideTip($('.wap input'));
+    hideTip($signupCode);
 });
 
 $('.btn-go-to-forgot-password').click(function () {
