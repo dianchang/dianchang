@@ -63,6 +63,8 @@
     color: #999;
 
     &:hover {
+      cursor: pointer;
+
       .hide-commands {
         display: block;
       }
@@ -70,17 +72,21 @@
 
     .hide-commands {
       position: absolute;
+      display: none;
       right: 0;
-      top: 26px;
-      background-color: white;
-      border: 1px solid @border-color;
+      top: 10px;
+      padding-top: 15px;
 
       a {
+        background-color: white;
         color: #666;
         display: block;
         white-space: nowrap;
         font-size: 13px;
         padding: 6px 18px;
+        border-bottom: 1px solid @border-color;
+        border-left: 1px solid @border-color;
+        border-right: 1px solid @border-color;
 
         &:hover {
           color: @main-color;
@@ -90,7 +96,7 @@
   }
 
   .btn-thank-answer {
-    border-bottom: 1px solid @border-color;
+    border-top: 1px solid @border-color;
 
     .for-un-thanked {
       display: inline-block;
@@ -110,8 +116,6 @@
   }
 
   .btn-nohelp-answer {
-    border-bottom: 1px solid @border-color;
-
     .for-un-nohelped {
       display: inline-block;
     }

@@ -43,28 +43,35 @@
   position: relative;
   color: #999;
 }
+.dc-answer-commands .btn-more:hover {
+  cursor: pointer;
+}
 .dc-answer-commands .btn-more:hover .hide-commands {
   display: block;
 }
 .dc-answer-commands .btn-more .hide-commands {
   position: absolute;
+  display: none;
   right: 0;
-  top: 26px;
-  background-color: white;
-  border: 1px solid #cccccc;
+  top: 10px;
+  padding-top: 15px;
 }
 .dc-answer-commands .btn-more .hide-commands a {
+  background-color: white;
   color: #666;
   display: block;
   white-space: nowrap;
   font-size: 13px;
   padding: 6px 18px;
+  border-bottom: 1px solid #cccccc;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
 }
 .dc-answer-commands .btn-more .hide-commands a:hover {
   color: #009999;
 }
 .dc-answer-commands .btn-thank-answer {
-  border-bottom: 1px solid #cccccc;
+  border-top: 1px solid #cccccc;
 }
 .dc-answer-commands .btn-thank-answer .for-un-thanked {
   display: inline-block;
@@ -77,9 +84,6 @@
 }
 .dc-answer-commands .btn-thank-answer.thanked .for-thanked {
   display: inline-block;
-}
-.dc-answer-commands .btn-nohelp-answer {
-  border-bottom: 1px solid #cccccc;
 }
 .dc-answer-commands .btn-nohelp-answer .for-un-nohelped {
   display: inline-block;
