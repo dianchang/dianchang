@@ -10,7 +10,7 @@ var $signupPwd = $(".signup-wap input[name='password']");
 // 切换到注册
 $('.btn-go-to-signup').click(function () {
     $('.signin-wap').hide();
-    $('.signup-wap').show();
+    $('.signup-wap').removeClass('on').show();
     hideTip($('.wap input'));
     $signupCode.find('input').first().focus();
 });
