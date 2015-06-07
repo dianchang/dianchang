@@ -12,6 +12,7 @@ $('.btn-go-to-signup').click(function () {
     $('.signin-wap').hide();
     $signinEmail.val('');
     $signinPwd.val('');
+    hideTip($('.wap input'));
 });
 
 // 切换到登录
@@ -22,6 +23,7 @@ $('.btn-go-to-signin').click(function () {
     $signupEmail.val('');
     $signupName.val('');
     $signupPwd.val('');
+    hideTip($('.wap input'));
 });
 
 // 登录
@@ -91,5 +93,11 @@ function showTip($element, tip) {
  * @param $element
  */
 function hideTip($element) {
-    $element.tooltip('hide');
+    if ($element.length === 1) {
+        $element.tooltip('hide');
+    } else {
+        $.each($element, function () {
+            $(this).tooltip('hide');
+        });
+    }
 }
