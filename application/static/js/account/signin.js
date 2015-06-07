@@ -3,7 +3,7 @@ var $signinPwd = $(".signin-wap input[name='password']");
 var $signinRemember = $(".signin-wap input[name='remember']");
 var $signupWap = $('.signup-wap');
 var $signupEmail = $(".signup-wap input[name='email']");
-var $signupName = $(".signup-wap input[name='email']");
+var $signupName = $(".signup-wap input[name='name']");
 var $signupCode = $(".signup-wap .code");
 var $signupPwd = $(".signup-wap input[name='password']");
 
