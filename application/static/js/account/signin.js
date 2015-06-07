@@ -4,7 +4,7 @@ var $signinRemember = $(".signin-wap input[name='remember']");
 var $signupWap = $('.signup-wap');
 var $signupEmail = $(".signup-wap input[name='email']");
 var $signupName = $(".signup-wap input[name='email']");
-var $signupCode = $(".signup-wap input[name='code']");
+var $signupCode = $(".signup-wap .code");
 var $signupPwd = $(".signup-wap input[name='password']");
 
 // 切换到注册
@@ -12,6 +12,7 @@ $('.btn-go-to-signup').click(function () {
     $('.signin-wap').hide();
     $('.signup-wap').show();
     hideTip($('.wap input'));
+    $signupCode.find('input').first().focus();
 });
 
 // 切换到登录
@@ -72,8 +73,42 @@ $('.btn-signin').click(function () {
 });
 
 // 输入邀请码
-$signupCode.blur(function () {
-    var code = $.trim($(this).val());
+$signupCode.find('input').on('keypress', function (e) {
+    if (e.which !== 32) {
+        forwardCode($(this));
+    }
+});
+
+// 退格键
+// TODO
+//$signupCode.find('input').on('keydown', function (e) {
+//    var current = $.trim($(this).val());
+//
+//    console.log($(this));
+//    console.log(current);
+//
+//    if (e.which === 8 && current === "") {
+//        backwardCode($(this));
+//    }
+//});
+
+// 提交邀请码
+$signupCode.find('input').on('keyup', function (e) {
+    var code = getCodeValue();
+
+    $signupCode.find('input').each(function () {
+        var current = $.trim($(this).val()).toString();
+
+        if (current.length > 1) {
+            $(this).val(current[0]);
+        } else {
+            $(this).val(current);
+        }
+    });
+
+    if (code.length !== 6) {
+        return;
+    }
 
     if (code === "") {
         showTip($(this), '邀请码不能为空');
@@ -169,6 +204,47 @@ $('.btn-signup').click(function () {
 $(".wap input").on('keyup', function () {
     hideTip($(this));
 });
+
+/**
+ * 获取邀请码的值
+ */
+function getCodeValue() {
+    var code = "";
+    var current = "";
+
+    $signupCode.find('input').each(function () {
+        current = $.trim($(this).val());
+        if (current.length >= 1) {
+            code += current[0];
+        }
+    });
+
+    return code;
+}
+
+/**
+ * 前进到下一个邀请码输入框
+ * @param $input
+ */
+function forwardCode($input) {
+    var $nextInput = $input.next('input');
+
+    if ($nextInput.length > 0) {
+        $nextInput.focus();
+    }
+}
+
+/**
+ * 后退到上一个邀请码输入框
+ * @param $input
+ */
+function backwardCode($input) {
+    var $previousInput = $input.prev('input');
+
+    if ($previousInput.length > 0) {
+        $previousInput.focus();
+    }
+}
 
 /**
  * 显示tip

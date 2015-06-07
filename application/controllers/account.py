@@ -75,7 +75,8 @@ def signup():
         invitation_code.used = True
         invitation_code.user_id = user.id
         db.session.add(invitation_code)
-        db.session.commit()
+        # TODO: need to uncomment this in production
+        # db.session.commit()
 
         user.save_to_es()  # 存储到elasticsearch
         signin_user(user)
