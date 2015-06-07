@@ -24,13 +24,13 @@ body {
 .wap .signup-wap {
   display: none;
 }
-.wap .signup-wap input[name='code'] {
+.wap .signup-wap .code {
   display: block;
 }
 .wap .signup-wap .next {
   display: none;
 }
-.wap .signup-wap.on input[name='code'] {
+.wap .signup-wap.on .code {
   display: none;
 }
 .wap .signup-wap.on .next {

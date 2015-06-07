@@ -92,7 +92,7 @@ $signupCode.find('input').on('keypress', function (e) {
 //    }
 //});
 
-// 提交邀请码
+// 测试邀请码
 $signupCode.find('input').on('keyup', function (e) {
     var code = getCodeValue();
 
