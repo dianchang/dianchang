@@ -19,9 +19,8 @@ $('.btn-go-to-signup').click(function () {
 $('.btn-go-to-signin').click(function () {
     $('.signin-wap').show();
     $('.signup-wap').hide();
-    $signupCode.val('');
-    $signupEmail.val('');
-    $signupPwd.val('');
+    $signupName.val('');
+    cleanCode();
     hideTip($('.wap input'));
 });
 
@@ -245,6 +244,15 @@ function backwardCode($input) {
     if ($previousInput.length > 0) {
         $previousInput.focus();
     }
+}
+
+/**
+ * 清空code
+ */
+function cleanCode() {
+    $('.code input').each(function () {
+        $(this).val('');
+    });
 }
 
 /**
