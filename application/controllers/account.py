@@ -170,7 +170,14 @@ def upload_avatar():
         })
 
 
-@bp.route('/reset_password')
+@bp.route('/reset_password', methods=['POST', 'GET'])
+@VisitorPermission()
 def reset_password():
     """重设密码"""
-    return render_template('account/reset_password.html')
+    # TODO: need to finish the reset logic
+    if request.method == 'POST':
+        return json.dumps({
+            'result': True
+        })
+    else:
+        return render_template('account/reset_password.html')

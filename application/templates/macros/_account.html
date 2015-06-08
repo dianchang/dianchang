@@ -456,9 +456,8 @@
                 <a href="{{ url_for('account.signin') }}">去登陆→</a>
             </div>
 
-            <form>
-                <input type="password" name="password" class="form-control" placeholder="邮箱"/>
-                <input type="password" name="repassword" class="form-control" placeholder="密码"/>
+            <form autocomplete="off">
+                <input type="password" name="password" class="form-control" placeholder="新密码"/>
                 <button type="button" class="btn-reset-pwd btn btn-primary btn-lg btn-block">重置</button>
             </form>
         </div>
@@ -474,7 +473,37 @@
 
     <script>
         (function () {
+            var $resetPwdWap = $('.reset-pwd-wap');
+            var $messageWap = $('.message-wap');
+            var $pwdInput = $("input[name='password']");
 
+            $('.btn-reset-pwd').click(function () {
+                var pwd = $.trim($pwdInput.val());
+
+                console.log(1)
+
+                if (pwd === "") {
+                    showTip($pwdInput, '新密码不能为空');
+                    return;
+                }
+
+                $.ajax({
+                    url: urlFor('account.reset_password'),
+                    dataType: 'json',
+                    method: 'post',
+                    data: {
+                        'password': pwd
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        $resetPwdWap.hide();
+                        $messageWap.show();
+                        hideTip($pwdInput);
+                    } else {
+                        showTip($pwdInput, '密码重置失败');
+                    }
+                });
+            });
         })();
     </script>
 {% endmacro %}

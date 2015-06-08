@@ -143,3 +143,6 @@
 .dc-signin-signup-forgot-pwd-wap .btn-go-to-forgot-pwd:hover {
   color: #8c929d;
 }
+.dc-reset-pwd-wap .message-wap {
+  display: none;
+}
