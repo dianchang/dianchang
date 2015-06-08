@@ -7,8 +7,8 @@
 
         {# 赞同 & 反对 #}
         <span class="vote-wap">
-            <span class="upvote-wap btn btn-light {% if upvoted %}upvoted{% endif %}">
-                <a class="btn-upvote-answer" href="javascript: void(0)" data-id="{{ answer.id }}">
+            <span class="upvote-wap btn btn-light {% if upvoted %}upvoted{% endif %}" data-id="{{ answer.id }}">
+                <a class="btn-upvote-answer" href="javascript: void(0)">
                     <span class="for-upvoted">已赞同</span>
                     <span class="for-un-upvoted">赞同</span></a>
                 <span class="divider">|</span>
@@ -59,10 +59,10 @@
 
     <script>
         // 赞同回答
-        $(document).onOnce('click', '.dc-answer-commands .btn-upvote-answer', function () {
+        $(document).onOnce('click', '.dc-answer-commands .upvote-wap', function () {
             var id = parseInt($(this).data('id'));
             var $voteWap = $(this).parents('.vote-wap').first();
-            var $upvoteWap = $(this).parent();
+            var $upvoteWap = $(this);
             var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
 
             if (!g.signin) {
