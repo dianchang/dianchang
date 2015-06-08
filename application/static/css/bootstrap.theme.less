@@ -73,4 +73,18 @@ body {
   }
 }
 
+.tooltip.tooltip-inner {
+  border-radius: 2px;
+}
 
+.tooltip.tooltip-white {
+  .tooltip-inner {
+    background-color: white;
+    color: @deep-main;
+    border-radius: 2px;
+  }
+
+  &.right .tooltip-arrow {
+    border-right-color: white;
+  }
+}

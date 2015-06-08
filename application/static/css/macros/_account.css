@@ -56,14 +56,7 @@
 }
 .dc-account-wap label {
   font-weight: normal;
-}
-.dc-account-wap .tooltip-inner {
-  background-color: white;
-  color: #252e3c;
-  border-radius: 2px;
-}
-.dc-account-wap .tooltip.right .tooltip-arrow {
-  border-right-color: white;
+  color: #717885;
 }
 .dc-account-wap .message-wap {
   text-align: center;

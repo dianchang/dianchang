@@ -5,7 +5,7 @@ nav,
   display: none;
 }
 
-.market {
+.left-wap {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,11 +13,10 @@ nav,
   width: 42%;
   background-color: @deep-main;
 
-  .inner-wap {
+  .logo-wap {
     position: absolute;
     right: 100px;
-    top: 50%;
-    margin-top: -100px;
+    top: 200px;
 
     .name {
       font-size: 56px;
@@ -32,7 +31,7 @@ nav,
       margin-bottom: 50px;
     }
 
-    .btn-signin {
+    .btn-go-to-signin-signup {
       font-size: 18px;
       font-weight: bold;
       background-color: #00cc99;
@@ -44,6 +43,11 @@ nav,
         background-color: darken(#00cc99, 5%);
       }
     }
+  }
+
+  .dc-signin-signup-forgot-pwd-wap {
+    display: none;
+    margin: 50px auto 0 auto;
   }
 }
 

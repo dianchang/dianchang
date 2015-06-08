@@ -2,7 +2,7 @@ nav,
 #footer {
   display: none;
 }
-.market {
+.left-wap {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,24 +10,23 @@ nav,
   width: 42%;
   background-color: #252e3c;
 }
-.market .inner-wap {
+.left-wap .logo-wap {
   position: absolute;
   right: 100px;
-  top: 50%;
-  margin-top: -100px;
+  top: 200px;
 }
-.market .inner-wap .name {
+.left-wap .logo-wap .name {
   font-size: 56px;
   font-weight: bold;
   color: white;
   margin-bottom: 10px;
 }
-.market .inner-wap .desc {
+.left-wap .logo-wap .desc {
   color: #959eac;
   font-size: 16px;
   margin-bottom: 50px;
 }
-.market .inner-wap .btn-signin {
+.left-wap .logo-wap .btn-go-to-signin-signup {
   font-size: 18px;
   font-weight: bold;
   background-color: #00cc99;
@@ -35,8 +34,12 @@ nav,
   border: none;
   padding: 10px 25px;
 }
-.market .inner-wap .btn-signin:hover {
+.left-wap .logo-wap .btn-go-to-signin-signup:hover {
   background-color: #00b386;
+}
+.left-wap .dc-signin-signup-forgot-pwd-wap {
+  display: none;
+  margin: 50px auto 0 auto;
 }
 .answers {
   float: right;
