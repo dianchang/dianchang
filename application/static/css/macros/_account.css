@@ -1,7 +1,10 @@
 .dc-account-wap {
   width: 280px;
+  height: 490px;
   margin: 40px auto;
+  overflow: hidden;
   background-color: #252e3c;
+  position: relative;
 }
 .dc-account-wap .text-logo {
   font-size: 50px;
@@ -78,6 +81,22 @@
 .dc-signin-signup-forgot-pwd-wap .forgot-pwd-wap,
 .dc-signin-signup-forgot-pwd-wap .message-wap {
   display: none;
+}
+.dc-signin-signup-forgot-pwd-wap .signin-wap,
+.dc-signin-signup-forgot-pwd-wap .signup-wap,
+.dc-signin-signup-forgot-pwd-wap .forgot-pwd-wap {
+  background-color: #252e3c;
+  width: 280px;
+  height: 312px;
+  position: absolute;
+  top: 180px;
+}
+.dc-signin-signup-forgot-pwd-wap .signin-wap {
+  left: 0;
+}
+.dc-signin-signup-forgot-pwd-wap .signup-wap,
+.dc-signin-signup-forgot-pwd-wap .forgot-pwd-wap {
+  right: 0;
 }
 .dc-signin-signup-forgot-pwd-wap .signup-wap .code {
   display: block;

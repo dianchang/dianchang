@@ -2,8 +2,11 @@
 
 .dc-account-wap {
   width: 280px;
+  height: 490px;
   margin: 40px auto;
+  overflow: hidden;
   background-color: @deep-main;
+  position: relative;
 
   .text-logo {
     font-size: 50px;
@@ -96,6 +99,25 @@
   .forgot-pwd-wap,
   .message-wap {
     display: none;
+  }
+
+  .signin-wap,
+  .signup-wap,
+  .forgot-pwd-wap {
+    background-color: @deep-main;
+    width: 280px;
+    height: 312px;
+    position: absolute;
+    top: 180px;
+  }
+
+  .signin-wap {
+    left: 0;
+  }
+
+  .signup-wap,
+  .forgot-pwd-wap {
+    right: 0;
   }
 
   .signup-wap {

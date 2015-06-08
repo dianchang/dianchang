@@ -95,44 +95,75 @@
 
     <script>
         (function () {
+            var $signinWap = $(".signin-wap");
             var $signinEmail = $(".signin-wap input[name='email']");
             var $signinPwd = $(".signin-wap input[name='password']");
             var $signinRemember = $(".signin-wap input[name='remember']");
+
             var $signupWap = $('.signup-wap');
             var $signupEmail = $(".signup-wap input[name='email']");
             var $signupName = $(".signup-wap input[name='name']");
             var $signupCode = $(".signup-wap .code");
             var $signupPwd = $(".signup-wap input[name='password']");
+
+            var $forgotPwdWap = $(".forgot-pwd-wap");
             var $forgotPwdEmail = $(".forgot-pwd-wap input[name='email']");
 
             // 切换到注册
             $('.btn-go-to-signup').click(function () {
-                $('.signin-wap').hide();
-                $('.forgot-pwd-wap').hide();
-                hideTip($('.dc-account-wap input'));
+                $signupWap.css({
+                    'right': '-280px',
+                    'z-index': 2
+                }).removeClass('on').show().animate({
+                    'right': '0'
+                }, 180, function () {
+                    $signupCode.find('input').first().focus();
+                    $('.signin-wap').hide();
+                    $('.forgot-pwd-wap').hide();
+                    hideTip($('.dc-account-wap input'));
 
-                $('.signup-wap').removeClass('on').show();
-                $signupCode.find('input').first().focus();
+                    $signupWap.css({
+                        'z-index': 1
+                    });
+                });
             });
 
             // 切换到登录
             $('.btn-go-to-signin').click(function () {
-                $('.forgot-pwd-wap').hide();
-                $('.signup-wap').hide();
-                cleanCode();
-                hideTip($('.dc-account-wap input'));
+                $signinWap.css({
+                    'left': '-280px',
+                    'z-index': 2
+                }).show().animate({
+                    'left': '0'
+                }, 180, function () {
+                    $('.forgot-pwd-wap').hide();
+                    $('.signup-wap').hide();
+                    cleanCode();
+                    hideTip($('.dc-account-wap input'));
 
-                $('.signin-wap').show();
+                    $signinWap.css({
+                        'z-index': 1
+                    });
+                });
             });
 
             // 切换到忘记密码
             $('.btn-go-to-forgot-pwd').click(function () {
-                $('.signin-wap').hide();
-                $('.signup-wap').hide();
-                cleanCode();
-                hideTip($('.dc-account-wap input'));
+                $forgotPwdWap.css({
+                    'right': '-280px',
+                    'z-index': 2
+                }).show().animate({
+                    'right': '0'
+                }, 180, function () {
+                    $('.signin-wap').hide();
+                    $('.signup-wap').hide();
+                    cleanCode();
+                    hideTip($('.dc-account-wap input'));
 
-                $('.forgot-pwd-wap').show();
+                    $forgotPwdWap.css({
+                        'z-index': 1
+                    });
+                });
             });
 
             // 登录
