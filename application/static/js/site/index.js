@@ -7,10 +7,6 @@ $('.btn-go-to-signin-signup').click(function () {
     }).show().animate({
         'left': '0'
     }, 180, function () {
-        $(this).css({
-            position: 'relative',
-            margin: '0'
-        });
         $('.logo-wap').hide();
     });
 });

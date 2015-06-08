@@ -2,8 +2,16 @@ nav,
 #footer {
   display: none;
 }
-.left-wap {
+body {
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+.left-wap {
+  position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
@@ -54,7 +62,12 @@ nav,
   margin: 0;
 }
 .answers {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
   float: right;
   width: 58%;
-  padding: 30px 20px 100px 50px;
+  padding: 30px 40px 100px 40px;
 }

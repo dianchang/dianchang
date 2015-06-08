@@ -150,7 +150,8 @@
             .tooltip({
                 title: tip,
                 trigger: 'manual',
-                placement: 'top',
+                placement: 'right',
+                container: 'body',
                 template: '<div class="tooltip tooltip-white" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
             }).tooltip('show');
     }
