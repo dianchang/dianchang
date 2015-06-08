@@ -100,26 +100,29 @@ def signout():
     return redirect(request.referrer or url_for('site.index'))
 
 
-@bp.route('/forgot_password', methods=['GET', 'POST'])
-def forgot_password():
+@bp.route('/send_reset_password_mail', methods=['POST'])
+def send_reset_password_mail():
     """忘记密码"""
     form = ForgotPasswordForm()
-    if form.validate_on_submit():
+    if form.validate():
         user = User.query.filter(User.email == form.email.data).first()
-
         if not user.is_active:
-            return render_template('site/message.html', title="提示", message='请先完成账号激活')
-        # send_reset_password_mail(user)
+            return json.dumps({
+                'result': False,
+                'email': '该账户尚未激活'
+            })
 
-        email_domain = get_domain_from_email(user.email)
-        if email_domain:
-            message = "请 <a href='%s' target='_blank'>登录邮箱</a> 完成密码重置" % email_domain
-        else:
-            message = "请登录邮箱完成密码重置"
-        return render_template('site/message.html',
-                               title="发送成功",
-                               message=message)
-    return render_template('account/forgot_password.html', form=form)
+        # TODO: need to uncomment this in production
+        # send_reset_password_mail(user)
+        return json.dumps({
+            'result': True,
+            'domain': get_domain_from_email(user.email) or ""
+        })
+    else:
+        return json.dumps({
+            'result': False,
+            'email': form.email.errors[0] if len(form.email.errors) else ""
+        })
 
 
 @bp.route('/settings', methods=['GET', 'POST'])
@@ -138,14 +141,14 @@ def settings():
     return render_template('account/settings.html', form=form)
 
 
-@bp.route('/account/notification_settings')
+@bp.route('/notification_settings')
 @UserPermission()
 def notification_settings():
     """消息设置"""
     return render_template('account/notification_settings.html')
 
 
-@bp.route('/account/privacy_settings')
+@bp.route('/privacy_settings')
 @UserPermission()
 def privacy_settings():
     """隐私设置"""
@@ -165,3 +168,9 @@ def upload_avatar():
             'result': True,
             'image_url': avatars.url(filename),
         })
+
+
+@bp.route('/reset_password')
+def reset_password():
+    """重设密码"""
+    return render_template('account/reset_password.html')

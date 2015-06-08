@@ -1,0 +1,132 @@
+.dc-account-wap {
+  width: 280px;
+  margin: 40px auto;
+}
+.dc-account-wap .text-logo {
+  font-size: 50px;
+  display: block;
+  font-weight: bold;
+  color: #434851;
+  text-align: center;
+  margin-bottom: 100px;
+}
+.dc-account-wap .text-logo:hover {
+  color: #4f545f;
+}
+.dc-account-wap .header {
+  position: relative;
+  margin-bottom: 20px;
+}
+.dc-account-wap .header .title {
+  font-size: 28px;
+  color: white;
+  font-weight: bold;
+}
+.dc-account-wap .header a {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  font-size: 16px;
+  color: #717885;
+}
+.dc-account-wap .header a:hover {
+  text-decoration: none;
+  color: #8c929d;
+}
+.dc-account-wap .form-control {
+  display: block;
+  margin-bottom: 15px;
+  border: 0;
+  background-color: #414855;
+  border-radius: 2px;
+  font-size: 16px;
+  padding: 12px 12px;
+  height: auto;
+  box-shadow: none;
+  outline: none;
+  color: white;
+}
+.dc-account-wap .form-control:focus,
+.dc-account-wap .form-control:active {
+  box-shadow: none;
+}
+.dc-account-wap .btn-block {
+  padding: 10px 15px;
+  margin: 28px 0 10px 0;
+}
+.dc-account-wap label {
+  font-weight: normal;
+}
+.dc-account-wap .tooltip-inner {
+  background-color: white;
+  color: #252e3c;
+  border-radius: 2px;
+}
+.dc-account-wap .tooltip.right .tooltip-arrow {
+  border-right-color: white;
+}
+.dc-account-wap .message-wap {
+  text-align: center;
+}
+.dc-account-wap .message-wap h3 {
+  color: white;
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+.dc-account-wap .message-wap .message {
+  font-size: 16px;
+}
+.dc-account-wap .message-wap .message a {
+  color: #00cc99;
+  text-decoration: none;
+}
+.dc-signin-signup-forgot-pwd-wap .signup-wap,
+.dc-signin-signup-forgot-pwd-wap .forgot-pwd-wap,
+.dc-signin-signup-forgot-pwd-wap .message-wap {
+  display: none;
+}
+.dc-signin-signup-forgot-pwd-wap .signup-wap .code {
+  display: block;
+}
+.dc-signin-signup-forgot-pwd-wap .signup-wap .next {
+  display: none;
+}
+.dc-signin-signup-forgot-pwd-wap .signup-wap.on .code {
+  display: none;
+}
+.dc-signin-signup-forgot-pwd-wap .signup-wap.on .next {
+  display: block;
+}
+.dc-signin-signup-forgot-pwd-wap .code {
+  border-radius: 2px;
+  overflow: hidden;
+}
+.dc-signin-signup-forgot-pwd-wap .code input {
+  text-align: center;
+  float: left;
+  display: block;
+  width: 16.666666666%;
+  border: 0;
+  border-left: 1px solid #37404E;
+  background-color: #414855;
+  font-size: 16px;
+  padding: 12px 12px;
+  height: auto;
+  box-shadow: none;
+  outline: none;
+  color: white;
+}
+.dc-signin-signup-forgot-pwd-wap .code input:first-child {
+  border-left: 0;
+}
+.dc-signin-signup-forgot-pwd-wap .code input:focus,
+.dc-signin-signup-forgot-pwd-wap .code input:active {
+  box-shadow: none;
+}
+.dc-signin-signup-forgot-pwd-wap .btn-go-to-forgot-pwd {
+  color: #717885;
+  float: right;
+}
+.dc-signin-signup-forgot-pwd-wap .btn-go-to-forgot-pwd:hover {
+  color: #8c929d;
+}
