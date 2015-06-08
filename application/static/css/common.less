@@ -9,8 +9,11 @@
   color: #999;
 }
 
-.link-no-underline:hover {
-  text-decoration: none;
+.link-no-underline {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
 }
 
 .link-color {

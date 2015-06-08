@@ -19,7 +19,7 @@
     <div class="dc-account-wap dc-signin-signup-forgot-pwd-wap signin">
         <a class="text-logo link-no-underline" href="{{ url_for('site.index') }}">电</a>
 
-        <div class="inner-wap signin-wap">
+        <div class="signin-wap">
             <div class="header">
                 <div class="title">登录</div>
 
@@ -38,7 +38,7 @@
             </form>
         </div>
 
-        <div class="inner-wap signup-wap">
+        <div class="signup-wap">
             <div class="header">
                 <div class="title">注册</div>
 
@@ -70,7 +70,7 @@
             <p class="message"></p>
         </div>
 
-        <div class="inner-wap forgot-pwd-wap">
+        <div class="forgot-pwd-wap">
             <div class="header">
                 <div class="title">找回密码</div>
 
@@ -224,6 +224,7 @@
                 }).done(function (response) {
                     if (response.result) {
                         $signupWap.addClass('on');
+                        $signupName.focus();
                         hideTip($signupCode);
                     } else {
                         if (response.code !== "") {
@@ -417,7 +418,7 @@
     <div class="dc-account-wap dc-reset-pwd-wap">
         <a class="text-logo link-no-underline" href="{{ url_for('site.index') }}">电</a>
 
-        <div class="inner-wap reset-pwd-wap">
+        <div class="reset-pwd-wap">
             <div class="header">
                 <div class="title">重置密码</div>
 

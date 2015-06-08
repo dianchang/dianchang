@@ -4,7 +4,8 @@
 .text-light {
   color: #999;
 }
-.link-no-underline:hover {
+.link-no-underline:hover,
+.link-no-underline:focus {
   text-decoration: none;
 }
 .link-color {

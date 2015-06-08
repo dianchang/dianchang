@@ -10,10 +10,18 @@ nav,
   width: 42%;
   background-color: #252e3c;
 }
+.left-wap .inner-wap {
+  overflow: hidden;
+  width: 400px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
 .left-wap .logo-wap {
   position: absolute;
-  right: 100px;
   top: 200px;
+  right: 120px;
 }
 .left-wap .logo-wap .name {
   font-size: 56px;
@@ -39,7 +47,11 @@ nav,
 }
 .left-wap .dc-signin-signup-forgot-pwd-wap {
   display: none;
-  margin: 50px auto 0 auto;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  z-index: 2;
+  margin: 0;
 }
 .answers {
   float: right;

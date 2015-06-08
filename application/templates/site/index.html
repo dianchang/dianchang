@@ -5,15 +5,17 @@
 {% block page_title %}电场{% endblock %}
 {% block page_content %}
     <div class="left-wap">
-        <div class="logo-wap">
-            <div class="name">电场</div>
+        <div class="inner-wap">
+            <div class="logo-wap">
+                <div class="name">电场</div>
 
-            <p class="desc">互联网职业领域问答社区</p>
+                <p class="desc">互联网职业领域问答社区</p>
 
-            <a href="javascript: void(0)" class="btn-go-to-signin-signup btn btn-default">注册 / 登录</a>
+                <a href="javascript: void(0)" class="btn-go-to-signin-signup btn btn-default">注册 / 登录</a>
+            </div>
+
+            {{ signin_signup_forgot_pwd_wap() }}
         </div>
-
-        {{ signin_signup_forgot_pwd_wap() }}
     </div>
     <div class="answers">
         {{ render_answers(answers) }}
