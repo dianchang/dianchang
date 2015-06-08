@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json
+from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json, session
 from ..forms import SigninForm, SignupForm, SettingsForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
@@ -19,14 +19,18 @@ def signin():
         if form.validate():
             signin_user(form.user, form.remember.data)
             return json.dumps({
-                'result': True
+                'result': True,
+                'referer': session['referer'] or url_for('site.index')
             })
         else:
             return json.dumps({
                 'result': False,
                 'email': form.email.errors[0] if len(form.email.errors) else "",
-                'password': form.password.errors[0] if len(form.password.errors) else ""
+                'password': form.password.errors[0] if len(form.password.errors) else "",
+                'referer': session['referer'] or url_for('site.index')
             })
+    else:
+        session['referer'] = request.referrer or url_for('site.index')
     return render_template('account/signin.html')
 
 

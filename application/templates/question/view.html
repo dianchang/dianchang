@@ -8,7 +8,7 @@
     <script type="text/javascript">
         registerContext({
             questionId: {{ question.id }},
-            answered: {{ answered }}
+            answered: {% if answered %}true{% else %}false{% endif %}
         });
     </script>
 {% endblock %}

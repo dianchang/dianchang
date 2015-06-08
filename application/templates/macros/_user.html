@@ -16,6 +16,11 @@
             var $count = $(this).next();
             var url = urlFor('user.follow', {uid: userId});
 
+            if (!g.signin) {
+                window.location = urlFor('account.signin');
+                return;
+            }
+
             $.ajax({
                 url: url,
                 method: 'post',

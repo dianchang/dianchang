@@ -192,7 +192,7 @@
                     }
                 }).done(function (response) {
                     if (response.result) {
-                        window.location = urlFor('site.index');
+                        window.location = response.referer;
                     } else {
                         if (response.email !== "") {
                             showTip($signinEmail, response.email);
@@ -477,10 +477,9 @@
             var $messageWap = $('.message-wap');
             var $pwdInput = $("input[name='password']");
 
+            // 重设密码
             $('.btn-reset-pwd').click(function () {
                 var pwd = $.trim($pwdInput.val());
-
-                console.log(1)
 
                 if (pwd === "") {
                     showTip($pwdInput, '新密码不能为空');

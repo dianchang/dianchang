@@ -27,31 +27,39 @@
     </div>
 
     <script>
-        $('.btn-follow-topic').onOnce('click', function () {
-            var topicId = $(this).data('id');
-            var followed = $(this).parent().hasClass('followed');
-            var $wap = $(this).parent();
-            var $count = $(this).next();
-            var url = urlFor('topic.follow', {uid: topicId});
+        (function () {
+            // 关注话题
+            $('.btn-follow-topic').onOnce('click', function () {
+                var topicId = $(this).data('id');
+                var followed = $(this).parent().hasClass('followed');
+                var $wap = $(this).parent();
+                var $count = $(this).next();
+                var url = urlFor('topic.follow', {uid: topicId});
 
-            $.ajax({
-                url: url,
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.followed) {
-                        if (!$wap.hasClass('followed')) {
-                            $wap.addClass('followed');
-                        }
-                    } else {
-                        $wap.removeClass('followed');
-                    }
-
-                    $count.text(response.followers_count);
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return;
                 }
+
+                $.ajax({
+                    url: url,
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        if (response.followed) {
+                            if (!$wap.hasClass('followed')) {
+                                $wap.addClass('followed');
+                            }
+                        } else {
+                            $wap.removeClass('followed');
+                        }
+
+                        $count.text(response.followers_count);
+                    }
+                });
             });
-        });
+        })();
     </script>
 {% endmacro %}
 

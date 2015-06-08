@@ -64,7 +64,11 @@
             var $voteWap = $(this).parents('.vote-wap').first();
             var $upvoteWap = $(this).parent();
             var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
-            var _this = $(this);
+
+            if (!g.signin) {
+                window.location = urlFor('account.signin');
+                return;
+            }
 
             $.ajax({
                 url: urlFor('answer.upvote', {uid: id}),
@@ -92,6 +96,11 @@
             var $upvoteWap = $voteWap.find('.upvote-wap');
             var $upvotesCount = $upvoteWap.find('.upvotes-count');
             var _this = $(this);
+
+            if (!g.signin) {
+                window.location = urlFor('account.signin');
+                return;
+            }
 
             $.ajax({
                 url: urlFor('answer.downvote', {uid: id}),
@@ -121,6 +130,11 @@
             var id = parseInt($(this).data('id'));
             var _this = $(this);
 
+            if (!g.signin) {
+                window.location = urlFor('account.signin');
+                return;
+            }
+
             $.ajax({
                 url: urlFor('answer.thank', {uid: id}),
                 method: 'post',
@@ -140,6 +154,11 @@
         $(document).onOnce('click', '.dc-answer-commands .btn-nohelp-answer', function () {
             var id = parseInt($(this).data('id'));
             var _this = $(this);
+
+            if (!g.signin) {
+                window.location = urlFor('account.signin');
+                return;
+            }
 
             $.ajax({
                 url: urlFor('answer.nohelp', {uid: id}),
@@ -222,17 +241,17 @@
                     <a href="javascript: void(0)" data-id="{{ comment.id }}"
                        class="btn-reply-comment">回复</a>
                     •
-                            <span class="like-comment-wap
-                                {% if comment.liked_by_user() %}liked{% endif %}
-                                {% if comment.likes.count() == 0 %}zero{% endif %}">
-                                <a href="javascript: void(0)" data-id="{{ comment.id }}"
-                                   class="btn-like-comment">
-                                    <span class="for-zero">赞同</span>
-                                    <span class="for-nonzero">
-                                        <span class="likes-count">{{ comment.likes.count() }}</span> 赞
-                                    </span>
-                                </a>
+                    <span class="like-comment-wap
+                        {% if comment.liked_by_user() %}liked{% endif %}
+                        {% if comment.likes.count() == 0 %}zero{% endif %}">
+                        <a href="javascript: void(0)" data-id="{{ comment.id }}"
+                           class="btn-like-comment">
+                            <span class="for-zero">赞同</span>
+                            <span class="for-nonzero">
+                                <span class="likes-count">{{ comment.likes.count() }}</span> 赞
                             </span>
+                        </a>
+                    </span>
                 </div>
             </div>
 

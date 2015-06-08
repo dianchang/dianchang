@@ -13,6 +13,7 @@
     {% endfor %}
 {% endmacro %}
 
+
 {% macro similar_questions(questions) %}
     {% for question in questions %}
         <div class="similar-question">
@@ -42,6 +43,11 @@
             var $wap = $(this).parent();
             var $count = $(this).next();
             var url = urlFor('question.follow', {uid: questionId});
+
+            if (!g.signin) {
+                window.location = urlFor('account.signin');
+                return;
+            }
 
             $.ajax({
                 url: url,

@@ -9,6 +9,11 @@ var $draftTip = $('.tip-save-draft');
 
 // 编辑标题
 $('.btn-edit-title').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $titleWap.addClass('edit');
     $titleInput.val($.trim($title.text()));
 });
@@ -16,6 +21,11 @@ $('.btn-edit-title').click(function () {
 // 保存标题
 $('.btn-save-title').click(function () {
     var title = $.trim($titleInput.val());
+
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
 
     if (title === "") {
         return;
@@ -53,11 +63,21 @@ var descEditor = new Simditor({
 
 // 添加问题描述
 $('.btn-add-desc').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $descWap.addClass('edit');
 });
 
 // 编辑问题描述
 $('.btn-edit-desc').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $descWap.addClass('edit');
     descEditor.setValue($.trim($desc.html()));
 });
@@ -65,6 +85,11 @@ $('.btn-edit-desc').click(function () {
 // 保存问题描述
 $('.btn-save-desc').click(function () {
     var desc = $.trim($descTextarea.val());
+
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
 
     $.ajax({
         url: urlFor('question.update', {uid: g.questionId}),
@@ -87,16 +112,31 @@ $('.btn-save-desc').click(function () {
 
 // 添加话题
 $('.btn-add-topic').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $('.topics-wap').addClass('edit');
 });
 
 // 编辑话题
 $('.btn-edit-topic').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $('.topics-wap').addClass('edit');
 });
 
 // 完成话题编辑
 $('.btn-finish-add-topic').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $('.topics-wap').removeClass('edit');
 });
 
@@ -104,6 +144,11 @@ $('.btn-finish-add-topic').click(function () {
 $('.btn-delete-topic').click(function () {
     var topicId = parseInt($(this).data('id'));
     var _this = $(this);
+
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
 
     $.ajax({
         url: urlFor('question.remove_topic', {uid: g.questionId, topic_id: topicId}),
@@ -116,7 +161,6 @@ $('.btn-delete-topic').click(function () {
         }
     });
 });
-
 
 // 启动Typeahead自动完成
 $topicInput.typeahead({

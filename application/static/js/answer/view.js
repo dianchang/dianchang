@@ -4,6 +4,11 @@ $(document).onOnce('click', '.btn-like-comment', function () {
     var $likesCount = $(this).find('.likes-count');
     var id = parseInt($(this).data('id'));
 
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $.ajax({
         url: urlFor('answer.like_comment', {uid: id}),
         method: 'post',
@@ -32,6 +37,11 @@ $(document).onOnce('click', '.btn-reply-comment', function () {
     var id = parseInt($(this).data('id'));
     var $commentBody = $(this).parents('.media-body');
 
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
     $commentBody.append(
         "<div class='comment-reply-wap'>"
         + "<textarea name='comment' class='form-control' cols='30' rows='5'></textarea>"
@@ -52,6 +62,11 @@ $(document).onOnce('click', '.btn-submit-reply', function () {
     var $commentWap = $(this).parents('.answer-comment');
     var $replyWap = $(this).parents('.comment-reply-wap').first();
     var comment = $.trim($replyWap.find('textarea').val());
+
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
 
     if (comment === '') {
         return;
