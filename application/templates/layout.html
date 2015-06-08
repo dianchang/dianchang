@@ -48,15 +48,10 @@
 
         <div class="collapse navbar-collapse" id="dc-navbar-collapse">
             <form class="navbar-form navbar-left" role="search" method="get" action="{{ url_for('site.search') }}">
-                <div class="input-group">
-                    <input type="text" name="q" class="form-control input-sm" value="{{ q or "" }}"
-                           placeholder="搜索问题、话题、回答和人">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default btn-sm" type="submit">
-                            <span class="fa fa-search"></span>
-                        </button>
-                    </span>
-                </div>
+                <input type="text" name="q" class="form-control input-sm" value="{{ q or "" }}"
+                       placeholder="">
+                <span class="fa fa-search search-icon"></span>
+                <span class="help-text">回车搜索</span>
             </form>
 
             <ul class="nav navbar-nav">
@@ -69,20 +64,21 @@
             </ul>
 
             <a href="{{ url_for('question.add') }}"
-               class="btn btn-primary navbar-btn navbar-right">
-                <span class="fa fa-plus"></span> 提问
+               class="btn btn-default navbar-btn navbar-right btn-ask-question">
+                <span class="fa fa-plus"></span> 提问题
             </a>
 
             <ul class="nav navbar-nav navbar-right">
                 {% if g.user %}
                     <li id="nav-notification">
-                        <a href="{{ url_for('user.notifications') }}">
-                            <span class="fa fa-bell-o"></span>
+                        <a href="javascript: void(0)">
+                            <span class="no-notifications"></span>
+                            <span class="notifications-count">2</span>
                         </a>
                     </li>
                     <li id="nav-settings">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {{ g.user.name }} <span class="fa fa-angle-down"></span>
+                            {{ g.user.name }}
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
@@ -108,10 +104,7 @@
                     </li>
                 {% else %}
                     <li id="nav-signin">
-                        <a href="{{ url_for('account.signin') }}">登录</a>
-                    </li>
-                    <li id="nav-signup">
-                        <a href="{{ url_for('account.signup') }}">注册</a>
+                        <a href="{{ url_for('account.signin') }}">注册 / 登录</a>
                     </li>
                 {% endif %}
             </ul>

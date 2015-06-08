@@ -29,8 +29,146 @@ body {
   color: #555;
   background-color: #e7e7e7;
 }
-.navbar-form {
-  margin: 10px 0;
+.navbar {
+  color: #D5DCE6;
+}
+.navbar.navbar-default {
+  background-color: #252e3c;
+  border: none;
+}
+.navbar.navbar-default .navbar-brand {
+  font-size: 28px;
+  font-weight: bold;
+  color: #D5DCE6;
+}
+.navbar.navbar-default .navbar-brand:hover {
+  color: white;
+}
+.navbar.navbar-default .navbar-nav > li > a {
+  color: #D5DCE6;
+  font-size: 18px;
+  padding: 15px 18px;
+}
+.navbar.navbar-default .navbar-nav > li > a:hover {
+  background-color: #343d4d;
+}
+.navbar .navbar-form {
+  margin: 6px 10px;
+  padding: 0;
+  position: relative;
+}
+.navbar .navbar-form input {
+  background-color: #404856;
+  width: 420px;
+  height: 38px;
+  border-color: #444D5C;
+  color: white;
+  font-size: 18px;
+  padding: 8px 80px 8px 38px;
+}
+.navbar .navbar-form input:focus {
+  box-shadow: none;
+  outline: none;
+  background-color: #4e5662;
+}
+.navbar .navbar-form .search-icon {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 18px;
+  color: #8f9090;
+  font-weight: normal;
+}
+.navbar .navbar-form .help-text {
+  display: none;
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  color: #8B9098;
+}
+.navbar #nav-signin,
+.navbar #nav-settings {
+  margin-right: 10px;
+}
+.navbar #nav-settings a {
+  font-size: 16px;
+}
+.navbar #nav-settings.open > a {
+  color: #D5DCE6;
+  background-color: #343d4d;
+}
+.navbar #nav-settings .dropdown-menu {
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d2d2d2;
+  border-top: 0;
+  left: 0;
+  right: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.175);
+}
+.navbar #nav-settings .dropdown-menu > li > a {
+  color: #666;
+  padding: 10px 15px;
+}
+.navbar #nav-settings .dropdown-menu > li > a:hover {
+  color: #333;
+}
+.navbar #nav-settings .dropdown-menu .divider {
+  margin: 0;
+}
+.navbar .btn-ask-question {
+  font-size: 16px;
+  color: #D5DCE6;
+  padding: 5px 15px;
+  border: 2px solid #49515e;
+  background-color: #3c4452;
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+.navbar .btn-ask-question:hover {
+  background-color: #313843;
+}
+.navbar #nav-notification {
+  margin-right: 15px;
+}
+.navbar #nav-notification a {
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  font-size: 12px;
+  margin-top: 16px;
+  background-color: #0f1828;
+  padding: 2px;
+}
+.navbar #nav-notification a .no-notifications {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: #404855;
+  display: block;
+}
+.navbar #nav-notification a .notifications-count {
+  color: white;
+  display: none;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+}
+.navbar #nav-notification.on a {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background-color: red;
+}
+.navbar #nav-notification.on a .no-notifications {
+  display: none;
+}
+.navbar #nav-notification.on a .notifications-count {
+  display: block;
+}
+.navbar #nav-notification.on.more a {
+  width: auto;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 #footer {
   position: absolute;
