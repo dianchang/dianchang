@@ -39,7 +39,7 @@
                 发布于 <span title="{{ answer.created_at }}">{{ answer.created_at|timesince }}</span>
             </div>
 
-            {{ render_answer_commands(answer, enable_comments_spread=False, with_full_screen=False) }}
+            {{ render_answer_commands(answer, enable_comments_spread=False, with_full_screen=False, dark=True) }}
         </div>
 
         <div class="answerer media">
@@ -114,7 +114,7 @@
             <a href="{{ answer.user.profile_url }}" class="name">{{ answer.user.name }}</a>
         </div>
         <div class="container">
-            {{ render_answer_commands(answer, bottom=True, enable_comments_spread=False, with_full_screen=False) }}
+            {{ render_answer_commands(answer, bottom=True, dark=True, enable_comments_spread=False, with_full_screen=False) }}
         </div>
     </div>
 {% endblock %}

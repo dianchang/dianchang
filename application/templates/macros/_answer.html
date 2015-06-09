@@ -1,4 +1,4 @@
-{% macro render_answer_commands(answer, enable_comments_spread=True, with_full_screen=True, bottom=False) %}
+{% macro render_answer_commands(answer, enable_comments_spread=True, with_full_screen=True, bottom=False, dark=False) %}
     <div class="dc-answer-commands {% if bottom %}bottom{% endif %}">
         {% set upvoted = answer.upvoted_by_user() %}
         {% set downvoted = answer.downvoted_by_user() %}
@@ -7,7 +7,9 @@
 
         {# 赞同 & 反对 #}
         <span class="vote-wap">
-            <span class="upvote-wap counter counter-dark {% if upvoted %}upvoted{% endif %}" data-id="{{ answer.id }}">
+            <span class="upvote-wap counter {% if dark %}counter-dark{% endif %}
+                {% if upvoted %}upvoted{% endif %}"
+                  data-id="{{ answer.id }}">
                 <a class="btn-upvote-answer counter-txt" href="javascript: void(0)">
                     <span class="for-upvoted">已赞同</span>
                     <span class="for-un-upvoted">赞同</span></a>
