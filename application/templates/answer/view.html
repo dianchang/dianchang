@@ -51,7 +51,7 @@
             <div class="media-body">
                 <div class="answerer-meta">
                     <a href="{{ answer.user.profile_url }}" class="answerer-name link-no-underline">
-                        {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ user.desc }}{% endif %}
+                        {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
                 </div>
                 <div class="text-light">
                     © 作者保留所有权利
@@ -83,7 +83,7 @@
             {% if g.user %}
                 <div class="media comment-form-wap">
                     <div class="media-left">
-                        <a href="{{ url_for('user.profile', uid=g.user.id) }}">
+                        <a href="{{ g.user.profile_url }}">
                             <img src="{{ g.user.avatar_url }}" class="img-circle" alt=""/>
                         </a>
                     </div>
