@@ -1,11 +1,11 @@
 {% macro user_follow_wap(user) %}
-    <div class="dc-user-follow-wap btn-group {% if user.followed_by_user() %}followed{% endif %}">
+    <div class="dc-user-follow-wap counter {% if user.followed_by_user() %}followed{% endif %}">
         <a href="javascript: void(0)"
-           class="btn btn-default btn-follow-user"
+           class="btn-follow-user counter-text"
            data-id="{{ user.id }}">
-            <span class="for-follow">关注</span><span class="for-unfollow">已关注</span>
-        </a>
-        <span class="followers-count btn btn-default">{{ user.followers.count() }}</span>
+            <span class="for-follow">关注</span><span class="for-unfollow">已关注</span></a>
+        <span class="divider">|</span>
+        <span class="followers-count counter-number">{{ user.followers.count() }}</span>
     </div>
 
     <script>
@@ -13,7 +13,7 @@
             var userId = $(this).data('id');
             var followed = $(this).parent().hasClass('followed');
             var $wap = $(this).parent();
-            var $count = $(this).next();
+            var $count = $wap.find('.followers-count');
             var url = urlFor('user.follow', {uid: userId});
 
             if (!g.signin) {

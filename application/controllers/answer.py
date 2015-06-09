@@ -8,30 +8,10 @@ from ..utils.permissions import UserPermission
 bp = Blueprint('answer', __name__)
 
 
-@bp.route('/answer/<int:uid>', methods=['POST', 'GET'])
+@bp.route('/answer/<int:uid>')
 def view(uid):
     """单个回答页"""
     answer = Answer.query.get_or_404(uid)
-    if request.method == 'POST' and request.form.get('comment'):
-        permission = UserPermission()
-        if not permission.check():
-            return permission.deny()
-
-        # 评论回答
-        comment_content = request.form.get('comment')
-        comment = AnswerComment(content=comment_content, user_id=g.user.id)
-        answer.comments.append(comment)
-        db.session.add(answer)
-
-        # FEED: 插入被评论回答者的NOTI
-        if g.user.id != answer.user_id:
-            noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, sender_id=g.user.id,
-                                answer_comment_id=comment.id)
-            answer.user.notifications.append(noti)
-            db.session.add(answer.user)
-
-        db.session.commit()
-        return redirect(url_for('.view', uid=uid))
     return render_template('answer/view.html', answer=answer)
 
 
@@ -276,4 +256,38 @@ def reply_comment(uid):
     return json.dumps({
         'result': True,
         'html': macro(new_comment)
+    })
+
+
+@bp.route('/answer/<int:uid>/comment', methods=['POST'])
+def comment(uid):
+    answer = Answer.query.get_or_404(uid)
+    permission = UserPermission()
+    if not permission.check():
+        return permission.deny()
+
+    # 评论回答
+    comment_content = request.form.get('content')
+    if not comment_content:
+        return json.dumps({
+            'result': False
+        })
+
+    comment = AnswerComment(content=comment_content, user_id=g.user.id)
+    answer.comments.append(comment)
+    db.session.add(answer)
+
+    # FEED: 插入被评论回答者的NOTI
+    if g.user.id != answer.user_id:
+        noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, sender_id=g.user.id,
+                            answer_comment_id=comment.id)
+        answer.user.notifications.append(noti)
+        db.session.add(answer.user)
+
+    db.session.commit()
+
+    macro = get_template_attribute('macros/_answer.html', 'render_answer_comment')
+    return json.dumps({
+        'result': True,
+        'html': macro(comment)
     })

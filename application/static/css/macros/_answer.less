@@ -3,11 +3,14 @@
 // 回答操作按钮组
 .dc-answer-commands {
   .vote-wap {
+    display: inline-block;
+
     .upvote-wap {
       padding: 6px 18px;
+      display: inline-block;
 
       .btn-upvote-answer {
-        color: @main-color !important;
+        color: @main-color;
       }
 
       .for-un-upvoted {
@@ -33,6 +36,7 @@
     }
 
     .btn-downvote-answer {
+      display: inline-block;
       margin-left: 10px;
 
       .for-un-downvoted {
@@ -93,6 +97,12 @@
         }
       }
     }
+  }
+
+  &.bottom .btn-more .hide-commands {
+    padding-bottom: 15px;
+    top: auto;
+    bottom: 10px;
   }
 
   .btn-thank-answer {

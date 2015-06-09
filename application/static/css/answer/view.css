@@ -1,21 +1,248 @@
-.answer-comment .commands {
+nav,
+#footer {
+  display: none;
+}
+body {
+  margin-bottom: 50px;
+}
+body .container {
+  width: 666px;
+}
+.question {
+  position: relative;
+  background-color: #f5f5f5;
+  padding: 70px 0 60px 0;
+}
+.question .logo {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background-color: white;
+  border-radius: 2px;
+  padding: 0 6px;
+  font-weight: bold;
+  font-size: 28px;
+  color: #D5DCE6;
+}
+.question .logo:hover {
+  color: #c5cfdc;
+}
+.question .title {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+.question .title:hover {
+  color: #333;
+}
+.question .desc {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+.question .topic {
+  background-color: white;
+  color: #8186a9;
+  padding: 4px 10px;
+  font-weight: bold;
+  line-height: 1;
+  border-radius: 15px;
+  margin: 0 10px 10px 0;
+}
+.question .topic:hover {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+}
+.answer {
+  padding: 40px 0 50px 0;
+}
+.answer .content {
+  font-size: 18px;
+}
+.answer .content p {
+  margin-bottom: 20px;
+}
+.answer .time {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 40px;
+}
+.answerer {
+  border: 1px solid #e1e1e1;
+  background-color: #f5f6f5;
+  padding: 20px 20px;
+  border-radius: 2px;
+  position: relative;
+}
+.answerer .media-left {
+  padding-right: 20px;
+}
+.answerer img {
+  width: 60px;
+  height: 60px;
+}
+.answerer .answerer-meta {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.answerer .answerer-meta .answerer-name {
+  color: #333;
+  font-weight: bold;
+}
+.answerer .dc-user-follow-wap {
+  position: absolute;
+  right: 20px;
+  top: 32px;
+}
+.other-answers {
+  margin: 0 4px 80px 4px;
+  display: block;
+  padding: 13px 0;
+  text-align: center;
+  color: #999;
+  border: 1px solid #e1e1e1;
+  border-top: 0;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+.other-answers:hover {
+  color: #333;
+}
+.answer-comments-wap {
+  padding: 40px 0;
+  background-color: #f5f5f5;
+}
+.answer-comments-wap .comments-count {
+  font-size: 18px;
+  color: #999;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.answer-comments-wap .answer-comment {
+  border-top: 1px solid #e4e4e4;
+  padding-top: 25px;
+  padding-bottom: 22px;
+  margin-top: 0;
+}
+.answer-comments-wap .answer-comment .media-left {
+  padding-right: 15px;
+}
+.answer-comments-wap .answer-comment img {
+  width: 36px;
+  height: 36px;
+}
+.answer-comments-wap .answer-comment .meta {
+  margin-bottom: 10px;
+}
+.answer-comments-wap .answer-comment .comment-user-info .name {
+  color: #333;
+}
+.answer-comments-wap .answer-comment .time {
+  margin-left: 18px;
+}
+.answer-comments-wap .answer-comment .content {
+  font-size: 18px;
+}
+.answer-comments-wap .answer-comment .commands .btn-reply-comment,
+.answer-comments-wap .answer-comment .commands .like-comment-wap a {
+  color: #999;
+}
+.answer-comments-wap .answer-comment .commands .btn-reply-comment:hover,
+.answer-comments-wap .answer-comment .commands .like-comment-wap a:hover {
+  color: #333;
+}
+.answer-comments-wap .answer-comment .commands .btn-reply-comment {
   visibility: hidden;
 }
-.answer-comment .commands .like-comment-wap .for-zero {
-  display: none;
-}
-.answer-comment .commands .like-comment-wap .for-nonzero {
-  display: inline-block;
-}
-.answer-comment .commands .like-comment-wap.liked {
-  visibility: visible !important;
-}
-.answer-comment .commands .like-comment-wap.zero .for-zero {
-  display: inline-block;
-}
-.answer-comment .commands .like-comment-wap.zero .for-nonzero {
-  display: none;
-}
-.answer-comment:hover .commands {
+.answer-comments-wap .answer-comment .commands .like-comment-wap {
+  margin-left: 6px;
   visibility: visible;
+}
+.answer-comments-wap .answer-comment .commands .like-comment-wap .for-zero {
+  display: none;
+}
+.answer-comments-wap .answer-comment .commands .like-comment-wap .for-nonzero {
+  display: inline-block;
+}
+.answer-comments-wap .answer-comment .commands .like-comment-wap.liked a {
+  color: #333;
+}
+.answer-comments-wap .answer-comment .commands .like-comment-wap.zero {
+  visibility: hidden;
+}
+.answer-comments-wap .answer-comment .commands .like-comment-wap.zero .for-zero {
+  display: inline-block;
+}
+.answer-comments-wap .answer-comment .commands .like-comment-wap.zero .for-nonzero {
+  display: none;
+}
+.answer-comments-wap .answer-comment:hover .commands .like-comment-wap,
+.answer-comments-wap .answer-comment:hover .commands .btn-reply-comment {
+  visibility: visible;
+}
+.answer-comments-wap .comment-form-wap .comment-edit-area {
+  background-color: white;
+  border: 1px solid #bebebe;
+  border-radius: 2px;
+  padding: 8px 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.answer-comments-wap .comment-form-wap .comment-edit-area:focus {
+  outline: none;
+}
+.answer-comments-wap .comment-form-wap .comment-edit-area p:last-child {
+  margin-bottom: 0;
+}
+.answer-comments-wap .comment-form-wap img {
+  width: 36px;
+  height: 36px;
+}
+.answer-comments-wap .comment-form-wap .media-left {
+  padding-right: 15px;
+}
+.answer-comments-wap .comment-form-wap .commands {
+  display: none;
+  text-align: right;
+}
+.answer-comments-wap .comment-form-wap .commands .btn-submit-comment,
+.answer-comments-wap .comment-form-wap .commands .btn-submit-reply {
+  margin-left: 10px;
+}
+.answer-comments-wap .answer-comment .comment-form-wap {
+  margin-top: 15px;
+}
+.answer-comments-wap .answer-comment .comment-form-wap .commands {
+  display: block;
+}
+.bottom-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 0;
+  background-color: white;
+  border-top: 1px solid #e4e4e4;
+}
+.bottom-banner .bottom-answerer {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+}
+.bottom-banner .bottom-answerer img {
+  width: 36px;
+  height: 36px;
+}
+.bottom-banner .bottom-answerer .name {
+  margin-left: 5px;
+  color: #666;
+}
+.bottom-banner .bottom-answerer .name:hover {
+  color: #333;
+}
+.dc-answer-commands .vote-wap .btn-downvote-answer {
+  border: 1px solid #acacac;
+  padding: 6px 12px;
+  border-radius: 2px;
+  margin-left: 5px;
 }

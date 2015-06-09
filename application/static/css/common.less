@@ -103,3 +103,57 @@ del {
   background: #f5dfdf;
   color: #ac1414;
 }
+
+.counter {
+  display: inline-block;
+  background-color: @light-main;
+  color: @main-color;
+  border: 1px solid #b7e1e2;
+  padding: 6px 15px;
+  cursor: pointer;
+  border-radius: 2px;
+
+  .counter-text {
+  }
+
+  .counter-number {
+  }
+
+  a {
+    color: @main-color;
+  }
+
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    box-shadow: none;
+    outline: none;
+    background-color: darken(@light-main, 5%);
+    border-color: darken(#b7e1e2, 5%);
+    color: @main-color;
+  }
+
+  .divider {
+    color: #ccc;
+    margin: 0 10px;
+  }
+}
+
+.counter.counter-dark {
+  border-color: #00a299;
+  background-color: @green;
+  color: white;
+
+  a {
+    color: white !important;
+  }
+
+  .conter-number {
+    font-weight: bold;
+  }
+
+  &:hover {
+    background-color: darken(@green, 5%);
+  }
+}

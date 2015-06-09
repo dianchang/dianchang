@@ -1,27 +1,45 @@
 {% extends "layout.html" %}
-{% from "macros/_answer.html" import render_answer_comment %}
+{% from "macros/_answer.html" import render_answer_comment, render_answer_commands %}
+{% from "macros/_user.html" import user_follow_wap %}
 
 {% block page_title %}回答{% endblock %}
+{% block page_vars %}
+    <script>
+        registerContext({
+            answerId: {{ answer.id }}
+        });
+    </script>
+{% endblock %}
 {% block page_content %}
-    <div class="container">
-        <div class="question">
-            <div class="title">
-                <a href="{{ url_for('question.view', uid=answer.question_id) }}">{{ answer.question.title }}</a>
-            </div>
+    <div class="question">
+        <a href="{{ url_for('site.index') }}" class="logo link-no-underline">电</a>
+
+        <div class="container">
+            <a href="{{ url_for('question.view', uid=answer.question_id) }}" class="title">
+                {{ answer.question.title }}</a>
 
             {% if answer.question.desc %}
                 <div class="desc">{{ answer.question.desc|safe }}</div>
             {% endif %}
+
+            {% for topic in answer.question.topics %}
+                <a href="{{ url_for('topic.view', uid=topic.topic.id) }}" class="topic link-no-underline">
+                    {{ topic.topic.name }}</a>
+            {% endfor %}
         </div>
+    </div>
 
-        <hr/>
-
+    <div class="container">
         <div class="answer">
-            {{ answer.content|safe }}
+            <div class="content">
+                {{ answer.content|safe }}
+            </div>
 
-            <div class="time">
+            <div class="time text-light">
                 发布于 <span title="{{ answer.created_at }}">{{ answer.created_at|timesince }}</span>
             </div>
+
+            {{ render_answer_commands(answer, enable_comments_spread=False, with_full_screen=False) }}
         </div>
 
         <div class="answerer media">
@@ -31,24 +49,72 @@
                 </a>
             </div>
             <div class="media-body">
-                <a href="{{ answer.user.profile_url }}">
-                    {{ answer.user.name }}
-                </a>
+                <div class="answerer-meta">
+                    <a href="{{ answer.user.profile_url }}" class="answerer-name link-no-underline">
+                        {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ user.desc }}{% endif %}
+                </div>
+                <div class="text-light">
+                    © 作者保留所有权利
+                </div>
             </div>
+
+            {{ user_follow_wap(answer.user) }}
         </div>
 
-        <hr/>
+        {# TODO: need to refactor #}
+        {% set other_answers_count = answer.question.answers.count() %}
+        {% if other_answers_count > 0 %}
+            <a href="{{ url_for('question.view', uid=answer.question_id) }}"
+               class="other-answers link-no-underline">
+                查看其他 {{ other_answers_count }} 人对该问题的回答→</a>
+        {% endif %}
+    </div>
 
-        <div>{{ answer.comments.count() }} 条评论</div>
+    <div class="answer-comments-wap">
+        <div class="container">
+            <div class="comments-count">{{ answer.comments.count() }} 条评论</div>
 
-        <form action="" method="post">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <textarea name="comment" id="" cols="30" rows="10" placeholder="写下你的评论" class="form-control"></textarea>
-            <button type="submit" class="btn btn-primary">提交</button>
-        </form>
+            <div class="comments">
+                {% for comment in answer.comments %}
+                    {{ render_answer_comment(comment) }}
+                {% endfor %}
+            </div>
 
-        {% for comment in answer.comments %}
-            {{ render_answer_comment(comment) }}
-        {% endfor %}
+            {% if g.user %}
+                <div class="media comment-form-wap">
+                    <div class="media-left">
+                        <a href="{{ url_for('user.profile', uid=g.user.id) }}">
+                            <img src="{{ g.user.avatar_url }}" class="img-circle" alt=""/>
+                        </a>
+                    </div>
+
+                    <div class="media-body">
+                        <div class="comment-edit-area" contenteditable="true">
+                            <p class="text-light">写下你的评论...</p>
+                        </div>
+                        <div class="commands">
+                            <a href="javascript: void(0)" class="btn-cancel-comment">取消</a>
+                            <button type="button" class="btn btn-primary btn-submit-comment">评论</button>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="more-answers-form-user">
+
+    </div>
+
+    <div class="bottom-banner">
+        <div class="bottom-answerer">
+            <a href="{{ answer.user.profile_url }}" class="link-no-underline">
+                <img src="{{ answer.user.avatar_url }}" alt="" class="img-circle"/>
+            </a>
+            <a href="{{ answer.user.profile_url }}" class="name">{{ answer.user.name }}</a>
+        </div>
+        <div class="container">
+            {{ render_answer_commands(answer, bottom=True, enable_comments_spread=False, with_full_screen=False) }}
+        </div>
     </div>
 {% endblock %}

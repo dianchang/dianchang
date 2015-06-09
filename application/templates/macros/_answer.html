@@ -1,5 +1,5 @@
-{% macro render_answer_commands(answer) %}
-    <div class="dc-answer-commands">
+{% macro render_answer_commands(answer, enable_comments_spread=True, with_full_screen=True, bottom=False) %}
+    <div class="dc-answer-commands {% if bottom %}bottom{% endif %}">
         {% set upvoted = answer.upvoted_by_user() %}
         {% set downvoted = answer.downvoted_by_user() %}
         {% set thanked = answer.thanked_by_user() %}
@@ -7,12 +7,12 @@
 
         {# 赞同 & 反对 #}
         <span class="vote-wap">
-            <span class="upvote-wap btn btn-light {% if upvoted %}upvoted{% endif %}" data-id="{{ answer.id }}">
-                <a class="btn-upvote-answer" href="javascript: void(0)">
+            <span class="upvote-wap counter counter-dark {% if upvoted %}upvoted{% endif %}" data-id="{{ answer.id }}">
+                <a class="btn-upvote-answer counter-txt" href="javascript: void(0)">
                     <span class="for-upvoted">已赞同</span>
                     <span class="for-un-upvoted">赞同</span></a>
                 <span class="divider">|</span>
-                <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
+                <span class="upvotes-count counter-number">{{ answer.upvotes.count() }}</span>
             </span>
             <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
                data-id="{{ answer.id }}">
@@ -50,8 +50,10 @@
                         <span class="for-nohelped">已标记为没有帮助</span>
                         <span class="for-un-nohelped">没有帮助</span></a>
 
-                    <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
-                       class="btn-fullscreen">全屏阅读</a>
+                    {% if with_full_screen %}
+                        <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
+                           class="btn-fullscreen">全屏阅读</a>
+                    {% endif %}
                 </span>
             </span>
         </div>
@@ -124,6 +126,11 @@
                 }
             });
         });
+
+        // 展开评论
+        {% if enable_comments_spread %}
+            // TODO
+        {% endif %}
 
         // 感谢回答
         $(document).onOnce('click', '.dc-answer-commands .btn-thank-answer', function () {
@@ -222,25 +229,19 @@
 
         <div class="media-body">
             <div class="meta">
-                <a href="{{ comment.user.profile_url }}">
-                    {{ comment.user.name }}
-                </a>
+                <span class="comment-user-info">
+                    <a href="{{ comment.user.profile_url }}" class="name">
+                        {{ comment.user.name }}</a>{% if comment.user.desc %}
+                    <span class="text-light">，{{ comment.user.desc }}</span>{% endif %}
+                </span>
 
-                {% if comment.parent %}
-                    回复
-                    <a href="{{ comment.parent.user.profile_url }}">
-                        {{ comment.parent.user.name }}
-                    </a>
-                {% endif %}
-
-                <span title="{{ comment.created_at }}">
+                <span title="{{ comment.created_at }}" class="time text-light">
                     {{ comment.created_at|timesince }}
                 </span>
 
                 <div class="commands pull-right">
                     <a href="javascript: void(0)" data-id="{{ comment.id }}"
-                       class="btn-reply-comment">回复</a>
-                    •
+                       class="btn-reply-comment link-no-underline">回复</a>
                     <span class="like-comment-wap
                         {% if comment.liked_by_user() %}liked{% endif %}
                         {% if comment.likes.count() == 0 %}zero{% endif %}">
@@ -255,7 +256,12 @@
                 </div>
             </div>
 
-            <div>
+            <div class="content">
+                {% if comment.parent %}
+                    <a href="{{ comment.parent.user.profile_url }}">
+                        @{{ comment.parent.user.name }}</a>
+                {% endif %}
+
                 {{ comment.content|safe }}
             </div>
         </div>

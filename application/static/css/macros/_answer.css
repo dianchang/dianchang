@@ -1,8 +1,12 @@
+.dc-answer-commands .vote-wap {
+  display: inline-block;
+}
 .dc-answer-commands .vote-wap .upvote-wap {
   padding: 6px 18px;
+  display: inline-block;
 }
 .dc-answer-commands .vote-wap .upvote-wap .btn-upvote-answer {
-  color: #009999 !important;
+  color: #009999;
 }
 .dc-answer-commands .vote-wap .upvote-wap .for-un-upvoted {
   display: inline-block;
@@ -21,6 +25,7 @@
   margin: 0 10px;
 }
 .dc-answer-commands .vote-wap .btn-downvote-answer {
+  display: inline-block;
   margin-left: 10px;
 }
 .dc-answer-commands .vote-wap .btn-downvote-answer .for-un-downvoted {
@@ -69,6 +74,11 @@
 }
 .dc-answer-commands .btn-more .hide-commands a:hover {
   color: #009999;
+}
+.dc-answer-commands.bottom .btn-more .hide-commands {
+  padding-bottom: 15px;
+  top: auto;
+  bottom: 10px;
 }
 .dc-answer-commands .btn-thank-answer {
   border-top: 1px solid #cccccc;
