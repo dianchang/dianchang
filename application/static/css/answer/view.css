@@ -262,7 +262,7 @@ body .container {
   margin: 40px 0 40px 0;
 }
 .more-answers-form-user .more-answer {
-  padding: 8px 8px;
+  padding: 10px 12px;
   margin-bottom: 10px;
   border-radius: 2px;
 }
@@ -287,4 +287,19 @@ body .container {
 }
 .more-answers-form-user .more-answer .content p:last-child {
   margin-bottom: 0;
+}
+.more-answers-form-user .more-answer .content .btn-continue-reading {
+  color: #999;
+}
+.more-answers-form-user .more-answer .content .preview {
+  display: block;
+}
+.more-answers-form-user .more-answer .content .full-content {
+  display: none;
+}
+.more-answers-form-user .more-answer.full .preview {
+  display: none;
+}
+.more-answers-form-user .more-answer.full .full-content {
+  display: block;
 }
