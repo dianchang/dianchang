@@ -5,9 +5,9 @@
 
 {% block page_title %}等待回答 - 话题「{{ topic.name }}」{% endblock %}
 {% block page_content %}
-    <div class="container">
-        {{ topic_page_header(topic) }}
+    {{ topic_page_header(topic) }}
 
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
                 {{ topic_discuss_page_header(topic, active='waiting_for_answer') }}

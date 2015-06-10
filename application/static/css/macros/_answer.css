@@ -72,9 +72,9 @@
   white-space: nowrap;
   font-size: 13px;
   padding: 6px 18px;
-  border-bottom: 1px solid #cccccc;
-  border-left: 1px solid #cccccc;
-  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #eaeaea;
+  border-left: 1px solid #eaeaea;
+  border-right: 1px solid #eaeaea;
 }
 .dc-answer-commands .btn-more .hide-commands a:hover {
   color: #009999;
@@ -85,7 +85,7 @@
   bottom: 10px;
 }
 .dc-answer-commands .btn-thank-answer {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #eaeaea;
 }
 .dc-answer-commands .btn-thank-answer .for-un-thanked {
   display: inline-block;
@@ -124,7 +124,7 @@
 .dc-answer {
   margin-bottom: 25px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #eaeaea;
 }
 .dc-answer .topics {
   margin-bottom: 18px;

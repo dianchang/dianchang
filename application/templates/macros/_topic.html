@@ -26,7 +26,7 @@
         {% endif %}
         {% if followed %}followed{% endif %}" data-id="{{ topic.id }}">
         <a href="javascript: void(0)" class="btn-follow-topic">
-            <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span></a>
+            <span class="for-follow">关注话题</span><span class="for-unfollow">不再关注</span></a>
         <span class="divider">|</span>
         <span class="followers-count">{{ topic.followers.count() }}</span>
     </div>
@@ -83,43 +83,46 @@
 {# 话题页header #}
 {% macro topic_page_header(topic, active='view') %}
     <div class="dc-topic-page-header">
-        <div class="commands">
-            {{ topic_follow_wap(topic, dark=True) }}
+        <div class="container">
+            <div class="commands">
+                {{ topic_follow_wap(topic, dark=True) }}
 
-            <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="btn btn-default btn-admin-topic"
-               title="话题管理">
-                <span class="fa fa-gear"></span>
-            </a>
-        </div>
+                <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="btn btn-default btn-admin-topic"
+                   title="话题管理">
+                    <span class="fa fa-gear"></span>
+                </a>
+            </div>
 
-        <div class="topic-wap">
-            <div class="media">
-                <div class="media-left">
-                    <img src="{{ topic.avatar_url }}" alt=""/>
-                </div>
-                <div class="media-body">
-                    <div class="topic-name">{{ topic.name }}</div>
+            <div class="topic-wap">
+                <div class="media">
+                    <div class="media-left">
+                        <img src="{{ topic.avatar_url }}" alt=""/>
+                    </div>
+                    <div class="media-body">
+                        <div class="topic-name">{{ topic.name }}</div>
 
-                    {% if topic.wiki_preview %}
-                        <div class="topic-wiki">
-                            {{ topic.wiki_preview }} <a href="{{ url_for('topic.wiki', uid=topic.id) }}">查看百科</a>
-                        </div>
-                    {% endif %}
+                        {% if topic.wiki_preview %}
+                            <div class="topic-wiki">
+                                {{ topic.wiki_preview }} <a href="{{ url_for('topic.wiki', uid=topic.id) }}"
+                                                            class="text-light">查看百科</a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <ul class="nav nav-tabs">
-            <li role="presentation" {% if active == 'view' %}class="active"{% endif %}>
-                <a href="{{ url_for('topic.view', uid=topic.id) }}">讨论</a>
-            </li>
-            <li role="presentation" {% if active == 'rank' %}class="active"{% endif %}>
-                <a href="{{ url_for('topic.rank', uid=topic.id) }}">榜单</a>
-            </li>
-            <li role="presentation" {% if active == 'wiki' %}class="active"{% endif %}>
-                <a href="{{ url_for('topic.wiki', uid=topic.id) }}">百科</a>
-            </li>
-        </ul>
+            <ul class="nav nav-tabs nav-tabs-block">
+                <li role="presentation" {% if active == 'view' %}class="active"{% endif %}>
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}">讨论</a>
+                </li>
+                <li role="presentation" {% if active == 'rank' %}class="active"{% endif %}>
+                    <a href="{{ url_for('topic.rank', uid=topic.id) }}">榜单</a>
+                </li>
+                <li role="presentation" {% if active == 'wiki' %}class="active"{% endif %}>
+                    <a href="{{ url_for('topic.wiki', uid=topic.id) }}">百科</a>
+                </li>
+            </ul>
+        </div>
     </div>
 {% endmacro %}
 
@@ -158,15 +161,15 @@
 
 {# 话题讨论页header #}
 {% macro topic_discuss_page_header(topic, active="top") %}
-    <div class="btn-group">
-        <a type="button" href="{{ url_for('topic.view', uid=topic.id) }}"
-           class="btn btn-default {% if active == 'top' %}active{% endif %}">
+    <div class="dc-topic-discuss-page-header clearfix">
+        <a href="{{ url_for('topic.view', uid=topic.id) }}"
+           class="{% if active == 'top' %}active{% endif %}">
             精彩回答</a>
-        <a type="button" href="{{ url_for('topic.waiting_for_answer', uid=topic.id) }}"
-           class="btn btn-default {% if active == 'waiting_for_answer' %}active{% endif %}">
+        <a href="{{ url_for('topic.waiting_for_answer', uid=topic.id) }}"
+           class="{% if active == 'waiting_for_answer' %}active{% endif %}">
             等待回答</a>
-        <a type="button" href="{{ url_for('topic.questions', uid=topic.id) }}"
-           class="btn btn-default {% if active == 'questions' %}active{% endif %}">
+        <a href="{{ url_for('topic.questions', uid=topic.id) }}"
+           class="{% if active == 'questions' %}active{% endif %}">
             全部问题</a>
     </div>
 {% endmacro %}
@@ -174,27 +177,43 @@
 
 {# 话题讨论页sidebar #}
 {% macro topic_discuss_page_sidebar(topic) %}
-    <a href="{{ url_for('topic.logs', uid=topic.id) }}">话题日志</a>
+    {#    <h3>父话题</h3>#}
+    {##}
+    {#    {% if topic.root %}#}
+    {#        <span class="label label-primary">根话题</span>#}
+    {#    {% else %}#}
+    {#        {% for parent_topic in topic.parent_topics %}#}
+    {#            <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">#}
+    {#                {{ parent_topic.name }}#}
+    {#            </a>#}
+    {#        {% endfor %}#}
+    {#    {% endif %}#}
 
-    <h3>父话题</h3>
+    <div class="dc-topic-discuss-page-sidebar">
+        <h3>相关话题</h3>
 
-    {% if topic.root %}
-        <span class="label label-primary">根话题</span>
-    {% else %}
-        {% for parent_topic in topic.parent_topics %}
-            <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">
-                {{ parent_topic.name }}
-            </a>
-        {% endfor %}
-    {% endif %}
+        <div class="related-topics">
+            {% for child_topic in topic.child_topics %}
+                <div class="related-topic media">
+                    <div class="media-left">
+                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}">
+                            <img src="{{ child_topic.avatar_url }}" alt=""/>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}" class="name">
+                            {{ child_topic.name }}
+                        </a>
+                        <div class="text-light">
+                            <strong>{{ child_topic.followers.count() }}</strong> 人关注
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-    <h3>子话题</h3>
-
-    {% for child_topic in topic.child_topics %}
-        <a href="{{ url_for('topic.view', uid=child_topic.id) }}">
-            {{ child_topic.name }}
-        </a>
-    {% endfor %}
+        <a href="{{ url_for('topic.logs', uid=topic.id) }}" class="text-light">话题日志</a>
+    </div>
 {% endmacro %}
 
 

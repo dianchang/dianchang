@@ -85,6 +85,12 @@
   box-shadow: none;
   outline: none;
 }
+.btn-default:hover a,
+.btn-default:active a,
+.btn-default:focus a,
+.btn-default:active:focus a {
+  color: #333;
+}
 .btn-light {
   background-color: #dcf8f1;
   color: #009999;
@@ -136,4 +142,46 @@
 }
 .tooltip.tooltip-white.right .tooltip-arrow {
   border-right-color: white;
+}
+.nav-tabs.nav-tabs-block {
+  margin-bottom: -1px;
+  border-bottom: 0;
+}
+.nav-tabs.nav-tabs-block > li {
+  width: 33.33333%;
+  text-align: center;
+}
+.nav-tabs.nav-tabs-block > li:first-child a {
+  border-left: 1px solid #e1e1e1;
+  border-radius: 2px 0 0 0;
+}
+.nav-tabs.nav-tabs-block > li:first-child a:hover {
+  border-left: 1px solid #e1e1e1;
+}
+.nav-tabs.nav-tabs-block > li:last-child a {
+  border-radius: 0 2px 0 0;
+}
+.nav-tabs.nav-tabs-block > li.active a {
+  background-color: white;
+  border-bottom: 1px solid transparent;
+  color: #333;
+}
+.nav-tabs.nav-tabs-block > li.active a:hover {
+  background-color: #fff;
+}
+.nav-tabs.nav-tabs-block > li > a {
+  color: #999;
+  padding: 12px 15px;
+  margin-right: 0;
+  border-top: 1px solid #e1e1e1;
+  border-left: 0;
+  border-right: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+  border-radius: 0;
+}
+.nav-tabs.nav-tabs-block > li > a:hover,
+.nav-tabs.nav-tabs-block > li > a:focus {
+  background-color: transparent;
+  border-left: 0;
+  color: #666;
 }

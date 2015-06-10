@@ -1,32 +1,75 @@
-.dc-topic-page-header .dc-topic-follow-wap {
+.dc-topic-page-header {
+  padding-top: 40px;
+  background-color: #f5f6f5;
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: 20px;
+}
+.dc-topic-page-header .commands {
+  float: right;
+}
+.dc-topic-page-header .commands .dc-topic-follow-wap {
   margin-right: 10px;
   vertical-align: middle;
 }
-.dc-topic-page-header .btn-admin-topic {
-  background-color: #e4e4e4;
-  border-color: #c8c8c8;
+.dc-topic-page-header .commands .btn-admin-topic {
   font-size: 18px;
-  color: #898989;
   padding: 4px 9px 3px 9px;
 }
-.dc-topic-page-header .btn-admin-topic:hover {
-  color: #666;
+.dc-topic-page-header .topic-wap {
+  margin-bottom: 40px;
 }
-.dc-topic-page-header .media-left {
+.dc-topic-page-header .topic-wap .media-left {
   padding-right: 15px;
 }
-.dc-topic-page-header .media-left img {
+.dc-topic-page-header .topic-wap .media-left img {
   width: 78px;
   height: 78px;
   border-radius: 2px;
 }
-.dc-topic-page-header .topic-name {
+.dc-topic-page-header .topic-wap .topic-name {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 5px;
 }
-.dc-topic-page-header .topic-wiki {
+.dc-topic-page-header .topic-wap .topic-wiki {
   font-size: 16px;
+}
+.dc-topic-discuss-page-sidebar .related-topics {
+  margin-bottom: 20px;
+}
+.dc-topic-discuss-page-sidebar .related-topics .related-topic {
+  margin-bottom: 15px;
+}
+.dc-topic-discuss-page-sidebar .related-topics .related-topic .media-left {
+  padding-right: 15px;
+}
+.dc-topic-discuss-page-sidebar .related-topics .related-topic img {
+  width: 40px;
+  height: 40px;
+}
+.dc-topic-discuss-page-sidebar .related-topics .related-topic .name {
+  color: #333;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.dc-topic-discuss-page-header {
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 30px;
+}
+.dc-topic-discuss-page-header a {
+  margin-bottom: -1px;
+  display: inline-block;
+  color: #999;
+  padding: 15px 0;
+  margin-right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.dc-topic-discuss-page-header a.active {
+  color: #333;
+  border-bottom: 1px solid #333;
 }
 .dc-topic-follow-wap .for-follow {
   display: inline-block;

@@ -6,14 +6,12 @@
 
 {% block page_title %}话题「{{ topic.name }}」{% endblock %}
 {% block page_content %}
-    <div class="container">
-        {{ topic_page_header(topic, active='view') }}
+    {{ topic_page_header(topic, active='view') }}
 
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
                 {{ topic_discuss_page_header(topic) }}
-
-                <h3>精彩回答</h3>
 
                 {{ render_answers(answers.items) }}
 

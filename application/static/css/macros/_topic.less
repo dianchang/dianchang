@@ -1,43 +1,100 @@
+@import "../utils";
+
 // 话题页页头
 .dc-topic-page-header {
-  .dc-topic-follow-wap {
-    margin-right: 10px;
-    vertical-align: middle;
-  }
+  padding-top: 40px;
+  background-color: @background-gray;
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: 20px;
 
-  .btn-admin-topic {
-    background-color: #e4e4e4;
-    border-color: #c8c8c8;
-    font-size: 18px;
-    color: #898989;
-    padding: 4px 9px 3px 9px;
+  .commands {
+    float: right;
 
-    &:hover {
-      color: #666;
+    .dc-topic-follow-wap {
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .btn-admin-topic {
+      font-size: 18px;
+      padding: 4px 9px 3px 9px;
     }
   }
 
-  .media-left {
-    padding-right: 15px;
+  .topic-wap {
+    margin-bottom: 40px;
 
-    img {
-      width: 78px;
-      height: 78px;
-      border-radius: 2px;
+    .media-left {
+      padding-right: 15px;
+
+      img {
+        width: 78px;
+        height: 78px;
+        border-radius: 2px;
+      }
     }
-  }
 
-  .topic-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
+    .topic-name {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
 
-  .topic-wiki {
-    font-size: 16px;
+    .topic-wiki {
+      font-size: 16px;
+    }
   }
 }
 
+.dc-topic-discuss-page-sidebar {
+  .related-topics {
+    margin-bottom: 20px;
+
+    .related-topic {
+      margin-bottom: 15px;
+
+      .media-left {
+        padding-right: 15px;
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .name {
+        color: #333;
+        display: block;
+        font-weight: bold;
+        margin-bottom: 2px;
+      }
+    }
+  }
+}
+
+// 讨论页二级页头
+.dc-topic-discuss-page-header {
+  border-bottom: 1px solid @border-color;
+  margin-bottom: 30px;
+
+  a {
+    margin-bottom: -1px;
+    display: inline-block;
+    color: #999;
+    padding: 15px 0;
+    margin-right: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+
+    &.active {
+      color: #333;
+      border-bottom: 1px solid #333;
+    }
+  }
+}
+
+// 关注话题
 .dc-topic-follow-wap {
   .for-follow {
     display: inline-block;

@@ -3,7 +3,7 @@ html {
   min-height: 100%;
 }
 #main-wap {
-  margin-bottom: 60px;
+  margin-bottom: 200px;
 }
 @media (min-width: 1200px) {
   #main-wap .container {

@@ -103,6 +103,10 @@ body {
     border-color: darken(#E4E4E4, 5%);
     box-shadow: none;
     outline: none;
+
+    a {
+      color: #333;
+    }
   }
 }
 
@@ -167,5 +171,56 @@ body {
 
   &.right .tooltip-arrow {
     border-right-color: white;
+  }
+}
+
+.nav-tabs.nav-tabs-block {
+  margin-bottom: -1px;
+  border-bottom: 0;
+
+  & > li {
+    width: 33.33333%;
+    text-align: center;
+
+    &:first-child a {
+      border-left: 1px solid #e1e1e1;
+      border-radius: 2px 0 0 0;
+
+      &:hover {
+        border-left: 1px solid #e1e1e1;
+      }
+    }
+
+    &:last-child a {
+      border-radius: 0 2px 0 0;
+    }
+
+    &.active a {
+      background-color: white;
+      border-bottom: 1px solid transparent;
+      color: #333;
+
+      &:hover {
+        background-color: #fff;
+      }
+    }
+
+    & > a {
+      color: #999;
+      padding: 12px 15px;
+      margin-right: 0;
+      border-top: 1px solid #e1e1e1;
+      border-left: 0;
+      border-right: 1px solid #e1e1e1;
+      border-bottom: 1px solid #e1e1e1;
+      border-radius: 0;
+
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        border-left: 0;
+        color: #666;
+      }
+    }
   }
 }
