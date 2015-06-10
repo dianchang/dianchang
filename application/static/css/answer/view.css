@@ -54,10 +54,13 @@ body .container {
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
 .answer {
-  padding: 40px 0 50px 0;
+  padding: 50px 0 50px 0;
 }
 .answer .content {
   font-size: 18px;
+}
+.answer .content.less {
+  font-size: 28px;
 }
 .answer .content p {
   margin-bottom: 20px;
@@ -270,7 +273,7 @@ body .container {
   font-size: 18px;
   display: block;
   font-weight: bold;
-  color: #336699;
+  color: #009999;
   margin-bottom: 5px;
 }
 .more-answers-form-user .more-answer .answerer {
@@ -281,4 +284,7 @@ body .container {
 }
 .more-answers-form-user .more-answer .content {
   font-size: 16px;
+}
+.more-answers-form-user .more-answer .content p:last-child {
+  margin-bottom: 0;
 }
