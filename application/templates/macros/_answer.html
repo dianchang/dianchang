@@ -242,8 +242,10 @@
                 </span>
 
                 <div class="commands pull-right">
-                    <a href="javascript: void(0)" data-id="{{ comment.id }}"
-                       class="btn-reply-comment link-no-underline">回复</a>
+                    <a href="javascript: void(0)"
+                       class="btn-reply-comment link-no-underline"
+                       data-id="{{ comment.id }}"
+                       data-root-id="{{ comment.root_id or comment.id }}">回复</a>
                     <span class="like-comment-wap
                         {% if comment.liked_by_user() %}liked{% endif %}
                         {% if comment.likes.count() == 0 %}zero{% endif %}">

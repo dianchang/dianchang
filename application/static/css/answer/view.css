@@ -209,11 +209,15 @@ body .container {
 .answer-comments-wap .comment-form-wap .commands .btn-submit-reply {
   margin-left: 10px;
 }
-.answer-comments-wap .answer-comment .comment-form-wap {
+.sub-comments-wap .comment-form-wap {
   margin-top: 15px;
+  margin-bottom: 20px;
 }
-.answer-comments-wap .answer-comment .comment-form-wap .commands {
+.sub-comments-wap .comment-form-wap .commands {
   display: block;
+}
+.sub-comments-wap {
+  padding-left: 51px;
 }
 .bottom-banner {
   position: fixed;

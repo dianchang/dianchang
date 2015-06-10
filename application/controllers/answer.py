@@ -240,7 +240,7 @@ def reply_comment(uid):
     parent_comment = AnswerComment.query.get_or_404(uid)
     comment_content = request.form.get('content')
     new_comment = AnswerComment(user_id=g.user.id, answer_id=parent_comment.answer_id, parent_id=uid,
-                                content=comment_content)
+                                content=comment_content, root_id=parent_comment.root_id or uid)
     db.session.add(new_comment)
     db.session.commit()
 

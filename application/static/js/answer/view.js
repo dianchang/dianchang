@@ -32,17 +32,18 @@ $(document).onOnce('click', '.btn-like-comment', function () {
     });
 });
 
-// 回复评论
+// 打开回复评论框
 $(document).onOnce('click', '.btn-reply-comment', function () {
     var id = parseInt($(this).data('id'));
-    var $commentBody = $(this).parents('.media-body');
+    var rootId = $(this).data('root-id');
+    var $subCommentsWap = $(".sub-comments-wap[data-root-id='" + rootId + "']");
 
     if (!g.signin) {
         window.location = urlFor('account.signin');
         return;
     }
 
-    $commentBody.append(
+    $subCommentsWap.append(
         "<div class='comment-form-wap'>"
         + "<div class='comment-edit-area' contenteditable='true'></div>"
         + "<div class='commands'>"
@@ -52,7 +53,7 @@ $(document).onOnce('click', '.btn-reply-comment', function () {
         + "</div>"
     );
 
-    $commentBody.find('.comment-edit-area').focus();
+    $subCommentsWap.find('.comment-edit-area').focus();
 });
 
 // 取消回复
@@ -63,7 +64,7 @@ $(document).onOnce('click', '.btn-cancel-reply', function () {
 // 提交回复
 $(document).onOnce('click', '.btn-submit-reply', function () {
     var parentCommentId = parseInt($(this).data('parent-id'));
-    var $commentWap = $(this).parents('.answer-comment');
+    var $subCommentsWap = $(this).parents('.sub-comments-wap').first();
     var $replyWap = $(this).parents('.comment-form-wap').first();
     var comment = $.trim($(this).parent().prev().html());
 
@@ -85,7 +86,7 @@ $(document).onOnce('click', '.btn-submit-reply', function () {
         }
     }).done(function (response) {
         if (response.result) {
-            $commentWap.after(response.html);
+            $subCommentsWap.append(response.html);
             $replyWap.detach();
         }
     });

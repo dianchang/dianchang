@@ -65,6 +65,10 @@ class Answer(db.Model):
         """从elasticsearch中删除此回答"""
         return delete_object_from_es('answer', self.id)
 
+    @property
+    def root_comments(self):
+        return self.comments.filter(AnswerComment.parent_id == None)
+
     @staticmethod
     def query_from_es(q, page=1, per_page=10):
         """在elasticsearch中查询回答"""
@@ -208,7 +212,15 @@ class AnswerComment(db.Model):
                                                           order_by='asc(AnswerComment.created_at)'))
 
     parent_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
-    parent = db.relationship('AnswerComment', remote_side=[id])
+    parent = db.relationship('AnswerComment', remote_side=[id], foreign_keys=[parent_id])
+
+    root_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
+    root = db.relationship('AnswerComment',
+                           remote_side=[id],
+                           backref=db.backref('sub_comments',
+                                              lazy='dynamic',
+                                              order_by='asc(AnswerComment.created_at)'),
+                           foreign_keys=[root_id])
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('answer_comments',
