@@ -16,24 +16,24 @@
 
 
 {# 关注话题组件 #}
-{% macro topic_follow_wap(topic) %}
-    <div class="dc-topic-follow-wap btn-group {% if topic.followed_by_user() %}followed{% endif %}">
-        <a href="javascript: void(0)"
-           class="btn btn-default btn-follow-topic"
-           data-id="{{ topic.id }}">
-            <span class="for-follow">关注</span><span class="for-unfollow">已关注</span>
-        </a>
-        <span class="followers-count btn btn-default">{{ topic.followers.count() }}</span>
+{% macro topic_follow_wap(topic, dark=False) %}
+    {% set followed = topic.followed_by_user() %}
+    <div class="dc-topic-follow-wap btn {% if followed %}btn-default{% else %}btn-dark{% endif %}
+        {% if followed %}followed{% endif %}" data-id="{{ topic.id }}">
+        <a href="javascript: void(0)" class="btn-follow-topic">
+            <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span></a>
+        <span class="divider">|</span>
+        <span class="followers-count">{{ topic.followers.count() }}</span>
     </div>
 
     <script>
         (function () {
             // 关注话题
-            $('.btn-follow-topic').onOnce('click', function () {
+            $('.dc-topic-follow-wap').onOnce('click', function () {
                 var topicId = $(this).data('id');
-                var followed = $(this).parent().hasClass('followed');
-                var $wap = $(this).parent();
-                var $count = $(this).next();
+                var followed = $(this).hasClass('followed');
+                var _this = $(this);
+                var $count = _this.find('.followers-count');
                 var url = urlFor('topic.follow', {uid: topicId});
 
                 if (!g.signin) {
@@ -48,11 +48,11 @@
                 }).done(function (response) {
                     if (response.result) {
                         if (response.followed) {
-                            if (!$wap.hasClass('followed')) {
-                                $wap.addClass('followed');
+                            if (!_this.hasClass('followed')) {
+                                _this.addClass('followed').addClass('btn-default').removeClass('btn-dark');
                             }
                         } else {
-                            $wap.removeClass('followed');
+                            _this.removeClass('followed').addClass('btn-dark').removeClass('btn-default');
                         }
 
                         $count.text(response.followers_count);
@@ -67,12 +67,14 @@
 {# 话题页header #}
 {% macro topic_page_header(topic, active='view') %}
     <div class="dc-topic-page-header">
-        <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="pull-right btn btn-default"
-           title="话题管理">
-            <span class="fa fa-gear"></span>
-        </a>
+        <div class="commands">
+            {{ topic_follow_wap(topic, dark=True) }}
 
-        {{ topic_follow_wap(topic) }}
+            <a href="{{ url_for('topic.admin', uid=topic.id) }}" class="btn btn-default btn-admin-topic"
+               title="话题管理">
+                <span class="fa fa-gear"></span>
+            </a>
+        </div>
 
         <div class="topic-wap">
             <div class="media">
@@ -80,10 +82,12 @@
                     <img src="{{ topic.avatar_url }}" alt=""/>
                 </div>
                 <div class="media-body">
-                    <h1>{{ topic.name }}</h1>
+                    <div class="topic-name">{{ topic.name }}</div>
 
-                    {% if topic.desc %}
-                        <div class="desc">{{ topic.desc }}</div>
+                    {% if topic.wiki_preview %}
+                        <div class="topic-wiki">
+                            {{ topic.wiki_preview }} <a href="{{ url_for('topic.wiki', uid=topic.id) }}">查看百科</a>
+                        </div>
                     {% endif %}
                 </div>
             </div>

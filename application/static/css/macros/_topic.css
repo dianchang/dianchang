@@ -1,11 +1,32 @@
 .dc-topic-page-header .dc-topic-follow-wap {
-  float: right;
-  margin-right: 15px;
+  margin-right: 10px;
+  vertical-align: middle;
 }
-.dc-topic-follow-wap .btn {
-  background-color: #337ab7;
-  border-color: #2e6da4;
-  color: white;
+.dc-topic-page-header .btn-admin-topic {
+  background-color: #e4e4e4;
+  border-color: #c8c8c8;
+  font-size: 18px;
+  color: #898989;
+  padding: 4px 9px 3px 9px;
+}
+.dc-topic-page-header .btn-admin-topic:hover {
+  color: #666;
+}
+.dc-topic-page-header .media-left {
+  padding-right: 15px;
+}
+.dc-topic-page-header .media-left img {
+  width: 78px;
+  height: 78px;
+  border-radius: 2px;
+}
+.dc-topic-page-header .topic-name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.dc-topic-page-header .topic-wiki {
+  font-size: 16px;
 }
 .dc-topic-follow-wap .for-follow {
   display: inline-block;

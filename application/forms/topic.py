@@ -7,7 +7,7 @@ from ..models import Topic
 
 class AdminTopicForm(Form):
     name = StringField('话题名称', validators=[DataRequired('话题名称不能为空')])
-    desc = TextAreaField('话题描述')
+    wiki = TextAreaField('话题百科')
 
 
 class EditTopicWikiForm(Form):

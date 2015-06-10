@@ -5,6 +5,10 @@ body {
 
 .btn {
   border-radius: 2px;
+
+  .divider {
+    margin: 0 10px;
+  }
 }
 
 .btn-primary {
@@ -48,6 +52,79 @@ body {
     border-color: darken(#00cc99, 5%);
     box-shadow: none;
     outline: none;
+  }
+}
+
+.btn-dark {
+  background-color: #17CA8A;
+  color: #FFFFFF;
+  border-color: #17CA8A;
+  padding: 6px 15px;
+
+  a {
+    color: #FFFFFF;
+  }
+
+  .divider {
+    color: #46AB8B;
+  }
+
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    color: #FFFFFF;
+    background-color: darken(#17CA8A, 2%);
+    border-color: darken(#17CA8A, 5%);
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.btn-default {
+  background-color: #FAFAFA;
+  color: #666666;
+  border-color: #E4E4E4;
+  padding: 6px 15px;
+
+  a {
+    color: #666666;
+  }
+
+  .divider {
+    color: #D7D7D7;
+  }
+
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    background-color: darken(#FAFAFA, 5%);
+    border-color: darken(#E4E4E4, 5%);
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.btn-light {
+  background-color: @light-main;
+  color: @main-color;
+  border-color: #b7e1e2;
+  padding: 6px 15px;
+
+  a {
+    color: @main-color;
+  }
+
+  &:hover,
+  &:active,
+  &:focus,
+  &:active:focus {
+    box-shadow: none;
+    outline: none;
+    background-color: darken(@light-main, 5%);
+    border-color: darken(#b7e1e2, 5%);
+    color: @main-color;
   }
 }
 

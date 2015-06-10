@@ -89,12 +89,24 @@ def admin(uid):
             log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_NAME, user_id=g.user.id, topic_id=uid, before=topic.name,
                                 after=form.name.data)
             db.session.add(log)
-        # Update desc log
-        if (topic.desc or "") != form.desc.data:
-            log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_DESC, user_id=g.user.id, topic_id=uid,
-                                before=topic.desc, after=form.desc.data,
-                                compare=generate_lcs_html(topic.desc, form.desc.data))
+
+        # Update wiki log
+        if (topic.wiki or "") != form.wiki.data:
+            log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_WIKI, user_id=g.user.id, topic_id=uid,
+                                before=topic.wiki, after=form.wiki.data,
+                                compare=generate_lcs_html(topic.wiki, form.wiki.data))
             db.session.add(log)
+
+        # 记录wiki贡献者
+        contributor = topic.wiki_contributors.filter(TopicWikiContributor.user_id == g.user.id).first()
+        if contributor:
+            contributor.count += 1
+            contributor.last_contributed_at = datetime.now()
+            db.session.add(contributor)
+        else:
+            contributor = TopicWikiContributor(topic_id=uid, user_id=g.user.id, count=1)
+            db.session.add(contributor)
+
         form.populate_obj(topic)
         db.session.add(topic)
         db.session.commit()
@@ -238,30 +250,6 @@ def follow(uid):
 
         db.session.commit()
         return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
-
-
-@bp.route('/topic/<int:uid>/edit_wiki', methods=['GET', 'POST'])
-@UserPermission()
-def edit_wiki(uid):
-    """编辑话题Wiki"""
-    topic = Topic.query.get_or_404(uid)
-    form = EditTopicWikiForm(obj=topic)
-    if form.validate_on_submit():
-        topic.wiki = form.wiki.data
-        db.session.add(topic)
-
-        # 记录贡献者
-        contributor = topic.wiki_contributors.filter(TopicWikiContributor.user_id == g.user.id).first()
-        if contributor:
-            contributor.count += 1
-            contributor.last_contributed_at = datetime.now()
-            db.session.add(contributor)
-        else:
-            contributor = TopicWikiContributor(topic_id=uid, user_id=g.user.id, count=1)
-            db.session.add(contributor)
-        db.session.commit()
-        return redirect(url_for('.wiki', uid=uid))
-    return render_template('topic/edit_wiki.html', topic=topic, form=form)
 
 
 @bp.route('/topic/<int:uid>/add_synonym', methods=['POST'])

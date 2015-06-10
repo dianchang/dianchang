@@ -5,8 +5,14 @@ html {
   min-height: 100%;
 }
 
-body {
+#main-wap {
   margin-bottom: 60px;
+
+  @media (min-width: 1200px) {
+    .container {
+      width: 1020px;
+    }
+  }
 }
 
 // Flash message
@@ -43,6 +49,7 @@ body {
 
 .navbar {
   color: #D5DCE6;
+  margin-bottom: 40px;
 
   &.navbar-default {
     background-color: @deep-main;

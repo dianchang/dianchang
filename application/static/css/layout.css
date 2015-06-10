@@ -2,8 +2,13 @@ html {
   position: relative;
   min-height: 100%;
 }
-body {
+#main-wap {
   margin-bottom: 60px;
+}
+@media (min-width: 1200px) {
+  #main-wap .container {
+    width: 1020px;
+  }
 }
 .flash-message {
   background-color: #009999;
@@ -31,6 +36,7 @@ body {
 }
 .navbar {
   color: #D5DCE6;
+  margin-bottom: 40px;
 }
 .navbar.navbar-default {
   background-color: #252e3c;

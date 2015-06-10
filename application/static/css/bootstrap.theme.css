@@ -1,6 +1,9 @@
 .btn {
   border-radius: 2px;
 }
+.btn .divider {
+  margin: 0 10px;
+}
 .btn-primary {
   background-color: #00cc99;
   color: white;
@@ -38,6 +41,68 @@
   border-color: #00b386;
   box-shadow: none;
   outline: none;
+}
+.btn-dark {
+  background-color: #17CA8A;
+  color: #FFFFFF;
+  border-color: #17CA8A;
+  padding: 6px 15px;
+}
+.btn-dark a {
+  color: #FFFFFF;
+}
+.btn-dark .divider {
+  color: #46AB8B;
+}
+.btn-dark:hover,
+.btn-dark:active,
+.btn-dark:focus,
+.btn-dark:active:focus {
+  color: #FFFFFF;
+  background-color: #16c184;
+  border-color: #14b37a;
+  box-shadow: none;
+  outline: none;
+}
+.btn-default {
+  background-color: #FAFAFA;
+  color: #666666;
+  border-color: #E4E4E4;
+  padding: 6px 15px;
+}
+.btn-default a {
+  color: #666666;
+}
+.btn-default .divider {
+  color: #D7D7D7;
+}
+.btn-default:hover,
+.btn-default:active,
+.btn-default:focus,
+.btn-default:active:focus {
+  background-color: #ededed;
+  border-color: #d7d7d7;
+  box-shadow: none;
+  outline: none;
+}
+.btn-light {
+  background-color: #dcf8f1;
+  color: #009999;
+  border-color: #b7e1e2;
+  padding: 6px 15px;
+}
+.btn-light a {
+  color: #009999;
+}
+.btn-light:hover,
+.btn-light:active,
+.btn-light:focus,
+.btn-light:active:focus {
+  box-shadow: none;
+  outline: none;
+  background-color: #c7f4e9;
+  border-color: #a5d9db;
+  color: #009999;
 }
 .btn-light {
   background-color: #dcf8f1;

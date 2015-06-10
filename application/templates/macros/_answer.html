@@ -223,16 +223,14 @@
                 <div class="preview">
                     {{ (answer.highlight_content_preview or answer.content_preview)|safe }}
 
-                    {% if answer.content_length > answer.content_preview_length %}
+                    {% if answer.content_preview_truncated %}
                         <a href="javascript: void(0)" class="btn-continue-reading">继续阅读</a>
                     {% endif %}
                 </div>
 
-                {% if answer.content_length > answer.content_preview_length %}
-                    <div class="full-content">
-                        {{ answer.content|safe }}
-                    </div>
-                {% endif %}
+                <div class="full-content">
+                    {{ answer.content|safe }}
+                </div>
             </div>
 
             <div class="time text-light" title="{{ answer.created_at }}">

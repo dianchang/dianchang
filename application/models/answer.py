@@ -10,8 +10,8 @@ class Answer(db.Model):
     """回答"""
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
-    content_length = db.Column(db.Integer, default=0)
     content_preview = db.Column(db.Text)
+    content_preview_truncated = db.Column(db.Boolean, default=False)  # content_preview是否被截断
     content_preview_length = db.Column(db.Integer, default=0)
     score = db.Column(db.Integer, default=0)
     hide = db.Column(db.Boolean, default=False)
@@ -39,10 +39,14 @@ class Answer(db.Model):
         # 每当设置 content 时，更新 content_length 和 content_preview
         if name == 'content':
             pure_content = get_pure_content(value)
-            content_preview = pure_content[:100]
-            super(Answer, self).__setattr__('content_length', len(pure_content))
-            super(Answer, self).__setattr__('content_preview', content_preview.rstrip('.') + "...")
-            super(Answer, self).__setattr__('content_preview_length', len(content_preview))
+            if len(pure_content) > 100:
+                content_preview = pure_content[:100].rstrip('.') + "..."
+                content_preview_truncated = True
+            else:
+                content_preview = pure_content
+                content_preview_truncated = False
+            super(Answer, self).__setattr__('content_preview', content_preview)
+            super(Answer, self).__setattr__('content_preview_truncated', content_preview_truncated)
         super(Answer, self).__setattr__(name, value)
 
     def calculate_score(self):

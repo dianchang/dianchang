@@ -130,16 +130,14 @@
                     <div class="preview">
                         {{ random_answer.content_preview }}
 
-                        {% if random_answer.content_length > random_answer.content_preview_length %}
+                        {% if random_answer.content_preview_truncated %}
                             <a href="javascript: void(0)" class="btn-continue-reading">继续阅读</a>
                         {% endif %}
                     </div>
 
-                    {% if random_answer.content_length > random_answer.content_preview_length %}
-                        <div class="full-content">
-                            {{ random_answer.content|safe }}
-                        </div>
-                    {% endif %}
+                    <div class="full-content">
+                        {{ random_answer.content|safe }}
+                    </div>
                 </div>
             </div>
         {% endfor %}

@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import g, current_app
 from ._base import db
 from ..utils.uploadsets import topic_avatars
-from ..utils.helpers import pinyin
+from ..utils.helpers import pinyin, get_pure_content
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
@@ -12,8 +12,8 @@ class Topic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     name_pinyin = db.Column(db.String(100))
-    desc = db.Column(db.Text)
     wiki = db.Column(db.Text(4294967295))
+    wiki_preview = db.Column(db.Text)
     avatar = db.Column(db.String(200), default='default.png')
     clicks = db.Column(db.Integer, default=0)
     root = db.Column(db.Boolean, default=False)
@@ -31,6 +31,13 @@ class Topic(db.Model):
         """为name赋值时，自动设置其拼音"""
         if name == 'name':
             super(Topic, self).__setattr__('name_pinyin', pinyin(value))
+        if name == 'wiki':
+            pure_content = get_pure_content(value)
+            if len(pure_content) > 100:
+                wiki_preview = pure_content[:100].rstrip('.') + "..."
+            else:
+                wiki_preview = pure_content
+            super(Topic, self).__setattr__('wiki_preview', wiki_preview)
         super(Topic, self).__setattr__(name, value)
 
     @property
