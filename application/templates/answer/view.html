@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_answer.html" import render_answer_comment, render_answer_commands %}
+{% from "macros/_answer.html" import render_answer_comment, render_answer_commands, render_answers %}
 {% from "macros/_user.html" import user_follow_wap %}
 
 {% block page_title %}回答{% endblock %}
@@ -42,7 +42,7 @@
             {{ render_answer_commands(answer, enable_comments_spread=False, with_full_screen=False, dark=True) }}
         </div>
 
-        <div class="answerer media">
+        <div class="answerer-wap media">
             <div class="media-left">
                 <a href="{{ answer.user.profile_url }}">
                     <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
@@ -108,8 +108,29 @@
         </div>
     </div>
 
-    <div class="more-answers-form-user">
+    <div class="more-answers-form-user container">
+        <div class="title">
+            更多{{ answer.user.name }}的回答
+        </div>
 
+        {% for random_answer in answer.user.random_answers %}
+            <div class="more-answer">
+                <a href="{{ url_for('question.view', uid=random_answer.question.id) }}"
+                   class="question-title link-no-underline link-color">
+                    {{ (random_answer.highlight_question_title or random_answer.question.title)|safe }}
+                </a>
+
+                <div class="answerer text-light">
+                    <a href="{{ random_answer.user.profile_url }}" class="name">
+                        {{ random_answer.user.name }}</a>{% if random_answer.user.desc %}，{{ random_answer.user.desc }}
+                {% endif %}
+                </div>
+
+                <div class="content">
+                    {{ (random_answer.highlight_content or random_answer.content)|safe }}
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
     <div class="bottom-banner">

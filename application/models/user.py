@@ -59,7 +59,15 @@ class User(db.Model):
 
     @property
     def avatar_url(self):
+        """用户头像"""
         return avatars.url(self.avatar)
+
+    @property
+    def random_answers(self, count=3):
+        """随机回答"""
+        from .answer import Answer
+
+        return self.answers.filter(~Answer.hide).order_by(db.func.random()).limit(count)
 
     @property
     def expert_topics(self):

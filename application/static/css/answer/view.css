@@ -67,29 +67,29 @@ body .container {
   margin-top: 15px;
   margin-bottom: 40px;
 }
-.answerer {
+.answerer-wap {
   border: 1px solid #e1e1e1;
   background-color: #f5f6f5;
   padding: 20px 20px;
   border-radius: 2px;
   position: relative;
 }
-.answerer .media-left {
+.answerer-wap .media-left {
   padding-right: 20px;
 }
-.answerer img {
+.answerer-wap img {
   width: 60px;
   height: 60px;
 }
-.answerer .answerer-meta {
+.answerer-wap .answerer-meta {
   margin-bottom: 10px;
   font-size: 16px;
 }
-.answerer .answerer-meta .answerer-name {
+.answerer-wap .answerer-meta .answerer-name {
   color: #333;
   font-weight: bold;
 }
-.answerer .dc-user-follow-wap {
+.answerer-wap .dc-user-follow-wap {
   position: absolute;
   right: 20px;
   top: 32px;
@@ -209,15 +209,15 @@ body .container {
 .answer-comments-wap .comment-form-wap .commands .btn-submit-reply {
   margin-left: 10px;
 }
+.sub-comments-wap {
+  padding-left: 51px;
+}
 .sub-comments-wap .comment-form-wap {
   margin-top: 15px;
   margin-bottom: 20px;
 }
 .sub-comments-wap .comment-form-wap .commands {
   display: block;
-}
-.sub-comments-wap {
-  padding-left: 51px;
 }
 .bottom-banner {
   position: fixed;
@@ -249,4 +249,36 @@ body .container {
   padding: 6px 12px;
   border-radius: 2px;
   margin-left: 5px;
+}
+.more-answers-form-user {
+  padding-bottom: 200px;
+}
+.more-answers-form-user .title {
+  text-align: center;
+  font-size: 18px;
+  margin: 40px 0 40px 0;
+}
+.more-answers-form-user .more-answer {
+  padding: 8px 8px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+}
+.more-answers-form-user .more-answer:hover {
+  background-color: #F3FAFF;
+}
+.more-answers-form-user .more-answer .question-title {
+  font-size: 18px;
+  display: block;
+  font-weight: bold;
+  color: #336699;
+  margin-bottom: 5px;
+}
+.more-answers-form-user .more-answer .answerer {
+  margin-bottom: 5px;
+}
+.more-answers-form-user .more-answer .answerer .name {
+  color: #999;
+}
+.more-answers-form-user .more-answer .content {
+  font-size: 16px;
 }

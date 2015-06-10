@@ -84,7 +84,7 @@ body {
   }
 }
 
-.answerer {
+.answerer-wap {
   border: 1px solid #e1e1e1;
   background-color: #f5f6f5;
   padding: 20px 20px;
@@ -266,19 +266,21 @@ body {
   }
 }
 
-.sub-comments-wap .comment-form-wap {
-  margin-top: 15px;
-  margin-bottom: 20px;
+// 子评论框
+.sub-comments-wap {
+  padding-left: 51px;
 
-  .commands {
-    display: block;
+  .comment-form-wap {
+    margin-top: 15px;
+    margin-bottom: 20px;
+
+    .commands {
+      display: block;
+    }
   }
 }
 
-.sub-comments-wap {
-  padding-left: 51px;
-}
-
+// 底部悬栏
 .bottom-banner {
   position: fixed;
   left: 0;
@@ -309,9 +311,51 @@ body {
   }
 }
 
+// 反对按钮加上外框
 .dc-answer-commands .vote-wap .btn-downvote-answer {
   border: 1px solid #acacac;
   padding: 6px 12px;
   border-radius: 2px;
   margin-left: 5px;
+}
+
+// 更多回答
+.more-answers-form-user {
+  padding-bottom: 200px;
+
+  .title {
+    text-align: center;
+    font-size: 18px;
+    margin: 40px 0 40px 0;
+  }
+
+  .more-answer {
+    padding: 8px 8px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: #F3FAFF;
+    }
+
+    .question-title {
+      font-size: 18px;
+      display: block;
+      font-weight: bold;
+      color: #336699;
+      margin-bottom: 5px;
+    }
+
+    .answerer {
+      margin-bottom: 5px;
+
+      .name {
+        color: #999;
+      }
+    }
+
+    .content {
+      font-size: 16px;
+    }
+  }
 }
