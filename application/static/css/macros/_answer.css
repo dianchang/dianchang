@@ -40,9 +40,13 @@
 .dc-answer-commands .vote-wap .btn-downvote-answer.downvoted .for-downvoted {
   display: inline-block;
 }
+.dc-answer-commands .btn-collapse,
 .dc-answer-commands .btn-comments,
 .dc-answer-commands .btn-share {
   margin-right: 20px;
+}
+.dc-answer-commands .btn-collapse {
+  display: none;
 }
 .dc-answer-commands .btn-more {
   position: relative;
@@ -156,6 +160,24 @@
 .dc-answer .content {
   font-size: 16px;
   margin-bottom: 8px;
+}
+.dc-answer .content .preview {
+  display: block;
+}
+.dc-answer .content .full-content {
+  display: none;
+}
+.dc-answer .content .btn-continue-reading {
+  color: #999;
+}
+.dc-answer.full .dc-answer-commands .btn-collapse {
+  display: inline-block;
+}
+.dc-answer.full .preview {
+  display: none;
+}
+.dc-answer.full .full-content {
+  display: block;
 }
 .dc-answer .time {
   margin-bottom: 15px;

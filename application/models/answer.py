@@ -3,12 +3,16 @@ from datetime import datetime
 from flask import g
 from ._base import db
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
+from ..utils.helpers import get_pure_content
 
 
 class Answer(db.Model):
     """回答"""
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
+    content_length = db.Column(db.Integer, default=0)
+    content_preview = db.Column(db.Text)
+    content_preview_length = db.Column(db.Integer, default=0)
     score = db.Column(db.Integer, default=0)
     hide = db.Column(db.Boolean, default=False)
     topic_experience = db.Column(db.String(100))
@@ -30,6 +34,16 @@ class Answer(db.Model):
     user = db.relationship('User', backref=db.backref('answers',
                                                       lazy='dynamic',
                                                       order_by='desc(Answer.created_at)'))
+
+    def __setattr__(self, name, value):
+        # 每当设置 content 时，更新 content_length 和 content_preview
+        if name == 'content':
+            pure_content = get_pure_content(value)
+            content_preview = pure_content[:100]
+            super(Answer, self).__setattr__('content_length', len(pure_content))
+            super(Answer, self).__setattr__('content_preview', content_preview.rstrip('.') + "...")
+            super(Answer, self).__setattr__('content_preview_length', len(content_preview))
+        super(Answer, self).__setattr__(name, value)
 
     def calculate_score(self):
         """回答分值，体现该回答的精彩程度"""
@@ -56,7 +70,7 @@ class Answer(db.Model):
     def save_to_es(self):
         """保存此回答到elasticsearch"""
         return save_object_to_es('answer', self.id, {
-            'content': self.content,
+            'content_preview': self.content_preview,
             'question_title': self.question.title,
             'created_at': self.created_at
         })
@@ -76,12 +90,12 @@ class Answer(db.Model):
             "query": {
                 "multi_match": {
                     "query": q,
-                    "fields": ["content", "question_title"]
+                    "fields": ["content_preview", "question_title"]
                 }
             },
             "highlight": {
                 "fields": {
-                    "content": {},
+                    "content_preview": {},
                     "question_title": {}
                 }
             },
@@ -95,8 +109,8 @@ class Answer(db.Model):
             id = result["_id"]
             answer = Answer.query.get(id)
             if "highlight" in result:
-                if "content" in result["highlight"]:
-                    answer.highlight_content = result["highlight"]["content"][0]
+                if "content_preview" in result["highlight"]:
+                    answer.highlight_content_preview = result["highlight"]["content_preview"][0]
                 if "question_title" in result["highlight"]:
                     answer.highlight_question_title = result["highlight"]["question_title"][0]
             result_answers.append(answer)

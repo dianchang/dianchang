@@ -57,9 +57,14 @@
     }
   }
 
+  .btn-collapse,
   .btn-comments,
   .btn-share {
     margin-right: 20px;
+  }
+
+  .btn-collapse {
+    display: none;
   }
 
   .btn-more {
@@ -204,6 +209,32 @@
   .content {
     font-size: 16px;
     margin-bottom: 8px;
+
+    .preview {
+      display: block;
+    }
+
+    .full-content {
+      display: none;
+    }
+
+    .btn-continue-reading {
+      color: #999;
+    }
+  }
+
+  &.full {
+    .dc-answer-commands .btn-collapse {
+      display: inline-block;
+    }
+
+    .preview {
+      display: none;
+    }
+
+    .full-content {
+      display: block;
+    }
   }
 
   .time {

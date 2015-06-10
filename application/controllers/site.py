@@ -12,7 +12,7 @@ bp = Blueprint('site', __name__)
 def index():
     """首页"""
     if not g.user:
-        answers = Answer.query.limit(5)
+        answers = Answer.query.order_by(Answer.created_at.desc()).limit(5)
         return render_template('site/index.html', answers=answers)
     else:
         return render_template('site/index_signin.html')

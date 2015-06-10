@@ -24,7 +24,12 @@
         </span>
 
         <div class="pull-right">
-            <a href="javascript:void(0)" class="btn-comments">
+            <a href="javascript: void(0)" class="btn-collapse">
+                <span class="fa fa-angle-double-up"></span>
+                收起
+            </a>
+
+            <a href="javascript: void(0)" class="btn-comments">
                 <span class="fa fa-comment-o"></span>
                 评论
                 {{ answer.comments.count() }}
@@ -129,6 +134,13 @@
             });
         });
 
+        // 收起回答内容
+        $(document).onOnce('click', '.btn-collapse', function () {
+            var $comment = $(this).parents('.dc-answer');
+
+            $comment.removeClass('full');
+        });
+
         // 展开评论
         {% if enable_comments_spread %}
             // TODO
@@ -208,7 +220,19 @@
             </div>
 
             <div class="content">
-                {{ (answer.highlight_content or answer.content)|safe }}
+                <div class="preview">
+                    {{ (answer.highlight_content_preview or answer.content_preview)|safe }}
+
+                    {% if answer.content_length > answer.content_preview_length %}
+                        <a href="javascript: void(0)" class="btn-continue-reading">继续阅读</a>
+                    {% endif %}
+                </div>
+
+                {% if answer.content_length > answer.content_preview_length %}
+                    <div class="full-content">
+                        {{ answer.content|safe }}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="time text-light" title="{{ answer.created_at }}">
@@ -218,6 +242,17 @@
             {{ render_answer_commands(answer) }}
         </div>
     {% endfor %}
+
+    <script>
+        (function () {
+            // 继续阅读
+            $(document).on('click', '.btn-continue-reading', function () {
+                var $comment = $(this).parents('.dc-answer');
+
+                $comment.addClass('full');
+            });
+        })();
+    </script>
 {% endmacro %}
 
 
