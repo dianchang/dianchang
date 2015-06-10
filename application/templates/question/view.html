@@ -12,6 +12,7 @@
         });
     </script>
 {% endblock %}
+
 {% macro _render_answers(answers) %}
     {% for answer in answers %}
         <div class="answer">
@@ -35,9 +36,10 @@
         </div>
     {% endfor %}
 {% endmacro %}
+
 {% block page_content %}
     <div class="container">
-        {{ question_follow_wap(question) }}
+        {{ question_follow_wap(question, dark=True) }}
 
         <h1>
             <div class="title-wap">

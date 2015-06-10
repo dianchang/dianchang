@@ -58,7 +58,9 @@
                 </div>
             </div>
 
-            {{ user_follow_wap(answer.user) }}
+            {% if not g.user or g.user.id != answer.user_id %}
+                {{ user_follow_wap(answer.user) }}
+            {% endif %}
         </div>
 
         {# TODO: need to refactor #}

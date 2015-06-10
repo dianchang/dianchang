@@ -7,14 +7,18 @@
 
         {# 赞同 & 反对 #}
         <span class="vote-wap">
-            <span class="upvote-wap counter {% if dark %}counter-dark{% endif %}
+            <span class="upvote-wap {% if dark %}dark{% endif %} btn
+                {% if upvoted %}
+                    btn-default
+                {% else %}
+                    {% if dark %}btn-dark{% else %}btn-light{% endif %}
+                {% endif %}
                 {% if upvoted %}upvoted{% endif %}"
                   data-id="{{ answer.id }}">
-                <a class="btn-upvote-answer counter-txt" href="javascript: void(0)">
-                    <span class="for-upvoted">已赞同</span>
-                    <span class="for-un-upvoted">赞同</span></a>
+                <span class="for-upvoted">已赞同</span>
+                <span class="for-un-upvoted">赞同</span></a>
                 <span class="divider">|</span>
-                <span class="upvotes-count counter-number">{{ answer.upvotes.count() }}</span>
+                <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
             </span>
             <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
                data-id="{{ answer.id }}">
@@ -71,7 +75,7 @@
         $(document).onOnce('click', '.dc-answer-commands .upvote-wap', function () {
             var id = parseInt($(this).data('id'));
             var $voteWap = $(this).parents('.vote-wap').first();
-            var $upvoteWap = $(this);
+            var _this = $(this);
             var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
 
             if (!g.signin) {
@@ -86,11 +90,24 @@
             }).done(function (response) {
                 if (response.result) {
                     if (response.upvoted) {
-                        $upvoteWap.addClass('upvoted');
-                        // 取消反对
-                        $downvoteBtn.removeClass('downvoted');
+                        _this.addClass('upvoted').addClass('btn-default');
+
+                        if (_this.hasClass('dark')) {
+                            _this.removeClass('btn-dark');
+                        } else {
+                            _this.removeClass('btn-light');
+                        }
+
+                        // 取消反对按钮的显示
+                        $downvoteBtn.removeClass('downvoted')
                     } else {
-                        $upvoteWap.removeClass('upvoted');
+                        _this.removeClass('upvoted').removeClass('btn-default');
+
+                        if (_this.hasClass('dark')) {
+                            _this.addClass('btn-dark');
+                        } else {
+                            _this.addClass('btn-light');
+                        }
                     }
 
                     $voteWap.find('.upvotes-count').text(response.count);
@@ -120,9 +137,15 @@
                     if (response.downvoted) {
                         _this.addClass('downvoted');
 
-                        // 取消赞同
+                        // 取消赞同效果
                         if ($upvoteWap.hasClass('upvoted')) {
-                            $upvoteWap.removeClass('upvoted');
+                            $upvoteWap.removeClass('upvoted').removeClass('btn-default');
+
+                            if ($upvoteWap.hasClass('dark')) {
+                                $upvoteWap.addClass('btn-dark');
+                            } else {
+                                $upvoteWap.addClass('btn-light');
+                            }
 
                             var upvotesCount = parseInt($upvotesCount.text());
                             $upvotesCount.text(upvotesCount > 0 ? upvotesCount - 1 : 0);

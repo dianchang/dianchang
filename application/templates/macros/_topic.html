@@ -18,7 +18,12 @@
 {# 关注话题组件 #}
 {% macro topic_follow_wap(topic, dark=False) %}
     {% set followed = topic.followed_by_user() %}
-    <div class="dc-topic-follow-wap btn {% if followed %}btn-default{% else %}btn-dark{% endif %}
+    <div class="dc-topic-follow-wap btn {% if dark %}dark{% endif %}
+        {% if followed %}
+            btn-default
+        {% else %}
+            {% if dark %}btn-dark{% else %}btn-light{% endif %}
+        {% endif %}
         {% if followed %}followed{% endif %}" data-id="{{ topic.id }}">
         <a href="javascript: void(0)" class="btn-follow-topic">
             <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span></a>
@@ -49,10 +54,21 @@
                     if (response.result) {
                         if (response.followed) {
                             if (!_this.hasClass('followed')) {
-                                _this.addClass('followed').addClass('btn-default').removeClass('btn-dark');
+                                _this.addClass('followed').addClass('btn-default');
+                                if (_this.hasClass('dark')) {
+                                    _this.removeClass('btn-dark');
+                                } else {
+                                    _this.removeClass('btn-light');
+                                }
                             }
                         } else {
-                            _this.removeClass('followed').addClass('btn-dark').removeClass('btn-default');
+                            _this.removeClass('followed').removeClass('btn-default');
+
+                            if (_this.hasClass('dark')) {
+                                _this.addClass('btn-dark');
+                            } else {
+                                _this.addClass('btn-light');
+                            }
                         }
 
                         $count.text(response.followers_count);

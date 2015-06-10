@@ -8,8 +8,10 @@ nav,
 body {
   margin-bottom: 50px;
 
-  .container {
-    width: 666px;
+  #main-wap {
+    .container {
+      width: 750px;
+    }
   }
 }
 
@@ -317,10 +319,17 @@ body {
 
 // 反对按钮加上外框
 .dc-answer-commands .vote-wap .btn-downvote-answer {
-  border: 1px solid #acacac;
+  border: 1px solid #E4E4E4;
+  background-color: #FAFAFA;
   padding: 6px 12px;
   border-radius: 2px;
   margin-left: 5px;
+  vertical-align: middle;
+
+  &:hover {
+    background-color: darken(#FAFAFA, 5%);
+    border-color: darken(#E4E4E4, 5%);
+  }
 }
 
 // 更多回答
