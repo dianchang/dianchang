@@ -1,3 +1,4 @@
+{# 关注用户 #}
 {% macro user_follow_wap(user, dark=False) %}
     {% set followed = user.followed_by_user() %}
 
@@ -57,82 +58,57 @@
 {% endmacro %}
 
 
+{# 用户页页头 #}
 {% macro user_page_header(user, active='profile') %}
-    {% if g.user and g.user.id == user.id %}
-        <a href="{{ url_for('account.settings') }}" class="pull-right btn btn-default">
-            编辑个人资料</a>
-    {% endif %}
-
-    <img src="{{ user.avatar_url }}" alt=""/>
-
-    <h1>
-        {{ user.name }}
-    </h1>
-
-    <div class="desc">
-        {% if user.desc %}
-            {{ user.desc }}
-        {% endif %}
-    </div>
-
-    <div class="meta">
-        {% for attr in ['city', 'organization', 'position'] %}
-            {% if user[attr] %}
-                {{ user[attr] }}
+    <div class="dc-user-page-header">
+        <div class="container">
+            {% if g.user and g.user.id == user.id %}
+                <a href="{{ url_for('account.settings') }}" class="pull-right btn btn-default">
+                    编辑个人资料</a>
             {% endif %}
-            <span class="divider">•</span>
-        {% endfor %}
-    </div>
 
-    {{ user.upvoted_answers.count() }} 赞同 |
-    {{ user.thanked_answers.count() }} 感谢 |
-    10 分享
+            <img src="{{ user.avatar_url }}" alt=""/>
 
-    {% if not g.user or g.user.id != user.id %}
-        <div>
-            {{ user_follow_wap(user) }}
+            <h1>
+                {{ user.name }}
+            </h1>
+
+            <div class="desc">
+                {% if user.desc %}
+                    {{ user.desc }}
+                {% endif %}
+            </div>
+
+            <div class="meta">
+                {% for attr in ['city', 'organization', 'position'] %}
+                    {% if user[attr] %}
+                        {{ user[attr] }}
+                    {% endif %}
+                    <span class="divider">•</span>
+                {% endfor %}
+            </div>
+
+            {{ user.upvoted_answers.count() }} 赞同 |
+            {{ user.thanked_answers.count() }} 感谢 |
+            10 分享
+
+            {% if not g.user or g.user.id != user.id %}
+                <div>
+                    {{ user_follow_wap(user) }}
+                </div>
+            {% endif %}
+
+            <ul class="nav nav-tabs nav-tabs-block">
+                <li {% if active == 'profile' %}class="active"{% endif %}>
+                    <a href="{{ user.profile_url }}">主页</a>
+                </li>
+                <li {% if active == 'questions_and_answers' %}class="active"{% endif %}>
+                    <a href="{{ url_for('user.answers', uid=user.id) }}">问答</a>
+                </li>
+                <li {% if active == 'achievements' %}class="active"{% endif %}>
+                    <a href="{{ url_for('user.achievements', uid=user.id) }}">成就</a>
+                </li>
+            </ul>
         </div>
-    {% endif %}
-
-    <ul class="nav nav-tabs">
-        <li {% if active == 'profile' %}class="active"{% endif %}>
-            <a href="{{ user.profile_url }}">主页</a>
-        </li>
-        <li {% if active == 'answers' %}class="active"{% endif %}>
-            <a href="{{ url_for('user.answers', uid=user.id) }}">
-                {{ user.answers.count() }}
-                回答
-            </a>
-        </li>
-        <li {% if active == 'questions' %}class="active"{% endif %}>
-            <a href="{{ url_for('user.questions', uid=user.id) }}">
-                {{ user.questions.count() }}
-                提问
-            </a>
-        </li>
-        {#        <li {% if active == 'profile' %}class="collects"{% endif %}>#}
-        {#            <a href="{{ url_for('user.collects', uid=user.id) }}">#}
-        {#                11#}
-        {#                收藏#}
-        {#            </a>#}
-        {#        </li>#}
-        {#        <li {% if active == 'profile' %}class="edits"{% endif %}>#}
-        {#            <a href="{{ url_for('user.edits', uid=user.id) }}">#}
-        {#                {{ user.edits.count() }}#}
-        {#                公共编辑#}
-        {#            </a>#}
-        {#        </li>#}
-        <li {% if active == 'followings' %}class="active"{% endif %}>
-            <a href="{{ url_for('user.followings', uid=user.id) }}">
-                {{ user.followings.count() }}
-                关注
-            </a>
-        </li>
-        <li {% if active == 'followers' %}class="active"{% endif %}>
-            <a href="{{ url_for('user.followers', uid=user.id) }}">
-                {{ user.followers.count() }}
-                关注者
-            </a>
-        </li>
-    </ul>
+    </div>
 {% endmacro %}

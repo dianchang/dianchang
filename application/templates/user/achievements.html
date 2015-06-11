@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% from "macros/_user.html" import user_page_header %}
+
+{% block page_title %}Achievements{% endblock %}
+{% block page_content %}
+    {{ user_page_header(user) }}
+
+    <div class="container">
+        <h1>Achievements</h1>
+    </div>
+{% endblock %}

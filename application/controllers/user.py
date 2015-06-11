@@ -116,3 +116,9 @@ def drafts():
     """我的草稿"""
     drafts = g.user.drafts
     return render_template('user/drafts.html', drafts=drafts)
+
+
+@bp.route('/people/<int:uid>/achievements')
+def achievements(uid):
+    user = User.query.get_or_404(uid)
+    return render_template('user/achievements.html', user=user)
