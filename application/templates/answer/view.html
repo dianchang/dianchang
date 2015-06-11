@@ -76,18 +76,6 @@
         <div class="container">
             <div class="comments-count">{{ answer.comments.count() }} 条评论</div>
 
-            <div class="comments">
-                {% for root_comment in answer.root_comments %}
-                    {{ render_answer_comment(root_comment) }}
-
-                    <div class="sub-comments-wap" data-root-id="{{ root_comment.id }}">
-                        {% for sub_comment in root_comment.sub_comments %}
-                            {{ render_answer_comment(sub_comment) }}
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
-
             {% if g.user %}
                 <div class="media comment-form-wap">
                     <div class="media-left">
@@ -107,6 +95,18 @@
                     </div>
                 </div>
             {% endif %}
+
+            <div class="comments">
+                {% for root_comment in answer.root_comments %}
+                    {{ render_answer_comment(root_comment) }}
+
+                    <div class="sub-comments-wap" data-root-id="{{ root_comment.id }}">
+                        {% for sub_comment in root_comment.sub_comments %}
+                            {{ render_answer_comment(sub_comment) }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 

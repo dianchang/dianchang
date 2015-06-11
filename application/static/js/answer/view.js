@@ -128,7 +128,7 @@ $(document).onOnce('click', '.btn-submit-comment', function () {
         }
     }).done(function (response) {
         if (response.result) {
-            $comments.after(response.html);
+            $comments.prepend(response.html);
             _this.parent().hide();
             _this.parent().prev().html("<p class='text-light'>写下你的评论...</p>");
         }
