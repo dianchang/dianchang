@@ -104,7 +104,7 @@
                         {% if topic.wiki_preview %}
                             <div class="topic-wiki">
                                 {{ topic.wiki_preview }} <a href="{{ url_for('topic.wiki', uid=topic.id) }}"
-                                                            class="text-light">查看百科</a>
+                                                            class="text-light link-no-underline btn-go-to-wiki">查看百科</a>
                             </div>
                         {% endif %}
                     </div>

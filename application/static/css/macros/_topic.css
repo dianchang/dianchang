@@ -34,6 +34,13 @@
 .dc-topic-page-header .topic-wap .topic-wiki {
   font-size: 16px;
 }
+.dc-topic-page-header .topic-wap .topic-wiki .btn-go-to-wiki {
+  padding: 5px;
+  border-radius: 2px;
+}
+.dc-topic-page-header .topic-wap .topic-wiki .btn-go-to-wiki:hover {
+  background-color: #dcf8f1;
+}
 .dc-topic-discuss-page-sidebar .related-topics {
   margin-bottom: 20px;
 }

@@ -42,16 +42,17 @@ body #main-wap .container {
   margin-bottom: 30px;
 }
 .question .topic {
-  background-color: white;
-  color: #8186a9;
+  background-color: #FCFCFC;
+  color: #7482ac;
   padding: 4px 10px;
   font-weight: bold;
   line-height: 1;
   border-radius: 15px;
   margin: 0 10px 10px 0;
+  border: 1px solid #F0F0F0;
 }
 .question .topic:hover {
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  border-color: #E8E8E8;
 }
 .answer {
   padding: 50px 0 50px 0;

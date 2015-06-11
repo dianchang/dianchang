@@ -130,16 +130,18 @@
   margin-bottom: 18px;
 }
 .dc-answer .topic {
-  background-color: #F5F5FA;
+  background-color: #F7F8F9;
   color: #8187a8;
   padding: 4px 10px;
   font-weight: bold;
   line-height: 1;
   border-radius: 15px;
+  border: 1px solid #F0F0F0;
   margin: 0 10px 10px 0;
 }
 .dc-answer .topic:hover {
   background-color: #e4e4f2;
+  border-color: #e4e4f2;
 }
 .dc-answer .title {
   font-size: 18px;
