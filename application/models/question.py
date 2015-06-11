@@ -166,3 +166,20 @@ class QuestionComment(db.Model):
 
     def __repr__(self):
         return '<QuestionComment %s>' % self.id
+
+
+class InviteAnswer(db.Model):
+    """邀请回答"""
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', foreign_keys=[user_id])
+
+    inviter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    inviter = db.relationship('User', foreign_keys=[inviter_id])
+
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question', backref=db.backref('invites',
+                                                              lazy='dynamic',
+                                                              order_by='desc(InviteAnswer.created_at)'))
