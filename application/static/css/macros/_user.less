@@ -29,7 +29,6 @@
 .dc-user-page-header {
   position: relative;
   border-bottom: 1px solid #e4e4e4;
-  padding-top: 100px;
 
   .text-logo {
     position: absolute;
@@ -44,19 +43,62 @@
     }
   }
 
+  input[type='file'] {
+    display: none;
+  }
+
   .commands {
     position: absolute;
     right: 10px;
     top: 10px;
   }
 
-  .user-avatar {
+  .background-wap {
+    height: 150px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  &.has-background {
+    .background-wap {
+      height: 350px;
+    }
+  }
+
+  .avatar-wap {
+    margin: -55px auto 25px auto;
     border: 3px solid white;
-    width: 120px;
-    height: 120px;
+    width: 126px;
+    height: 126px;
+    border-radius: 100px;
     box-shadow: 0 0 2px rgba(0, 0, 0, .5);
-    display: inline-block;
-    margin-bottom: 25px;
+    position: relative;
+
+    &:hover .btn-upload-avatar {
+      display: block;
+    }
+
+    .user-avatar {
+      width: 120px;
+      height: 120px;
+    }
+
+    .btn-upload-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 60px;
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      padding-top: 53px;
+      background-color: rgba(0, 0, 0, .4);
+      text-align: center;
+      color: white;
+      cursor: pointer;
+    }
   }
 
   .name {
@@ -75,7 +117,7 @@
     font-size: 16px;
     margin-bottom: 50px;
 
-    .divider{
+    .divider {
       margin: 0 5px;
     }
   }

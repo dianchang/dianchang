@@ -69,13 +69,25 @@
             {% endif %}
 
             {% if g.user and g.user.id == user.id %}
-                <a href="javascript: void(0)" class="pull-right btn btn-default">
+                <a href="javascript: void(0)" class="pull-right btn btn-default btn-upload-background">
                     设置封面图</a>
+                <input type="file" class="input-upload-background" name="background"/>
             {% endif %}
         </div>
 
+        <div class="background-wap"
+             {% if user.background %}style="background-image: url({{ user.background_url }});"{% endif %}></div>
+
         <div class="container text-center">
-            <img src="{{ user.avatar_url }}" class="img-circle user-avatar" alt=""/>
+            <div class="avatar-wap">
+                <img src="{{ user.avatar_url }}" class="img-circle user-avatar" alt=""/>
+                {% if g.user and g.user.id == user.id %}
+                    <span class="btn-upload-avatar">
+                        上传头像
+                    </span>
+                    <input type="file" name="avatar"/>
+                {% endif %}
+            </div>
 
             <div class="name">{{ user.name }}</div>
 
@@ -121,4 +133,55 @@
             </ul>
         </div>
     </div>
+
+    <script>
+        (function () {
+            // 上传背景图
+            var bgUploader = simple.uploader({
+                url: urlFor('account.upload_background'),
+                fileKey: 'file',
+                connectionCount: 1
+            });
+
+            $('.btn-upload-background').click(function () {
+                $("input[name='background']").click();
+            });
+
+            $("input[name='background']").on('change', function (e) {
+                bgUploader.upload(this.files);
+            });
+
+            bgUploader.on('uploadsuccess', function (e, file, response) {
+                response = JSON.parse(response);
+                if (response.result) {
+                    $('.background-wap').css({
+                        'background-image': 'url(' + response.url + ')'
+                    });
+                    $('.dc-user-page-header').addClass('has-background');
+                }
+            });
+
+            // 上传头像
+            var avatarUploader = simple.uploader({
+                url: urlFor('account.upload_avatar'),
+                fileKey: 'file',
+                connectionCount: 1
+            });
+
+            $('.btn-upload-avatar').click(function () {
+                $("input[name='avatar']").click();
+            });
+
+            $("input[name='avatar']").on('change', function (e) {
+                avatarUploader.upload(this.files);
+            });
+
+            avatarUploader.on('uploadsuccess', function (e, file, response) {
+                response = JSON.parse(response);
+                if (response.result) {
+                    $('.user-avatar').attr('src', response.url);
+                }
+            });
+        })();
+    </script>
 {% endmacro %}

@@ -9,12 +9,6 @@
 
         <div class="row">
             <div class="col-md-8">
-                <img src="{{ g.user.avatar_url }}" alt="" class="user-avatar"/>
-                <button type="button" class="btn btn-primary btn-sm btn-upload-avatar">
-                    更换头像
-                </button>
-                <input type="file" name="avatar"/>
-
                 <form action="" method="post">
                     {{ form.csrf_token() }}
 
@@ -32,11 +26,6 @@
                             {{ field_errors(form.url_token) }}
                         </div>
                     </div>
-
-                    {{ horizontal_field(form.desc) }}
-                    {{ horizontal_field(form.city) }}
-                    {{ horizontal_field(form.organization) }}
-                    {{ horizontal_field(form.position) }}
 
                     {{ form_submit('保存') }}
                 </form>

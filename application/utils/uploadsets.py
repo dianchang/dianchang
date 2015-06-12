@@ -31,6 +31,13 @@ def process_user_avatar(file_storage, border):
     return save_image(image, avatars, ext)
 
 
+def process_user_background(file_storage, border):
+    """处理并保存用户首页背景。"""
+    image = open_image(file_storage)
+    ext = extension(file_storage.filename)
+    return save_image(image, images, ext)
+
+
 def process_topic_avatar(file_storage, border):
     """处理并保存话题图标。
 

@@ -18,7 +18,6 @@
 .dc-user-page-header {
   position: relative;
   border-bottom: 1px solid #e4e4e4;
-  padding-top: 100px;
 }
 .dc-user-page-header .text-logo {
   position: absolute;
@@ -31,18 +30,53 @@
 .dc-user-page-header .text-logo:hover {
   color: #c5cfdc;
 }
+.dc-user-page-header input[type='file'] {
+  display: none;
+}
 .dc-user-page-header .commands {
   position: absolute;
   right: 10px;
   top: 10px;
 }
-.dc-user-page-header .user-avatar {
+.dc-user-page-header .background-wap {
+  height: 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.dc-user-page-header.has-background .background-wap {
+  height: 350px;
+}
+.dc-user-page-header .avatar-wap {
+  margin: -55px auto 25px auto;
   border: 3px solid white;
+  width: 126px;
+  height: 126px;
+  border-radius: 100px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+.dc-user-page-header .avatar-wap:hover .btn-upload-avatar {
+  display: block;
+}
+.dc-user-page-header .avatar-wap .user-avatar {
   width: 120px;
   height: 120px;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-  display: inline-block;
-  margin-bottom: 25px;
+}
+.dc-user-page-header .avatar-wap .btn-upload-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 60px;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding-top: 53px;
+  background-color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  color: white;
+  cursor: pointer;
 }
 .dc-user-page-header .name {
   font-size: 28px;

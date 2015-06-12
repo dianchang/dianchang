@@ -4,7 +4,7 @@ from ..forms import SigninForm, SignupForm, SettingsForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email
-from ..utils.uploadsets import process_user_avatar, avatars
+from ..utils.uploadsets import process_user_avatar, avatars, images, process_user_background
 from ..models import db, User, InvitationCode
 
 bp = Blueprint('account', __name__)
@@ -165,12 +165,33 @@ def upload_avatar():
     """上传用户头像"""
     try:
         filename = process_user_avatar(request.files['file'], 200)
+        g.user.avatar = filename
+        db.session.add(g.user)
+        db.session.commit()
     except Exception, e:
         return json.dumps({'result': False, 'error': e.__repr__()})
     else:
         return json.dumps({
             'result': True,
-            'image_url': avatars.url(filename),
+            'url': avatars.url(filename),
+        })
+
+
+@bp.route('/account/upload_background', methods=['POST'])
+@UserPermission()
+def upload_background():
+    """上传用户首页背景"""
+    try:
+        filename = process_user_background(request.files['file'], 200)
+        g.user.background = filename
+        db.session.add(g.user)
+        db.session.commit()
+    except Exception, e:
+        return json.dumps({'result': False, 'error': e.__repr__()})
+    else:
+        return json.dumps({
+            'result': True,
+            'url': images.url(filename)
         })
 
 

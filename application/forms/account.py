@@ -76,11 +76,7 @@ class SignupForm(Form):
 
 class SettingsForm(Form):
     """Form for settings"""
-    desc = TextAreaField('一句话简介')
     url_token = StringField('个性网址')
-    city = StringField('城市')
-    organization = StringField('组织')
-    position = StringField('职位')
 
 
 class ForgotPasswordForm(Form):
