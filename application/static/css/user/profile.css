@@ -1,3 +1,7 @@
+nav,
+#footer {
+  display: none;
+}
 .meta .divider:last-child {
   display: none;
 }

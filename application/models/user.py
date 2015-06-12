@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import g, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
-from ..utils.uploadsets import avatars
+from ..utils.uploadsets import avatars, images
 from ..utils.helpers import pinyin
 from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
 
@@ -16,6 +16,7 @@ class User(db.Model):
     email = db.Column(db.String(50), unique=True)
     desc = db.Column(db.String(200), )
     avatar = db.Column(db.String(200), default='default.png')
+    background = db.Column(db.String(200))
     password = db.Column(db.String(200))
     organization = db.Column(db.String(100))
     city = db.Column(db.String(100))
@@ -61,6 +62,11 @@ class User(db.Model):
     def avatar_url(self):
         """用户头像"""
         return avatars.url(self.avatar)
+
+    @property
+    def background_url(self):
+        """背景图片"""
+        return images.url(self.background) if self.background else None
 
     @property
     def random_answers(self, count=3):

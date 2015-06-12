@@ -60,50 +60,60 @@
 
 {# 用户页页头 #}
 {% macro user_page_header(user, active='profile') %}
-    <div class="dc-user-page-header">
-        <div class="container">
-            {% if g.user and g.user.id == user.id %}
-                <a href="{{ url_for('account.settings') }}" class="pull-right btn btn-default">
-                    编辑个人资料</a>
+    <div class="dc-user-page-header {% if user.background %}has-background{% endif %}">
+        <a class="text-logo link-no-underline" href="{{ url_for('site.index') }}">电</a>
+
+        <div class="commands">
+            {% if not g.user or g.user.id != user.id %}
+                {{ user_follow_wap(user) }}
             {% endif %}
 
-            <img src="{{ user.avatar_url }}" alt=""/>
+            {% if g.user and g.user.id == user.id %}
+                <a href="javascript: void(0)" class="pull-right btn btn-default">
+                    设置封面图</a>
+            {% endif %}
+        </div>
 
-            <h1>
-                {{ user.name }}
-            </h1>
+        <div class="container text-center">
+            <img src="{{ user.avatar_url }}" class="img-circle user-avatar" alt=""/>
 
-            <div class="desc">
-                {% if user.desc %}
+            <div class="name">{{ user.name }}</div>
+
+            {% if user.desc %}
+                <div class="desc">
                     {{ user.desc }}
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
 
             <div class="meta">
                 {% for attr in ['city', 'organization', 'position'] %}
                     {% if user[attr] %}
                         {{ user[attr] }}
+                        <span class="divider">·</span>
                     {% endif %}
-                    <span class="divider">•</span>
+                {% else %}
+                    尚未填写相关资料
                 {% endfor %}
             </div>
 
-            {{ user.upvoted_answers.count() }} 赞同 |
-            {{ user.thanked_answers.count() }} 感谢 |
-            10 分享
-
-            {% if not g.user or g.user.id != user.id %}
-                <div>
-                    {{ user_follow_wap(user) }}
-                </div>
-            {% endif %}
+            <div class="follows-data">
+                <span class="item">
+                    <span class="count">{{ user.followings.count() }}</span>
+                    <br/>
+                    关注
+                </span><span class="item">
+                    <span class="count">{{ user.followers.count() }}</span>
+                    <br/>
+                    关注者
+                </span>
+            </div>
 
             <ul class="nav nav-tabs nav-tabs-block">
                 <li {% if active == 'profile' %}class="active"{% endif %}>
                     <a href="{{ user.profile_url }}">主页</a>
                 </li>
                 <li {% if active == 'questions_and_answers' %}class="active"{% endif %}>
-                    <a href="{{ url_for('user.answers', uid=user.id) }}">问答</a>
+                    <a href="{{ url_for('user.questions_and_answers', uid=user.id) }}">问答</a>
                 </li>
                 <li {% if active == 'achievements' %}class="active"{% endif %}>
                     <a href="{{ url_for('user.achievements', uid=user.id) }}">成就</a>

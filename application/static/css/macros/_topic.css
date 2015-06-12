@@ -35,7 +35,7 @@
   font-size: 16px;
 }
 .dc-topic-page-header .topic-wap .topic-wiki .btn-go-to-wiki {
-  padding: 5px;
+  padding: 1px 5px 5px 5px;
   border-radius: 2px;
 }
 .dc-topic-page-header .topic-wap .topic-wiki .btn-go-to-wiki:hover {

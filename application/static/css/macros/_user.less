@@ -1,5 +1,6 @@
 @import "../utils";
 
+// 关注用户
 .dc-user-follow-wap {
   .btn {
     background-color: #337ab7;
@@ -20,6 +21,88 @@
     }
     .for-unfollow {
       display: inline-block;
+    }
+  }
+}
+
+// 用户页页头
+.dc-user-page-header {
+  position: relative;
+  border-bottom: 1px solid #e4e4e4;
+  padding-top: 100px;
+
+  .text-logo {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-weight: bold;
+    font-size: 28px;
+    color: #D5DCE6;
+
+    &:hover {
+      color: darken(#d5dce6, 5%);
+    }
+  }
+
+  .commands {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  .user-avatar {
+    border: 3px solid white;
+    width: 120px;
+    height: 120px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .5);
+    display: inline-block;
+    margin-bottom: 25px;
+  }
+
+  .name {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .desc {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+
+  .meta {
+    color: #999;
+    font-size: 16px;
+    margin-bottom: 50px;
+
+    .divider{
+      margin: 0 5px;
+    }
+  }
+
+  .follows-data {
+    margin-bottom: 80px;
+
+    & > * {
+      display: inline-block;
+    }
+
+    .item {
+      color: #999;
+      padding: 0 20px 4px 20px;
+      line-height: 1;
+
+      &:first-child {
+        border-right: 1px solid #ccc;
+      }
+
+      .count {
+        display: inline-block;
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+        font-weight: bold;
+      }
     }
   }
 }

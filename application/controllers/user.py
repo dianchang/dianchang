@@ -64,13 +64,13 @@ def follow(uid):
 def answers(uid):
     user = User.query.get_or_404(uid)
     return render_template('user/answers.html', user=user)
-    pass
 
 
-@bp.route('/people/<int:uid>/questions')
-def questions(uid):
+@bp.route('/people/<int:uid>/questions_and_answers')
+def questions_and_answers(uid):
+    """问答"""
     user = User.query.get_or_404(uid)
-    return render_template('user/questions.html', user=user)
+    return render_template('user/questions_and_answers.html', user=user)
 
 
 @bp.route('/people/<int:uid>/collects')
@@ -87,12 +87,14 @@ def edits(uid):
 
 @bp.route('/people/<int:uid>/followings')
 def followings(uid):
+    """关注"""
     user = User.query.get_or_404(uid)
     return render_template('user/followings.html', user=user)
 
 
 @bp.route('/people/<int:uid>/followers')
 def followers(uid):
+    """关注者"""
     user = User.query.get_or_404(uid)
     return render_template('user/followers.html', user=user)
 
@@ -120,5 +122,6 @@ def drafts():
 
 @bp.route('/people/<int:uid>/achievements')
 def achievements(uid):
+    """成就"""
     user = User.query.get_or_404(uid)
     return render_template('user/achievements.html', user=user)
