@@ -93,7 +93,7 @@
       top: 0;
       left: 0;
       z-index: 10;
-      padding-top: 53px;
+      padding-top: 50px;
       background-color: rgba(0, 0, 0, .4);
       text-align: center;
       color: white;
@@ -107,18 +107,120 @@
     margin-bottom: 20px;
   }
 
-  .desc {
+  .desc-wap {
     margin-bottom: 20px;
     font-size: 16px;
+
+    .desc-outer-wap {
+      display: block;
+
+      .desc-inner-wap {
+        position: relative;
+
+        .btn-edit-desc {
+          cursor: pointer;
+          color: #999;
+          display: none;
+          font-size: 14px;
+          position: absolute;
+          top: 0;
+          right: -70px;
+
+          &:hover {
+            color: #666;
+          }
+        }
+      }
+
+      &:hover {
+        .desc-inner-wap .btn-edit-desc {
+          display: inline-block;
+        }
+      }
+    }
+
+    .desc-edit-wap {
+      display: none;
+
+      input {
+        display: inline-block;
+        vertical-align: middle;
+        width: 400px;
+        margin-right: 10px;
+      }
+    }
+
+    &.edit {
+      .desc-outer-wap {
+        display: none;
+      }
+
+      .desc-edit-wap {
+        display: block;
+      }
+    }
   }
 
-  .meta {
+  .user-meta-wap {
     color: #999;
     font-size: 16px;
     margin-bottom: 50px;
 
-    .divider {
-      margin: 0 5px;
+    .meta-outer-wap {
+      display: block;
+
+      .meta-inner-wap {
+        position: relative;
+
+        .user-meta .divider {
+          margin: 0 5px;
+
+          &:last-child {
+            display: none;
+          }
+        }
+
+        .btn-edit-meta {
+          cursor: pointer;
+          color: #999;
+          display: none;
+          font-size: 14px;
+          position: absolute;
+          top: 0;
+          right: -70px;
+
+          &:hover {
+            color: #666;
+          }
+        }
+      }
+
+      &:hover {
+        .meta-inner-wap .btn-edit-meta {
+          display: inline-block;
+        }
+      }
+    }
+
+    .meta-edit-wap {
+      display: none;
+
+      input {
+        display: inline-block;
+        vertical-align: middle;
+        width: 120px;
+        margin-right: 10px;
+      }
+    }
+
+    &.edit {
+      .meta-outer-wap {
+        display: none;
+      }
+
+      .meta-edit-wap {
+        display: block;
+      }
     }
   }
 

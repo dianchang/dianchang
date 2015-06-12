@@ -72,7 +72,7 @@
   top: 0;
   left: 0;
   z-index: 10;
-  padding-top: 53px;
+  padding-top: 50px;
   background-color: rgba(0, 0, 0, 0.4);
   text-align: center;
   color: white;
@@ -83,17 +83,92 @@
   font-weight: bold;
   margin-bottom: 20px;
 }
-.dc-user-page-header .desc {
+.dc-user-page-header .desc-wap {
   margin-bottom: 20px;
   font-size: 16px;
 }
-.dc-user-page-header .meta {
+.dc-user-page-header .desc-wap .desc-outer-wap {
+  display: block;
+}
+.dc-user-page-header .desc-wap .desc-outer-wap .desc-inner-wap {
+  position: relative;
+}
+.dc-user-page-header .desc-wap .desc-outer-wap .desc-inner-wap .btn-edit-desc {
+  cursor: pointer;
+  color: #999;
+  display: none;
+  font-size: 14px;
+  position: absolute;
+  top: 0;
+  right: -70px;
+}
+.dc-user-page-header .desc-wap .desc-outer-wap .desc-inner-wap .btn-edit-desc:hover {
+  color: #666;
+}
+.dc-user-page-header .desc-wap .desc-outer-wap:hover .desc-inner-wap .btn-edit-desc {
+  display: inline-block;
+}
+.dc-user-page-header .desc-wap .desc-edit-wap {
+  display: none;
+}
+.dc-user-page-header .desc-wap .desc-edit-wap input {
+  display: inline-block;
+  vertical-align: middle;
+  width: 400px;
+  margin-right: 10px;
+}
+.dc-user-page-header .desc-wap.edit .desc-outer-wap {
+  display: none;
+}
+.dc-user-page-header .desc-wap.edit .desc-edit-wap {
+  display: block;
+}
+.dc-user-page-header .user-meta-wap {
   color: #999;
   font-size: 16px;
   margin-bottom: 50px;
 }
-.dc-user-page-header .meta .divider {
+.dc-user-page-header .user-meta-wap .meta-outer-wap {
+  display: block;
+}
+.dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap {
+  position: relative;
+}
+.dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .user-meta .divider {
   margin: 0 5px;
+}
+.dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .user-meta .divider:last-child {
+  display: none;
+}
+.dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .btn-edit-meta {
+  cursor: pointer;
+  color: #999;
+  display: none;
+  font-size: 14px;
+  position: absolute;
+  top: 0;
+  right: -70px;
+}
+.dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .btn-edit-meta:hover {
+  color: #666;
+}
+.dc-user-page-header .user-meta-wap .meta-outer-wap:hover .meta-inner-wap .btn-edit-meta {
+  display: inline-block;
+}
+.dc-user-page-header .user-meta-wap .meta-edit-wap {
+  display: none;
+}
+.dc-user-page-header .user-meta-wap .meta-edit-wap input {
+  display: inline-block;
+  vertical-align: middle;
+  width: 120px;
+  margin-right: 10px;
+}
+.dc-user-page-header .user-meta-wap.edit .meta-outer-wap {
+  display: none;
+}
+.dc-user-page-header .user-meta-wap.edit .meta-edit-wap {
+  display: block;
 }
 .dc-user-page-header .follows-data {
   margin-bottom: 80px;

@@ -186,3 +186,11 @@
   border-left: 0;
   color: #666;
 }
+input[type=text].form-control {
+  box-shadow: none;
+  border-radius: 2px;
+  border: 1px solid #E4E4E4;
+}
+input[type=text].form-control:focus {
+  box-shadow: none;
+}

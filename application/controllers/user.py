@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import Blueprint, render_template, url_for, json, g
+from flask import Blueprint, render_template, url_for, json, g, request
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND
 from ..utils.permissions import UserPermission
 
@@ -125,3 +125,35 @@ def achievements(uid):
     """成就"""
     user = User.query.get_or_404(uid)
     return render_template('user/achievements.html', user=user)
+
+
+@bp.route('/user/update_desc', methods=['POST'])
+@UserPermission()
+def update_desc():
+    """更新描述"""
+    desc = request.form.get('desc')
+    g.user.desc = desc
+    db.session.add(g.user)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/user/update_meta_info', methods=['POST'])
+@UserPermission()
+def update_meta_info():
+    """更新城市、组织、职位"""
+    location = request.form.get('location')
+    organization = request.form.get('organization')
+    position = request.form.get('position')
+    g.user.location = location
+    g.user.organization = organization
+    g.user.position = position
+    db.session.add(g.user)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })

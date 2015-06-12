@@ -18,9 +18,9 @@ class User(db.Model):
     avatar = db.Column(db.String(200), default='default.png')
     background = db.Column(db.String(200))
     password = db.Column(db.String(200))
-    organization = db.Column(db.String(100))
-    city = db.Column(db.String(100))
     url_token = db.Column(db.String(100))
+    location = db.Column(db.String(100))
+    organization = db.Column(db.String(100))
     position = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now)
 

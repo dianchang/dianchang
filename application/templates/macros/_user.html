@@ -92,20 +92,51 @@
             <div class="name">{{ user.name }}</div>
 
             {% if user.desc %}
-                <div class="desc">
-                    {{ user.desc }}
+                <div class="desc-wap">
+                    <div class="desc-outer-wap">
+                        <span class="desc-inner-wap">
+                            <span class="desc">{{ user.desc }}</span>
+                            <span class="btn-edit-desc">
+                                <span class="fa fa-pencil"></span> 编辑
+                            </span>
+                        </span>
+                    </div>
+                    <div class="desc-edit-wap">
+                        <input type="text" class="form-control input-desc" name="desc"
+                               placeholder="一句话简介" autocomplete="off"/>
+                        <button type="button" class="btn btn-default btn-submit-desc">保存</button>
+                    </div>
                 </div>
             {% endif %}
 
-            <div class="meta">
-                {% for attr in ['city', 'organization', 'position'] %}
-                    {% if user[attr] %}
-                        {{ user[attr] }}
-                        <span class="divider">·</span>
-                    {% endif %}
-                {% else %}
-                    尚未填写相关资料
-                {% endfor %}
+            <div class="user-meta-wap">
+                <div class="meta-outer-wap">
+                    <span class="meta-inner-wap">
+                        <span class="user-meta">
+                            {% for attr in ['location', 'organization', 'position'] %}
+                                {% if user[attr] %}
+                                    <span class="{{ attr }}">{{ user[attr] }}</span>
+                                    <span class="divider">·</span>
+                                {% endif %}
+                            {% else %}
+                                尚未填写相关资料
+                            {% endfor %}
+                        </span>
+                        <span class="btn-edit-meta">
+                            <span class="fa fa-pencil"></span> 编辑
+                        </span>
+                    </span>
+                </div>
+
+                <div class="meta-edit-wap">
+                    <input type="text" class="form-control input-location" name="location"
+                           placeholder="地点" autocomplete="off"/>
+                    <input type="text" class="form-control input-organization" name="organization"
+                           placeholder="组织" autocomplete="off"/>
+                    <input type="text" class="form-control input-position" name="position"
+                           placeholder="职位" autocomplete="off"/>
+                    <button type="button" class="btn btn-default btn-submit-meta">保存</button>
+                </div>
             </div>
 
             <div class="follows-data">
