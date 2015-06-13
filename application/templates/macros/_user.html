@@ -63,19 +63,39 @@
 
 
 {# 用户页页头 #}
-{% macro user_page_header(user, active='profile') %}
-    <div class="dc-user-page-header {% if user.background %}has-background{% endif %}">
+{% macro user_page_header(user, active='profile', preview=False) %}
+    <div class="dc-user-page-header
+        {% if user.background %}has-background{% endif %}
+        {% if preview %}preview{% endif %}">
         <a class="text-logo link-no-underline" href="{{ url_for('site.index') }}">电</a>
 
         <div class="commands">
-            {% if not g.user or g.user.id != user.id %}
+            {% if not g.user or g.user.id != user.id or preview %}
                 {{ user_follow_wap(user) }}
+
+                <button type="button" class="dc-hide-commands-trigger btn btn-default">
+                    <span class="fa fa-chevron-down"></span>
+
+                    <div class="dc-hide-commands">
+                        <a href="#" target="_blank">向他提问</a>
+                        <a href="#">屏蔽此人</a>
+                        <a href="#">举报此人</a>
+                    </div>
+                </button>
             {% endif %}
 
-            {% if g.user and g.user.id == user.id %}
-                <a href="javascript: void(0)" class="pull-right btn btn-default btn-upload-background">
+            {% if g.user and g.user.id == user.id and not preview %}
+                <a href="javascript: void(0)" class="btn btn-default btn-upload-background">
                     设置封面图</a>
                 <input type="file" class="input-upload-background" name="background"/>
+
+                <button type="button" class="dc-hide-commands-trigger btn btn-default">
+                    <span class="fa fa-chevron-down"></span>
+
+                    <div class="dc-hide-commands">
+                        <a href="{{ user.profile_url }}?preview=1" target="_blank">以他人视角查看</a>
+                    </div>
+                </button>
             {% endif %}
         </div>
 

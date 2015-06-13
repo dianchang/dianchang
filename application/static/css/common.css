@@ -106,8 +106,10 @@ del {
   right: 0;
   top: 10px;
   padding-top: 15px;
+  z-index: 1000;
 }
-.dc-hide-commands-trigger .dc-hide-commands > a {
+.dc-hide-commands-trigger .dc-hide-commands > a,
+.dc-hide-commands-trigger .dc-hide-commands > span {
   background-color: white;
   color: #666;
   display: block;
@@ -118,6 +120,12 @@ del {
   border-left: 1px solid #eaeaea;
   border-right: 1px solid #eaeaea;
 }
-.dc-hide-commands-trigger .dc-hide-commands > a:hover {
+.dc-hide-commands-trigger .dc-hide-commands > a:first-child,
+.dc-hide-commands-trigger .dc-hide-commands > span:first-child {
+  border-top: 1px solid #eaeaea;
+}
+.dc-hide-commands-trigger .dc-hide-commands > a:hover,
+.dc-hide-commands-trigger .dc-hide-commands > span:hover {
   color: #009999;
+  text-decoration: none;
 }

@@ -142,8 +142,10 @@ del {
     right: 0;
     top: 10px;
     padding-top: 15px;
+    z-index: 1000;
 
-    & > a {
+    & > a,
+    & > span {
       background-color: white;
       color: #666;
       display: block;
@@ -154,8 +156,13 @@ del {
       border-left: 1px solid @border-color;
       border-right: 1px solid @border-color;
 
+      &:first-child {
+        border-top: 1px solid @border-color;
+      }
+
       &:hover {
         color: @main-color;
+        text-decoration: none;
       }
     }
   }

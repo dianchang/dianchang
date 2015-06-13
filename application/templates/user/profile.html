@@ -4,7 +4,7 @@
 
 {% block page_title %}{{ user.name }}{% endblock %}
 {% block page_content %}
-    {{ user_page_header(user) }}
+    {{ user_page_header(user, preview=preview) }}
 
     <div class="container">
         <div class="row">

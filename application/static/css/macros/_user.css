@@ -19,6 +19,11 @@
   position: relative;
   border-bottom: 1px solid #e4e4e4;
 }
+.dc-user-page-header.preview .btn-upload-avatar,
+.dc-user-page-header.preview .btn-edit-desc,
+.dc-user-page-header.preview .btn-edit-meta {
+  display: none !important;
+}
 .dc-user-page-header .text-logo {
   position: absolute;
   left: 10px;
@@ -37,6 +42,14 @@
   position: absolute;
   right: 10px;
   top: 10px;
+}
+.dc-user-page-header .commands .dc-hide-commands-trigger {
+  padding: 6px 10px;
+  margin-left: 5px;
+}
+.dc-user-page-header .commands .dc-hide-commands-trigger .dc-hide-commands {
+  top: 20px;
+  padding-top: 12px;
 }
 .dc-user-page-header .background-wap {
   height: 150px;
