@@ -271,3 +271,25 @@ class LikeAnswerComment(db.Model):
 
     def __repr__(self):
         return '<LikeAnswerComment %s>' % self.id
+
+
+class UserUpvoteStatistic(db.Model):
+    """用户赞同数据统计"""
+    id = db.Column(db.Integer, primary_key=True)
+    upvotes_count = db.Column(db.Integer, default=0)
+    upvoter_followings_count = db.Column(db.Integer, default=0)
+    score = db.Column(db.Float, default=0.0)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('upvoters',
+                                                      lazy='dynamic',
+                                                      order_by='desc(UserUpvoteStatistic.score)'),
+                           foreign_keys=[user_id])
+
+    upvoter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    upvoter = db.relationship('User', foreign_keys=[upvoter_id])
+
+    def update(self):
+        """更新 upvoter_followings_count 和 score"""
+        self.score = self.upvotes_count * 0.4 + self.upvoter_followings_count * 0.6

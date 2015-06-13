@@ -1,11 +1,47 @@
 {% extends "layout.html" %}
 {% from "macros/_user.html" import user_page_header %}
 
-{% block page_title %}Achievements{% endblock %}
+{% block page_title %}成就 - {{ user.name }}{% endblock %}
 {% block page_content %}
-    {{ user_page_header(user) }}
+    {{ user_page_header(user, active='achievements') }}
 
-    <div class="container">
-        <h1>Achievements</h1>
+    <div class="achievements-wap">
+        <span class="fa fa-trophy"></span>
+
+        <div class="achievements-data">
+            <div class="item">
+                {# TODO #}
+                <span class="count">{{ user.upvotes_count }}</span>
+                <br/>
+                赞同
+            </div>
+            <div class="item">
+                {# TODO #}
+                <span class="count">{{ user.thanks_count }}</span>
+                <br/>
+                感谢
+            </div>
+            <div class="item">
+                {# TODO #}
+                <span class="count">{{ user.shares_count }}</span>
+                <br/>
+                分享
+            </div>
+        </div>
+
+        <div class="upvoters-wap">
+            <div class="text-light upvotes-count">{{ user.upvotes_count }} 人赞同过{{ user.name }}</div>
+            <div class="upvoters">
+                {% for upvoter in user.upvoters %}
+                    <div class="upvoter">
+                        <a href="{{ upvoter.upvoter.profile_url }}">
+                            <img src="{{ upvoter.upvoter.avatar_url }}" class="img-circle" alt=""/>
+                        </a>
+                        <a href="{{ upvoter.upvoter.profile_url }}" class="user-name">
+                            {{ upvoter.upvoter.name }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}

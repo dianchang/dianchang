@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, json, g, request, redirect, url_for, get_template_attribute
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
     AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
-    NOTIFICATION_KIND
+    NOTIFICATION_KIND, UserUpvoteStatistic
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('answer', __name__)
@@ -68,11 +68,28 @@ def upvote(uid):
             answer.user.notifications.append(noti)
             db.session.add(answer.user)
 
-        db.session.commit()
-
         # 更新话题统计数据
         for topic in answer.question.topics:
             UserTopicStatistics.upvote_answer_in_topic(answer.user_id, topic.topic_id)
+
+        # 更新用户赞同统计数据
+        if g.user.id != answer.user_id:
+            statistic = UserUpvoteStatistic.query.filter(UserUpvoteStatistic.upvoter_id == g.user.id,
+                                                         UserUpvoteStatistic.user_id == answer.user_id).first()
+            if statistic:
+                statistic.upvotes_count += 1
+                statistic.upvoter_followings_count = g.user.followings_count
+            else:
+                statistic = UserUpvoteStatistic(upvoter_id=g.user.id, user_id=answer.user_id,
+                                                upvotes_count=1, upvoter_followings_count=g.user.followings_count)
+            statistic.update()
+            db.session.add(statistic)
+
+        # 更新用户获得的赞同数
+        answer.user.upvotes_count += 1
+        db.session.add(answer.user)
+
+        db.session.commit()
 
         # TODO: need to change to answer.upvotes_count
         return json.dumps({

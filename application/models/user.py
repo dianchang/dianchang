@@ -30,7 +30,11 @@ class User(db.Model):
 
     followers_count = db.Column(db.Integer, default=0)
     followings_count = db.Column(db.Integer, default=0)
+
     thanks_count = db.Column(db.Integer, default=0)
+    shares_count = db.Column(db.Integer, default=0)
+    upvotes_count = db.Column(db.Integer, default=0)
+
     questions_count = db.Column(db.Integer, default=0)
     answers_count = db.Column(db.Integer, default=0)
 
