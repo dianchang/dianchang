@@ -1,7 +1,7 @@
 # coding: utf-8
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
-from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistics, \
+from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
     PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
@@ -63,10 +63,10 @@ def rank(uid):
     """话题榜单"""
     topic = Topic.query.get_or_404(uid)
     page = request.args.get('page', 1, int)
-    experts = UserTopicStatistics.query. \
-        filter(UserTopicStatistics.topic_id == uid,
-               UserTopicStatistics.score != 0). \
-        order_by(UserTopicStatistics.score.desc()).paginate(page, 15)
+    experts = UserTopicStatistic.query. \
+        filter(UserTopicStatistic.topic_id == uid,
+               UserTopicStatistic.score != 0). \
+        order_by(UserTopicStatistic.score.desc()).paginate(page, 15)
     return render_template('topic/rank.html', topic=topic, experts=experts)
 
 

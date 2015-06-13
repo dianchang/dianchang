@@ -86,16 +86,16 @@ class User(db.Model):
         当该用户未选择擅长话题时，返回score最高的话题；
         当已选择时，返回选择的擅长话题。
         """
-        from .topic import UserTopicStatistics
+        from .topic import UserTopicStatistic
 
         if self.has_seleted_expert_topics:
-            return UserTopicStatistics.query.filter(UserTopicStatistics.user_id == self.id,
-                                                    UserTopicStatistics.selected == True). \
-                order_by(UserTopicStatistics.show_order.desc()).limit(8)
+            return UserTopicStatistic.query.filter(UserTopicStatistic.user_id == self.id,
+                                                    UserTopicStatistic.selected == True). \
+                order_by(UserTopicStatistic.show_order.desc()).limit(8)
         else:
-            return UserTopicStatistics.query.filter(UserTopicStatistics.user_id == self.id,
-                                                    UserTopicStatistics.score != 0). \
-                order_by(UserTopicStatistics.score.desc()).limit(8)
+            return UserTopicStatistic.query.filter(UserTopicStatistic.user_id == self.id,
+                                                    UserTopicStatistic.score != 0). \
+                order_by(UserTopicStatistic.score.desc()).limit(8)
 
     def save_to_es(self):
         """保存此用户到elasticsearch"""

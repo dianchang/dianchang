@@ -361,7 +361,7 @@ class TopicWikiContributor(db.Model):
                                                       order_by='desc(TopicWikiContributor.count)'))
 
 
-class UserTopicStatistics(db.Model):
+class UserTopicStatistic(db.Model):
     """话题统计
 
     记录用户在某话题下的数据。
@@ -384,13 +384,13 @@ class UserTopicStatistics(db.Model):
     @staticmethod
     def add_answer_in_topic(user_id, topic_id):
         """在某话题下回答"""
-        topic_expert = UserTopicStatistics.query.filter(
-            UserTopicStatistics.topic_id == topic_id,
-            UserTopicStatistics.user_id == user_id).first()
+        topic_expert = UserTopicStatistic.query.filter(
+            UserTopicStatistic.topic_id == topic_id,
+            UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
             topic_expert.answers_count += 1
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, answers_count=1, upvotes_count=0)
+            topic_expert = UserTopicStatistic(topic_id=topic_id, user_id=user_id, answers_count=1, upvotes_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
@@ -398,15 +398,15 @@ class UserTopicStatistics(db.Model):
     @staticmethod
     def remove_answer_from_topic(user_id, topic_id):
         """从某话题中移除回答"""
-        topic_expert = UserTopicStatistics.query.filter(UserTopicStatistics.topic_id == topic_id,
-                                                        UserTopicStatistics.user_id == user_id).first()
+        topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
+                                                        UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
             if topic_expert.answers_count > 0:
                 topic_expert.answers_count -= 1
             else:
                 topic_expert.answers_count = 0
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, answers_count=0, upvotes_count=0)
+            topic_expert = UserTopicStatistic(topic_id=topic_id, user_id=user_id, answers_count=0, upvotes_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
@@ -414,12 +414,12 @@ class UserTopicStatistics(db.Model):
     @staticmethod
     def upvote_answer_in_topic(user_id, topic_id, count=1):
         """感谢某话题下的回答"""
-        topic_expert = UserTopicStatistics.query.filter(UserTopicStatistics.topic_id == topic_id,
-                                                        UserTopicStatistics.user_id == user_id).first()
+        topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
+                                                        UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
             topic_expert.upvotes_count += count
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, upvotes_count=count, answers_count=0)
+            topic_expert = UserTopicStatistic(topic_id=topic_id, user_id=user_id, upvotes_count=count, answers_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()
@@ -427,15 +427,15 @@ class UserTopicStatistics(db.Model):
     @staticmethod
     def cancel_upvote_answer_in_topic(user_id, topic_id, count=1):
         """取消感谢某话题下的回答"""
-        topic_expert = UserTopicStatistics.query.filter(UserTopicStatistics.topic_id == topic_id,
-                                                        UserTopicStatistics.user_id == user_id).first()
+        topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
+                                                        UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
             if topic_expert.upvotes_count >= count:
                 topic_expert.upvotes_count -= count
             else:
                 topic_expert.upvotes_count = 0
         else:
-            topic_expert = UserTopicStatistics(topic_id=topic_id, user_id=user_id, answers_count=0, upvotes_count=0)
+            topic_expert = UserTopicStatistic(topic_id=topic_id, user_id=user_id, answers_count=0, upvotes_count=0)
         topic_expert.calculate_score()
         db.session.add(topic_expert)
         db.session.commit()

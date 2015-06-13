@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
-    UserTopicStatistics, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
+    UserTopicStatistic, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
     NOTIFICATION_KIND
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
@@ -88,7 +88,7 @@ def view(uid):
 
         # 更新话题统计数据
         for topic in question.topics:
-            UserTopicStatistics.add_answer_in_topic(g.user.id, topic.topic_id)
+            UserTopicStatistic.add_answer_in_topic(g.user.id, topic.topic_id)
 
         # FEED: 插入本人的用户FEED
         user_feed = UserFeed(kind=USER_FEED_KIND.ANSWER_QUESTION, answer_id=answer.id)
@@ -149,11 +149,11 @@ def add_topic(uid):
     # 更新话题统计数据
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
-        UserTopicStatistics.add_answer_in_topic(g.user.id, topic.id)
+        UserTopicStatistic.add_answer_in_topic(g.user.id, topic.id)
     # TODO: need to use the original field `answer.thanks_count`
     answer_thanks_count = answer.thanks.count()
     if answer_thanks_count > 0:
-        UserTopicStatistics.upvote_answer_in_topic(g.user.id, topic.id, answer_thanks_count)
+        UserTopicStatistic.upvote_answer_in_topic(g.user.id, topic.id, answer_thanks_count)
 
     macro = get_template_attribute('macros/_topic.html', 'topic_wap')
     return json.dumps({'result': True,
@@ -182,11 +182,11 @@ def remove_topic(uid, topic_id):
     # 更新话题统计数据
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
     if answer:
-        UserTopicStatistics.remove_answer_from_topic(g.user.id, topic.id)
+        UserTopicStatistic.remove_answer_from_topic(g.user.id, topic.id)
     # TODO: need to use the original field `answer.thanks_count`
     answer_thanks_count = answer.thanks.count()
     if answer_thanks_count > 0:
-        UserTopicStatistics.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer_thanks_count)
+        UserTopicStatistic.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer_thanks_count)
     return json.dumps({'result': True})
 
 

@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask import Blueprint, render_template, json, g, request, redirect, url_for, get_template_attribute
-from ..models import db, Answer, UpvoteAnswer, UserTopicStatistics, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
+from ..models import db, Answer, UpvoteAnswer, UserTopicStatistic, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
     AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
     NOTIFICATION_KIND, UserUpvoteStatistic
 from ..utils.permissions import UserPermission
@@ -30,7 +30,7 @@ def upvote(uid):
 
         # 更新话题统计数据
         for topic in answer.question.topics:
-            UserTopicStatistics.cancel_upvote_answer_in_topic(answer.user_id, topic.topic_id)
+            UserTopicStatistic.cancel_upvote_answer_in_topic(answer.user_id, topic.topic_id)
 
         # TODO: need to change to answer.upvotes_count
         return json.dumps({
@@ -70,7 +70,7 @@ def upvote(uid):
 
         # 更新话题统计数据
         for topic in answer.question.topics:
-            UserTopicStatistics.upvote_answer_in_topic(answer.user_id, topic.topic_id)
+            UserTopicStatistic.upvote_answer_in_topic(answer.user_id, topic.topic_id)
 
         # 更新用户赞同统计数据
         if g.user.id != answer.user_id:
