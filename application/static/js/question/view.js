@@ -16,7 +16,7 @@ $('.btn-edit-title').click(function () {
     }
 
     $titleWap.addClass('edit');
-    $titleInput.val($.trim($title.text()));
+    $titleInput.val($.trim($title.text())).focus();
 });
 
 // 保存标题
@@ -70,6 +70,7 @@ $('.btn-add-desc').click(function () {
     }
 
     $descWap.addClass('edit');
+    descEditor.focus();
 });
 
 // 编辑问题描述
@@ -80,7 +81,7 @@ $('.btn-edit-desc').click(function () {
     }
 
     $descWap.addClass('edit');
-    descEditor.setValue($.trim($desc.html()));
+    descEditor.setValue($.trim($desc.html())).focus();
 });
 
 // 保存问题描述
@@ -99,14 +100,16 @@ $('.btn-save-desc').click(function () {
         data: {
             desc: desc
         }
-    }).done(function () {
-        $descWap.removeClass('edit');
-        $desc.html(desc);
+    }).done(function (response) {
+        if (response.result) {
+            $descWap.removeClass('edit');
+            $desc.html(response.desc);
 
-        if (desc === "") {
-            $descWap.addClass('empty');
-        } else {
-            $descWap.removeClass('empty');
+            if (response.desc === "") {
+                $descWap.addClass('empty');
+            } else {
+                $descWap.removeClass('empty');
+            }
         }
     });
 });
@@ -129,6 +132,7 @@ $('.btn-edit-topic').click(function () {
     }
 
     $('.topics-wap').addClass('edit');
+    $("input[name='topic']").focus();
 });
 
 // 完成话题编辑

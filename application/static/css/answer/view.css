@@ -41,19 +41,6 @@ body #main-wap .container {
   font-size: 18px;
   margin-bottom: 30px;
 }
-.question .topic {
-  background-color: #FCFCFC;
-  color: #7482ac;
-  padding: 4px 10px;
-  font-weight: bold;
-  line-height: 1;
-  border-radius: 15px;
-  margin: 0 10px 10px 0;
-  border: 1px solid #F0F0F0;
-}
-.question .topic:hover {
-  border-color: #E8E8E8;
-}
 .answer {
   padding: 50px 0 50px 0;
 }

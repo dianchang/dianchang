@@ -63,12 +63,16 @@ def view(uid):
     answered = g.user and question.answers.filter(Answer.user_id == g.user.id).count() > 0
     answers = question.answers.filter(~Answer.hide)
     hided_answers = question.answers.filter(Answer.hide)
+    followers = question.followers.order_by(FollowQuestion.created_at.desc()).limit(8)
+
+    # 草稿
     if g.user:
         draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
         if draft:
             draft = draft.content
     else:
         draft = ""
+
     if request.method == 'POST' and request.form.get('answer'):
         permission = UserPermission()
         if not permission.check():
@@ -113,7 +117,7 @@ def view(uid):
         db.session.commit()
         return redirect(url_for('.view', uid=uid))
     return render_template('question/view.html', question=question, draft=draft, answered=answered,
-                           answers=answers, hided_answers=hided_answers)
+                           answers=answers, hided_answers=hided_answers, followers=followers)
 
 
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])
@@ -229,6 +233,7 @@ def update(uid):
     question = Question.query.get_or_404(uid)
     title = request.form.get('title', "")
     desc = request.form.get('desc', "")
+
     if title and title != question.title:
         # Update title log
         title_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
@@ -238,6 +243,13 @@ def update(uid):
         # 更新es中的answer
         for answer in question.answers:
             answer.save_to_es()
+
+    # TODO: 对描述进行处理
+    # if desc:
+    #     desc = desc.strip()
+    #     desc = desc.replace("<p>", "<br>").replace("</p>", ""). \
+    #         replace("<div>", "<br>").replace("</div>", "")
+
     if desc != (question.desc or ""):
         # Update desc log
         desc_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
@@ -247,7 +259,11 @@ def update(uid):
     db.session.add(question)
     db.session.commit()
     question.save_to_es()  # 更新es中的question
-    return json.dumps({'result': True})
+    return json.dumps({
+        'result': True,
+        'title': title,
+        'desc': desc
+    })
 
 
 @bp.route('/question/similar', methods=['POST'])

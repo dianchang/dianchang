@@ -1,81 +1,163 @@
-.title-wap .title-inner-wap {
+.navbar {
+  margin-bottom: 0;
+}
+.question-header {
+  padding: 40px 0 30px 0;
+  background-color: #F5F6F5;
+  position: relative;
+}
+.question-header .title-wap {
+  margin-bottom: 15px;
+}
+.question-header .title-wap .title-inner-wap {
   display: block;
 }
-.title-wap .title-inner-wap:hover .btn-edit-title {
+.question-header .title-wap .title-inner-wap .title {
+  font-weight: bold;
+  font-size: 24px;
+}
+.question-header .title-wap .title-inner-wap .btn-edit-title {
+  color: #999;
+  margin-left: 10px;
+}
+.question-header .title-wap .title-inner-wap:hover .btn-edit-title {
   display: inline-block;
 }
-.title-wap input,
-.title-wap .btn-edit-title,
-.title-wap .btn-save-title {
+.question-header .title-wap input {
+  width: 560px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.question-header .title-wap input,
+.question-header .title-wap .btn-edit-title,
+.question-header .title-wap .btn-save-title {
   display: none;
 }
-.title-wap.edit .title-inner-wap {
+.question-header .title-wap.edit .title-inner-wap {
   display: none;
 }
-.title-wap.edit input,
-.title-wap.edit .btn-save-title {
+.question-header .title-wap.edit input,
+.question-header .title-wap.edit .btn-save-title {
   display: inline-block;
 }
-.desc-wap .desc-inner-wap {
+.question-header .desc-wap {
+  margin-bottom: 20px;
+}
+.question-header .desc-wap .desc-inner-wap {
   display: block;
 }
-.desc-wap .desc-inner-wap:hover .btn-edit-desc {
-  display: inline-block;
+.question-header .desc-wap .desc-inner-wap .btn-edit-desc {
+  visibility: hidden;
 }
-.desc-wap textarea,
-.desc-wap .simditor,
-.desc-wap .btn-add-desc,
-.desc-wap .btn-edit-desc,
-.desc-wap .btn-save-desc {
+.question-header .desc-wap .desc-inner-wap:hover .btn-edit-desc {
+  visibility: visible;
+}
+.question-header .desc-wap textarea,
+.question-header .desc-wap .simditor,
+.question-header .desc-wap .btn-add-desc,
+.question-header .desc-wap .btn-save-desc {
   display: none;
 }
-.desc-wap.edit .desc-inner-wap {
-  display: none;
-}
-.desc-wap.edit .btn-save-desc {
-  display: inline-block;
-}
-.desc-wap.edit .simditor {
-  display: block;
-}
-.desc-wap.empty .btn-add-desc {
-  display: inline-block;
-}
-.topics-wap .btn-add-topic,
-.topics-wap .btn-edit-topic,
-.topics-wap .btn-delete-topic,
-.topics-wap .form-wap {
-  display: none;
-}
-.topics-wap .topics-inner-wap {
-  display: inline-block;
-}
-.topics-wap .topic-wap {
-  display: inline-block;
-  margin-right: 10px;
-}
-.topics-wap.edit .btn-add-topic,
-.topics-wap.edit .btn-edit-topic {
+.question-header .desc-wap.edit .btn-add-desc,
+.question-header .desc-wap.edit .desc-inner-wap {
   display: none !important;
 }
-.topics-wap.edit .btn-delete-topic {
+.question-header .desc-wap.edit .btn-save-desc {
   display: inline-block;
 }
-.topics-wap.edit .form-wap {
+.question-header .desc-wap.edit .simditor {
   display: block;
 }
-.topics-wap.empty .topics,
-.topics-wap.empty .btn-edit-topic {
+.question-header .desc-wap.empty .desc-inner-wap {
   display: none;
 }
-.topics-wap.empty .btn-add-topic {
-  display: block;
-}
-.topics-wap .topics:hover .btn-edit-topic {
+.question-header .desc-wap.empty .btn-add-desc {
   display: inline-block;
 }
-.dc-question-follow-wap {
-  float: right;
+.question-header .desc-wap .simditor {
+  margin-bottom: 15px;
+}
+.question-header .desc-wap .simditor .simditor-body {
+  padding: 15px 15px 40px 15px;
+  min-height: 150px;
+}
+.question-header .topics-wap .btn-add-topic,
+.question-header .topics-wap .btn-edit-topic,
+.question-header .topics-wap .btn-delete-topic,
+.question-header .topics-wap .form-wap {
+  display: none;
+}
+.question-header .topics-wap .form-wap {
+  margin-top: 10px;
+}
+.question-header .topics-wap .form-wap .twitter-typeahead {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.question-header .topics-wap .form-wap .twitter-typeahead input {
+  width: 250px;
+}
+.question-header .topics-wap .topics-inner-wap {
+  display: inline-block;
+}
+.question-header .topics-wap .topic-wap {
+  display: inline-block;
+  margin: 0 10px 10px 0;
+}
+.question-header .topics-wap .topic-wap .dc-topic-white {
+  margin: 0;
+}
+.question-header .topics-wap .topic-wap .btn-delete-topic {
+  color: #999;
+}
+.question-header .topics-wap .topic-wap .btn-delete-topic:hover {
+  color: #666;
+}
+.question-header .topics-wap.edit .btn-add-topic,
+.question-header .topics-wap.edit .btn-edit-topic {
+  display: none !important;
+}
+.question-header .topics-wap.edit .btn-delete-topic {
+  display: inline-block;
+}
+.question-header .topics-wap.edit .form-wap {
+  display: block;
+}
+.question-header .topics-wap.empty .topics,
+.question-header .topics-wap.empty .btn-edit-topic {
+  display: none;
+}
+.question-header .topics-wap.empty .btn-add-topic {
+  display: block;
+}
+.question-header .topics-wap .topics:hover .btn-edit-topic {
+  display: inline-block;
+}
+.question-header .col-md-4 .commands {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.question-header .col-md-4 .commands .dc-hide-commands-trigger {
+  padding: 6px 10px;
+  margin-left: 5px;
+}
+.question-header .col-md-4 .commands .dc-hide-commands-trigger .dc-hide-commands {
+  top: 20px;
+  padding-top: 18px;
+}
+.question-header .col-md-4 .followers {
+  position: absolute;
+  right: 0;
+  top: 50px;
+}
+.question-header .col-md-4 .followers .follower {
+  display: inline-block;
+  margin: 0 0 5px 5px;
+}
+.question-header .col-md-4 .followers .follower img {
+  width: 30px;
+  height: 30px;
 }
 .hided-answers {
   display: none;

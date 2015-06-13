@@ -38,56 +38,79 @@
 {% endmacro %}
 
 {% block page_content %}
-    <div class="container">
-        {{ question_follow_wap(question, dark=True) }}
+    <div class="question-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    {# 标题 #}
+                    <div class="title-wap">
+                        <span class="title-inner-wap">
+                            <span class="title">{{ question.title }}</span>
+                            <a href="javascript: void(0)" class="btn-edit-title">编辑</a>
+                        </span>
+                        <input type="text" name="title" class="form-control input-title"/>
+                        <a href="javascript: void(0)" class="btn-save-title btn btn-default">保存</a>
+                    </div>
 
-        <h1>
-            <div class="title-wap">
-                <span class="title-inner-wap">
-                    <span class="title">{{ question.title }}</span>
-                    <a href="javascript: void(0)" class="btn-edit-title">编辑</a>
-                </span>
-                <input type="text" name="title"/>
-                <a href="javascript: void(0)" class="btn-save-title">保存</a>
-            </div>
-        </h1>
+                    {# 描述 #}
+                    <div class="desc-wap {% if not question.desc %}empty{% endif %}">
+                        <span class="desc-inner-wap">
+                            <span class="desc">{{ (question.desc or "")|safe }}</span>
+                            <a href="javascript: void(0)" class="btn-edit-desc text-light">编辑</a>
+                        </span>
+                        <textarea type="text" name="desc"></textarea>
+                        <a href="javascript: void(0)" class="btn-save-desc btn btn-default">保存</a>
+                        <a href="javascript: void(0)" class="btn-add-desc text-light">添加问题描述</a>
+                    </div>
 
-        <div class="desc-wap {% if not question.desc %}empty{% endif %}">
-            <span class="desc-inner-wap">
-                <span class="desc">{{ (question.desc or "")|safe }}</span>
-                <a href="javascript: void(0)" class="btn-edit-desc">编辑</a>
-            </span>
-            <textarea class="form-control" type="text" rows="3" name="desc"></textarea>
-            <a href="javascript: void(0)" class="btn-save-desc">保存</a>
-            <a href="javascript: void(0)" class="btn-add-desc">添加问题描述</a>
-        </div>
+                    {# 话题 #}
+                    <div class="topics-wap {% if not question.topics.count() %}empty{% endif %}">
+                        <div class="topics">
+                            <div class="topics-inner-wap">
+                                {% for topic in question.topics %}
+                                    {{ topic_wap(topic, attr="topic") }}
+                                {% endfor %}
+                            </div>
+                            <a href="javascript: void(0)" class="btn-edit-topic text-light">编辑</a>
+                        </div>
 
-        {#        <div class="meta">#}
-        {#            <span>#}
-        {#                <span class="fa fa-comment-o"></span> 评论 {{ question.comments.count() }}#}
-        {#            </span>#}
+                        <div class="form-wap">
+                            <input type="text" name="topic" class="form-control" placeholder="搜索话题，回车添加"/>
+                            <a href="javascript:void(0)" class="btn-finish-add-topic btn btn-default">完成</a>
+                        </div>
 
-        <div class="topics-wap {% if not question.topics.count() %}empty{% endif %}">
-            <div class="topics">
-                <div class="topics-inner-wap">
-                    {% for topic in question.topics %}
-                        {{ topic_wap(topic, attr="topic") }}
-                    {% endfor %}
+                        <a type="button" href="javascript: void(0)" class="btn-add-topic text-light">添加话题</a>
+                    </div>
                 </div>
-                <a href="javascript: void(0)" class="btn-edit-topic">编辑</a>
-            </div>
 
-            <div class="form-wap">
-                <input type="text" name="topic" placeholder="按回车添加"/>
-                <a href="#" class="btn-finish-add-topic">完成</a>
-            </div>
+                <div class="col-md-4">
+                    <div class="commands">
+                        {{ question_follow_wap(question, dark=True) }}
 
-            <button type="button" class="btn btn-default btn-add-topic">
-                <span class="fa fa-plus"></span> 添加话题
-            </button>
+                        <button type="button" class="dc-hide-commands-trigger btn btn-default">
+                            <span class="fa fa-chevron-down"></span>
+
+                            <div class="dc-hide-commands">
+                                <a href="#">问题重定向</a>
+                                <a href="#">使用匿名身份</a>
+                                <a href="{{ url_for('question.logs', uid=question.id) }}">查看问题日志</a>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="followers">
+                        {% for follower in followers %}
+                            <a href="{{ follower.user.profile_url }}" class="follower">
+                                <img src="{{ follower.user.avatar_url }}" class="img-circle" alt=""/>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
-        {#        </div>#}
+    </div>
 
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div>
@@ -135,8 +158,6 @@
             </div>
 
             <div class="col-md-4">
-                <a href="{{ url_for('question.logs', uid=question.id) }}">问题日志</a>
-
                 <h3>相关问题</h3>
 
                 {% for relevant_question in question.relevant_questions %}

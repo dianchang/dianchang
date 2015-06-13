@@ -5,7 +5,7 @@
     {% endif %}
 
     <div class="topic-wap">
-        <a class="label label-default topic" href="{{ url_for('topic.view', uid=topic.id) }}"
+        <a class="dc-topic dc-topic-white" href="{{ url_for('topic.view', uid=topic.id) }}"
            data-id="{{ topic.id }}">
             {{ topic.name }}</a>
         <a href="javascript: void(0)" class="btn-delete-topic" data-id="{{ topic.id }}">

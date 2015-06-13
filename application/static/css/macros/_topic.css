@@ -109,3 +109,26 @@
 .dc-expert-topic .empty {
   color: #cccccc;
 }
+.dc-topic {
+  background-color: #F7F8F9;
+  color: #7482AC;
+  padding: 4px 10px;
+  font-weight: bold;
+  line-height: 1;
+  border-radius: 15px;
+  border: 1px solid #F0F0F0;
+  margin: 0 10px 10px 0;
+}
+.dc-topic:hover {
+  background-color: #e4e4f2;
+  border-color: #e4e4f2;
+  text-decoration: none;
+  color: #7482AC;
+}
+.dc-topic.dc-topic-white {
+  background-color: #FCFCFC;
+  color: #7482AC;
+}
+.dc-topic.dc-topic-white:hover {
+  border-color: #E8E8E8;
+}

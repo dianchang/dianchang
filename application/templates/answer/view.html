@@ -23,7 +23,7 @@
             {% endif %}
 
             {% for topic in answer.question.topics %}
-                <a href="{{ url_for('topic.view', uid=topic.topic.id) }}" class="topic link-no-underline">
+                <a href="{{ url_for('topic.view', uid=topic.topic.id) }}" class="dc-topic dc-topic-white">
                     {{ topic.topic.name }}</a>
             {% endfor %}
         </div>

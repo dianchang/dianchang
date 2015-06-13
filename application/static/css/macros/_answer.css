@@ -101,20 +101,6 @@
 .dc-answer .topics {
   margin-bottom: 18px;
 }
-.dc-answer .topic {
-  background-color: #F7F8F9;
-  color: #8187a8;
-  padding: 4px 10px;
-  font-weight: bold;
-  line-height: 1;
-  border-radius: 15px;
-  border: 1px solid #F0F0F0;
-  margin: 0 10px 10px 0;
-}
-.dc-answer .topic:hover {
-  background-color: #e4e4f2;
-  border-color: #e4e4f2;
-}
 .dc-answer .title {
   color: #333;
   font-size: 18px;
@@ -125,12 +111,6 @@
 .dc-answer .answerer {
   color: #999;
   margin-bottom: 8px;
-}
-.dc-answer .answerer a {
-  color: #999;
-}
-.dc-answer .answerer a:hover {
-  color: #009999;
 }
 .dc-answer .content {
   font-size: 16px;

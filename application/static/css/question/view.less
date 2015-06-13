@@ -1,123 +1,225 @@
-.title-wap {
-  .title-inner-wap {
-    display: block;
+.navbar {
+  margin-bottom: 0;
+}
 
-    &:hover {
+.question-header {
+  padding: 40px 0 30px 0;
+  background-color: #F5F6F5;
+  position: relative;
+
+  .title-wap {
+    margin-bottom: 15px;
+
+    .title-inner-wap {
+      display: block;
+
+      .title {
+        font-weight: bold;
+        font-size: 24px;
+      }
+
       .btn-edit-title {
-        display: inline-block;
+        color: #999;
+        margin-left: 10px;
+      }
+
+      &:hover {
+        .btn-edit-title {
+          display: inline-block;
+        }
       }
     }
-  }
 
-  input,
-  .btn-edit-title,
-  .btn-save-title {
-    display: none;
-  }
-
-  &.edit {
-    .title-inner-wap {
-      display: none;
+    input {
+      width: 560px;
+      vertical-align: middle;
+      margin-right: 5px;
     }
 
     input,
+    .btn-edit-title,
     .btn-save-title {
-      display: inline-block;
+      display: none;
     }
-  }
-}
 
-.desc-wap {
-  .desc-inner-wap {
-    display: block;
+    &.edit {
+      .title-inner-wap {
+        display: none;
+      }
 
-    &:hover {
-      .btn-edit-desc {
+      input,
+      .btn-save-title {
         display: inline-block;
       }
     }
   }
 
-  textarea,
-  .simditor,
-  .btn-add-desc,
-  .btn-edit-desc,
-  .btn-save-desc {
-    display: none;
-  }
+  .desc-wap {
+    margin-bottom: 20px;
 
-  &.edit {
     .desc-inner-wap {
+      display: block;
+
+      .btn-edit-desc {
+        visibility: hidden;
+      }
+
+      &:hover {
+        .btn-edit-desc {
+          visibility: visible;
+        }
+      }
+    }
+
+    textarea,
+    .simditor,
+    .btn-add-desc,
+    .btn-save-desc {
       display: none;
     }
 
-    .btn-save-desc {
-      display: inline-block;
+    &.edit {
+      .btn-add-desc,
+      .desc-inner-wap {
+        display: none !important;
+      }
+
+      .btn-save-desc {
+        display: inline-block;
+      }
+
+      .simditor {
+        display: block;
+      }
+    }
+
+    &.empty {
+      .desc-inner-wap {
+        display: none;
+      }
+
+      .btn-add-desc {
+        display: inline-block;
+      }
     }
 
     .simditor {
-      display: block;
+      margin-bottom: 15px;
+
+      .simditor-body {
+        padding: 15px 15px 40px 15px;
+        min-height: 150px;
+      }
     }
   }
 
-  &.empty {
-    .btn-add-desc {
-      display: inline-block;
-    }
-  }
-}
-
-.topics-wap {
-  .btn-add-topic,
-  .btn-edit-topic,
-  .btn-delete-topic,
-  .form-wap {
-    display: none;
-  }
-
-  .topics-inner-wap {
-    display: inline-block;
-  }
-
-  .topic-wap {
-    display: inline-block;
-    margin-right: 10px;
-  }
-
-  &.edit {
+  .topics-wap {
     .btn-add-topic,
-    .btn-edit-topic {
-      display: none !important;
-    }
-
-    .btn-delete-topic {
-      display: inline-block;
+    .btn-edit-topic,
+    .btn-delete-topic,
+    .form-wap {
+      display: none;
     }
 
     .form-wap {
-      display: block;
-    }
-  }
+      margin-top: 10px;
 
-  &.empty {
-    .topics,
-    .btn-edit-topic {
-      display: none;
-    }
-    .btn-add-topic {
-      display: block;
-    }
-  }
+      .twitter-typeahead {
+        vertical-align: middle;
+        margin-right: 5px;
 
-  .topics:hover {
-    .btn-edit-topic {
+        input {
+          width: 250px;
+        }
+      }
+    }
+
+    .topics-inner-wap {
       display: inline-block;
     }
-  }
-}
 
-.dc-question-follow-wap {
-  float: right;
+    .topic-wap {
+      display: inline-block;
+      margin: 0 10px 10px 0;
+
+      .dc-topic-white {
+        margin: 0;
+      }
+
+      .btn-delete-topic {
+        color: #999;
+
+        &:hover {
+          color: #666;
+        }
+      }
+    }
+
+    &.edit {
+      .btn-add-topic,
+      .btn-edit-topic {
+        display: none !important;
+      }
+
+      .btn-delete-topic {
+        display: inline-block;
+      }
+
+      .form-wap {
+        display: block;
+      }
+    }
+
+    &.empty {
+      .topics,
+      .btn-edit-topic {
+        display: none;
+      }
+      .btn-add-topic {
+        display: block;
+      }
+    }
+
+    .topics:hover {
+      .btn-edit-topic {
+        display: inline-block;
+      }
+    }
+  }
+
+  .col-md-4 {
+    .commands {
+      position: absolute;
+      right: 0;
+      top: 0;
+
+      .dc-hide-commands-trigger {
+        padding: 6px 10px;
+        margin-left: 5px;
+
+        .dc-hide-commands {
+          top: 20px;
+          padding-top: 18px;
+        }
+      }
+    }
+
+    .followers {
+      position: absolute;
+      right: 0;
+      top: 50px;
+
+      .follower {
+        display: inline-block;
+        margin: 0 0 5px 5px;
+
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
 }
 
 .hided-answers {

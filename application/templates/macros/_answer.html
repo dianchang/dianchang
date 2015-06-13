@@ -228,19 +228,18 @@
             <div class="topics">
                 {% for topic in answer.question.topics %}
                     {% set topic = topic.topic %}
-                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="topic link-no-underline">
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-topic">
                         {{ topic.name }}</a>
                 {% endfor %}
             </div>
         {% endif %}
 
-        <a href="{{ url_for('question.view', uid=answer.question.id) }}"
-           class="title">
+        <a href="{{ url_for('question.view', uid=answer.question.id) }}" class="title">
             {{ (answer.highlight_question_title or answer.question.title)|safe }}
         </a>
 
         <div class="answerer">
-            <a href="{{ answer.user.profile_url }}">
+            <a href="{{ answer.user.profile_url }}" class="text-light">
                 {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
         </div>
 
