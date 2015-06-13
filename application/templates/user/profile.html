@@ -1,91 +1,138 @@
 {% extends "layout.html" %}
-{% from "macros/_user.html" import user_page_header %}
-{% from "macros/_topic.html" import render_expert_topics %}
-{% from "macros/_answer.html" import render_answer_commands %}
+{% from "macros/_user.html" import user_page_header, user_follow_wap %}
+{% from "macros/_topic.html" import render_expert_topics, topic_follow_wap %}
+{% from "macros/_answer.html" import render_answer_commands, render_answer %}
+{% from "macros/_question.html" import question_follow_wap %}
 
 {% block page_title %}{{ user.name }}{% endblock %}
-{% macro render_answer(answer) %}
 
+{# 问题FEED #}
+{% macro render_question_feed(question) %}
+    <div class="content">
+        <a href="{{ url_for('question.view', uid=question.id) }}"
+           class="question-title">
+            {{ question.title }}
+        </a>
+
+        <div class="other text-light">
+            {# TODO #}
+            {% set answers_count = question.answers.count() %}
+            {% if answers_count %}
+                {{ answers_count }} 个回答
+            {% else %}
+                还没有回答
+            {% endif %}
+            <span class="divider">·</span>
+            提问于 {{ question.created_at|timesince }}
+        </div>
+
+        <div class="commands">
+            {{ question_follow_wap(question) }}
+            <a href="{{ url_for('question.view', uid=question.id) }}#answer"
+               class="btn btn-default btn-answer">
+                写答案</a>
+        </div>
+    </div>
 {% endmacro %}
+
 {% block page_content %}
     {{ user_page_header(user) }}
 
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <h3>动态</h3>
-
-                {% for feed in user.feeds %}
-                    <div class="home-feed">
-                        {# 提问 #}
+                <div class="feeds">
+                    {% for feed in user.feeds %}
                         {% if feed.kind == USER_FEED_KIND.ASK_QUESTION %}
-                            <div class="meta">
-                                <span>提出了问题</span>
-                                &nbsp;&nbsp;
-                                <span>{{ feed.created_at|timesince }}</span>
-                            </div>
-                            <div class="content">
-                                <a href="{{ url_for('question.view', uid=feed.question_id) }}">
-                                    {{ feed.question.title }}
-                                </a>
+                            <div class="home-feed feed-follow-question">
+                                <div class="meta">
+                                    <span>提出了问题</span>
+                                    <span class="time">{{ feed.created_at|timesince }}</span>
+                                </div>
+                                {{ render_question_feed(feed.question) }}
                             </div>
                         {% elif feed.kind == USER_FEED_KIND.ANSWER_QUESTION %}
-                            <div class="meta">
-                                <span>回答了问题</span>
-                                &nbsp;&nbsp;
-                                <span>{{ feed.created_at|timesince }}</span>
-                            </div>
-                            <div class="content">
-                                <a href="{{ url_for('question.view', uid=feed.answer.question_id) }}">
-                                    {{ feed.answer.question.title }}
-                                </a>
-
-                                <div>{{ feed.answer.content|safe }}</div>
+                            <div class="home-feed feed-answer-question">
+                                <div class="meta">
+                                    <span>回答了问题</span>
+                                    <span class="time">{{ feed.created_at|timesince }}</span>
+                                </div>
+                                {{ render_answer(feed.answer, with_topics=False) }}
                             </div>
                         {% elif feed.kind == USER_FEED_KIND.UPVOTE_ANSWER %}
-                            <div class="meta">
-                                <span>赞同了回答</span>
-                                &nbsp;&nbsp;
-                                <span>{{ feed.created_at|timesince }}</span>
-                            </div>
-                            <div class="content">
-                                <a href="{{ url_for('question.view', uid=feed.answer.question_id) }}">
-                                    {{ feed.answer.question.title }}
-                                </a>
-
-                                by
-                                <a href="{{ feed.answer.user.profile_url }}">
-                                    {{ feed.answer.user.name }}
-                                </a>
-
-                                <div>{{ feed.answer.content|safe }}</div>
+                            <div class="home-feed feed-upvote-answer">
+                                <div class="meta">
+                                    <span>赞同了 <a href="{{ feed.answer.user.profile_url }}" class="text-light">
+                                        {{ feed.answer.user.name }}</a> 的回答</span>
+                                    <span class="time">{{ feed.created_at|timesince }}</span>
+                                </div>
+                                {{ render_answer(feed.answer, with_topics=False) }}
                             </div>
                         {% elif feed.kind == USER_FEED_KIND.FOLLOW_QUESTION %}
-                            <div class="meta">
-                                <span>关注了问题</span>
-                                &nbsp;&nbsp;
-                                <span>{{ feed.created_at|timesince }}</span>
-                            </div>
-                            <div class="content">
-                                <a href="{{ url_for('question.view', uid=feed.question_id) }}">
-                                    {{ feed.question.title }}
-                                </a>
+                            <div class="home-feed feed-follow-question">
+                                <div class="meta">
+                                    <span>关注了问题</span>
+                                    <span class="time">{{ feed.created_at|timesince }}</span>
+                                </div>
+                                {{ render_question_feed(feed.question) }}
                             </div>
                         {% elif feed.kind == USER_FEED_KIND.FOLLOW_TOPIC %}
-                            <div class="meta">
-                                <span>关注了话题</span>
-                                &nbsp;&nbsp;
-                                <span>{{ feed.created_at|timesince }}</span>
+                            <div class="home-feed feed-follow-topic">
+                                <div class="meta">
+                                    <span>关注了话题</span>
+                                    <span class="time">{{ feed.created_at|timesince }}</span>
+                                </div>
+                                <div class="content">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="{{ url_for('topic.view', uid=feed.topic_id) }}">
+                                                <img src="{{ feed.topic.avatar_url }}" class="img-rounded" alt=""/>
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="topic-name">
+                                                <a href="{{ url_for('topic.view', uid=feed.topic_id) }}">
+                                                    {{ feed.topic.name }}</a>
+                                            </div>
+                                            <div class="text-light">
+                                                {# TODO #}
+                                                {{ feed.topic.questions.count() }} 个相关话题
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{ topic_follow_wap(feed.topic) }}
+                                </div>
                             </div>
-                            <div class="content">
-                                <a href="{{ url_for('topic.view', uid=feed.topic_id) }}">
-                                    {{ feed.topic.name }}
-                                </a>
+                        {% elif feed.kind == USER_FEED_KIND.FOLLOW_USER %}
+                            <div class="home-feed feed-follow-user">
+                                {% set following_user = feed.following %}
+                                <div class="meta">
+                                    <span>关注了人</span>
+                                    <span class="time">{{ feed.created_at|timesince }}</span>
+                                </div>
+                                <div class="content">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="{{ following_user.profile_url }}">
+                                                <img src="{{ following_user.avatar_url }}" class="img-circle" alt=""/>
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="user-name">
+                                                <a href="{{ following_user.profile_url }}">
+                                                    {{ following_user.name }}</a>
+                                            </div>
+                                            <div class="desc text-light">{{ following_user.desc or "" }}</div>
+                                        </div>
+                                    </div>
+
+                                    {{ user_follow_wap(following_user) }}
+                                </div>
                             </div>
                         {% endif %}
-                        <hr/>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
             <div class="col-md-4">
                 <h3>擅长话题</h3>

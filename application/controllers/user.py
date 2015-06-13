@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask import Blueprint, render_template, url_for, json, g, request
-from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND
+from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('user', __name__)
@@ -45,6 +45,11 @@ def follow(uid):
             noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, sender_id=g.user.id)
             user.notifications.append(noti)
             db.session.add(user)
+
+            # FEED：插入本人的用户FEED
+            feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_USER, following_id=uid)
+            g.user.feeds.append(feed)
+            db.session.add(g.user)
 
             db.session.commit()
             return json.dumps({

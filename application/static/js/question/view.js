@@ -7,6 +7,7 @@ var $answerTextarea = $("textarea[name]");
 var timerForAnswer = null;
 var $draftTip = $('.tip-save-draft');
 
+
 // 编辑标题
 $('.btn-edit-title').click(function () {
     if (!g.signin) {
@@ -247,6 +248,10 @@ if (!g.answered) {
             leaveConfirm: '正在上传文件，如果离开上传会自动取消'
         }
     });
+
+    if (window.location.hash === "#answer") {
+        answerEditor.focus();
+    }
 }
 
 // 显示 & 隐藏被折叠的回答

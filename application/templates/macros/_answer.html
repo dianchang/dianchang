@@ -159,9 +159,7 @@
 
         // 收起回答内容
         $(document).onOnce('click', '.btn-collapse', function () {
-            var $comment = $(this).parents('.dc-answer');
-
-            $comment.removeClass('full');
+            $(this).parents('.dc-answer').removeClass('full');
         });
 
         // 展开评论
@@ -222,9 +220,10 @@
 {% endmacro %}
 
 
-{% macro render_answers(answers) %}
-    {% for answer in answers %}
-        <div class="dc-answer">
+{# 单个回答 #}
+{% macro render_answer(answer, with_topics=True) %}
+    <div class="dc-answer">
+        {% if with_topics %}
             <div class="topics">
                 {% for topic in answer.question.topics %}
                     {% set topic = topic.topic %}
@@ -232,16 +231,19 @@
                         {{ topic.name }}</a>
                 {% endfor %}
             </div>
+        {% endif %}
 
-            <a href="{{ url_for('question.view', uid=answer.question.id) }}" class="title link-no-underline link-color">
-                {{ (answer.highlight_question_title or answer.question.title)|safe }}
-            </a>
+        <a href="{{ url_for('question.view', uid=answer.question.id) }}"
+           class="title">
+            {{ (answer.highlight_question_title or answer.question.title)|safe }}
+        </a>
 
-            <div class="answerer">
-                <a href="{{ answer.user.profile_url }}">
-                    {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
-            </div>
+        <div class="answerer">
+            <a href="{{ answer.user.profile_url }}">
+                {{ answer.user.name }}</a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
+        </div>
 
+        {% if answer.highlight_content_preview or answer.content_preview %}
             <div class="content">
                 <div class="preview">
                     {{ (answer.highlight_content_preview or answer.content_preview)|safe }}
@@ -255,25 +257,34 @@
                     {{ answer.content|safe }}
                 </div>
             </div>
+        {% endif %}
 
-            <div class="time text-light" title="{{ answer.created_at }}">
-                发布于 {{ answer.created_at|timesince }}
-            </div>
-
-            {{ render_answer_commands(answer) }}
+        <div class="time text-light" title="{{ answer.created_at }}">
+            发布于 {{ answer.created_at|timesince }}
         </div>
-    {% endfor %}
+
+        {{ render_answer_commands(answer) }}
+    </div>
 
     <script>
         (function () {
             // 继续阅读
-            $(document).on('click', '.btn-continue-reading', function () {
+            $(document).onOnce('click', '.btn-continue-reading', function () {
                 var $comment = $(this).parents('.dc-answer');
 
                 $comment.addClass('full');
             });
         })();
     </script>
+{% endmacro %}
+
+
+{% macro render_answers(answers) %}
+    {% for answer in answers %}
+        {{ render_answer(answer) }}
+    {% endfor %}
+
+
 {% endmacro %}
 
 

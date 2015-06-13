@@ -144,6 +144,7 @@
   border-color: #e4e4f2;
 }
 .dc-answer .title {
+  color: #333;
   font-size: 18px;
   font-weight: bold;
   display: block;

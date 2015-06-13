@@ -48,7 +48,7 @@ class User(db.Model):
 
     def followed_by_user(self):
         """该用户是否被当前用户关注"""
-        return g.user and g.user.followers.filter(FollowUser.follower_id == g.user.id).count() > 0
+        return g.user and self.followers.filter(FollowUser.follower_id == g.user.id).count() > 0
 
     @property
     def profile_url(self):
@@ -197,6 +197,7 @@ class USER_FEED_KIND(object):
     UPVOTE_ANSWER = "F9FqDKa"  # 赞同回答
     FOLLOW_QUESTION = "4MYN2Ui"  # 关注问题
     FOLLOW_TOPIC = "wa3PMng"  # 关注话题
+    FOLLOW_USER = "vTw5er5"  # 关注人
 
 
 class UserFeed(db.Model):

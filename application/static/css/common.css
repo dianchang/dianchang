@@ -90,3 +90,6 @@ del {
 .rich-text-area img {
   max-width: 100%;
 }
+.img-rounded {
+  border-radius: 2px;
+}
