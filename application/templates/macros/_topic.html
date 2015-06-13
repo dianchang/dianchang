@@ -204,6 +204,7 @@
                         <a href="{{ url_for('topic.view', uid=child_topic.id) }}" class="name">
                             {{ child_topic.name }}
                         </a>
+
                         <div class="text-light">
                             <strong>{{ child_topic.followers.count() }}</strong> 人关注
                         </div>
@@ -221,7 +222,7 @@
 {% macro render_expert_topics(expert_topics) %}
     {% for expert_topic in expert_topics %}
         {% set topic = expert_topic.topic %}
-        <div class="media">
+        <div class="media dc-expert-topic">
             <div class="media-left">
                 <a href="{{ url_for('topic.view', uid=topic.id) }}">
                     <img src="{{ topic.avatar_url }}" alt=""/>
@@ -229,10 +230,14 @@
             </div>
             <div class="media-body">
                 <div>
-                    <a href="{{ url_for('topic.view', uid=topic.id) }}">{{ topic.name }}</a>
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="topic-name">{{ topic.name }}</a>
                 </div>
-                <div class="meta">
-                    {{ expert_topic.answers_count }} 个回答，收获 {{ expert_topic.upvotes_count }} 个赞同
+                <div class="experience text-light">
+                    {% if expert_topic.experience %}
+                        {{ expert_topic.experience }}
+                    {% else %}
+                        <span class="empty">暂无话题经验</span>
+                    {% endif %}
                 </div>
             </div>
         </div>

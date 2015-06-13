@@ -227,7 +227,7 @@
 
             });
 
-// 更新desc
+            // 更新desc
             $('.btn-submit-desc').click(function () {
                 var $input = $(this).prev();
                 var desc = $.trim($input.val());
@@ -247,7 +247,7 @@
                 });
             });
 
-// 显示desc编辑框
+            // 显示位置、组织、职位编辑框
             $('.btn-edit-meta').click(function () {
                 var location, organization, position;
 
@@ -278,7 +278,7 @@
                 $('.input-position').val(position);
             });
 
-// 更新desc
+            // 更新位置、组织、职位
             $('.btn-submit-meta').click(function () {
                 var location = $.trim($('.input-location').val());
                 var organization = $.trim($('.input-organization').val());
