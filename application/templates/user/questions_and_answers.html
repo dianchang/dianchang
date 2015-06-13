@@ -1,17 +1,22 @@
 {% extends "layout.html" %}
-{% from "macros/_user.html" import user_page_header %}
-{% from "macros/_question.html" import render_questions %}
+{% from "macros/_user.html" import user_page_header, render_home_feeds %}
+{% from "macros/_topic.html" import render_expert_topics %}
 
-{% block page_title %}提问 - {{ user.name }}{% endblock %}
+
+{% block page_title %}问答 - {{ user.name }}{% endblock %}
 {% block page_content %}
-    <div class="container">
-        {{ user_page_header(user, active='questions') }}
+    {{ user_page_header(user, active='questions_and_answers') }}
 
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {{ render_questions(user.questions) }}
+                {{ render_home_feeds(feeds) }}
             </div>
+
             <div class="col-md-4">
+                <h3>擅长话题</h3>
+
+                {{ render_expert_topics(user.expert_topics) }}
             </div>
         </div>
     </div>

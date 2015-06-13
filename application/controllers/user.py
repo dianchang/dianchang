@@ -75,7 +75,8 @@ def answers(uid):
 def questions_and_answers(uid):
     """问答"""
     user = User.query.get_or_404(uid)
-    return render_template('user/questions_and_answers.html', user=user)
+    feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION]))
+    return render_template('user/questions_and_answers.html', user=user, feeds=feeds)
 
 
 @bp.route('/people/<int:uid>/collects')
