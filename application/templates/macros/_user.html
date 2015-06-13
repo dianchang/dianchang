@@ -78,7 +78,11 @@
 
                     <div class="dc-hide-commands">
                         <a href="#" target="_blank">向他提问</a>
-                        <a href="javascript: void(0)" class="btn-block-user" data-id="{{ user.id }}">屏蔽此人</a>
+                        <a href="javascript: void(0)"
+                           class="btn-block-user {% if user.blocked_by_user() %}blocked{% endif %}"
+                           data-id="{{ user.id }}">
+                            <span class="for-blocked">取消屏蔽</span>
+                            <span class="for-un-blocked">屏蔽此人</span></a>
                         <a href="javascript: void(0)" class="btn-report-user" data-id="{{ user.id }}">举报此人</a>
                     </div>
                 </button>
@@ -352,9 +356,30 @@
                     }
                 });
             });
+
+            // 屏蔽用户
+            $('.btn-block-user').click(function () {
+                var id = $(this).data('id');
+                var _this = $(this);
+
+                $.ajax({
+                    url: urlFor('user.block', {uid: id}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        if (response.blocked) {
+                            _this.addClass('blocked');
+                        } else {
+                            _this.removeClass('blocked');
+                        }
+                    }
+                });
+            });
         })();
     </script>
 {% endmacro %}
+
 
 {# 问题FEED #}
 {% macro render_question_feed(question) %}

@@ -54,6 +54,10 @@ class User(db.Model):
         """该用户是否被当前用户关注"""
         return g.user and self.followers.filter(FollowUser.follower_id == g.user.id).count() > 0
 
+    def blocked_by_user(self):
+        """该用户是否被当前用户屏蔽"""
+        return g.user and g.user.blocks.filter(BlockUser.blocked_user_id == self.id).count() > 0
+
     @property
     def profile_url(self):
         """用户个人主页url"""

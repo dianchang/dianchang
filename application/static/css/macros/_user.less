@@ -70,6 +70,24 @@
         padding-top: 12px;
       }
     }
+
+    .btn-block-user {
+      .for-blocked {
+        display: none;
+      }
+      .for-un-blocked {
+        display: block;
+      }
+
+      &.blocked {
+        .for-blocked {
+          display: block;
+        }
+        .for-un-blocked {
+          display: none;
+        }
+      }
+    }
   }
 
   .background-wap {

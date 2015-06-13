@@ -51,6 +51,18 @@
   top: 20px;
   padding-top: 12px;
 }
+.dc-user-page-header .commands .btn-block-user .for-blocked {
+  display: none;
+}
+.dc-user-page-header .commands .btn-block-user .for-un-blocked {
+  display: block;
+}
+.dc-user-page-header .commands .btn-block-user.blocked .for-blocked {
+  display: block;
+}
+.dc-user-page-header .commands .btn-block-user.blocked .for-un-blocked {
+  display: none;
+}
 .dc-user-page-header .background-wap {
   height: 150px;
   background-size: cover;
