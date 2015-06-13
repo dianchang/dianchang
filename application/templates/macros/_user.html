@@ -78,8 +78,8 @@
 
                     <div class="dc-hide-commands">
                         <a href="#" target="_blank">向他提问</a>
-                        <a href="#">屏蔽此人</a>
-                        <a href="#">举报此人</a>
+                        <a href="javascript: void(0)" class="btn-block-user" data-id="{{ user.id }}">屏蔽此人</a>
+                        <a href="javascript: void(0)" class="btn-report-user" data-id="{{ user.id }}">举报此人</a>
                     </div>
                 </button>
             {% endif %}
@@ -333,6 +333,22 @@
 
                         $('.user-meta').html(html);
                         $('.user-meta-wap').removeClass('edit');
+                    }
+                });
+            });
+
+            // 举报用户
+            $('.btn-report-user').click(function () {
+                var id = parseInt($(this).data('id'));
+                var _this = $(this);
+
+                $.ajax({
+                    url: urlFor('user.report', {uid: id}),
+                    dataType: 'json',
+                    method: 'post'
+                }).done(function (response) {
+                    if (response.result) {
+                        _this.text('已举报');
                     }
                 });
             });

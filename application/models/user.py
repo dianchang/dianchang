@@ -90,11 +90,11 @@ class User(db.Model):
 
         if self.has_seleted_expert_topics:
             return UserTopicStatistic.query.filter(UserTopicStatistic.user_id == self.id,
-                                                    UserTopicStatistic.selected == True). \
+                                                   UserTopicStatistic.selected == True). \
                 order_by(UserTopicStatistic.show_order.desc()).limit(8)
         else:
             return UserTopicStatistic.query.filter(UserTopicStatistic.user_id == self.id,
-                                                    UserTopicStatistic.score != 0). \
+                                                   UserTopicStatistic.score != 0). \
                 order_by(UserTopicStatistic.score.desc()).limit(8)
 
     def save_to_es(self):
@@ -325,3 +325,33 @@ class ComposeFeed(db.Model):
 
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question')
+
+
+class BlockUser(db.Model):
+    """屏蔽用户"""
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('blocks',
+                                                      lazy='dynamic',
+                                                      order_by='desc(BlockUser.created_at)'),
+                           foreign_keys=[user_id])
+
+    blocked_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    blocked_user = db.relationship('User', foreign_keys=[blocked_user_id])
+
+
+class ReportUser(db.Model):
+    """举报用户"""
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('reported_users',
+                                                      lazy='dynamic',
+                                                      order_by='desc(ReportUser.created_at)'),
+                           foreign_keys=[user_id])
+
+    reported_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    reported_user = db.relationship('User', foreign_keys=[reported_user_id])

@@ -1,6 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, url_for, json, g, request
-from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND
+from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
+    ReportUser
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('user', __name__)
@@ -167,3 +168,54 @@ def update_meta_info():
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/people/<int:uid>/block', methods=['POST'])
+@UserPermission()
+def block(uid):
+    """屏蔽用户"""
+    user = User.query.get_or_404(uid)
+    blocked_user = g.user.blocks.filter(BlockUser.blocked_user_id == uid)
+    # 取消屏蔽
+    if blocked_user.count() > 0:
+        map(db.session.delete, blocked_user)
+        db.session.commit()
+        return json.dumps({
+            'result': True,
+            'blocked': False
+        })
+    else:
+        # 屏蔽
+        if g.user.id != uid:
+            blocked_user = BlockUser(user_id=g.user.id, blocked_user_id=uid)
+            db.session.add(blocked_user)
+
+            db.session.commit()
+            return json.dumps({
+                'result': True,
+                'blocked': True
+            })
+        else:
+            return json.dumps({
+                'result': False,
+                'blocked': False
+            })
+
+
+@bp.route('/people/<int:uid>/report', methods=['POST'])
+@UserPermission()
+def report(uid):
+    """举报用户"""
+    user = User.query.get_or_404(uid)
+    if g.user.id != uid:
+        reported_user = ReportUser(user_id=g.user.id, reported_user_id=uid)
+        db.session.add(reported_user)
+
+        db.session.commit()
+        return json.dumps({
+            'result': True
+        })
+    else:
+        return json.dumps({
+            'result': False
+        })
