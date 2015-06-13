@@ -13,3 +13,44 @@ nav,
   color: #e8e8e8;
   margin: 70px;
 }
+.achievements-data {
+  text-align: center;
+  margin: 0 auto;
+  width: 610px;
+}
+.achievements-data .item {
+  display: inline-block;
+  width: 200px;
+  color: #999;
+  font-size: 20px;
+}
+.achievements-data .item .count {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 40px;
+  color: #333;
+  margin-bottom: 15px;
+}
+.upvoters-wap {
+  border-top: 1px solid #eaeaea;
+  padding-top: 40px;
+  margin-top: 40px;
+}
+.upvoters-wap .upvotes-count {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+.upvoters-wap .upvoter {
+  margin: 0 20px 20px 0;
+}
+.upvoters-wap .upvoter img {
+  width: 50px;
+  height: 50px;
+}
+.upvoters-wap .upvoter .user-name {
+  display: block;
+  color: #333;
+  font-weight: bold;
+  margin-top: 10px;
+}
