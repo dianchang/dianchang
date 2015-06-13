@@ -91,23 +91,27 @@
 
             <div class="name">{{ user.name }}</div>
 
-            {% if user.desc %}
-                <div class="desc-wap">
-                    <div class="desc-outer-wap">
-                        <span class="desc-inner-wap">
-                            <span class="desc">{{ user.desc }}</span>
-                            <span class="btn-edit-desc">
-                                <span class="fa fa-pencil"></span> 编辑
-                            </span>
+            <div class="desc-wap">
+                <div class="desc-outer-wap">
+                    <span class="desc-inner-wap">
+                        <span class="desc">
+                            {% if user.desc %}
+                                {{ user.desc }}
+                            {% elif g.user.id == user.id %}
+                                尚无描述
+                            {% endif %}
                         </span>
-                    </div>
-                    <div class="desc-edit-wap">
-                        <input type="text" class="form-control input-desc" name="desc"
-                               placeholder="一句话简介" autocomplete="off"/>
-                        <button type="button" class="btn btn-default btn-submit-desc">保存</button>
-                    </div>
+                        <span class="btn-edit-desc">
+                            <span class="fa fa-pencil"></span> 编辑
+                        </span>
+                    </span>
                 </div>
-            {% endif %}
+                <div class="desc-edit-wap">
+                    <input type="text" class="form-control input-desc" name="desc"
+                           placeholder="一句话简介" autocomplete="off"/>
+                    <button type="button" class="btn btn-default btn-submit-desc">保存</button>
+                </div>
+            </div>
 
             <div class="user-meta-wap">
                 <div class="meta-outer-wap">

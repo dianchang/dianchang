@@ -1,9 +1,10 @@
 // 显示desc编辑框
 $('.btn-edit-desc').click(function () {
-    var desc = $.trim($('.desc').text());
+    var desc = $.trim($('.dc-user-page-header .desc').text());
 
     $(this).parents('.desc-wap').addClass('edit');
     $('.input-desc').val(desc).focus();
+
 });
 
 // 更新desc
@@ -20,9 +21,8 @@ $('.btn-submit-desc').click(function () {
         }
     }).done(function (response) {
         if (response.result) {
-            $('.desc').text(desc);
-
-            $('.desc-wap').removeClass('edit');
+            $('.dc-user-page-header .desc').text(desc);
+            $('.dc-user-page-header .desc-wap').removeClass('edit');
         }
     });
 });
