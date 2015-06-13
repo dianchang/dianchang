@@ -68,43 +68,10 @@
   }
 
   .btn-more {
-    position: relative;
     color: #999;
-
-    &:hover {
-      cursor: pointer;
-
-      .hide-commands {
-        display: block;
-      }
-    }
-
-    .hide-commands {
-      position: absolute;
-      display: none;
-      right: 0;
-      top: 10px;
-      padding-top: 15px;
-
-      a {
-        background-color: white;
-        color: #666;
-        display: block;
-        white-space: nowrap;
-        font-size: 13px;
-        padding: 6px 18px;
-        border-bottom: 1px solid @border-color;
-        border-left: 1px solid @border-color;
-        border-right: 1px solid @border-color;
-
-        &:hover {
-          color: @main-color;
-        }
-      }
-    }
   }
 
-  &.bottom .btn-more .hide-commands {
+  &.bottom .btn-more .dc-hide-commands {
     padding-bottom: 15px;
     top: auto;
     bottom: 10px;

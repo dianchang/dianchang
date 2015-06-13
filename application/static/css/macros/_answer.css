@@ -49,37 +49,9 @@
   display: none;
 }
 .dc-answer-commands .btn-more {
-  position: relative;
   color: #999;
 }
-.dc-answer-commands .btn-more:hover {
-  cursor: pointer;
-}
-.dc-answer-commands .btn-more:hover .hide-commands {
-  display: block;
-}
-.dc-answer-commands .btn-more .hide-commands {
-  position: absolute;
-  display: none;
-  right: 0;
-  top: 10px;
-  padding-top: 15px;
-}
-.dc-answer-commands .btn-more .hide-commands a {
-  background-color: white;
-  color: #666;
-  display: block;
-  white-space: nowrap;
-  font-size: 13px;
-  padding: 6px 18px;
-  border-bottom: 1px solid #eaeaea;
-  border-left: 1px solid #eaeaea;
-  border-right: 1px solid #eaeaea;
-}
-.dc-answer-commands .btn-more .hide-commands a:hover {
-  color: #009999;
-}
-.dc-answer-commands.bottom .btn-more .hide-commands {
+.dc-answer-commands.bottom .btn-more .dc-hide-commands {
   padding-bottom: 15px;
   top: auto;
   bottom: 10px;

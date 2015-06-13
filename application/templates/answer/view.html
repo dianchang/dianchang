@@ -118,7 +118,7 @@
         {% for random_answer in answer.user.random_answers %}
             <div class="more-answer">
                 <a href="{{ url_for('question.view', uid=random_answer.question.id) }}"
-                   class="question-title link-no-underline link-color">
+                   class="question-title link-color">
                     {{ random_answer.question.title }}
                 </a>
 

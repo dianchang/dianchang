@@ -93,3 +93,31 @@ del {
 .img-rounded {
   border-radius: 2px;
 }
+.dc-hide-commands-trigger {
+  position: relative;
+  cursor: pointer;
+}
+.dc-hide-commands-trigger:hover .dc-hide-commands {
+  display: block;
+}
+.dc-hide-commands-trigger .dc-hide-commands {
+  position: absolute;
+  display: none;
+  right: 0;
+  top: 10px;
+  padding-top: 15px;
+}
+.dc-hide-commands-trigger .dc-hide-commands > a {
+  background-color: white;
+  color: #666;
+  display: block;
+  white-space: nowrap;
+  font-size: 13px;
+  padding: 6px 18px;
+  border-bottom: 1px solid #eaeaea;
+  border-left: 1px solid #eaeaea;
+  border-right: 1px solid #eaeaea;
+}
+.dc-hide-commands-trigger .dc-hide-commands > a:hover {
+  color: #009999;
+}

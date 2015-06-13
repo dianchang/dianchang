@@ -1,3 +1,4 @@
+{# 回答操作 #}
 {% macro render_answer_commands(answer, enable_comments_spread=True, with_full_screen=True, bottom=False, dark=False) %}
     <div class="dc-answer-commands {% if bottom %}bottom{% endif %}">
         {% set upvoted = answer.upvoted_by_user() %}
@@ -45,10 +46,10 @@
                 0
             </a>
 
-            <span class="btn-more">
+            <span class="btn-more dc-hide-commands-trigger">
                 更多
 
-                <span class="hide-commands">
+                <span class="hide-commands dc-hide-commands">
                     {# 感谢 #}
                     <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
                        href="javascript: void(0)">
@@ -279,15 +280,15 @@
 {% endmacro %}
 
 
+{# 回答 #}
 {% macro render_answers(answers) %}
     {% for answer in answers %}
         {{ render_answer(answer) }}
     {% endfor %}
-
-
 {% endmacro %}
 
 
+{# 评论 #}
 {% macro render_answer_comment(comment) %}
     <div class="answer-comment media">
         <div class="media-left">
