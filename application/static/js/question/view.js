@@ -151,7 +151,12 @@ $(document).on('click', '.btn-delete-topic', function () {
 
     if (!g.signin) {
         window.location = urlFor('account.signin');
-        return;
+        return false;
+    }
+
+    if ($('.topics .topic-wap').length <= 1) {
+        alert('请至少绑定一个话题');
+        return false;
     }
 
     $.ajax({
