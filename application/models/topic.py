@@ -373,6 +373,9 @@ class UserTopicStatistic(db.Model):
     selected = db.Column(db.Boolean, default=False)  # 是否选择该话题作为擅长话题
     show_order = db.Column(db.Integer, default=0)  # 擅长话题排列顺序（越大越排在后面）
     experience = db.Column(db.String(200))  # 话题经验
+    week_answers_count = db.Column(db.String(200))  # 近7天的回答数，以数组的 json 形式存入，例如：[1,2,3,4,5,6,7]，越往左天数越早
+    week_upvotes_count = db.Column(db.String(200))  # 近7天的赞同数，格式同上
+    week_score = db.Column(db.Float, default=0)  # 近7天的表现得分
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
@@ -399,7 +402,7 @@ class UserTopicStatistic(db.Model):
     def remove_answer_from_topic(user_id, topic_id):
         """从某话题中移除回答"""
         topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
-                                                        UserTopicStatistic.user_id == user_id).first()
+                                                       UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
             if topic_expert.answers_count > 0:
                 topic_expert.answers_count -= 1
@@ -415,7 +418,7 @@ class UserTopicStatistic(db.Model):
     def upvote_answer_in_topic(user_id, topic_id, count=1):
         """在该话题下赞同该用户"""
         topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
-                                                        UserTopicStatistic.user_id == user_id).first()
+                                                       UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
             topic_expert.upvotes_count += count
         else:
@@ -428,7 +431,7 @@ class UserTopicStatistic(db.Model):
     def cancel_upvote_answer_in_topic(user_id, topic_id, count=1):
         """取消在该话题下对该用户的赞同"""
         topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
-                                                        UserTopicStatistic.user_id == user_id).first()
+                                                       UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
             if topic_expert.upvotes_count >= count:
                 topic_expert.upvotes_count -= count
@@ -443,6 +446,11 @@ class UserTopicStatistic(db.Model):
     def calculate_score(self):
         """计算擅长度"""
         self.score = self.answers_count + self.upvotes_count
+
+    def calculate_week_score(self):
+        """计算近7天的得分"""
+        # TODO
+        pass
 
 
 def _intersect_list(a, b):

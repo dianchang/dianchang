@@ -15,7 +15,7 @@ class Answer(db.Model):
     content_preview_length = db.Column(db.Integer, default=0)
     score = db.Column(db.Integer, default=0)
     hide = db.Column(db.Boolean, default=False)
-    topic_experience = db.Column(db.String(100))
+    topic_experience = db.Column(db.String(100))  # 用户在回答时采用的话题经验
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     comments_count = db.Column(db.Integer, default=0)
