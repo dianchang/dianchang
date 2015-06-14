@@ -145,7 +145,7 @@ $('.btn-finish-add-topic').click(function () {
 });
 
 // 删除话题
-$('.btn-delete-topic').click(function () {
+$(document).on('click', '.btn-delete-topic', function () {
     var topicId = parseInt($(this).data('id'));
     var _this = $(this);
 
@@ -202,12 +202,14 @@ $topicInput.typeahead({
 // 通过选择autocomplete菜单项添加话题
 $topicInput.on('typeahead:selected', function (e, topic) {
     addToTopic(g.questionId, {topic_id: topic.id});
+    e.stopPropagation();
 });
 
 // 通过回车添加话题
 $topicInput.on('keyup', function (e) {
     if (e.which === 13) {
         addToTopic(g.questionId, {name: $(this).val()});
+        e.stopPropagation();
     }
 });
 

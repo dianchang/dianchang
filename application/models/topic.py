@@ -413,7 +413,7 @@ class UserTopicStatistic(db.Model):
 
     @staticmethod
     def upvote_answer_in_topic(user_id, topic_id, count=1):
-        """感谢某话题下的回答"""
+        """在该话题下赞同该用户"""
         topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
                                                         UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
@@ -426,7 +426,7 @@ class UserTopicStatistic(db.Model):
 
     @staticmethod
     def cancel_upvote_answer_in_topic(user_id, topic_id, count=1):
-        """取消感谢某话题下的回答"""
+        """取消在该话题下对该用户的赞同"""
         topic_expert = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic_id,
                                                         UserTopicStatistic.user_id == user_id).first()
         if topic_expert:
