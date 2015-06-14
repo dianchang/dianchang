@@ -15,24 +15,39 @@
 
 {% macro _render_answers(answers) %}
     {% for answer in answers %}
+        <a name="answer{{ answer.id }}"></a>
         <div class="answer">
             <div class="answerer-info media">
                 <div class="media-left">
-                    <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+                    <a href="{{ answer.user.avatar_url }}">
+                        <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+                    </a>
                 </div>
 
                 <div class="media-body">
-                    <div>
-                        <a href="{{ answer.user.profile_url }}">
+                    <div class="answerer">
+                        <a href="{{ answer.user.profile_url }}" class="name">
                             {{ answer.user.name }}
                         </a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
                     </div>
 
-                    <div>{{ answer.content|safe }}</div>
-
-                    {{ render_answer_commands(answer) }}
+                    <div class="upvoters text-light">
+                        收到 {{ answer.upvotes_count }} 个赞同，分别来自
+                        {% for upvote in answer.upvotes.limit(3) %}
+                            <a href="{{ upvote.user.profile_url }}" class="text-light">
+                                {{ upvote.user.name }}
+                            </a>
+                        {% endfor %}
+                        {% if answer.upvotes_count > 3 %}
+                            <a href="#" class="text-light">查看全部</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+
+            <div class="answer-content">{{ answer.content|safe }}</div>
+
+            {{ render_answer_commands(answer) }}
         </div>
     {% endfor %}
 {% endmacro %}
@@ -113,19 +128,28 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <div>
-                    {% set answers_count = question.answers.count() %}
+                {% set answers_count = question.answers.count() %}
 
-                    {{ answers_count }}人回答
+                <div class="content-tabs clearfix">
+                    <a href="javascript: void(0)" class="{% if answers_count %}active{% endif %}" data-target="answers">
+                        {{ answers_count }} 人回答</a>
+                    <a href="javascript: void(0)" class="{% if not answers_count %}active{% endif %}"
+                       data-target="invitation">邀请回答</a>
+                </div>
 
+                <div class="answers content-item {% if answers_count %}active{% endif %}">
                     {% if answers_count %}
-                        {{ _render_answers(answers) }}
+                        <div class="showed-answers">
+                            {{ _render_answers(answers) }}
+                        </div>
 
                         {% if hided_answers.count() %}
-                            <a href="javascript:void(0)" class="btn-toggle-hided-answers">
-                                {{ hided_answers.count() }} 个回答被折叠
-                            </a>
-                            （<a target="_blank" href="http://www.zhihu.com/question/20120168">为什么</a>）
+                            <div class="toogle-hided-answers-wap">
+                                <a href="javascript:void(0)" class="btn-toggle-hided-answers text-light">
+                                    {{ hided_answers.count() }} 个回答被折叠
+                                </a>（<a target="_blank" class="text-light"
+                                        href="http://www.zhihu.com/question/20120168">为什么？</a>）
+                            </div>
                         {% endif %}
 
                         <div class="hided-answers">
@@ -136,8 +160,20 @@
                     {% endif %}
                 </div>
 
+                <div class="invitation content-item {% if not answers_count %}active{% endif %}">
+                    邀请
+                </div>
+
                 {% if answered %}
-                    <p class="help-block">你已经回答过此问题</p>
+                    <div class="answered-tip-wap">
+                        <img src="{{ g.user.avatar_url }}" alt="" class="img-circle"/>
+
+                        <p class="help-block">
+                            你已经回答过此问题，你可以对
+                            <a href="{{ url_for('question.view', uid=question.id) }}#answer{{ my_answer_id }}">现有的回答</a>
+                            进行修改，或者 <a href="#">直接分享</a></p>
+                    </div>
+
                 {% else %}
                     <a name="draft"></a>
                     <a name="answer"></a>
@@ -150,7 +186,7 @@
                         </div>
                         <div class="help-block tip-save-draft"></div>
 
-                        <button type="submit" class="btn btn-default btn-primary pull-right">
+                        <button type="submit" class="btn btn-primary pull-right">
                             发布回答
                         </button>
                     </form>
@@ -162,9 +198,9 @@
 
                 {% for relevant_question in question.relevant_questions %}
                     <div class="relevant-question">
-                        <a href="{{ url_for('question.view', uid=relevant_question.id) }}">
+                        <a href="{{ url_for('question.view', uid=relevant_question.id) }}" class="title">
                             {{ relevant_question.title }}</a>
-                        <small>{{ relevant_question.answers.count() }} 回答</small>
+                        <span class="text-light answers-count">{{ relevant_question.answers_count }} 回答</span>
                     </div>
                 {% endfor %}
             </div>

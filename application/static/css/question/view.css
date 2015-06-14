@@ -159,6 +159,91 @@
   width: 30px;
   height: 30px;
 }
+.content-tabs {
+  margin-top: 15px;
+  border-bottom: 1px solid #eaeaea;
+}
+.content-tabs a {
+  margin-bottom: -1px;
+  display: inline-block;
+  color: #999;
+  padding: 15px 0;
+  margin-right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.content-tabs a.active {
+  color: #333;
+  border-bottom: 1px solid #333;
+}
+.content-item {
+  display: none;
+}
+.content-item.active {
+  display: block;
+}
+.answers .answer {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eaeaea;
+}
+.answers .answer .media-left img {
+  width: 40px;
+  height: 40px;
+}
+.answers .answer .answerer-info {
+  margin-bottom: 20px;
+}
+.answers .answer .answerer-info .answerer {
+  margin-bottom: 2px;
+}
+.answers .answer .answerer-info .answerer .name {
+  color: #333;
+  font-weight: bold;
+}
+.answers .answer .answer-content {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+.answers .showed-answers .answer:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+.answers .toogle-hided-answers-wap {
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+  padding: 20px 0;
+  font-size: 16px;
+  color: #999;
+}
+h3 {
+  margin-top: 30px;
+}
 .hided-answers {
   display: none;
+}
+.answered-tip-wap {
+  text-align: center;
+  padding-top: 35px;
+  font-size: 16px;
+}
+.answered-tip-wap img {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 20px auto;
+  opacity: .4;
+  display: block;
+}
+.answered-tip-wap a {
+  color: #009999;
+}
+.relevant-question {
+  margin-bottom: 15px;
+}
+.relevant-question .title {
+  color: #009999;
+}
+.relevant-question .answers-count {
+  margin-left: 10px;
 }

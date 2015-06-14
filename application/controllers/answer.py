@@ -25,7 +25,10 @@ def upvote(uid):
     if upvote_answer.count():
         map(db.session.delete, upvote_answer)
         answer.calculate_score()  # 更新回答分值
+        answer.upvotes_count -= 1
+        answer.user.upvotes_count -= 1
         db.session.add(answer)
+        db.session.add(answer.user)
         db.session.commit()
 
         # 更新话题统计数据
@@ -87,6 +90,7 @@ def upvote(uid):
 
         # 更新用户获得的赞同数
         answer.user.upvotes_count += 1
+        answer.upvotes_count += 1
         db.session.add(answer.user)
 
         db.session.commit()

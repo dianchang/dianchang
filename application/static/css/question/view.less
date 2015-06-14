@@ -1,3 +1,5 @@
+@import "../utils";
+
 .navbar {
   margin-bottom: 0;
 }
@@ -222,6 +224,115 @@
   }
 }
 
+.content-tabs {
+  margin-top: 15px;
+  border-bottom: 1px solid @border-color;
+
+  a {
+    margin-bottom: -1px;
+    display: inline-block;
+    color: #999;
+    padding: 15px 0;
+    margin-right: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+
+    &.active {
+      color: #333;
+      border-bottom: 1px solid #333;
+    }
+  }
+}
+
+.content-item {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.answers {
+  .answer {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid @border-color;
+
+    .media-left {
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .answerer-info {
+      margin-bottom: 20px;
+
+      .answerer {
+        margin-bottom: 2px;
+
+        .name {
+          color: #333;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .answer-content {
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+  }
+
+  .showed-answers .answer:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .toogle-hided-answers-wap {
+    border-top: 1px solid @border-color;
+    border-bottom: 1px solid @border-color;
+    padding: 20px 0;
+    font-size: 16px;
+    color: #999;
+  }
+}
+
+h3 {
+  margin-top: 30px;
+}
+
 .hided-answers {
   display: none;
+}
+
+.answered-tip-wap {
+  text-align: center;
+  padding-top: 35px;
+  font-size: 16px;
+
+  img {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 20px auto;
+    opacity: .4;
+    display: block;
+  }
+
+  a {
+    color: @main-color;
+  }
+}
+
+.relevant-question {
+  margin-bottom: 15px;
+
+  .title {
+    color: @main-color;
+  }
+
+  .answers-count {
+    margin-left: 10px;
+  }
 }

@@ -205,3 +205,24 @@ def remove_html(text):
     s = MLStripper()
     s.feed(text)
     return s.get_data()
+
+
+def increase_count(model, attr):
+    """对model实例的attr属性+1"""
+    current_value = getattr(model, attr)
+    if not current_value:
+        setattr(model, attr, 1)
+    else:
+        setattr(model, attr, current_value + 1)
+
+
+def decrease_count(model, attr):
+    """对model实例的attr属性-1"""
+    current_value = getattr(model, attr)
+    if not current_value:
+        setattr(model, attr, 0)
+    result_value = current_value - 1
+    if result_value < 0:
+        setattr(model, attr, 0)
+    else:
+        setattr(model, attr, result_value)

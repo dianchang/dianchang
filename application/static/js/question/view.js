@@ -212,7 +212,22 @@ $topicInput.on('keyup', function (e) {
     }
 });
 
-// 自动保存
+// 切换content tabs
+$('.content-tabs a').click(function () {
+    var showTargetClass = "";
+    var hideTargetClass = "";
+
+    $('.content-tabs a').not(this)
+        .removeClass('active')
+        .each(function (index, element) {
+            $("." + $(element).data('target')).hide();
+        });
+
+    $(this).addClass('active');
+    $("." + $(this).data('target')).show();
+});
+
+// 自动保存草稿
 $answerTextarea.on('keyup', function () {
     var content = $.trim($(this).val());
 
