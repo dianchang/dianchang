@@ -3,11 +3,69 @@ from flask import Blueprint, render_template, redirect, url_for, request, g, abo
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
     UserTopicStatistic, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
-    NOTIFICATION_KIND
+    NOTIFICATION_KIND, InviteAnswer
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
 bp = Blueprint('question', __name__)
+
+
+@bp.route('/question/<int:uid>')
+def view(uid):
+    """问题首页"""
+    question = Question.query.get_or_404(uid)
+
+    # 当前用户的回答信息
+    my_answer_id = 0
+    answered = False
+    if g.user:
+        my_answer = question.answers.filter(Answer.user_id == g.user.id).first()
+        if my_answer:
+            my_answer_id = my_answer.id
+            answered = True
+
+    answers = question.answers.filter(~Answer.hide)
+    hided_answers = question.answers.filter(Answer.hide)
+    followers = question.followers.order_by(FollowQuestion.created_at.desc()).limit(8)
+
+    # 已邀请
+    invited_users = None
+    invited_users_id_list = []
+    if g.user:
+        invited_users = InviteAnswer.query.filter(InviteAnswer.question_id == uid,
+                                                  InviteAnswer.inviter_id == g.user.id)
+        invited_users_id_list = [invited_user.user_id for invited_user in invited_users]
+
+    # 邀请回答人选
+    invite_candidates = None
+    topics_id_list = [topic.topic_id for topic in question.topics]
+    if g.user:
+        invite_candidates = UserTopicStatistic.query. \
+            filter(UserTopicStatistic.topic_id.in_(topics_id_list)). \
+            filter(UserTopicStatistic.user_id.notin_(invited_users_id_list)). \
+            order_by(UserTopicStatistic.score.desc()).limit(16)
+
+    # 话题经验，按 topics_id_list 排序
+    topics_experience = []
+    if g.user:
+        for topic_id in topics_id_list:
+            topic_experience = UserTopicStatistic.query. \
+                filter(UserTopicStatistic.user_id == g.user.id,
+                       UserTopicStatistic.topic_id == topic_id).first()
+            if topic_experience:
+                topics_experience.append(topic_experience)
+
+    # 草稿
+    if g.user:
+        draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
+        if draft:
+            draft = draft.content
+    else:
+        draft = ""
+    return render_template('question/view.html', question=question, draft=draft, answered=answered,
+                           my_answer_id=my_answer_id, answers=answers, hided_answers=hided_answers,
+                           followers=followers, invited_users=invited_users, invite_candidates=invite_candidates,
+                           topics_experience=topics_experience)
 
 
 @bp.route('/question/add', methods=['GET', 'POST'])
@@ -54,34 +112,6 @@ def add():
         db.session.commit()
         return redirect(url_for('.view', uid=question.id))
     return render_template('question/add.html', form=form)
-
-
-@bp.route('/question/<int:uid>')
-def view(uid):
-    """问题首页"""
-    question = Question.query.get_or_404(uid)
-
-    my_answer_id = 0
-    answered = False
-    if g.user:
-        my_answer = question.answers.filter(Answer.user_id == g.user.id).first()
-        if my_answer:
-            my_answer_id = my_answer.id
-            answered = True
-
-    answers = question.answers.filter(~Answer.hide)
-    hided_answers = question.answers.filter(Answer.hide)
-    followers = question.followers.order_by(FollowQuestion.created_at.desc()).limit(8)
-
-    # 草稿
-    if g.user:
-        draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
-        if draft:
-            draft = draft.content
-    else:
-        draft = ""
-    return render_template('question/view.html', question=question, draft=draft, answered=answered,
-                           my_answer_id=my_answer_id, answers=answers, hided_answers=hided_answers, followers=followers)
 
 
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])

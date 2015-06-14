@@ -173,10 +173,10 @@ class InviteAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 被邀请者
     user = db.relationship('User', foreign_keys=[user_id])
 
-    inviter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    inviter_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 邀请者
     inviter = db.relationship('User', foreign_keys=[inviter_id])
 
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
