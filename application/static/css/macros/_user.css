@@ -49,6 +49,7 @@
 }
 .dc-user-page-header .commands .dc-hide-commands-trigger .dc-hide-commands {
   top: 20px;
+  right: -1px;
   padding-top: 18px;
 }
 .dc-user-page-header .commands .btn-block-user .for-blocked {
