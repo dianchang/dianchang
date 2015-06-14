@@ -123,7 +123,19 @@
                     {% endif %}
                 </div>
 
+                {# 邀请 #}
                 <div class="invitation-wap content-item {% if not answers_count %}active{% endif %}">
+                    <div class="invited-users-wap {% if not invited_users_count %}empty{% endif %} text-light">
+                        你已经邀请
+                        <span class="invited-users">
+                            {% for invited_user in invited_users %}
+                                <a href="{{ invited_user.user.profile_url }}" class="invited-user text-light">
+                                    {{ invited_user.user.name }}</a>
+                                {% if not loop.last %}、{% endif %}
+                            {% endfor %}
+                        </span>
+                        回答此问题
+                    </div>
                     <div class="header">
                         <input type="text" name="user" class="form-control"
                                placeholder="通过话题经验关键词（如：产品经理）或用户名来查找邀请用户"/>

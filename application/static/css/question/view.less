@@ -299,8 +299,26 @@ h3 {
   margin-top: 30px;
 }
 
+// 邀请
 .invitation-wap {
   border: 1px solid #ddd;
+
+  .invited-users-wap {
+    padding: 15px 15px 0 15px;
+
+    &.empty {
+      display: none;
+    }
+
+    .invited-users {
+      margin: 0 3px;
+
+      .invited-user {
+        color: #333;
+        font-weight: bold;
+      }
+    }
+  }
 
   .header {
     padding: 15px 15px;

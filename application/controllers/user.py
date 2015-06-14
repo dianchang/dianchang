@@ -219,3 +219,20 @@ def report(uid):
         return json.dumps({
             'result': False
         })
+
+
+@bp.route('/user/query', methods=['POST'])
+@UserPermission()
+def query():
+    """查询用户"""
+    q = request.form.get('q')
+    exclude_id = request.form.get('exclude_id', type=int)
+    users, total, took = User.query_from_es(q)
+    results = []
+    for user in users:
+        if user.id != exclude_id:
+            results.append({
+                'id': user.id,
+                'name': user.name
+            })
+    return json.dumps(results)

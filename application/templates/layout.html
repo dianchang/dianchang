@@ -17,7 +17,8 @@
             csrfToken: "{{ csrf_token() }}",
             rules: {{ rules|safe }},
             method: "{{ request.method }}",
-            signin: {% if g.user %}true{% else %}false{% endif %}
+            signin: {% if g.user %}true{% else %}false{% endif %},
+            userId: {% if g.user %}{{ g.user.id }}{% else %}false{% endif %}
         };
     </script>
     {{ libs_js() }}

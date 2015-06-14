@@ -219,6 +219,19 @@ h3 {
 .invitation-wap {
   border: 1px solid #ddd;
 }
+.invitation-wap .invited-users-wap {
+  padding: 15px 15px 0 15px;
+}
+.invitation-wap .invited-users-wap.empty {
+  display: none;
+}
+.invitation-wap .invited-users-wap .invited-users {
+  margin: 0 3px;
+}
+.invitation-wap .invited-users-wap .invited-users .invited-user {
+  color: #333;
+  font-weight: bold;
+}
 .invitation-wap .header {
   padding: 15px 15px;
   border-bottom: 1px solid #ddd;

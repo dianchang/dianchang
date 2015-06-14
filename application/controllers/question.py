@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, g, abo
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
     UserTopicStatistic, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
-    NOTIFICATION_KIND, InviteAnswer
+    NOTIFICATION_KIND, InviteAnswer, User, ComposeFeed, COMPOSE_FEED_KIND
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -31,10 +31,13 @@ def view(uid):
     # 已邀请
     invited_users = None
     invited_users_id_list = []
+    invited_users_count = 0
     if g.user:
-        invited_users = InviteAnswer.query.filter(InviteAnswer.question_id == uid,
-                                                  InviteAnswer.inviter_id == g.user.id)
+        invited_users = InviteAnswer.query. \
+            filter(InviteAnswer.question_id == uid,
+                   InviteAnswer.inviter_id == g.user.id)
         invited_users_id_list = [invited_user.user_id for invited_user in invited_users]
+        invited_users_count = len(invited_users_id_list)
 
     # 邀请回答人选
     invite_candidates = None
@@ -65,7 +68,7 @@ def view(uid):
     return render_template('question/view.html', question=question, draft=draft, answered=answered,
                            my_answer_id=my_answer_id, answers=answers, hided_answers=hided_answers,
                            followers=followers, invited_users=invited_users, invite_candidates=invite_candidates,
-                           topics_experience=topics_experience)
+                           topics_experience=topics_experience, invited_users_count=invited_users_count)
 
 
 @bp.route('/question/add', methods=['GET', 'POST'])
@@ -342,4 +345,40 @@ def answer(uid):
     return json.dumps({
         'result': True,
         'html': macro(answer)
+    })
+
+
+@bp.route('/question/<int:uid>/invite/<int:user_id>', methods=['POST'])
+@UserPermission()
+def invite(uid, user_id):
+    """邀请回答"""
+    if user_id == g.user.id:
+        return json.dumps({
+            'result': False
+        })
+
+    question = Question.query.get_or_404(uid)
+    user = User.query.get_or_404(user_id)
+    invitation = InviteAnswer.query.filter(InviteAnswer.question_id == uid,
+                                           InviteAnswer.user_id == user_id,
+                                           InviteAnswer.inviter_id == g.user.id).first()
+    if invitation:
+        return json.dumps({
+            'result': False
+        })
+
+    invitation = InviteAnswer(question_id=uid, user_id=user_id, inviter_id=g.user.id)
+    db.session.add(invitation)
+    db.session.commit()
+
+    # FEED：插入到用户的撰写FEED中
+    feed = ComposeFeed(kind=COMPOSE_FEED_KIND.INVITE_TO_ANSWER, invitation_id=invitation.id,
+                       user_id=user_id)
+    db.session.add(feed)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True,
+        'username': user.name,
+        'user_profile_url': user.profile_url
     })

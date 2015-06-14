@@ -330,6 +330,9 @@ class ComposeFeed(db.Model):
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question')
 
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invite_answer.id'))
+    invitation = db.relationship('InviteAnswer')
+
 
 class BlockUser(db.Model):
     """屏蔽用户"""

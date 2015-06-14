@@ -1,9 +1,8 @@
 var $titleWap = $('.title-wap');
 var $titleInput = $('.title-wap input');
 var $title = $('.title-wap .title');
-var timerForTypeahead = null;
+var timerForTopicTypeahead = null;
 var $topicInput = $("input[name='topic']");
-var $answerTextarea = $("textarea[name='']");
 var timerForAnswer = null;
 var $draftTip = $('.tip-save-draft');
 
@@ -179,11 +178,11 @@ $topicInput.typeahead({
 }, {
     displayKey: 'name',
     source: function (q, cb) {
-        if (timerForTypeahead) {
-            clearTimeout(timerForTypeahead);
+        if (timerForTopicTypeahead) {
+            clearTimeout(timerForTopicTypeahead);
         }
 
-        timerForTypeahead = setTimeout(function () {
+        timerForTopicTypeahead = setTimeout(function () {
             $.ajax({
                 url: urlFor('topic.query'),
                 method: 'post',
@@ -229,6 +228,71 @@ $('.content-tabs a').click(function () {
 
     $(this).addClass('active');
     $("." + $(this).data('target')).show();
+});
+
+var $invitationInput = $('.invitation-wap input');
+var timerForInvitationTypeahead = null;
+
+$invitationInput.typeahead({
+    minLength: 1,
+    highlight: true,
+    hint: false
+}, {
+    displayKey: 'name',
+    source: function (q, cb) {
+        var data = {q: q};
+
+        if (timerForInvitationTypeahead) {
+            clearTimeout(timerForInvitationTypeahead);
+        }
+
+        if (g.signin) {
+            data.exclude_id = g.userId;
+        }
+
+        timerForInvitationTypeahead = setTimeout(function () {
+            $.ajax({
+                url: urlFor('user.query'),
+                method: 'post',
+                dataType: 'json',
+                data: data
+            }).done(function (matchs) {
+                cb(matchs);
+            });
+        }, 300);
+    },
+    templates: {
+        'suggestion': function (data) {
+            return '<p>' + data.name + '</p>';
+        }
+    }
+});
+
+$('.invitation-wap .header .twitter-typeahead').css('display', 'block');
+
+// 通过选择 typeahead 提示邀请用户
+$invitationInput.on('typeahead:selected', function (e, user) {
+    $.ajax({
+        url: urlFor('question.invite', {uid: g.questionId, user_id: user.id}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            var html = "";
+            var $invitedUsersWap = $('.invited-users-wap');
+
+            if (!$invitedUsersWap.hasClass('empty')) {
+                html += "、";
+            }
+            html += "<a href='" + response.user_profile_url + "' class='invited-user text-light'>"
+                + response.username + "</a>";
+
+            $invitedUsersWap.removeClass('empty');
+            $('.invited-users').append(html);
+        }
+
+        $invitationInput.val('');
+    });
 });
 
 // 初始化回答富文本编辑器
