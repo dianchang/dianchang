@@ -207,14 +207,15 @@ $topicInput.typeahead({
 // 通过选择autocomplete菜单项添加话题
 $topicInput.on('typeahead:selected', function (e, topic) {
     addToTopic(g.questionId, {topic_id: topic.id});
-    e.stopPropagation();
 });
 
 // 通过回车添加话题
-$topicInput.on('keyup', function (e) {
+// 这里似乎只能用 keypress，而不能用 keydown 或 keyup，
+// 否则在触发 typeahead:selected 时也会触发 keydown 与 keyup，
+// 造成话题的重复添加
+$topicInput.on('keypress', function (e) {
     if (e.which === 13) {
         addToTopic(g.questionId, {name: $(this).val()});
-        e.stopPropagation();
     }
 });
 
