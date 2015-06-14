@@ -3,10 +3,9 @@ var $titleInput = $('.title-wap input');
 var $title = $('.title-wap .title');
 var timerForTypeahead = null;
 var $topicInput = $("input[name='topic']");
-var $answerTextarea = $("textarea[name]");
+var $answerTextarea = $("textarea[name='']");
 var timerForAnswer = null;
 var $draftTip = $('.tip-save-draft');
-
 
 // 编辑标题
 $('.btn-edit-title').click(function () {
@@ -214,9 +213,6 @@ $topicInput.on('keyup', function (e) {
 
 // 切换content tabs
 $('.content-tabs a').click(function () {
-    var showTargetClass = "";
-    var hideTargetClass = "";
-
     $('.content-tabs a').not(this)
         .removeClass('active')
         .each(function (index, element) {
@@ -225,34 +221,6 @@ $('.content-tabs a').click(function () {
 
     $(this).addClass('active');
     $("." + $(this).data('target')).show();
-});
-
-// 自动保存草稿
-$answerTextarea.on('keyup', function () {
-    var content = $.trim($(this).val());
-
-    if (timerForAnswer) {
-        clearTimeout(timerForAnswer);
-    }
-
-    $draftTip.text('保存中...');
-
-    timerForAnswer = setTimeout(function () {
-        $.ajax({
-            url: urlFor('question.save_answer_draft', {uid: g.questionId}),
-            method: 'post',
-            dataType: 'json',
-            data: {
-                content: content
-            }
-        }).done(function (response) {
-            if (response.result) {
-                $draftTip.text('已保存');
-            } else {
-                $draftTip.text('系统繁忙');
-            }
-        });
-    }, 4000);
 });
 
 // 初始化回答富文本编辑器
@@ -271,12 +239,64 @@ if (!g.answered) {
     if (window.location.hash === "#answer") {
         answerEditor.focus();
     }
+
+    // 自动保存草稿
+    answerEditor.on('valuechanged', function () {
+        var content = answerEditor.getValue();
+
+        if (timerForAnswer) {
+            clearTimeout(timerForAnswer);
+        }
+
+        $draftTip.text('保存中...');
+
+        timerForAnswer = setTimeout(function () {
+            $.ajax({
+                url: urlFor('question.save_answer_draft', {uid: g.questionId}),
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    content: content
+                }
+            }).done(function (response) {
+                if (response.result) {
+                    $draftTip.text('已保存');
+                } else {
+                    $draftTip.text('系统繁忙');
+                }
+            });
+        }, 4000);
+    });
+
+    // 提交回答
+    $('.btn-submit-answer').click(function () {
+        var answer_content = answerEditor.getValue();
+
+        clearTimeout(timerForAnswer);
+
+        $.ajax({
+            url: urlFor('question.answer', {uid: g.questionId}),
+            dataType: 'json',
+            method: 'post',
+            data: {
+                answer: answer_content
+            }
+        }).done(function (response) {
+            if (response.result) {
+                var answersCount = parseInt($('.answers-count').text());
+
+                $('.answers-tab-item').click();
+                $(response.html).hide().appendTo($('.showed-answers')).fadeIn('slow');
+                $('.answers-count').text(answersCount + 1);
+                $('.new-answer-wap').detach();
+            }
+        });
+    });
 }
 
 // 显示 & 隐藏被折叠的回答
 $('.btn-toggle-hided-answers').click(function () {
     $('.hided-answers').toggle();
-    console.log(1);
 });
 
 /**

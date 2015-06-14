@@ -225,23 +225,23 @@
 }
 
 .content-tabs {
-  margin-top: 15px;
-  border-bottom: 1px solid @border-color;
+  margin: 30px 0 25px 0;
 
   a {
-    margin-bottom: -1px;
     display: inline-block;
     color: #999;
-    padding: 15px 0;
-    margin-right: 20px;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
 
     &.active {
       color: #333;
-      border-bottom: 1px solid #333;
     }
+  }
+
+  .divider {
+    color: #999;
+    margin: 0 5px;
   }
 }
 
@@ -255,9 +255,9 @@
 
 .answers {
   .answer {
-    padding-top: 30px;
+    padding-top: 10px;
     padding-bottom: 30px;
-    border-bottom: 1px solid @border-color;
+    border-top: 1px solid @border-color;
 
     .media-left {
       img {
@@ -285,11 +285,6 @@
     }
   }
 
-  .showed-answers .answer:last-child {
-    border-bottom: 0;
-    margin-bottom: 0;
-  }
-
   .toogle-hided-answers-wap {
     border-top: 1px solid @border-color;
     border-bottom: 1px solid @border-color;
@@ -303,14 +298,32 @@ h3 {
   margin-top: 30px;
 }
 
+.invitation-wap {
+  border: 1px solid #ddd;
+
+  .header {
+    padding: 15px 15px;
+    border-bottom: 1px solid #ddd;
+
+    .form-control {
+      padding: 18px 12px;
+    }
+  }
+
+  .recommend-wap {
+    padding: 15px;
+  }
+}
+
 .hided-answers {
   display: none;
 }
 
 .answered-tip-wap {
   text-align: center;
-  padding-top: 35px;
+  padding-top: 30px;
   font-size: 16px;
+  border-top: 1px solid @border-color;
 
   img {
     width: 40px;
@@ -322,6 +335,46 @@ h3 {
 
   a {
     color: @main-color;
+  }
+}
+
+.myself {
+  margin-top: 30px;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .myself-info {
+    margin-bottom: 3px;
+
+    a {
+      color: #333;
+      font-weight: bold;
+    }
+  }
+
+  .commands {
+    .divider {
+      margin: 0 3px;
+    }
+  }
+}
+
+form {
+  margin-top: 18px;
+
+  .tip-save-draft {
+    color: #999;
+  }
+
+  .simditor {
+    margin-bottom: 15px;
+
+    .simditor-body {
+      min-height: 200px;
+    }
   }
 }
 

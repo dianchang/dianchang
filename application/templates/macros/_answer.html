@@ -279,6 +279,48 @@
 {% endmacro %}
 
 
+{# 在问题页中显示的回答 #}
+{% macro render_answer_in_question(answer) %}
+    <div class="answer">
+        <a name="answer{{ answer.id }}"></a>
+
+        <div class="answerer-info media">
+            <div class="media-left">
+                <a href="{{ answer.user.avatar_url }}">
+                    <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+                </a>
+            </div>
+
+            <div class="media-body">
+                <div class="answerer">
+                    <a href="{{ answer.user.profile_url }}" class="name">
+                        {{ answer.user.name }}
+                    </a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
+                </div>
+
+                <div class="upvoters text-light">
+                    收到 {{ answer.upvotes_count }} 个赞同
+                    {% if answer.upvotes_count %}
+                        ，分别来自
+                        {% for upvote in answer.upvotes.limit(3) %}
+                            <a href="{{ upvote.user.profile_url }}" class="text-light">
+                                {{ upvote.user.name }}</a>{% if not loop.last %}，{% endif %}
+                        {% endfor %}
+                        {% if answer.upvotes_count > 3 %}
+                            <a href="#" class="text-light">查看全部</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="answer-content">{{ answer.content|safe }}</div>
+
+        {{ render_answer_commands(answer) }}
+    </div>
+{% endmacro %}
+
+
 {# 回答 #}
 {% macro render_answers(answers) %}
     {% for answer in answers %}

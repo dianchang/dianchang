@@ -160,22 +160,21 @@
   height: 30px;
 }
 .content-tabs {
-  margin-top: 15px;
-  border-bottom: 1px solid #eaeaea;
+  margin: 30px 0 25px 0;
 }
 .content-tabs a {
-  margin-bottom: -1px;
   display: inline-block;
   color: #999;
-  padding: 15px 0;
-  margin-right: 20px;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
 }
 .content-tabs a.active {
   color: #333;
-  border-bottom: 1px solid #333;
+}
+.content-tabs .divider {
+  color: #999;
+  margin: 0 5px;
 }
 .content-item {
   display: none;
@@ -184,9 +183,9 @@
   display: block;
 }
 .answers .answer {
-  padding-top: 30px;
+  padding-top: 10px;
   padding-bottom: 30px;
-  border-bottom: 1px solid #eaeaea;
+  border-top: 1px solid #eaeaea;
 }
 .answers .answer .media-left img {
   width: 40px;
@@ -206,10 +205,6 @@
   font-size: 16px;
   margin-bottom: 25px;
 }
-.answers .showed-answers .answer:last-child {
-  border-bottom: 0;
-  margin-bottom: 0;
-}
 .answers .toogle-hided-answers-wap {
   border-top: 1px solid #eaeaea;
   border-bottom: 1px solid #eaeaea;
@@ -220,13 +215,27 @@
 h3 {
   margin-top: 30px;
 }
+.invitation-wap {
+  border: 1px solid #ddd;
+}
+.invitation-wap .header {
+  padding: 15px 15px;
+  border-bottom: 1px solid #ddd;
+}
+.invitation-wap .header .form-control {
+  padding: 18px 12px;
+}
+.invitation-wap .recommend-wap {
+  padding: 15px;
+}
 .hided-answers {
   display: none;
 }
 .answered-tip-wap {
   text-align: center;
-  padding-top: 35px;
+  padding-top: 30px;
   font-size: 16px;
+  border-top: 1px solid #eaeaea;
 }
 .answered-tip-wap img {
   width: 40px;
@@ -237,6 +246,35 @@ h3 {
 }
 .answered-tip-wap a {
   color: #009999;
+}
+.myself {
+  margin-top: 30px;
+}
+.myself img {
+  width: 40px;
+  height: 40px;
+}
+.myself .myself-info {
+  margin-bottom: 3px;
+}
+.myself .myself-info a {
+  color: #333;
+  font-weight: bold;
+}
+.myself .commands .divider {
+  margin: 0 3px;
+}
+form {
+  margin-top: 18px;
+}
+form .tip-save-draft {
+  color: #999;
+}
+form .simditor {
+  margin-bottom: 15px;
+}
+form .simditor .simditor-body {
+  min-height: 200px;
 }
 .relevant-question {
   margin-bottom: 15px;

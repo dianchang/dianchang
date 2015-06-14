@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import topic_wap %}
 {% from "macros/_question.html" import question_follow_wap %}
-{% from "macros/_answer.html" import render_answer_commands %}
+{% from "macros/_answer.html" import render_answer_in_question %}
 
 {% block page_title %}{{ question.title }}{% endblock %}
 {% block page_vars %}
@@ -12,45 +12,6 @@
         });
     </script>
 {% endblock %}
-
-{% macro _render_answers(answers) %}
-    {% for answer in answers %}
-        <a name="answer{{ answer.id }}"></a>
-        <div class="answer">
-            <div class="answerer-info media">
-                <div class="media-left">
-                    <a href="{{ answer.user.avatar_url }}">
-                        <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
-                    </a>
-                </div>
-
-                <div class="media-body">
-                    <div class="answerer">
-                        <a href="{{ answer.user.profile_url }}" class="name">
-                            {{ answer.user.name }}
-                        </a>{% if answer.user.desc %}，{{ answer.user.desc }}{% endif %}
-                    </div>
-
-                    <div class="upvoters text-light">
-                        收到 {{ answer.upvotes_count }} 个赞同，分别来自
-                        {% for upvote in answer.upvotes.limit(3) %}
-                            <a href="{{ upvote.user.profile_url }}" class="text-light">
-                                {{ upvote.user.name }}
-                            </a>
-                        {% endfor %}
-                        {% if answer.upvotes_count > 3 %}
-                            <a href="#" class="text-light">查看全部</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <div class="answer-content">{{ answer.content|safe }}</div>
-
-            {{ render_answer_commands(answer) }}
-        </div>
-    {% endfor %}
-{% endmacro %}
 
 {% block page_content %}
     <div class="question-header">
@@ -131,37 +92,44 @@
                 {% set answers_count = question.answers.count() %}
 
                 <div class="content-tabs clearfix">
-                    <a href="javascript: void(0)" class="{% if answers_count %}active{% endif %}" data-target="answers">
-                        {{ answers_count }} 人回答</a>
+                    <a href="javascript: void(0)" class="{% if answers_count %}active{% endif %} answers-tab-item"
+                       data-target="answers">
+                        <span class="answers-count">{{ answers_count }}</span> 人回答</a>
+                    <span class="divider">·</span>
                     <a href="javascript: void(0)" class="{% if not answers_count %}active{% endif %}"
-                       data-target="invitation">邀请回答</a>
+                       data-target="invitation-wap">邀请回答</a>
                 </div>
 
                 <div class="answers content-item {% if answers_count %}active{% endif %}">
-                    {% if answers_count %}
-                        <div class="showed-answers">
-                            {{ _render_answers(answers) }}
-                        </div>
+                    <div class="showed-answers">
+                        {% for answer in answers %}
+                            {{ render_answer_in_question(answer) }}
+                        {% endfor %}
+                    </div>
 
-                        {% if hided_answers.count() %}
-                            <div class="toogle-hided-answers-wap">
-                                <a href="javascript:void(0)" class="btn-toggle-hided-answers text-light">
-                                    {{ hided_answers.count() }} 个回答被折叠
-                                </a>（<a target="_blank" class="text-light"
-                                        href="http://www.zhihu.com/question/20120168">为什么？</a>）
-                            </div>
-                        {% endif %}
+                    {% if hided_answers.count() %}
+                        <div class="toogle-hided-answers-wap">
+                            <a href="javascript:void(0)" class="btn-toggle-hided-answers text-light">
+                                {{ hided_answers.count() }} 个回答被折叠
+                            </a>（<a target="_blank" class="text-light"
+                                    href="http://www.zhihu.com/question/20120168">为什么？</a>）
+                        </div>
 
                         <div class="hided-answers">
-                            {{ _render_answers(answers) }}
+                            {% for answer in hided_answers %}
+                                {{ render_answer_in_question(answer) }}
+                            {% endfor %}
                         </div>
-                    {% else %}
-                        {# 邀请回答 #}
                     {% endif %}
                 </div>
 
-                <div class="invitation content-item {% if not answers_count %}active{% endif %}">
-                    邀请
+                <div class="invitation-wap content-item {% if not answers_count %}active{% endif %}">
+                    <div class="header">
+                        <input type="text" name="user" class="form-control"
+                               placeholder="通过话题经验关键词（如：产品经理）或用户名来查找邀请用户"/>
+                    </div>
+                    <div class="recommend-wap">
+                    </div>
                 </div>
 
                 {% if answered %}
@@ -174,22 +142,43 @@
                             进行修改，或者 <a href="#">直接分享</a></p>
                     </div>
 
-                {% else %}
-                    <a name="draft"></a>
-                    <a name="answer"></a>
-                    <form action="" method="post">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                {% elif g.user %}
+                    {# 回答表单 #}
+                    <div class="new-answer-wap">
+                        <a name="draft"></a>
+                        <a name="answer"></a>
 
-                        <div class="form-group">
+                        <div class="media myself">
+                            <div class="media-left">
+                                <a href="{{ g.user.profile_url }}">
+                                    <img src="{{ g.user.avatar_url }}" alt="" class="img-circle"/>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <div class="myself-info">
+                                    <a href="{{ g.user.profile_url }}">{{ g.user.name }}</a>
+                                    {% if g.user.desc %}，{{ g.user.desc }}{% endif %}
+                                </div>
+                                <div class="commands text-light">
+                                    <a class="btn-edit-identity text-light" href="javascript: void(0)">修改显示身份</a>
+                                    <span class="divider">·</span>
+                                    <a class="btn-edit-experience text-light" href="javascript: void(0)">编辑话题经验</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form action="" class="answer-form" method="post">
+                            <input type="hidden" name="identity"/>
+                            <input type="hidden" name="experience"/>
                         <textarea name="answer" id="" cols="30" rows="10" class="form-control"
                                   placeholder="在这里撰写答案">{{ draft or "" }}</textarea>
-                        </div>
-                        <div class="help-block tip-save-draft"></div>
 
-                        <button type="submit" class="btn btn-primary pull-right">
-                            发布回答
-                        </button>
-                    </form>
+                            <span class="tip-save-draft"></span>
+                            <button type="button" class="btn btn-primary btn-submit-answer pull-right">
+                                发布回答
+                            </button>
+                        </form>
+                    </div>
                 {% endif %}
             </div>
 

@@ -131,8 +131,10 @@ html {
   margin-top: 7px;
   margin-bottom: 7px;
 }
-.navbar .btn-ask-question:hover {
+.navbar .btn-ask-question:hover,
+.navbar .btn-ask-question:focus {
   background-color: #313843;
+  border: 2px solid #49515e;
 }
 .navbar #nav-notification {
   margin-right: 15px;
