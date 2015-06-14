@@ -278,16 +278,16 @@ h3 {
 .myself .commands .divider {
   margin: 0 3px;
 }
-form {
+form.answer-form {
   margin-top: 18px;
 }
-form .tip-save-draft {
+form.answer-form .tip-save-draft {
   color: #999;
 }
-form .simditor {
+form.answer-form .simditor {
   margin-bottom: 15px;
 }
-form .simditor .simditor-body {
+form.answer-form .simditor .simditor-body {
   min-height: 200px;
 }
 .relevant-question {
