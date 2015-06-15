@@ -11,18 +11,20 @@ bp = Blueprint('user', __name__)
 def profile(uid):
     """用户主页"""
     user = User.query.get_or_404(uid)
+    feeds = user.feeds.limit(15)
     preview = request.args.get('preview', type=int)
     preview = True if preview == 1 else False
-    return render_template('user/profile.html', user=user, preview=preview)
+    return render_template('user/profile.html', user=user, preview=preview, feeds=feeds)
 
 
 @bp.route('/people/<string:url_token>')
 def profile_with_url_token(url_token):
     """用户主页（使用url_token）"""
     user = User.query.filter(User.url_token == url_token).first_or_404()
+    feeds = user.feeds.limit(15)
     preview = request.args.get('preview', type=int)
     preview = True if preview == 1 else False
-    return render_template('user/profile.html', user=user, preview=preview)
+    return render_template('user/profile.html', user=user, preview=preview, feeds=feeds)
 
 
 @bp.route('/people/<int:uid>/follow', methods=['POST'])
