@@ -29,11 +29,21 @@ def upvote(uid):
         answer.user.upvotes_count -= 1
         db.session.add(answer)
         db.session.add(answer.user)
-        db.session.commit()
 
         # 更新话题统计数据
         for topic in answer.question.topics:
             UserTopicStatistic.cancel_upvote_answer_in_topic(answer.user_id, topic.topic_id)
+
+        # 更新用户赞同统计数据
+        statistic = UserUpvoteStatistic.query.filter(UserUpvoteStatistic.upvoter_id == g.user.id,
+                                                     UserUpvoteStatistic.user_id == answer.user_id).first()
+        if statistic:
+            statistic.upvotes_count -= 1
+            statistic.upvoter_followings_count = g.user.followings_count
+        statistic.update()
+        db.session.add(statistic)
+        
+        db.session.commit()
 
         # TODO: need to change to answer.upvotes_count
         return json.dumps({

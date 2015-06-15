@@ -27,9 +27,9 @@
         </div>
 
         <div class="upvoters-wap">
-            <div class="text-light upvotes-count">{{ user.upvotes_count }} 人赞同过{{ user.name }}</div>
+            <div class="text-light upvotes-count">{{ upvoters_count }} 人赞同过{{ user.name }}</div>
             <div class="upvoters">
-                {% for upvoter in user.upvoters %}
+                {% for upvoter in upvoters %}
                     <div class="upvoter">
                         <a href="{{ upvoter.upvoter.profile_url }}">
                             <img src="{{ upvoter.upvoter.avatar_url }}" class="img-circle" alt=""/>

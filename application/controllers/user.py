@@ -1,7 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, url_for, json, g, request
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
-    ReportUser
+    ReportUser, UserUpvoteStatistic
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('user', __name__)
@@ -137,7 +137,9 @@ def drafts():
 def achievements(uid):
     """成就"""
     user = User.query.get_or_404(uid)
-    return render_template('user/achievements.html', user=user)
+    upvoters = user.upvoters.filter(UserUpvoteStatistic.upvotes_count != 0)
+    upvoters_count = upvoters.count()
+    return render_template('user/achievements.html', user=user, upvoters=upvoters, upvoters_count=upvoters_count)
 
 
 @bp.route('/user/update_desc', methods=['POST'])
