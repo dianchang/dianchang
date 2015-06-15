@@ -66,7 +66,8 @@
 {% macro user_page_header(user, active='profile', preview=False) %}
     <div class="dc-user-page-header
         {% if user.background %}has-background{% endif %}
-        {% if preview %}preview{% endif %}">
+        {% if preview %}preview{% endif %}
+        {% if not g.user or g.user.id != user.id %}forbid-edit{% endif %}">
         <a class="text-logo link-no-underline" href="{{ url_for('site.index') }}">电</a>
 
         <div class="commands">

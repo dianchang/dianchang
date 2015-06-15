@@ -20,8 +20,11 @@
   border-bottom: 1px solid #e4e4e4;
 }
 .dc-user-page-header.preview .btn-upload-avatar,
+.dc-user-page-header.forbid-edit .btn-upload-avatar,
 .dc-user-page-header.preview .btn-edit-desc,
-.dc-user-page-header.preview .btn-edit-meta {
+.dc-user-page-header.forbid-edit .btn-edit-desc,
+.dc-user-page-header.preview .btn-edit-meta,
+.dc-user-page-header.forbid-edit .btn-edit-meta {
   display: none !important;
 }
 .dc-user-page-header .text-logo {

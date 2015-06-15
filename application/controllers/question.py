@@ -29,7 +29,7 @@ def view(uid):
     followers = question.followers.order_by(FollowQuestion.created_at.desc()).limit(8)
 
     # 已邀请
-    invited_users = None
+    invited_users = []
     invited_users_id_list = []
     invited_users_count = 0
     if g.user:
@@ -40,7 +40,7 @@ def view(uid):
         invited_users_count = len(invited_users_id_list)
 
     # 邀请回答人选
-    invite_candidates = None
+    invite_candidates = []
     invite_candidates_count = 0
     topics_id_list = [topic.topic_id for topic in question.topics]
     if g.user:
