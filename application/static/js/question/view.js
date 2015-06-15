@@ -343,6 +343,10 @@ if (!g.answered) {
     // 提交回答
     $('.btn-submit-answer').click(function () {
         var answer_content = answerEditor.getValue();
+        var $identityInput = $("input[name='identity']");
+        var identity = $.trim($identityInput.val());
+        var $experienceInput = $("input[name='experience']");
+        var experience = $.trim($experienceInput.val());
 
         clearTimeout(timerForAnswer);
 
@@ -351,7 +355,9 @@ if (!g.answered) {
             dataType: 'json',
             method: 'post',
             data: {
-                answer: answer_content
+                answer: answer_content,
+                identity: identity,
+                experience: experience
             }
         }).done(function (response) {
             if (response.result) {
@@ -405,6 +411,15 @@ $(document).on('click', '.btn-un-invite', function () {
             _this.parents('.invited-user-wap').detach();
         }
     });
+});
+
+// 修改显示身份
+$('.identity-selector label').click(function () {
+    var identity = $.trim($(this).data('identity'));
+    var identityName = $.trim($(this).text());
+
+    $("input[name='identity']").val(identity);
+    $('.identity').text(identityName);
 });
 
 /**

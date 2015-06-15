@@ -299,6 +299,8 @@ def answer(uid):
     """回答问题"""
     question = Question.query.get_or_404(uid)
     content = request.form.get('answer')
+    identity = request.form.get('identity', 'original')
+    experience = request.form.get('experience')
 
     if not content:
         return json.dumps({
@@ -306,7 +308,13 @@ def answer(uid):
         })
 
     # 存储回答
-    answer = Answer(question_id=uid, content=content, user_id=g.user.id)
+    answer = Answer(question_id=uid, content=content, user_id=g.user.id, topic_experience=experience)
+    if identity in ['anonymous', 'organization-anonymous']:  # 匿名
+        answer.anonymous = True
+        if identity == 'anonymous':
+            answer.identity = "匿名用户"
+        else:
+            answer.identity = "匿名%s员工" % (g.user.organization)
     db.session.add(answer)
 
     # 删除草稿
@@ -317,15 +325,6 @@ def answer(uid):
     db.session.commit()
     answer.save_to_es()
 
-    # 更新话题统计数据
-    for topic in question.topics:
-        UserTopicStatistic.add_answer_in_topic(g.user.id, topic.topic_id)
-
-    # FEED: 插入本人的用户FEED
-    user_feed = UserFeed(kind=USER_FEED_KIND.ANSWER_QUESTION, answer_id=answer.id)
-    g.user.feeds.append(user_feed)
-    db.session.add(g.user)
-
     # FEED: 插入提问者的用户NOTI
     if g.user.id != question.user_id:
         noti = Notification(kind=NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION, sender_id=g.user.id,
@@ -333,13 +332,23 @@ def answer(uid):
         question.user.notifications.append(noti)
         db.session.add(question.user)
 
-    # FEED: 插入followers的HOME FEED
-    # TODO: 使用消息队列
-    for follower in g.user.followers:
-        home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,
-                             answer_id=answer.id)
-        follower.follower.home_feeds.append(home_feed)
-        db.session.add(home_feed)
+    if not answer.anonymous:
+        # 更新话题统计数据
+        for topic in question.topics:
+            UserTopicStatistic.add_answer_in_topic(g.user.id, topic.topic_id)
+
+        # FEED: 插入本人的用户FEED
+        user_feed = UserFeed(kind=USER_FEED_KIND.ANSWER_QUESTION, answer_id=answer.id)
+        g.user.feeds.append(user_feed)
+        db.session.add(g.user)
+
+        # FEED: 插入followers的HOME FEED
+        # TODO: 使用消息队列
+        for follower in g.user.followers:
+            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,
+                                 answer_id=answer.id)
+            follower.follower.home_feeds.append(home_feed)
+            db.session.add(home_feed)
 
     db.session.commit()
 

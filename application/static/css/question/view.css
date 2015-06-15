@@ -204,6 +204,9 @@
 }
 .answers .answer .answer-content {
   font-size: 16px;
+  margin-bottom: 10px;
+}
+.answers .answer .time {
   margin-bottom: 25px;
 }
 .answers .toogle-hided-answers-wap {
@@ -343,4 +346,28 @@ form.answer-form .simditor .simditor-body {
 }
 .relevant-question .answers-count {
   margin-left: 10px;
+}
+.model-edit-identity .modal-body {
+  text-align: center;
+  padding: 30px 15px;
+}
+.model-edit-identity .btn-group .btn.active {
+  background-color: #dcf8f1;
+  color: #009999;
+  border-color: #b7e1e2;
+  padding: 6px 15px;
+  box-shadow: none;
+}
+.model-edit-identity .btn-group .btn.active a {
+  color: #009999;
+}
+.model-edit-identity .btn-group .btn.active:hover,
+.model-edit-identity .btn-group .btn.active:active,
+.model-edit-identity .btn-group .btn.active:focus,
+.model-edit-identity .btn-group .btn.active:active:focus {
+  box-shadow: none;
+  outline: none;
+  background-color: #c7f4e9;
+  border-color: #a5d9db;
+  color: #009999;
 }

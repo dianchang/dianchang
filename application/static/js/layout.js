@@ -20,6 +20,23 @@ $('#nav-notification').click(function () {
     }
 });
 
+// 调整modal高度
+$('.modal-adjust-position').on('show.bs.modal', function () {
+    var _this = $(this);
+
+    setTimeout(function () {
+        var $dialog = _this.find(".modal-dialog");
+        var offset;
+
+        _this.css('display', 'block');
+        offset = ($(window).height() - $dialog.height()) * 0.3;
+
+        if (offset > 0) {
+            $dialog.css('margin-top', offset);
+        }
+    }, 50);
+});
+
 /**
  * Show flash message.
  */

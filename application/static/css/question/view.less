@@ -282,6 +282,10 @@
 
     .answer-content {
       font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .time {
       margin-bottom: 25px;
     }
   }
@@ -461,5 +465,37 @@ form.answer-form {
 
   .answers-count {
     margin-left: 10px;
+  }
+}
+
+.model-edit-identity {
+  .modal-body {
+    text-align: center;
+    padding: 30px 15px;
+  }
+
+  .btn-group {
+    .btn.active {
+      background-color: @light-main;
+      color: @main-color;
+      border-color: #b7e1e2;
+      padding: 6px 15px;
+      box-shadow: none;
+
+      a {
+        color: @main-color;
+      }
+
+      &:hover,
+      &:active,
+      &:focus,
+      &:active:focus {
+        box-shadow: none;
+        outline: none;
+        background-color: darken(@light-main, 5%);
+        border-color: darken(#b7e1e2, 5%);
+        color: @main-color;
+      }
+    }
   }
 }

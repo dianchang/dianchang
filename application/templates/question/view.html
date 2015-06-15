@@ -215,13 +215,15 @@
                             </div>
                             <div class="media-body">
                                 <div class="myself-info">
-                                    <a href="{{ g.user.profile_url }}">{{ g.user.name }}</a>
-                                    {% if g.user.desc %}，{{ g.user.desc }}{% endif %}
+                                    <span class="identity">{{ g.user.name }}</span>
+                                    <span class="experience">{% if g.user.desc %}，{{ g.user.desc }}{% endif %}</span>
                                 </div>
                                 <div class="commands text-light">
-                                    <a class="btn-edit-identity text-light" href="javascript: void(0)">修改显示身份</a>
+                                    <a class="btn-edit-identity text-light" href="javascript: void(0)"
+                                       data-toggle="modal" data-target="#model-edit-identity">修改显示身份</a>
                                     <span class="divider">·</span>
-                                    <a class="btn-edit-experience text-light" href="javascript: void(0)">编辑话题经验</a>
+                                    <a class="btn-edit-experience text-light" href="javascript: void(0)"
+                                       data-toggle="modal" data-target="#model-edit-experience">编辑话题经验</a>
                                 </div>
                             </div>
                         </div>
@@ -229,8 +231,8 @@
                         <form action="" class="answer-form" method="post">
                             <input type="hidden" name="identity"/>
                             <input type="hidden" name="experience"/>
-                        <textarea name="answer" id="" cols="30" rows="10" class="form-control"
-                                  placeholder="在这里撰写答案">{{ draft or "" }}</textarea>
+                            <textarea name="answer" id="" cols="30" rows="10" class="form-control"
+                                      placeholder="在这里撰写答案">{{ draft or "" }}</textarea>
 
                             <span class="tip-save-draft"></span>
                             <button type="button" class="btn btn-primary btn-submit-answer pull-right">
@@ -254,4 +256,61 @@
             </div>
         </div>
     </div>
+
+    {% if g.user %}
+        {# 修改显示身份model #}
+        <div class="modal fade model-edit-identity modal-adjust-position" id="model-edit-identity">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="gridSystemModalLabel">修改显示身份</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="btn-group identity-selector" data-toggle="buttons">
+                            <label class="btn btn-default active" data-identity="original">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked>
+                                {{ g.user.name }}
+                            </label>
+                            {% if g.user.organization %}
+                                <label class="btn btn-default" data-identity="organization-anonymous">
+                                    <input type="radio" name="options" id="option2" autocomplete="off">
+                                    匿名{{ g.user.organization }}员工
+                                </label>
+                            {% endif %}
+                            <label class="btn btn-default" data-identity="anonymous">
+                                <input type="radio" name="options" id="option3" autocomplete="off">
+                                匿名用户
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# 编辑话题经验 #}
+        <div class="modal fade model-edit-experience" id="model-edit-experience">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="gridSystemModalLabel">编辑话题经验</h4>
+                    </div>
+                    <div class="modal-body">
+                        {% for topic in question.topcis %}
+
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">完成</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -72,6 +72,11 @@ class User(db.Model):
         return avatars.url(self.avatar)
 
     @property
+    def anonymous_avatar_url(self):
+        """匿名头像"""
+        return avatars.url('default.png')
+
+    @property
     def background_url(self):
         """背景图片"""
         return images.url(self.background) if self.background else None

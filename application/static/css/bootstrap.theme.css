@@ -110,24 +110,24 @@
   border-color: #a5d9db;
   color: #009999;
 }
-.btn-light {
-  background-color: #dcf8f1;
-  color: #009999;
-  border-color: #b7e1e2;
+.btn-white {
+  background-color: #fff;
+  color: #666;
+  border-color: #E4E4E4;
   padding: 6px 15px;
 }
-.btn-light a {
-  color: #009999;
+.btn-white a {
+  color: #333;
 }
-.btn-light:hover,
-.btn-light:active,
-.btn-light:focus,
-.btn-light:active:focus {
+.btn-white:hover,
+.btn-white:active,
+.btn-white:focus,
+.btn-white:active:focus {
   box-shadow: none;
   outline: none;
-  background-color: #c7f4e9;
-  border-color: #a5d9db;
-  color: #009999;
+  background-color: #f2f2f2;
+  border-color: #f2f2f2;
+  color: #333;
 }
 .tooltip.in {
   opacity: 1;
