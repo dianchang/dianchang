@@ -50,7 +50,7 @@
         <div class="collapse navbar-collapse" id="dc-navbar-collapse">
             <form class="navbar-form navbar-left" role="search" method="get" action="{{ url_for('site.search') }}">
                 <input type="text" name="q" class="form-control input-sm" value="{{ q or "" }}"
-                       placeholder="">
+                       placeholder="" autocomplete="off">
                 <span class="fa fa-search search-icon"></span>
                 <span class="help-text">回车搜索</span>
             </form>
