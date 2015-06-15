@@ -325,6 +325,12 @@ def answer(uid):
     db.session.commit()
     answer.save_to_es()
 
+    # 自动关注该问题
+    follow_question = g.user.followed_questions.filter(FollowQuestion.question_id == uid).first()
+    if not follow_question:
+        follow_question = FollowQuestion(question_id=uid, user_id=g.user.id)
+        db.session.add(follow_question)
+
     # FEED: 插入提问者的用户NOTI
     if g.user.id != question.user_id:
         noti = Notification(kind=NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION, sender_id=g.user.id,
