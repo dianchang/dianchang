@@ -129,8 +129,16 @@
                         你已经邀请
                         <span class="invited-users">
                             {% for invited_user in invited_users %}
-                                <a href="{{ invited_user.user.profile_url }}" class="invited-user text-light">
-                                    {{ invited_user.user.name }}</a>
+                                <span class="dc-hide-commands-trigger invited-user-wap">
+                                    <a href="{{ invited_user.user.profile_url }}" class="invited-user text-light">
+                                        {{ invited_user.user.name }}</a>
+                                    <div class="dc-hide-commands">
+                                        <a href="javascript: void(0)" class="btn-un-invite"
+                                           data-id="{{ invited_user.user_id }}">
+                                            取消邀请
+                                        </a>
+                                    </div>
+                                </span>
                                 {% if not loop.last %}、{% endif %}
                             {% endfor %}
                         </span>
@@ -140,8 +148,46 @@
                         <input type="text" name="user" class="form-control"
                                placeholder="通过话题经验关键词（如：产品经理）或用户名来查找邀请用户"/>
                     </div>
-                    <div class="recommend-wap text-center">
-                        推荐回答者（TODO）
+                    <div class="recommend-wap">
+                        {% for candidate in invite_candidates %}
+                            {#                            {% if loop.index % 4 == 1 %}#}
+                            {#                                <div class="hehe">#}
+                            {#                            {% endif %}#}
+                            <div class="item media">
+                                <div class="media-left">
+                                    <a href="{{ candidate.user.profile_url }}">
+
+                                        <img src="{{ candidate.user.avatar_url }}" class="img-circle" alt=""/>
+                                    </a>
+                                </div>
+
+                                <div class="media-body">
+                                    <div class="candidate-meta">
+                                        <a href="{{ candidate.user.profile_url }}">
+                                            {{ candidate.user.name }}</a>{% if candidate.user.desc %}，
+                                        {{ candidate.user.desc }}
+                                    {% endif %}
+                                    </div>
+                                    <div class="statistic text-light">
+                                        在 <a href="{{ url_for('topic.view', uid=candidate.topic_id) }}"
+                                             class="text-light">
+                                        {{ candidate.topic.name }}</a> 话题下有 {{ candidate.answers_count }} 个回答
+                                    </div>
+                                    <button class="btn btn-default btn-invite" data-id="{{ candidate.user_id }}">
+                                        <span class="for-invited">取消邀请</span>
+                                        <span class="for-non-invited">邀请</span>
+                                    </button>
+                                </div>
+                            </div>
+                            {##}
+                            {#                            {% if loop.index % 4 == 0 or invite_candidates|length - loop.index == 0 %}#}
+                            {#                                </div>#}
+                            {#                            {% endif %}#}
+                        {% else %}
+                            <div class="text-center text-light tip">
+                                暂无推荐回答者
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
 

@@ -371,6 +371,42 @@ $('.btn-toggle-hided-answers').click(function () {
     $('.hided-answers').toggle();
 });
 
+// 邀请回答
+$('.btn-invite').click(function () {
+    var user_id = $(this).data('id');
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('question.invite', {uid: g.questionId, user_id: user_id}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            if (response.invited) {
+                _this.addClass('invited');
+            } else {
+                _this.removeClass('invited');
+            }
+        }
+    });
+});
+
+// 取消邀请回答
+$(document).on('click', '.btn-un-invite', function () {
+    var user_id = $(this).data('id');
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('question.invite', {uid: g.questionId, user_id: user_id}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result && !response.invited) {
+            _this.parents('.invited-user-wap').detach();
+        }
+    });
+});
+
 /**
  * 为问题添加话题
  * @param {int|string} questionId - 问题id

@@ -240,7 +240,50 @@ h3 {
   padding: 18px 12px;
 }
 .invitation-wap .recommend-wap {
-  padding: 15px;
+  padding: 0 15px;
+}
+.invitation-wap .recommend-wap .item {
+  margin-top: 0;
+  position: relative;
+  padding: 20px 0 20px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+.invitation-wap .recommend-wap .item:last-child {
+  border-bottom: 0;
+}
+.invitation-wap .recommend-wap .item .candidate-meta {
+  margin-bottom: 2px;
+}
+.invitation-wap .recommend-wap .item .candidate-meta a {
+  color: #333;
+  font-weight: bold;
+}
+.invitation-wap .recommend-wap .item img {
+  width: 40px;
+  height: 40px;
+}
+.invitation-wap .recommend-wap .item .btn-invite {
+  position: absolute;
+  right: 15px;
+  top: 22px;
+}
+.invitation-wap .recommend-wap .item .btn-invite .for-invited {
+  display: none;
+}
+.invitation-wap .recommend-wap .item .btn-invite .for-non-invited {
+  display: block;
+}
+.invitation-wap .recommend-wap .item .btn-invite.invited {
+  color: #999;
+}
+.invitation-wap .recommend-wap .item .btn-invite.invited .for-invited {
+  display: block;
+}
+.invitation-wap .recommend-wap .item .btn-invite.invited .for-non-invited {
+  display: none;
+}
+.invitation-wap .recommend-wap .tip {
+  padding: 15px 0;
 }
 .hided-answers {
   display: none;
@@ -264,7 +307,7 @@ h3 {
   color: #009999;
 }
 .myself {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 .myself img {
   width: 40px;

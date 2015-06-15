@@ -330,7 +330,60 @@ h3 {
   }
 
   .recommend-wap {
-    padding: 15px;
+    padding: 0 15px;
+
+    .item {
+      margin-top: 0;
+      position: relative;
+      padding: 20px 0 20px 0;
+      border-bottom: 1px solid @border-color;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      .candidate-meta {
+        margin-bottom: 2px;
+
+        a {
+          color: #333;
+          font-weight: bold;
+        }
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .btn-invite {
+        position: absolute;
+        right: 15px;
+        top: 22px;
+
+        .for-invited {
+          display: none;
+        }
+        .for-non-invited {
+          display: block;
+        }
+
+        &.invited {
+          color: #999;
+
+          .for-invited {
+            display: block;
+          }
+          .for-non-invited {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .tip {
+      padding: 15px 0;
+    }
   }
 }
 
@@ -360,7 +413,7 @@ h3 {
 }
 
 .myself {
-  margin-top: 25px;
+  margin-top: 30px;
 
   img {
     width: 40px;

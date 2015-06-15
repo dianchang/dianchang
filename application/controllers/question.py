@@ -41,12 +41,14 @@ def view(uid):
 
     # 邀请回答人选
     invite_candidates = None
+    invite_candidates_count = 0
     topics_id_list = [topic.topic_id for topic in question.topics]
     if g.user:
         invite_candidates = UserTopicStatistic.query. \
             filter(UserTopicStatistic.topic_id.in_(topics_id_list)). \
             filter(UserTopicStatistic.user_id.notin_(invited_users_id_list)). \
-            order_by(UserTopicStatistic.score.desc()).limit(16)
+            filter(UserTopicStatistic.user_id != g.user.id). \
+            order_by(UserTopicStatistic.score.desc()).limit(16).all()
 
     # 话题经验，按 topics_id_list 排序
     topics_experience = []
@@ -359,14 +361,22 @@ def invite(uid, user_id):
 
     question = Question.query.get_or_404(uid)
     user = User.query.get_or_404(user_id)
+
     invitation = InviteAnswer.query.filter(InviteAnswer.question_id == uid,
                                            InviteAnswer.user_id == user_id,
                                            InviteAnswer.inviter_id == g.user.id).first()
+    # 取消邀请
     if invitation:
+        feed = ComposeFeed.query.filter(ComposeFeed.invitation_id == invitation.id).first()
+        db.session.delete(feed)
+        db.session.delete(invitation)
+        db.session.commit()
         return json.dumps({
-            'result': False
+            'result': True,
+            'invited': False
         })
 
+    # 邀请
     invitation = InviteAnswer(question_id=uid, user_id=user_id, inviter_id=g.user.id)
     db.session.add(invitation)
     db.session.commit()
@@ -379,6 +389,7 @@ def invite(uid, user_id):
 
     return json.dumps({
         'result': True,
+        'invited': True,
         'username': user.name,
         'user_profile_url': user.profile_url
     })
