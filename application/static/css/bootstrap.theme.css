@@ -186,11 +186,18 @@
   border-left: 0;
   color: #666;
 }
+.btn.btn-sm {
+  padding: 4px 10px;
+  font-size: 14px;
+}
+textarea.form-control,
 input[type=text].form-control {
   box-shadow: none;
   border-radius: 2px;
   border: 1px solid #E4E4E4;
 }
+textarea.form-control:focus,
 input[type=text].form-control:focus {
   box-shadow: none;
+  border: 1px solid #cbcbcb;
 }

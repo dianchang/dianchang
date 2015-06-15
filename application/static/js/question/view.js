@@ -361,11 +361,8 @@ if (!g.answered) {
             }
         }).done(function (response) {
             if (response.result) {
-                var answersCount = parseInt($('.answers-count').text());
-
                 $('.answers-tab-item').click();
                 $(response.html).hide().appendTo($('.showed-answers')).fadeIn('slow');
-                $('.answers-count').text(answersCount + 1);
                 $('.new-answer-wap').detach();
             }
         });
@@ -420,6 +417,100 @@ $('.identity-selector label').click(function () {
 
     $("input[name='identity']").val(identity);
     $('.identity').text(identityName);
+});
+
+// 添加话题经验
+$('.btn-add-experience').click(function () {
+    var $experienceWap = $(this).parents('.experience-wap');
+    var $textarea = $experienceWap.find('textarea');
+
+    $experienceWap.addClass('edit');
+    $textarea.focus();
+});
+
+// 编辑话题经验
+$('.btn-edit-experience').click(function () {
+    var $experienceWap = $(this).parents('.experience-wap');
+    var experience = $.trim($experienceWap.find('.experience').text());
+    var $textarea = $experienceWap.find('textarea');
+
+    $experienceWap.addClass('edit');
+    $textarea.val(experience);
+    $textarea.focus();
+});
+
+// 提交话题经验
+$('.btn-submit-experience').click(function () {
+    var topicId = parseInt($(this).data('topic-id'));
+    var $experienceWap = $(this).parents('.experience-wap');
+    var $btnApply = $experienceWap.next();
+    var $textarea = $experienceWap.find('textarea');
+    var experience = $.trim($textarea.val());
+    var $experience = $experienceWap.find('.experience');
+    var $myselfInfo = $('.myself-info');
+
+    $.ajax({
+        url: urlFor('topic.update_experience', {uid: topicId}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            experience: experience
+        }
+    }).done(function (response) {
+        if (response.result) {
+            $experience.text(experience);
+            $experienceWap.removeClass('edit');
+
+            if ($btnApply.hasClass('applied')) {
+                $myselfInfo.find('.experience').text("，" + experience);
+                $("input[name='experience']").val(experience);
+            }
+
+            if (experience === "") {
+                $experienceWap.addClass('empty')
+            } else {
+                $experienceWap.removeClass('empty')
+            }
+        }
+    });
+});
+
+// 取消编辑话题经验
+$('.btn-cancel-edit-experience').click(function () {
+    var $experienceWap = $(this).parents('.experience-wap');
+
+    $experienceWap.removeClass('edit');
+});
+
+// 采用话题经验
+$('.btn-apply-experience').click(function () {
+    var $experienceWap = $(this).parent().find('.experience-wap');
+    var experience = $.trim($experienceWap.find('.experience').text());
+    var applied = $(this).hasClass('applied');
+    var $myselfInfo = $('.myself-info');
+
+    // 取消采纳
+    if (applied) {
+        // 取消选中该按钮
+        $(this).removeClass('applied').removeClass('btn-primary').addClass('btn-default');
+
+        $myselfInfo.find('.experience').empty();
+        $("input[name='experience']").val('');
+        $myselfInfo.find('.desc').show();
+    } else {
+        // 采纳
+        if ($experienceWap.hasClass('empty')) {
+            return;
+        }
+
+        $myselfInfo.find('.experience').text("，" + experience);
+        $("input[name='experience']").val(experience);
+        $myselfInfo.find('.desc').hide();
+        // 选中该按钮
+        $(this).addClass('applied').addClass('btn-primary').removeClass('btn-default');
+        // 取消其他按钮的选中状态
+        $('.btn-apply-experience').not(this).removeClass('applied').removeClass('btn-primary').addClass('btn-default');
+    }
 });
 
 /**

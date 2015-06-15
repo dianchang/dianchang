@@ -216,14 +216,15 @@
                             <div class="media-body">
                                 <div class="myself-info">
                                     <span class="identity">{{ g.user.name }}</span>
-                                    <span class="experience">{% if g.user.desc %}，{{ g.user.desc }}{% endif %}</span>
+                                    <span class="experience"></span>
+                                    <span class="desc">{% if g.user.desc %}，{{ g.user.desc }}{% endif %}</span>
                                 </div>
                                 <div class="commands text-light">
                                     <a class="btn-edit-identity text-light" href="javascript: void(0)"
-                                       data-toggle="modal" data-target="#model-edit-identity">修改显示身份</a>
+                                       data-toggle="modal" data-target="#modal-edit-identity">修改显示身份</a>
                                     <span class="divider">·</span>
                                     <a class="btn-edit-experience text-light" href="javascript: void(0)"
-                                       data-toggle="modal" data-target="#model-edit-experience">编辑话题经验</a>
+                                       data-toggle="modal" data-target="#modal-edit-experience">编辑话题经验</a>
                                 </div>
                             </div>
                         </div>
@@ -259,7 +260,7 @@
 
     {% if g.user %}
         {# 修改显示身份model #}
-        <div class="modal fade model-edit-identity modal-adjust-position" id="model-edit-identity">
+        <div class="modal fade modal-edit-identity modal-adjust-position" id="modal-edit-identity">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -293,7 +294,7 @@
         </div>
 
         {# 编辑话题经验 #}
-        <div class="modal fade model-edit-experience" id="model-edit-experience">
+        <div class="modal fade modal-edit-experience modal-adjust-position" id="modal-edit-experience">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -302,8 +303,39 @@
                         <h4 class="modal-title" id="gridSystemModalLabel">编辑话题经验</h4>
                     </div>
                     <div class="modal-body">
-                        {% for topic in question.topcis %}
+                        {% for topic in question.topics %}
+                            <div class="topic-experience">
+                                <div class="topic">
+                                    <a href="{{ url_for('topic.view', uid=topic.topic_id) }}">
+                                        {{ topic.topic.name }}
+                                    </a>
+                                </div>
 
+                                {% set experience = topic.topic.experience_from_user %}
+                                <div class="experience-wap {% if not experience %}empty{% endif %}">
+                                    <span class="experience">
+                                        {% if experience %}{{ experience }}{% endif %}
+                                    </span>
+                                    <a href="javascript: void(0)" class="btn-edit-experience text-light">修改</a>
+                                    <a href="javascript:void(0)"
+                                       class="btn-add-experience text-light">描述你关于 {{ topic.topic.name }} 的经验</a>
+
+                                    <form action="" class="form-experience">
+                                        <textarea name="" class="form-control" id="" rows=2></textarea>
+
+                                        <div class="buttons text-right">
+                                            <a href="javascript: void(0)"
+                                               class="text-light btn-cancel-edit-experience">取消</a>
+                                            <a href="javascript: void(0)"
+                                               class="btn btn-default btn-submit-experience btn-sm"
+                                               data-topic-id="{{ topic.topic_id }}">更新</a>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <button class="btn btn-default btn-sm btn-apply-experience">
+                                    <span class="fa fa-check"></span> 采用</button>
+                            </div>
                         {% endfor %}
                     </div>
                     <div class="modal-footer">

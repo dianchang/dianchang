@@ -50,6 +50,18 @@ class Topic(db.Model):
         return g.user and g.user.followed_topics.filter(FollowTopic.topic_id == self.id).count() > 0
 
     @property
+    def experience_from_user(self):
+        """当前用户在该话题下的话题经验"""
+        if not g.user:
+            return None
+        statistic = UserTopicStatistic.query.filter(UserTopicStatistic.user_id == g.user.id,
+                                                    UserTopicStatistic.topic_id == self.id).first()
+        if statistic:
+            return statistic.experience
+        else:
+            return None
+
+    @property
     def ancestor_paths(self):
         """寻找跟话题到该话题之间的所有路径"""
         ROOT_TOPIC_ID = current_app.config.get('ROOT_TOPIC_ID')

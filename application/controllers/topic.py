@@ -307,3 +307,23 @@ def upload_avatar(uid):
             'result': True,
             'image_url': topic_avatars.url(filename),
         })
+
+
+@bp.route('/topic/<int:uid>/update_experience', methods=['POST'])
+@UserPermission()
+def update_experience(uid):
+    """更新当前用户在该话题下的话题经验"""
+    topic = Topic.query.get_or_404(uid)
+    experience = request.form.get('experience', '')
+    statistic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
+                                                UserTopicStatistic.user_id == g.user.id).first()
+    if statistic:
+        statistic.experience = experience
+    else:
+        statistic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, experience=experience)
+    db.session.add(statistic)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })
