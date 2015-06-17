@@ -15,14 +15,14 @@
                     {% if dark %}btn-dark{% else %}btn-light{% endif %}
                 {% endif %}
                 {% if upvoted %}upvoted{% endif %}"
-                  data-id="{{ answer.id }}">
+                  data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
                 <span class="for-upvoted">已赞同</span>
                 <span class="for-un-upvoted">赞同</span>
                 <span class="divider">|</span>
                 <span class="upvotes-count">{{ answer.upvotes_count }}</span>
             </span>
             <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
-               data-id="{{ answer.id }}">
+               data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
                 <span class="for-downvoted">已反对</span>
                 <span class="for-un-downvoted">反对</span>
             </a>
@@ -52,13 +52,13 @@
                 <span class="hide-commands dc-hide-commands">
                     {# 感谢 #}
                     <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
-                       href="javascript: void(0)">
+                       data-user-id="{{ answer.user_id }}" href="javascript: void(0)">
                         <span class="for-thanked">已感谢</span>
                         <span class="for-un-thanked">感谢作者</span></a>
 
                     {# 没有帮助 #}
                     <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
-                       href="javascript: void(0)">
+                       data-user-id="{{ answer.user.id }}" href="javascript: void(0)">
                         <span class="for-nohelped">已标记为没有帮助</span>
                         <span class="for-un-nohelped">没有帮助</span></a>
 
@@ -76,12 +76,17 @@
         $(document).onOnce('click', '.dc-answer-commands .upvote-wap', function () {
             var id = parseInt($(this).data('id'));
             var $voteWap = $(this).parents('.vote-wap').first();
+            var answerer_id = parseInt($(this).data('user-id'));
             var _this = $(this);
             var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
 
             if (!g.signin) {
                 window.location = urlFor('account.signin');
-                return;
+                return false;
+            }
+
+            if (g.userId === answerer_id) {
+                return false;
             }
 
             $.ajax({
@@ -122,11 +127,16 @@
             var $voteWap = $(this).parents('.vote-wap').first();
             var $upvoteWap = $voteWap.find('.upvote-wap');
             var $upvotesCount = $upvoteWap.find('.upvotes-count');
+            var answerer_id = parseInt($(this).data('user-id'));
             var _this = $(this);
 
             if (!g.signin) {
                 window.location = urlFor('account.signin');
-                return;
+                return false;
+            }
+
+            if (g.userId === answerer_id) {
+                return false;
             }
 
             $.ajax({
@@ -172,6 +182,7 @@
         $(document).onOnce('click', '.dc-answer-commands .btn-thank-answer', function () {
             var id = parseInt($(this).data('id'));
             var thanked = $(this).hasClass('thanked');
+            var answerer_id = parseInt($(this).data('user-id'));
             var _this = $(this);
 
             if (!g.signin) {
@@ -179,7 +190,7 @@
                 return false;
             }
 
-            if (thanked) {
+            if (g.userId === answerer_id || thanked) {
                 return false;
             }
 
@@ -199,11 +210,16 @@
         // 没有帮助
         $(document).onOnce('click', '.dc-answer-commands .btn-nohelp-answer', function () {
             var id = parseInt($(this).data('id'));
+            var answerer_id = parseInt($(this).data('user-id'));
             var _this = $(this);
 
             if (!g.signin) {
                 window.location = urlFor('account.signin');
-                return;
+                return false;
+            }
+
+            if (g.userId === answerer_id) {
+                return false;
             }
 
             $.ajax({
