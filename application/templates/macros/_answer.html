@@ -568,9 +568,7 @@
 
 {# 在问题页中显示的回答 #}
 {% macro render_answer_in_question(answer) %}
-    <div class="answer">
-        <a name="answer{{ answer.id }}"></a>
-
+    <div class="answer" data-id="{{ answer.id }}">
         <div class="answerer-info media">
             <div class="media-left">
                 {% if answer.anonymous %}

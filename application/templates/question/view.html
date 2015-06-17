@@ -188,7 +188,8 @@
 
                         <p class="help-block">
                             你已经回答过此问题，你可以对
-                            <a href="{{ url_for('question.view', uid=question.id) }}#answer{{ my_answer_id }}">现有的回答</a>
+                            <a href="javascript:void(0)" class="btn-go-to-my-answer"
+                               data-my-answer-id="{{ my_answer_id }}">现有的回答</a>
                             进行修改，或者 <a href="#">直接分享</a></p>
                     </div>
 

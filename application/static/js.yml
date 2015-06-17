@@ -10,6 +10,7 @@ libs:
   - bower_components/to-markdown/dist/to-markdown.js
   - bower_components/simditor-markdown/lib/simditor-markdown.js
   - bower_components/jquery.scrollTo/jquery.scrollTo.min.js
+  - libs/jquery.animate-colors-min.js
   - js/init.js
 
 layout:

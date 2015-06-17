@@ -410,6 +410,22 @@ $('.btn-toggle-hided-answers').click(function () {
     $('.hided-answers').toggle();
 });
 
+// 跳转到我的回答
+$('.btn-go-to-my-answer').click(function () {
+    var myAnswerId = $(this).data('my-answer-id');
+
+    var $targetAnswer = $(".answer[data-id='" + myAnswerId + "']");
+
+    $('.answers-tab-item').click();
+
+    $(window).scrollTo($targetAnswer);
+    $targetAnswer.css({
+        backgroundColor: 'rgb(221, 245, 245)'
+    }).animate({
+        backgroundColor: '#ffffff'
+    }, 1200);
+});
+
 // 修改显示身份
 $('.identity-selector label').click(function () {
     var identity = $.trim($(this).data('identity'));
