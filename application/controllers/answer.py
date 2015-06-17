@@ -151,24 +151,16 @@ def downvote(uid):
 @bp.route('/answer/<int:uid>/thank', methods=['POST'])
 @UserPermission()
 def thank(uid):
-    """感谢 & 取消感谢"""
+    """感谢（无法取消感谢）"""
     answer = Answer.query.get_or_404(uid)
     thank_answer = answer.thanks.filter(ThankAnswer.user_id == g.user.id)
-    # 取消感谢
-    if thank_answer.count():
-        map(db.session.delete, thank_answer)
-        answer.calculate_score()  # 更新回答分值
-        db.session.add(answer)
-        db.session.commit()
 
-        return json.dumps({
-            'result': True,
-            'thanked': False
-        })
-    else:  # 感谢
+    # 感谢
+    if not thank_answer.count():
         thank_answer = ThankAnswer(user_id=g.user.id)
         answer.thanks.append(thank_answer)
         answer.calculate_score()  # 更新回答分值
+        answer.thanks_count += 1
         db.session.add(answer)
 
         # FEED: 插入被感谢者的NOTI
@@ -180,10 +172,10 @@ def thank(uid):
 
         db.session.commit()
 
-        return json.dumps({
-            'result': True,
-            'thanked': True
-        })
+    return json.dumps({
+        'result': True,
+        'thanked': True
+    })
 
 
 @bp.route('/answer/<int:uid>/nohelp', methods=['POST'])

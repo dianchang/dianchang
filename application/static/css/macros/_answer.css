@@ -65,6 +65,12 @@
 .dc-answer-commands .btn-thank-answer .for-thanked {
   display: none;
 }
+.dc-answer-commands .btn-thank-answer.thanked {
+  cursor: default;
+}
+.dc-answer-commands .btn-thank-answer.thanked:hover {
+  color: #666;
+}
 .dc-answer-commands .btn-thank-answer.thanked .for-un-thanked {
   display: none;
 }

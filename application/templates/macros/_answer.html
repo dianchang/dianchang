@@ -171,11 +171,16 @@
         // 感谢回答
         $(document).onOnce('click', '.dc-answer-commands .btn-thank-answer', function () {
             var id = parseInt($(this).data('id'));
+            var thanked = $(this).hasClass('thanked');
             var _this = $(this);
 
             if (!g.signin) {
                 window.location = urlFor('account.signin');
-                return;
+                return false;
+            }
+
+            if (thanked) {
+                return false;
             }
 
             $.ajax({
@@ -186,8 +191,6 @@
                 if (response.result) {
                     if (response.thanked) {
                         _this.addClass('thanked');
-                    } else {
-                        _this.removeClass('thanked');
                     }
                 }
             });
