@@ -323,8 +323,9 @@
     </div>
 
     <script>
+        var $answerCommands = $('.dc-answer-commands');
         // 赞同回答
-        $(document).onOnce('click', '.dc-answer-commands .upvote-wap', function () {
+        $answerCommands.onOnce('click', '.dc-answer-commands .upvote-wap', function () {
             var id = parseInt($(this).data('id'));
             var $voteWap = $(this).parents('.vote-wap').first();
             var answerer_id = parseInt($(this).data('user-id'));
@@ -373,7 +374,7 @@
         });
 
         // 反对回答
-        $(document).onOnce('click', '.dc-answer-commands .btn-downvote-answer', function () {
+        $answerCommands.onOnce('click', '.dc-answer-commands .btn-downvote-answer', function () {
             var id = parseInt($(this).data('id'));
             var $voteWap = $(this).parents('.vote-wap').first();
             var $upvoteWap = $voteWap.find('.upvote-wap');
@@ -420,14 +421,14 @@
         });
 
         // 收起回答内容
-        $(document).onOnce('click', '.btn-collapse', function () {
+        $answerCommands.onOnce('click', '.btn-collapse', function () {
             $(this).parents('.dc-answer').removeClass('full');
         });
 
         // 展开评论
         {% if with_comments %}
-            $(document).onOnce('click', '.btn-comments', function () {
-                var $commentsOuterWap = $('.comments-outer-wap');
+            $answerCommands.onOnce('click', '.btn-comments', function () {
+                var $commentsOuterWap = $(this).parents('.dc-answer-commands').find('.comments-outer-wap');
                 var answerId = $(this).data('answer-id');
 
                 if ($commentsOuterWap.hasClass('empty')) {
@@ -447,7 +448,7 @@
         {% endif %}
 
         // 感谢回答
-        $(document).onOnce('click', '.dc-answer-commands .btn-thank-answer', function () {
+        $answerCommands.onOnce('click', '.dc-answer-commands .btn-thank-answer', function () {
             var id = parseInt($(this).data('id'));
             var thanked = $(this).hasClass('thanked');
             var answerer_id = parseInt($(this).data('user-id'));
@@ -476,7 +477,7 @@
         });
 
         // 没有帮助
-        $(document).onOnce('click', '.dc-answer-commands .btn-nohelp-answer', function () {
+        $answerCommands.onOnce('click', '.dc-answer-commands .btn-nohelp-answer', function () {
             var id = parseInt($(this).data('id'));
             var answerer_id = parseInt($(this).data('user-id'));
             var _this = $(this);
