@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import topic_wap %}
-{% from "macros/_question.html" import question_follow_wap %}
+{% from "macros/_question.html" import question_follow_wap, invited_user_wap %}
 {% from "macros/_answer.html" import render_answer_in_question %}
 
 {% block page_title %}{{ question.title }}{% endblock %}
@@ -129,16 +129,7 @@
                         你已经邀请
                         <span class="invited-users">
                             {% for invited_user in invited_users %}
-                                <span class="dc-hide-commands-trigger invited-user-wap">
-                                    <a href="{{ invited_user.user.profile_url }}" class="invited-user text-light">
-                                        {{ invited_user.user.name }}</a>
-                                    <div class="dc-hide-commands">
-                                        <a href="javascript: void(0)" class="btn-un-invite"
-                                           data-id="{{ invited_user.user_id }}">
-                                            取消邀请
-                                        </a>
-                                    </div>
-                                </span>
+                                {{ invited_user_wap(invited_user.user) }}
                                 {% if not loop.last %}、{% endif %}
                             {% endfor %}
                         </span>
@@ -334,7 +325,8 @@
                                 </div>
 
                                 <button class="btn btn-default btn-sm btn-apply-experience">
-                                    <span class="fa fa-check"></span> 采用</button>
+                                    <span class="fa fa-check"></span> 采用
+                                </button>
                             </div>
                         {% endfor %}
                     </div>

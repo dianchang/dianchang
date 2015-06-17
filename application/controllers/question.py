@@ -405,9 +405,11 @@ def invite(uid, user_id):
     db.session.add(feed)
     db.session.commit()
 
+    macro = get_template_attribute("macros/_question.html", "invited_user_wap")
     return json.dumps({
         'result': True,
         'invited': True,
         'username': user.name,
-        'user_profile_url': user.profile_url
+        'user_profile_url': user.profile_url,
+        'html': macro(user)
     })

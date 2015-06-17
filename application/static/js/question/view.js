@@ -233,6 +233,7 @@ $('.content-tabs a').click(function () {
 var $invitationInput = $('.invitation-wap input');
 var timerForInvitationTypeahead = null;
 
+// 启用邀请回答者的 autocomplete
 $invitationInput.typeahead({
     minLength: 1,
     highlight: true,
@@ -270,7 +271,7 @@ $invitationInput.typeahead({
 
 $('.invitation-wap .header .twitter-typeahead').css('display', 'block');
 
-// 通过选择 typeahead 提示邀请用户
+// 通过选择 typeahead 邀请用户
 $invitationInput.on('typeahead:selected', function (e, user) {
     $.ajax({
         url: urlFor('question.invite', {uid: g.questionId, user_id: user.id}),
@@ -284,14 +285,49 @@ $invitationInput.on('typeahead:selected', function (e, user) {
             if (!$invitedUsersWap.hasClass('empty')) {
                 html += "、";
             }
-            html += "<a href='" + response.user_profile_url + "' class='invited-user text-light'>"
-                + response.username + "</a>";
+            html += response.html;
 
             $invitedUsersWap.removeClass('empty');
             $('.invited-users').append(html);
         }
 
         $invitationInput.val('');
+    });
+});
+
+// 邀请回答
+$('.btn-invite').click(function () {
+    var user_id = $(this).data('id');
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('question.invite', {uid: g.questionId, user_id: user_id}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            if (response.invited) {
+                _this.addClass('invited');
+            } else {
+                _this.removeClass('invited');
+            }
+        }
+    });
+});
+
+// 取消邀请回答
+$(document).on('click', '.btn-un-invite', function () {
+    var user_id = $(this).data('id');
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('question.invite', {uid: g.questionId, user_id: user_id}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result && !response.invited) {
+            _this.parents('.dc-invited-user-wap').detach();
+        }
     });
 });
 
@@ -372,42 +408,6 @@ if (!g.answered) {
 // 显示 & 隐藏被折叠的回答
 $('.btn-toggle-hided-answers').click(function () {
     $('.hided-answers').toggle();
-});
-
-// 邀请回答
-$('.btn-invite').click(function () {
-    var user_id = $(this).data('id');
-    var _this = $(this);
-
-    $.ajax({
-        url: urlFor('question.invite', {uid: g.questionId, user_id: user_id}),
-        method: 'post',
-        dataType: 'json'
-    }).done(function (response) {
-        if (response.result) {
-            if (response.invited) {
-                _this.addClass('invited');
-            } else {
-                _this.removeClass('invited');
-            }
-        }
-    });
-});
-
-// 取消邀请回答
-$(document).on('click', '.btn-un-invite', function () {
-    var user_id = $(this).data('id');
-    var _this = $(this);
-
-    $.ajax({
-        url: urlFor('question.invite', {uid: g.questionId, user_id: user_id}),
-        method: 'post',
-        dataType: 'json'
-    }).done(function (response) {
-        if (response.result && !response.invited) {
-            _this.parents('.invited-user-wap').detach();
-        }
-    });
 });
 
 // 修改显示身份
