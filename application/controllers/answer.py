@@ -42,7 +42,7 @@ def upvote(uid):
             statistic.upvoter_followings_count = g.user.followings_count
         statistic.update()
         db.session.add(statistic)
-        
+
         db.session.commit()
 
         # TODO: need to change to answer.upvotes_count
@@ -273,6 +273,8 @@ def reply_comment(uid):
     new_comment = AnswerComment(user_id=g.user.id, answer_id=parent_comment.answer_id, parent_id=uid,
                                 content=comment_content, root_id=parent_comment.root_id or uid)
     db.session.add(new_comment)
+    parent_comment.answer.comments_count += 1
+    db.session.add(parent_comment.answer)
     db.session.commit()
 
     # FEED: 插入到被回复者的NOTI
@@ -306,6 +308,7 @@ def comment(uid):
 
     comment = AnswerComment(content=comment_content, user_id=g.user.id)
     answer.comments.append(comment)
+    answer.comments_count += 1
     db.session.add(answer)
 
     # FEED: 插入被评论回答者的NOTI

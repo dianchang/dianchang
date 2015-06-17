@@ -359,6 +359,7 @@ def answer(uid):
             follower.follower.home_feeds.append(home_feed)
             db.session.add(home_feed)
 
+    question.answers_count += 1
     db.session.commit()
 
     macro = get_template_attribute("macros/_answer.html", "render_answer_in_question")

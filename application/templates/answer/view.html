@@ -63,18 +63,16 @@
             {% endif %}
         </div>
 
-        {# TODO: need to refactor #}
-        {% set other_answers_count = answer.question.answers.count() %}
-        {% if other_answers_count > 0 %}
+        {% if answer.question.answers_count > 1 %}
             <a href="{{ url_for('question.view', uid=answer.question_id) }}"
                class="other-answers link-no-underline">
-                查看其他 {{ other_answers_count }} 人对该问题的回答→</a>
+                查看其他 {{ answer.question.answers_count - 1 }} 人对该问题的回答→</a>
         {% endif %}
     </div>
 
     <div class="answer-comments-wap">
         <div class="container">
-            <div class="comments-count">{{ answer.comments.count() }} 条评论</div>
+            <div class="comments-count">{{ answer.comments_count }} 条评论</div>
 
             {% if g.user %}
                 <div class="media comment-form-wap">

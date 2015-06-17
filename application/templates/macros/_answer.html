@@ -17,9 +17,9 @@
                 {% if upvoted %}upvoted{% endif %}"
                   data-id="{{ answer.id }}">
                 <span class="for-upvoted">已赞同</span>
-                <span class="for-un-upvoted">赞同</span></a>
+                <span class="for-un-upvoted">赞同</span>
                 <span class="divider">|</span>
-                <span class="upvotes-count">{{ answer.upvotes.count() }}</span>
+                <span class="upvotes-count">{{ answer.upvotes_count }}</span>
             </span>
             <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
                data-id="{{ answer.id }}">
@@ -37,13 +37,13 @@
             <a href="javascript: void(0)" class="btn-comments">
                 <span class="fa fa-comment-o"></span>
                 评论
-                {{ answer.comments.count() }}
+                {{ answer.comments_count }}
             </a>
 
             <a href="javascript:void(0)" class="btn-share">
                 <span class="fa fa-share-square-o"></span>
                 分享
-                0
+                {{ answer.shares_count }}
             </a>
 
             <span class="btn-more dc-hide-commands-trigger">
