@@ -25,6 +25,7 @@ def view(uid):
             answered = True
 
     answers = question.answers.filter(~Answer.hide)
+    answerers_id_list = [answer.user_id for answer in answers]
     hided_answers = question.answers.filter(Answer.hide)
     followers = question.followers.order_by(FollowQuestion.created_at.desc()).limit(8)
 
@@ -39,7 +40,7 @@ def view(uid):
         invited_users_id_list = [invited_user.user_id for invited_user in invited_users]
         invited_users_count = len(invited_users_id_list)
 
-    # 邀请回答人选
+    # 推荐邀请回答候选人
     invite_candidates = []
     invite_candidates_count = 0
     topics_id_list = [topic.topic_id for topic in question.topics]
@@ -47,8 +48,10 @@ def view(uid):
         invite_candidates = UserTopicStatistic.query. \
             filter(UserTopicStatistic.topic_id.in_(topics_id_list)). \
             filter(UserTopicStatistic.user_id.notin_(invited_users_id_list)). \
+            filter(UserTopicStatistic.user_id.notin_(answerers_id_list)). \
             filter(UserTopicStatistic.user_id != g.user.id). \
-            order_by(UserTopicStatistic.score.desc()).limit(16).all()
+            group_by(UserTopicStatistic.user_id). \
+            order_by(UserTopicStatistic.score.desc()).limit(16)
 
     # 话题经验，按 topics_id_list 排序
     topics_experience = []
