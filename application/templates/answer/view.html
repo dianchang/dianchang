@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_answer.html" import render_answer_comment, render_answer_commands, render_answers %}
+{% from "macros/_answer.html" import render_answer_comment, render_answer_commands, render_answer_comments %}
 {% from "macros/_user.html" import user_follow_wap %}
 
 {% block page_title %}回答{% endblock %}
@@ -39,7 +39,7 @@
                 发布于 <span title="{{ answer.created_at }}">{{ answer.created_at|timesince }}</span>
             </div>
 
-            {{ render_answer_commands(answer, enable_comments_spread=False, with_full_screen=False, dark=True) }}
+            {{ render_answer_commands(answer, with_comments=False, with_full_screen=False, dark=True) }}
         </div>
 
         <div class="answerer-wap media">
@@ -74,37 +74,7 @@
         <div class="container">
             <div class="comments-count">{{ answer.comments_count }} 条评论</div>
 
-            {% if g.user %}
-                <div class="media comment-form-wap">
-                    <div class="media-left">
-                        <a href="{{ g.user.profile_url }}">
-                            <img src="{{ g.user.avatar_url }}" class="img-circle" alt=""/>
-                        </a>
-                    </div>
-
-                    <div class="media-body">
-                        <div class="comment-edit-area" contenteditable="true">
-                            <p class="text-light">写下你的评论...</p>
-                        </div>
-                        <div class="commands">
-                            <a href="javascript: void(0)" class="btn-cancel-comment">取消</a>
-                            <button type="button" class="btn btn-primary btn-submit-comment">评论</button>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-
-            <div class="comments">
-                {% for root_comment in answer.root_comments %}
-                    {{ render_answer_comment(root_comment) }}
-
-                    <div class="sub-comments-wap" data-root-id="{{ root_comment.id }}">
-                        {% for sub_comment in root_comment.sub_comments %}
-                            {{ render_answer_comment(sub_comment) }}
-                        {% endfor %}
-                    </div>
-                {% endfor %}
-            </div>
+            {{ render_answer_comments(answer) }}
         </div>
     </div>
 
@@ -151,7 +121,7 @@
             <a href="{{ answer.user.profile_url }}" class="name">{{ answer.user.name }}</a>
         </div>
         <div class="container">
-            {{ render_answer_commands(answer, bottom=True, dark=True, enable_comments_spread=False, with_full_screen=False) }}
+            {{ render_answer_commands(answer, bottom=True, dark=True, with_comments=False, with_full_screen=False) }}
         </div>
     </div>
 {% endblock %}

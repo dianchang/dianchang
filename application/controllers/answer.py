@@ -317,3 +317,15 @@ def comment(uid):
         'result': True,
         'html': macro(comment)
     })
+
+
+@bp.route('/answer/<int:uid>/load_comments_wap', methods=['POST'])
+@UserPermission()
+def load_comments_wap(uid):
+    """加载回答的评论wap"""
+    answer = Answer.query.get_or_404(uid)
+    macro = get_template_attribute('macros/_answer.html', 'render_answer_comments')
+    return json.dumps({
+        'result': True,
+        'html': macro(answer)
+    })

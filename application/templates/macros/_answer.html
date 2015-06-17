@@ -1,50 +1,295 @@
+{# 评论 #}
+{% macro render_answer_comment(comment) %}
+    <div class="answer-comment media">
+        <div class="media-left">
+            <a href="{{ comment.user.profile_url }}">
+                <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
+            </a>
+        </div>
+
+        <div class="media-body">
+            <div class="meta">
+                <span class="comment-user-info">
+                    <a href="{{ comment.user.profile_url }}" class="name">
+                        {{ comment.user.name }}</a>{% if comment.user.desc %}
+                    <span class="text-light">，{{ comment.user.desc }}</span>{% endif %}
+                </span>
+
+                <span title="{{ comment.created_at }}" class="time text-light">
+                    {{ comment.created_at|timesince }}
+                </span>
+
+                <div class="commands pull-right">
+                    <a href="javascript: void(0)"
+                       class="btn-reply-comment link-no-underline"
+                       data-id="{{ comment.id }}"
+                       data-root-id="{{ comment.root_id or comment.id }}">回复</a>
+                    <span class="like-comment-wap
+                        {% if comment.liked_by_user() %}liked{% endif %}
+                        {% if comment.likes.count() == 0 %}zero{% endif %}">
+                        <a href="javascript: void(0)" data-id="{{ comment.id }}"
+                           class="btn-like-comment">
+                            <span class="for-zero">赞同</span>
+                            <span class="for-nonzero">
+                                <span class="likes-count">{{ comment.likes.count() }}</span> 赞
+                            </span>
+                        </a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="content">
+                {% if comment.parent %}
+                    <a href="{{ comment.parent.user.profile_url }}">
+                        @{{ comment.parent.user.name }}</a>
+                {% endif %}
+
+                {{ comment.content|safe }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# 针对回答的评论 #}
+{% macro render_answer_comments(answer) %}
+    <div class="dc-answer-comments">
+        {% if g.user %}
+            <div class="media comment-form-wap">
+                <div class="media-left">
+                    <a href="{{ g.user.profile_url }}">
+                        <img src="{{ g.user.avatar_url }}" class="img-circle" alt=""/>
+                    </a>
+                </div>
+
+                <div class="media-body">
+                    <div class="comment-edit-area" contenteditable="true">
+                        <p class="text-light">写下你的评论...</p>
+                    </div>
+                    <div class="commands">
+                        <a href="javascript: void(0)" class="btn-cancel-comment text-light">取消</a>
+                        <button type="button" class="btn btn-primary btn-submit-comment"
+                                data-answer-id="{{ answer.id }}">评论
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="comments">
+            {% for root_comment in answer.root_comments %}
+                {{ render_answer_comment(root_comment) }}
+
+                <div class="sub-comments-wap" data-root-id="{{ root_comment.id }}">
+                    {% for sub_comment in root_comment.sub_comments %}
+                        {{ render_answer_comment(sub_comment) }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var $commentsWap = $('.dc-answer-comments');
+
+            // 赞评论
+            $commentsWap.onOnce('click', '.btn-like-comment', function () {
+                var $likeCommentWap = $(this).parents('.like-comment-wap').first();
+                var $likesCount = $(this).find('.likes-count');
+                var id = parseInt($(this).data('id'));
+
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return;
+                }
+
+                $.ajax({
+                    url: urlFor('answer.like_comment', {uid: id}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        if (response.liked) {
+                            $likeCommentWap.addClass('liked').removeClass('zero');
+                        } else {
+                            $likeCommentWap.removeClass('liked');
+
+                            if (response.count == 0) {
+                                $likeCommentWap.addClass('zero');
+                            } else {
+                                $likeCommentWap.removeClass('zero');
+                            }
+                        }
+
+                        $likesCount.text(response.count);
+                    }
+                });
+            });
+
+            // 展开回复评论框
+            $commentsWap.onOnce('click', '.btn-reply-comment', function () {
+                var id = parseInt($(this).data('id'));
+                var rootId = $(this).data('root-id');
+                var $subCommentsWap = $(".sub-comments-wap[data-root-id='" + rootId + "']");
+
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return;
+                }
+
+                $subCommentsWap.append(
+                        "<div class='comment-form-wap'>"
+                        + "<div class='comment-edit-area' contenteditable='true'></div>"
+                        + "<div class='commands'>"
+                        + "<a href='javascript: void(0)' class='btn-cancel-reply text-light'>取消</a>"
+                        + "<button type='button' class='btn btn-primary btn-submit-reply' data-parent-id=" + id + ">评论</button>"
+                        + "</div>"
+                        + "</div>"
+                );
+
+                $subCommentsWap.find('.comment-edit-area').focus();
+            });
+
+            // 取消回复
+            $commentsWap.onOnce('click', '.btn-cancel-reply', function () {
+                $(this).parents('.comment-form-wap').first().detach();
+            });
+
+            // 提交回复
+            $commentsWap.onOnce('click', '.btn-submit-reply', function () {
+                var parentCommentId = parseInt($(this).data('parent-id'));
+                var $subCommentsWap = $(this).parents('.sub-comments-wap').first();
+                var $replyWap = $(this).parents('.comment-form-wap').first();
+                var comment = $.trim($(this).parent().prev().html());
+
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return;
+                }
+
+                if (comment === '') {
+                    return;
+                }
+
+                $.ajax({
+                    url: urlFor('answer.reply_comment', {uid: parentCommentId}),
+                    method: 'post',
+                    dataType: 'json',
+                    data: {
+                        content: comment
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        $subCommentsWap.append(response.html);
+                        $replyWap.detach();
+                    }
+                });
+            });
+
+            // 展开评论框
+            $commentsWap.onOnce('focus', '.comment-edit-area', function () {
+                if (!$(this).hasClass('open')) {
+                    $(this).html('');
+                    $(this).next().show();
+                    $(this).addClass('open');
+                }
+            });
+
+            // 取消评论
+            $commentsWap.onOnce('click', '.btn-cancel-comment', function () {
+                var $commands = $(this).parent();
+                var $editArea = $commands.prev();
+
+                $commands.hide();
+                $editArea.removeClass('open').html("<p class='text-light'>写下你的评论...</p>");
+            });
+
+            // 提交评论
+            $commentsWap.onOnce('click', '.btn-submit-comment', function () {
+                var $comments = $('.comments');
+                var comment = $.trim($(this).parent().prev().html());
+                var answerId = parseInt($(this).data('answer-id'));
+                var _this = $(this);
+
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return;
+                }
+
+                if (comment === '') {
+                    return;
+                }
+
+                $.ajax({
+                    url: urlFor('answer.comment', {uid: answerId}),
+                    method: 'post',
+                    dataType: 'json',
+                    data: {
+                        content: comment
+                    }
+                }).done(function (response) {
+                    if (response.result) {
+                        $comments.prepend(response.html);
+                        _this.parent().hide();
+                        _this.parent().prev().html("<p class='text-light'>写下你的评论...</p>");
+                    }
+                });
+            });
+        })();
+    </script>
+{% endmacro %}
+
+
 {# 回答操作 #}
-{% macro render_answer_commands(answer, enable_comments_spread=True, with_full_screen=True, bottom=False, dark=False) %}
+{% macro render_answer_commands(answer, with_comments=True, with_full_screen=True, bottom=False, dark=False) %}
     <div class="dc-answer-commands {% if bottom %}bottom{% endif %}">
         {% set upvoted = answer.upvoted_by_user() %}
         {% set downvoted = answer.downvoted_by_user() %}
         {% set thanked = answer.thanked_by_user() %}
         {% set nohelped = answer.nohelped_by_user() %}
 
-        {# 赞同 & 反对 #}
-        <span class="vote-wap">
-            <span class="upvote-wap {% if dark %}dark{% endif %} btn
-                {% if upvoted %}
-                    btn-default
-                {% else %}
-                    {% if dark %}btn-dark{% else %}btn-light{% endif %}
-                {% endif %}
-                {% if upvoted %}upvoted{% endif %}"
-                  data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
-                <span class="for-upvoted">已赞同</span>
-                <span class="for-un-upvoted">赞同</span>
-                <span class="divider">|</span>
-                <span class="upvotes-count">{{ answer.upvotes_count }}</span>
+        <div class="inner-wap">
+            {# 赞同 & 反对 #}
+            <span class="vote-wap">
+                <span class="upvote-wap {% if dark %}dark{% endif %} btn
+                    {% if upvoted %}
+                        btn-default
+                    {% else %}
+                        {% if dark %}btn-dark{% else %}btn-light{% endif %}
+                    {% endif %}
+                    {% if upvoted %}upvoted{% endif %}"
+                      data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
+                    <span class="for-upvoted">已赞同</span>
+                    <span class="for-un-upvoted">赞同</span>
+                    <span class="divider">|</span>
+                    <span class="upvotes-count">{{ answer.upvotes_count }}</span>
+                </span>
+
+                <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
+                   data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
+                    <span class="for-downvoted">已反对</span>
+                    <span class="for-un-downvoted">反对</span>
+                </a>
             </span>
-            <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
-               data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
-                <span class="for-downvoted">已反对</span>
-                <span class="for-un-downvoted">反对</span>
-            </a>
-        </span>
 
-        <div class="pull-right">
-            <a href="javascript: void(0)" class="btn-collapse">
-                <span class="fa fa-angle-double-up"></span>
-                收起
-            </a>
+            <div class="pull-right">
+                <a href="javascript: void(0)" class="btn-collapse">
+                    <span class="fa fa-angle-double-up"></span>
+                    收起
+                </a>
 
-            <a href="javascript: void(0)" class="btn-comments">
-                <span class="fa fa-comment-o"></span>
-                评论
-                {{ answer.comments_count }}
-            </a>
+                <a href="javascript: void(0)" class="btn-comments" data-answer-id="{{ answer.id }}">
+                    <span class="fa fa-comment-o"></span>
+                    评论
+                    {{ answer.comments_count }}
+                </a>
 
-            <a href="javascript:void(0)" class="btn-share">
-                <span class="fa fa-share-square-o"></span>
-                分享
-                {{ answer.shares_count }}
-            </a>
+                <a href="javascript:void(0)" class="btn-share">
+                    <span class="fa fa-share-square-o"></span>
+                    分享
+                    {{ answer.shares_count }}
+                </a>
 
             <span class="btn-more dc-hide-commands-trigger">
                 更多
@@ -68,7 +313,13 @@
                     {% endif %}
                 </span>
             </span>
+            </div>
         </div>
+
+        {% if with_comments %}
+            <div class="comments-outer-wap hide empty">
+            </div>
+        {% endif %}
     </div>
 
     <script>
@@ -174,8 +425,25 @@
         });
 
         // 展开评论
-        {% if enable_comments_spread %}
-            // TODO
+        {% if with_comments %}
+            $(document).onOnce('click', '.btn-comments', function () {
+                var $commentsOuterWap = $('.comments-outer-wap');
+                var answerId = $(this).data('answer-id');
+
+                if ($commentsOuterWap.hasClass('empty')) {
+                    $.ajax({
+                        url: urlFor('answer.load_comments_wap', {uid: answerId}),
+                        dataType: 'json',
+                        method: 'post'
+                    }).done(function (response) {
+                        if (response.result) {
+                            $commentsOuterWap.removeClass('empty').html(response.html);
+                        }
+                    });
+                }
+
+                $commentsOuterWap.toggleClass('hide');
+            });
         {% endif %}
 
         // 感谢回答
@@ -361,57 +629,4 @@
     {% for answer in answers %}
         {{ render_answer(answer) }}
     {% endfor %}
-{% endmacro %}
-
-
-{# 评论 #}
-{% macro render_answer_comment(comment) %}
-    <div class="answer-comment media">
-        <div class="media-left">
-            <a href="{{ comment.user.profile_url }}">
-                <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
-            </a>
-        </div>
-
-        <div class="media-body">
-            <div class="meta">
-                <span class="comment-user-info">
-                    <a href="{{ comment.user.profile_url }}" class="name">
-                        {{ comment.user.name }}</a>{% if comment.user.desc %}
-                    <span class="text-light">，{{ comment.user.desc }}</span>{% endif %}
-                </span>
-
-                <span title="{{ comment.created_at }}" class="time text-light">
-                    {{ comment.created_at|timesince }}
-                </span>
-
-                <div class="commands pull-right">
-                    <a href="javascript: void(0)"
-                       class="btn-reply-comment link-no-underline"
-                       data-id="{{ comment.id }}"
-                       data-root-id="{{ comment.root_id or comment.id }}">回复</a>
-                    <span class="like-comment-wap
-                        {% if comment.liked_by_user() %}liked{% endif %}
-                        {% if comment.likes.count() == 0 %}zero{% endif %}">
-                        <a href="javascript: void(0)" data-id="{{ comment.id }}"
-                           class="btn-like-comment">
-                            <span class="for-zero">赞同</span>
-                            <span class="for-nonzero">
-                                <span class="likes-count">{{ comment.likes.count() }}</span> 赞
-                            </span>
-                        </a>
-                    </span>
-                </div>
-            </div>
-
-            <div class="content">
-                {% if comment.parent %}
-                    <a href="{{ comment.parent.user.profile_url }}">
-                        @{{ comment.parent.user.name }}</a>
-                {% endif %}
-
-                {{ comment.content|safe }}
-            </div>
-        </div>
-    </div>
 {% endmacro %}

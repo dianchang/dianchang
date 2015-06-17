@@ -1,3 +1,14 @@
+.dc-answer-commands .btn-downvote-answer,
+.dc-answer-commands .btn-share,
+.dc-answer-commands .btn-comments {
+  text-decoration: none;
+  color: #999;
+}
+.dc-answer-commands .btn-downvote-answer:hover,
+.dc-answer-commands .btn-share:hover,
+.dc-answer-commands .btn-comments:hover {
+  color: #009999;
+}
 .dc-answer-commands .vote-wap {
   display: inline-block;
 }
@@ -89,15 +100,35 @@
 .dc-answer-commands .btn-nohelp-answer.nohelped .for-nohelped {
   display: inline-block;
 }
-.dc-answer-commands a {
-  text-decoration: none;
-  color: #999;
-}
-.dc-answer-commands a:hover {
-  color: #009999;
-}
 .dc-answer-commands .pull-right {
   margin-top: 6px;
+}
+.dc-answer-commands .comments-outer-wap.hide {
+  display: none;
+}
+.dc-answer-commands .dc-answer-comments {
+  background-color: #F5F6F5;
+  padding: 22px 18px 5px 18px;
+  margin-top: 20px;
+}
+.dc-answer-commands .dc-answer-comments .comments {
+  padding-top: 0;
+}
+.dc-answer-commands .dc-answer-comments .answer-comment {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.dc-answer-commands .dc-answer-comments .answer-comment .meta {
+  margin-bottom: 5px;
+}
+.dc-answer-commands .dc-answer-comments .answer-comment .content {
+  font-size: 14px;
+}
+.dc-answer-commands .dc-answer-comments .comment-form-wap .commands {
+  margin-bottom: 12px;
+}
+.dc-answer-commands .dc-answer-comments .comment-form-wap .btn {
+  padding: 4px 10px;
 }
 .dc-answer {
   margin-bottom: 25px;
@@ -142,4 +173,114 @@
 }
 .dc-answer .time {
   margin-bottom: 15px;
+}
+.dc-answer-comments .comments {
+  padding-top: 30px;
+}
+.dc-answer-comments .answer-comment {
+  border-top: 1px solid #e4e4e4;
+  padding-top: 25px;
+  padding-bottom: 22px;
+  margin-top: 0;
+}
+.dc-answer-comments .answer-comment .media-left {
+  padding-right: 15px;
+}
+.dc-answer-comments .answer-comment img {
+  width: 36px;
+  height: 36px;
+}
+.dc-answer-comments .answer-comment .meta {
+  margin-bottom: 10px;
+}
+.dc-answer-comments .answer-comment .comment-user-info .name {
+  color: #333;
+}
+.dc-answer-comments .answer-comment .time {
+  margin-left: 18px;
+}
+.dc-answer-comments .answer-comment .content {
+  font-size: 18px;
+}
+.dc-answer-comments .answer-comment .content a {
+  color: #009999;
+}
+.dc-answer-comments .answer-comment .commands .btn-reply-comment,
+.dc-answer-comments .answer-comment .commands .like-comment-wap a {
+  color: #999;
+}
+.dc-answer-comments .answer-comment .commands .btn-reply-comment:hover,
+.dc-answer-comments .answer-comment .commands .like-comment-wap a:hover {
+  color: #333;
+}
+.dc-answer-comments .answer-comment .commands .btn-reply-comment {
+  visibility: hidden;
+}
+.dc-answer-comments .answer-comment .commands .like-comment-wap {
+  margin-left: 6px;
+  visibility: visible;
+}
+.dc-answer-comments .answer-comment .commands .like-comment-wap .for-zero {
+  display: none;
+}
+.dc-answer-comments .answer-comment .commands .like-comment-wap .for-nonzero {
+  display: inline-block;
+}
+.dc-answer-comments .answer-comment .commands .like-comment-wap.liked a {
+  color: #333;
+}
+.dc-answer-comments .answer-comment .commands .like-comment-wap.zero {
+  visibility: hidden;
+}
+.dc-answer-comments .answer-comment .commands .like-comment-wap.zero .for-zero {
+  display: inline-block;
+}
+.dc-answer-comments .answer-comment .commands .like-comment-wap.zero .for-nonzero {
+  display: none;
+}
+.dc-answer-comments .answer-comment:hover .commands .like-comment-wap,
+.dc-answer-comments .answer-comment:hover .commands .btn-reply-comment {
+  visibility: visible;
+}
+.dc-answer-comments .comment-form-wap {
+  margin-bottom: 10px;
+}
+.dc-answer-comments .comment-form-wap .comment-edit-area {
+  background-color: white;
+  border: 1px solid #bebebe;
+  border-radius: 2px;
+  padding: 8px 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.dc-answer-comments .comment-form-wap .comment-edit-area:focus {
+  outline: none;
+}
+.dc-answer-comments .comment-form-wap .comment-edit-area p:last-child {
+  margin-bottom: 0;
+}
+.dc-answer-comments .comment-form-wap img {
+  width: 36px;
+  height: 36px;
+}
+.dc-answer-comments .comment-form-wap .media-left {
+  padding-right: 15px;
+}
+.dc-answer-comments .comment-form-wap .commands {
+  display: none;
+  text-align: right;
+}
+.dc-answer-comments .comment-form-wap .commands .btn-submit-comment,
+.dc-answer-comments .comment-form-wap .commands .btn-submit-reply {
+  margin-left: 10px;
+}
+.dc-answer-comments .sub-comments-wap {
+  padding-left: 51px;
+}
+.dc-answer-comments .sub-comments-wap .comment-form-wap {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+.dc-answer-comments .sub-comments-wap .comment-form-wap .commands {
+  display: block;
 }

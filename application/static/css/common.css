@@ -2,11 +2,11 @@
   color: red;
 }
 .text-light {
-  color: #999;
+  color: #999 !important;
 }
 a.text-light:hover,
 a.text-light:focus {
-  color: #999;
+  color: #999 !important;
 }
 h3 {
   font-size: 16px;

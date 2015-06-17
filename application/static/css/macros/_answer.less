@@ -2,6 +2,17 @@
 
 // 回答操作按钮组
 .dc-answer-commands {
+  .btn-downvote-answer,
+  .btn-share,
+  .btn-comments {
+    text-decoration: none;
+    color: #999;
+
+    &:hover {
+      color: @main-color;
+    }
+  }
+
   .vote-wap {
     display: inline-block;
 
@@ -121,17 +132,47 @@
     }
   }
 
-  a {
-    text-decoration: none;
-    color: #999;
+  .pull-right {
+    margin-top: 6px;
+  }
 
-    &:hover {
-      color: @main-color;
+  .comments-outer-wap {
+    &.hide {
+      display: none;
     }
   }
 
-  .pull-right {
-    margin-top: 6px;
+  .dc-answer-comments {
+    background-color: #F5F6F5;
+    padding: 22px 18px 5px 18px;
+    margin-top: 20px;
+
+    .comments {
+      padding-top: 0;
+    }
+
+    .answer-comment {
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      .meta {
+        margin-bottom: 5px;
+      }
+
+      .content {
+        font-size: 14px;
+      }
+    }
+
+    .comment-form-wap {
+      .commands {
+        margin-bottom: 12px;
+      }
+
+      .btn {
+        padding: 4px 10px;
+      }
+    }
   }
 }
 
@@ -191,5 +232,153 @@
 
   .time {
     margin-bottom: 15px;
+  }
+}
+
+// 回答评论
+.dc-answer-comments {
+  .comments {
+    padding-top: 30px;
+  }
+
+  .answer-comment {
+    border-top: 1px solid #e4e4e4;
+    padding-top: 25px;
+    padding-bottom: 22px;
+    margin-top: 0;
+
+    .media-left {
+      padding-right: 15px;
+    }
+
+    img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .meta {
+      margin-bottom: 10px;
+    }
+
+    .comment-user-info {
+      .name {
+        color: #333;
+      }
+    }
+
+    .time {
+      margin-left: 18px;
+    }
+
+    .content {
+      font-size: 18px;
+
+      a {
+        color: @main-color;
+      }
+    }
+
+    .commands {
+      .btn-reply-comment,
+      .like-comment-wap a {
+        color: #999;
+
+        &:hover {
+          color: #333;
+        }
+      }
+
+      .btn-reply-comment {
+        visibility: hidden;
+      }
+
+      .like-comment-wap {
+        margin-left: 6px;
+        visibility: visible;
+
+        .for-zero {
+          display: none;
+        }
+        .for-nonzero {
+          display: inline-block;
+        }
+
+        &.liked a {
+          color: #333;
+        }
+
+        &.zero {
+          visibility: hidden;
+
+          .for-zero {
+            display: inline-block;
+          }
+          .for-nonzero {
+            display: none;
+          }
+        }
+      }
+    }
+
+    &:hover .commands {
+      .like-comment-wap,
+      .btn-reply-comment {
+        visibility: visible;
+      }
+    }
+  }
+
+  .comment-form-wap {
+    margin-bottom: 10px;
+
+    .comment-edit-area {
+      background-color: white;
+      border: 1px solid #bebebe;
+      border-radius: 2px;
+      padding: 8px 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+
+      &:focus {
+        outline: none;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .media-left {
+      padding-right: 15px;
+    }
+
+    .commands {
+      display: none;
+      text-align: right;
+
+      .btn-submit-comment,
+      .btn-submit-reply {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  // 子评论框
+  .sub-comments-wap {
+    padding-left: 51px;
+
+    .comment-form-wap {
+      margin-top: 5px;
+      margin-bottom: 20px;
+
+      .commands {
+        display: block;
+      }
+    }
   }
 }
