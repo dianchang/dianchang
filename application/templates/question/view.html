@@ -89,17 +89,19 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {% set answers_count = question.answers.count() %}
+                {% set answers_count = question.answers_count %}
 
+                {# 切换组件 #}
                 <div class="content-tabs clearfix">
                     <a href="javascript: void(0)" class="{% if answers_count %}active{% endif %} answers-tab-item"
                        data-target="answers">
                         <span class="answers-count">{{ answers_count }}</span> 人回答</a>
                     <span class="divider">·</span>
-                    <a href="javascript: void(0)" class="{% if not answers_count %}active{% endif %}"
+                    <a href="javascript: void(0)" class="{% if not answers_count %}active{% endif %} invitation-tab-item"
                        data-target="invitation-wap">邀请回答</a>
                 </div>
 
+                {# 回答 #}
                 <div class="answers content-item {% if answers_count %}active{% endif %}">
                     <div class="showed-answers">
                         {% for answer in answers %}
@@ -107,10 +109,12 @@
                         {% endfor %}
                     </div>
 
-                    {% if hided_answers.count() %}
+                    {% set hided_answers_count = hided_answers.count() %}
+
+                    {% if hided_answers_count %}
                         <div class="toogle-hided-answers-wap">
                             <a href="javascript:void(0)" class="btn-toggle-hided-answers text-light">
-                                {{ hided_answers.count() }} 个回答被折叠
+                                {{ hided_answers_count }} 个回答被折叠
                             </a>（<a target="_blank" class="text-light"
                                     href="http://www.zhihu.com/question/20120168">为什么？</a>）
                         </div>
@@ -119,6 +123,23 @@
                             {% for answer in hided_answers %}
                                 {{ render_answer_in_question(answer) }}
                             {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {# 底部的邀请框 #}
+                    {% if 1 <= question.answers_count <= 5 %}
+                        <div class="bottom-invitation-wap">
+                            <div class="tip">邀请合适的人回答，每一个答案都是一次新的启发</div>
+
+                            <div class="candidates">
+                                {% for candidate in invite_candidates %}
+                                    <a href="{{ candidate.user.profile_url }}">
+                                        <img src="{{ candidate.user.avatar_url }}" alt="" class="img-circle"/>
+                                    </a>
+                                {% endfor %}
+                            </div>
+
+                            <button class="btn btn-white btn-go-to-invitation-wap">邀请回答</button>
                         </div>
                     {% endif %}
                 </div>
@@ -135,10 +156,12 @@
                         </span>
                         回答此问题
                     </div>
+
                     <div class="header">
                         <input type="text" name="user" class="form-control"
                                placeholder="通过话题经验关键词（如：产品经理）或用户名来查找邀请用户"/>
                     </div>
+
                     <div class="recommend-wap">
                         {% for candidate in invite_candidates %}
                             {#                            {% if loop.index % 4 == 1 %}#}

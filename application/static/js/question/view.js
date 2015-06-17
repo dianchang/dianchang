@@ -426,6 +426,12 @@ $('.btn-go-to-my-answer').click(function () {
     }, 1200);
 });
 
+// 跳转到邀请回答
+$('.btn-go-to-invitation-wap').click(function () {
+    $('.invitation-tab-item').click();
+    $(window).scrollTo("0%");
+});
+
 // 修改显示身份
 $('.identity-selector label').click(function () {
     var identity = $.trim($(this).data('identity'));

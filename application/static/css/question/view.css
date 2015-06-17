@@ -292,6 +292,41 @@ h3 {
   display: none;
   margin-top: -1px;
 }
+.bottom-invitation-wap {
+  background-color: #f5f6f5;
+  border: 1px dashed #d4d4d4;
+  padding: 40px 0 30px 0;
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 40px;
+}
+.bottom-invitation-wap .tip {
+  color: #999;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.bottom-invitation-wap .candidates {
+  margin-bottom: 20px;
+}
+.bottom-invitation-wap .candidates a {
+  display: inline-block;
+  margin-right: 5px;
+}
+.bottom-invitation-wap .candidates a img {
+  width: 34px;
+  height: 34px;
+}
+.bottom-invitation-wap .btn-go-to-invitation-wap {
+  font-weight: bold;
+  display: inline-block;
+  font-size: 16px;
+  border: 1px solid #c5c5c5;
+  padding: 8px 25px;
+}
+.bottom-invitation-wap .btn-go-to-invitation-wap:hover {
+  background-color: #fff;
+  border-color: #b5b5b5;
+}
 .answered-tip-wap {
   margin-top: -1px;
   text-align: center;
