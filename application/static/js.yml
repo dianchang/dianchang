@@ -9,6 +9,7 @@ libs:
   - bower_components/marked/marked.min.js
   - bower_components/to-markdown/dist/to-markdown.js
   - bower_components/simditor-markdown/lib/simditor-markdown.js
+  - bower_components/jquery.scrollTo/jquery.scrollTo.min.js
   - js/init.js
 
 layout:
