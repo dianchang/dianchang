@@ -74,7 +74,7 @@ $('.btn-save-title').click(function () {
         data: data
     }).done(function (response) {
         $titleWap.removeClass('edit').removeClass('add-desc');
-        $title.text(title);
+        $title.text(response.title);
 
         $desc.html(response.desc);
 

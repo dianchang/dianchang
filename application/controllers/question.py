@@ -229,8 +229,16 @@ def logs(uid):
 def update(uid):
     """通过Ajax更新问题的title和desc"""
     question = Question.query.get_or_404(uid)
-    title = request.form.get('title', "")
-    desc = request.form.get('desc', "")
+    title = request.form.get('title', "").strip()
+    desc = request.form.get('desc', "").strip()
+
+    if title:
+        if title.endswith('?'):
+            title = title.rstrip('?') + "？"
+
+        if not title.endswith('？'):
+            print(title)
+            title += "？"
 
     if title and title != question.title:
         # Update title log
@@ -238,6 +246,7 @@ def update(uid):
                                   user_id=g.user.id, compare=generate_lcs_html(question.title, title))
         question.logs.append(title_log)
         question.title = title
+
         # 更新es中的answer
         for answer in question.answers:
             answer.save_to_es()
@@ -257,6 +266,7 @@ def update(uid):
     db.session.add(question)
     db.session.commit()
     question.save_to_es()  # 更新es中的question
+
     return json.dumps({
         'result': True,
         'title': title,
