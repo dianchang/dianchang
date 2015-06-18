@@ -18,25 +18,40 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
-                    {# 标题 #}
-                    <div class="title-wap">
-                        <span class="title-inner-wap">
-                            <span class="title">{{ question.title }}</span>
-                            <a href="javascript: void(0)" class="btn-edit-title">编辑</a>
-                        </span>
-                        <input type="text" name="title" class="form-control input-title"/>
-                        <a href="javascript: void(0)" class="btn-save-title btn btn-default">保存</a>
-                    </div>
+                    <div class="title-desc-wap {% if not question.desc %}empty-desc{% endif %}">
+                        {# 标题 #}
+                        <div class="title-wap">
+                            <div class="title-inner-wap">
+                                <span class="title">{{ question.title }}</span>
+                                <a href="javascript: void(0)" class="btn-edit-title">编辑</a>
+                            </div>
 
-                    {# 描述 #}
-                    <div class="desc-wap {% if not question.desc %}empty{% endif %}">
-                        <span class="desc-inner-wap">
-                            <span class="desc">{{ (question.desc or "")|safe }}</span>
-                            <a href="javascript: void(0)" class="btn-edit-desc text-light">编辑</a>
-                        </span>
-                        <textarea type="text" name="desc"></textarea>
-                        <a href="javascript: void(0)" class="btn-save-desc btn btn-default">保存</a>
-                        <a href="javascript: void(0)" class="btn-add-desc text-light">添加问题描述</a>
+                            <div class="form-elements">
+                                <input type="text" name="title" class="form-control input-title" autocomplete="off"/>
+                                <textarea type="text" name="desc-in-title"></textarea>
+                            </div>
+
+                            <div class="title-commands text-right">
+                                <a href="javascript: void(0)" class="btn-add-desc text-light">+ 添加问题描述</a>
+                                <a href="javascript:void(0)" class="text-light btn-cancel-edit-title">取消</a>
+                                <a href="javascript: void(0)" class="btn-save-title btn btn-default">保存</a>
+                            </div>
+                        </div>
+
+                        {# 描述 #}
+                        <div class="desc-wap">
+                            <span class="desc-inner-wap">
+                                <span class="desc">{{ (question.desc or "")|safe }}</span>
+                                <a href="javascript: void(0)" class="btn-edit-desc text-light">编辑</a>
+                            </span>
+
+                            <textarea type="text" name="desc"></textarea>
+
+                            <div class="desc-commands text-right">
+                                <a href="javascript:void(0)" class="text-light btn-cancel-edit-desc">取消</a>
+                                <a href="javascript: void(0)" class="btn-save-desc btn btn-default">保存</a>
+                            </div>
+                        </div>
                     </div>
 
                     {# 话题 #}
@@ -55,7 +70,7 @@
                             <a href="javascript:void(0)" class="btn-finish-add-topic btn btn-default">完成</a>
                         </div>
 
-                        <a type="button" href="javascript: void(0)" class="btn-add-topic text-light">添加话题</a>
+                        <a type="button" href="javascript: void(0)" class="btn-add-topic text-light">+ 添加话题</a>
                     </div>
                 </div>
 
@@ -97,7 +112,8 @@
                        data-target="answers">
                         <span class="answers-count">{{ answers_count }}</span> 人回答</a>
                     <span class="divider">·</span>
-                    <a href="javascript: void(0)" class="{% if not answers_count %}active{% endif %} invitation-tab-item"
+                    <a href="javascript: void(0)"
+                       class="{% if not answers_count %}active{% endif %} invitation-tab-item"
                        data-target="invitation-wap">邀请回答</a>
                 </div>
 

@@ -6,80 +6,129 @@
   background-color: #F5F6F5;
   position: relative;
 }
-.question-header .title-wap {
+.question-header .title-desc-wap .title-wap {
   margin-bottom: 15px;
 }
-.question-header .title-wap .title-inner-wap {
+.question-header .title-desc-wap .title-wap .title-inner-wap {
   display: block;
 }
-.question-header .title-wap .title-inner-wap .title {
+.question-header .title-desc-wap .title-wap .title-inner-wap .title {
   font-weight: bold;
   font-size: 24px;
 }
-.question-header .title-wap .title-inner-wap .btn-edit-title {
+.question-header .title-desc-wap .title-wap .title-inner-wap .btn-edit-title {
   color: #999;
   margin-left: 10px;
 }
-.question-header .title-wap .title-inner-wap:hover .btn-edit-title {
+.question-header .title-desc-wap .title-wap .title-inner-wap:hover .btn-edit-title {
   display: inline-block;
 }
-.question-header .title-wap input {
-  width: 560px;
-  vertical-align: middle;
-  margin-right: 5px;
-}
-.question-header .title-wap input,
-.question-header .title-wap .btn-edit-title,
-.question-header .title-wap .btn-save-title {
-  display: none;
-}
-.question-header .title-wap.edit .title-inner-wap {
-  display: none;
-}
-.question-header .title-wap.edit input,
-.question-header .title-wap.edit .btn-save-title {
-  display: inline-block;
-}
-.question-header .desc-wap {
-  margin-bottom: 20px;
-}
-.question-header .desc-wap .desc-inner-wap {
-  display: block;
-}
-.question-header .desc-wap .desc-inner-wap .btn-edit-desc {
-  visibility: hidden;
-}
-.question-header .desc-wap .desc-inner-wap:hover .btn-edit-desc {
-  visibility: visible;
-}
-.question-header .desc-wap textarea,
-.question-header .desc-wap .simditor,
-.question-header .desc-wap .btn-add-desc,
-.question-header .desc-wap .btn-save-desc {
-  display: none;
-}
-.question-header .desc-wap.edit .btn-add-desc,
-.question-header .desc-wap.edit .desc-inner-wap {
-  display: none !important;
-}
-.question-header .desc-wap.edit .btn-save-desc {
-  display: inline-block;
-}
-.question-header .desc-wap.edit .simditor {
-  display: block;
-}
-.question-header .desc-wap.empty .desc-inner-wap {
-  display: none;
-}
-.question-header .desc-wap.empty .btn-add-desc {
-  display: inline-block;
-}
-.question-header .desc-wap .simditor {
+.question-header .title-desc-wap .title-wap .form-elements {
   margin-bottom: 15px;
 }
-.question-header .desc-wap .simditor .simditor-body {
+.question-header .title-desc-wap .title-wap input {
+  display: none;
+  vertical-align: middle;
+  margin-right: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 4px 12px;
+  height: auto;
+  color: #333;
+}
+.question-header .title-desc-wap .title-wap .simditor {
+  border-top: 0;
+}
+.question-header .title-desc-wap .title-wap .simditor .simditor-body {
   padding: 15px 15px 40px 15px;
   min-height: 150px;
+}
+.question-header .title-desc-wap .title-wap .simditor,
+.question-header .title-desc-wap .title-wap textarea[name='desc-in-title'] {
+  display: none;
+}
+.question-header .title-desc-wap .title-wap .title-commands {
+  display: none;
+}
+.question-header .title-desc-wap .title-wap .title-commands .btn-save-title {
+  margin-left: 10px;
+}
+.question-header .title-desc-wap .title-wap .title-commands .btn-add-desc {
+  display: none;
+  float: left;
+  margin-top: 5px;
+}
+.question-header .title-desc-wap .title-wap.edit .title-inner-wap {
+  display: none;
+}
+.question-header .title-desc-wap .title-wap.edit input {
+  display: block;
+}
+.question-header .title-desc-wap .title-wap.edit .title-commands {
+  display: block;
+}
+.question-header .title-desc-wap .title-wap.add-desc input {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.question-header .title-desc-wap .title-wap.add-desc .simditor {
+  display: block;
+}
+.question-header .title-desc-wap .desc-wap {
+  margin-bottom: 20px;
+}
+.question-header .title-desc-wap .desc-wap .desc-inner-wap {
+  display: block;
+}
+.question-header .title-desc-wap .desc-wap .desc-inner-wap .btn-edit-desc {
+  visibility: hidden;
+}
+.question-header .title-desc-wap .desc-wap .desc-inner-wap:hover .btn-edit-desc {
+  visibility: visible;
+}
+.question-header .title-desc-wap .desc-wap textarea,
+.question-header .title-desc-wap .desc-wap .simditor {
+  display: none;
+}
+.question-header .title-desc-wap .desc-wap .desc-commands {
+  display: none;
+}
+.question-header .title-desc-wap .desc-wap .desc-commands .btn-save-desc {
+  margin-left: 10px;
+}
+.question-header .title-desc-wap .desc-wap.edit {
+  display: block !important;
+}
+.question-header .title-desc-wap .desc-wap.edit .desc-inner-wap {
+  display: none !important;
+}
+.question-header .title-desc-wap .desc-wap.edit .desc-commands {
+  display: block;
+}
+.question-header .title-desc-wap .desc-wap.edit .btn-save-desc {
+  display: inline-block;
+}
+.question-header .title-desc-wap .desc-wap.edit .simditor {
+  display: block;
+}
+.question-header .title-desc-wap .desc-wap.empty .desc-inner-wap {
+  display: none;
+}
+.question-header .title-desc-wap .desc-wap.empty .btn-add-desc {
+  display: inline-block;
+}
+.question-header .title-desc-wap .desc-wap .simditor {
+  margin-bottom: 15px;
+}
+.question-header .title-desc-wap .desc-wap .simditor .simditor-body {
+  padding: 15px 15px 40px 15px;
+  min-height: 150px;
+}
+.question-header .title-desc-wap.empty-desc .title-wap .title-commands .btn-add-desc {
+  display: block;
+}
+.question-header .title-desc-wap.empty-desc .desc-wap {
+  display: none;
 }
 .question-header .topics-wap .btn-add-topic,
 .question-header .topics-wap .btn-edit-topic,

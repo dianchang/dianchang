@@ -1,5 +1,7 @@
+var $titleDescWap = $('.title-desc-wap');
 var $titleWap = $('.title-wap');
-var $titleInput = $('.title-wap input');
+var $titleInput = $titleWap.find('input');
+var $descInTitleTextarea = $titleWap.find('textarea');
 var $title = $('.title-wap .title');
 var timerForTopicTypeahead = null;
 var $topicInput = $("input[name='topic']");
@@ -17,9 +19,40 @@ $('.btn-edit-title').click(function () {
     $titleInput.val($.trim($title.text())).focus();
 });
 
+// 初始化位于标题内部的描述富文本编辑器
+var descInTitleEditor = new Simditor({
+    textarea: $descInTitleTextarea,
+    toolbarFloat: false,
+    toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
+    upload: {
+        url: urlFor('site.upload_image'),
+        fileKey: 'file',
+        connectionCount: 1,
+        leaveConfirm: '正在上传文件，如果离开上传会自动取消'
+    }
+});
+
+// 添加问题描述
+$('.btn-add-desc').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
+    $titleWap.addClass('add-desc');
+    descInTitleEditor.focus();
+});
+
+// 退出标题编辑模式
+$('.btn-cancel-edit-title').click(function () {
+    $titleWap.removeClass('edit').removeClass('add-desc');
+});
+
 // 保存标题
 $('.btn-save-title').click(function () {
     var title = $.trim($titleInput.val());
+    var withDesc = $titleWap.hasClass('add-desc');
+    var data = {title: title};
 
     if (!g.signin) {
         window.location = urlFor('account.signin');
@@ -30,16 +63,26 @@ $('.btn-save-title').click(function () {
         return;
     }
 
+    if (withDesc) {
+        data.desc = descInTitleEditor.getValue();
+    }
+
     $.ajax({
         url: urlFor('question.update', {uid: g.questionId}),
         method: 'post',
         dataType: 'json',
-        data: {
-            title: title
-        }
-    }).done(function () {
-        $titleWap.removeClass('edit');
+        data: data
+    }).done(function (response) {
+        $titleWap.removeClass('edit').removeClass('add-desc');
         $title.text(title);
+
+        $desc.html(response.desc);
+
+        if (response.desc === "") {
+            $titleDescWap.addClass('empty-desc');
+        } else {
+            $titleDescWap.removeClass('empty-desc');
+        }
     });
 });
 
@@ -58,17 +101,6 @@ var descEditor = new Simditor({
         connectionCount: 1,
         leaveConfirm: '正在上传文件，如果离开上传会自动取消'
     }
-});
-
-// 添加问题描述
-$('.btn-add-desc').click(function () {
-    if (!g.signin) {
-        window.location = urlFor('account.signin');
-        return;
-    }
-
-    $descWap.addClass('edit');
-    descEditor.focus();
 });
 
 // 编辑问题描述
@@ -104,12 +136,17 @@ $('.btn-save-desc').click(function () {
             $desc.html(response.desc);
 
             if (response.desc === "") {
-                $descWap.addClass('empty');
+                $titleDescWap.addClass('empty-desc');
             } else {
-                $descWap.removeClass('empty');
+                $titleDescWap.removeClass('empty-desc');
             }
         }
     });
+});
+
+// 取消编辑描述
+$('.btn-cancel-edit-desc').click(function () {
+    $descWap.removeClass('edit');
 });
 
 // 添加话题

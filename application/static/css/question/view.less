@@ -9,112 +9,183 @@
   background-color: #F5F6F5;
   position: relative;
 
-  .title-wap {
-    margin-bottom: 15px;
+  .title-desc-wap {
+    // 标题
+    .title-wap {
+      margin-bottom: 15px;
 
-    .title-inner-wap {
-      display: block;
-
-      .title {
-        font-weight: bold;
-        font-size: 24px;
-      }
-
-      .btn-edit-title {
-        color: #999;
-        margin-left: 10px;
-      }
-
-      &:hover {
-        .btn-edit-title {
-          display: inline-block;
-        }
-      }
-    }
-
-    input {
-      width: 560px;
-      vertical-align: middle;
-      margin-right: 5px;
-    }
-
-    input,
-    .btn-edit-title,
-    .btn-save-title {
-      display: none;
-    }
-
-    &.edit {
       .title-inner-wap {
-        display: none;
-      }
+        display: block;
 
-      input,
-      .btn-save-title {
-        display: inline-block;
-      }
-    }
-  }
+        .title {
+          font-weight: bold;
+          font-size: 24px;
+        }
 
-  .desc-wap {
-    margin-bottom: 20px;
+        .btn-edit-title {
+          color: #999;
+          margin-left: 10px;
+        }
 
-    .desc-inner-wap {
-      display: block;
-
-      .btn-edit-desc {
-        visibility: hidden;
-      }
-
-      &:hover {
-        .btn-edit-desc {
-          visibility: visible;
+        &:hover {
+          .btn-edit-title {
+            display: inline-block;
+          }
         }
       }
-    }
 
-    textarea,
-    .simditor,
-    .btn-add-desc,
-    .btn-save-desc {
-      display: none;
-    }
-
-    &.edit {
-      .btn-add-desc,
-      .desc-inner-wap {
-        display: none !important;
+      .form-elements {
+        margin-bottom: 15px;
       }
 
-      .btn-save-desc {
-        display: inline-block;
+      input {
+        display: none;
+        vertical-align: middle;
+        margin-right: 5px;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 4px 12px;
+        height: auto;
+        color: #333;
       }
 
       .simditor {
-        display: block;
-      }
-    }
+        border-top: 0;
 
-    &.empty {
-      .desc-inner-wap {
+        .simditor-body {
+          padding: 15px 15px 40px 15px;
+          min-height: 150px;
+        }
+      }
+
+      .simditor,
+      textarea[name='desc-in-title'] {
         display: none;
       }
 
-      .btn-add-desc {
-        display: inline-block;
+      .title-commands {
+        display: none;
+
+        .btn-save-title {
+          margin-left: 10px;
+        }
+
+        .btn-add-desc {
+          display: none;
+          float: left;
+          margin-top: 5px;
+        }
+      }
+
+      &.edit {
+        .title-inner-wap {
+          display: none;
+        }
+
+        input {
+          display: block;
+        }
+
+        .title-commands {
+          display: block;
+        }
+      }
+
+      &.add-desc {
+        input {
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .simditor {
+          display: block;
+        }
       }
     }
 
-    .simditor {
-      margin-bottom: 15px;
+    // 描述
+    .desc-wap {
+      margin-bottom: 20px;
 
-      .simditor-body {
-        padding: 15px 15px 40px 15px;
-        min-height: 150px;
+      .desc-inner-wap {
+        display: block;
+
+        .btn-edit-desc {
+          visibility: hidden;
+        }
+
+        &:hover {
+          .btn-edit-desc {
+            visibility: visible;
+          }
+        }
+      }
+
+      textarea,
+      .simditor {
+        display: none;
+      }
+
+      .desc-commands {
+        display: none;
+
+        .btn-save-desc {
+          margin-left: 10px;
+        }
+      }
+
+      &.edit {
+        display: block !important;
+
+        .desc-inner-wap {
+          display: none !important;
+        }
+
+        .desc-commands {
+          display: block;
+        }
+
+        .btn-save-desc {
+          display: inline-block;
+        }
+
+        .simditor {
+          display: block;
+        }
+      }
+
+      &.empty {
+        .desc-inner-wap {
+          display: none;
+        }
+
+        .btn-add-desc {
+          display: inline-block;
+        }
+      }
+
+      .simditor {
+        margin-bottom: 15px;
+
+        .simditor-body {
+          padding: 15px 15px 40px 15px;
+          min-height: 150px;
+        }
+      }
+    }
+
+    &.empty-desc {
+      .title-wap .title-commands .btn-add-desc {
+        display: block;
+      }
+
+      .desc-wap {
+        display: none;
       }
     }
   }
 
+  // 话题
   .topics-wap {
     .btn-add-topic,
     .btn-edit-topic,
