@@ -75,12 +75,14 @@
         $similarQuestions.empty().hide();
         $secondForm.find('.topics').empty();
         $secondForm.find('.question-header').removeClass('edit');
-        descEditor.destroy();
+
+        if (descEditor !== null) {
+            descEditor.destroy();
+        }
     });
 
     // 添加补充描述
     $btnAddDesc.click(function () {
-        console.log($descTextarea);
         descEditor = new Simditor({
             textarea: $descTextarea,
             toolbarFloat: false,

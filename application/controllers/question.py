@@ -82,18 +82,20 @@ def add():
     """添加问题"""
     title = request.form.get('title')
     desc = request.form.get('desc')
+    anonymous = request.form.get('anonymous') is not None
 
     if not title:
         return json.dumps({
             'result': False
         })
 
-    question = Question(title=title, desc=desc, user_id=g.user.id)
+    question = Question(title=title, desc=desc, user_id=g.user.id, anonymous=anonymous)
 
-    # Create question log
-    create_log = PublicEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
-                               original_title=question.title, original_desc=question.desc)
-    question.logs.append(create_log)
+    if not question.anonymous:
+        # Create question log
+        create_log = PublicEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
+                                   original_title=question.title, original_desc=question.desc)
+        question.logs.append(create_log)
 
     # 添加话题
     topics_id_list = request.form.getlist('topic')
@@ -111,18 +113,19 @@ def add():
     db.session.commit()
     question.save_to_es()
 
-    # FEED: 插入本人的用户FEED
-    feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
-    g.user.feeds.append(feed)
-    db.session.add(g.user)
+    if not anonymous:
+        # FEED: 插入本人的用户FEED
+        feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
+        g.user.feeds.append(feed)
+        db.session.add(g.user)
 
-    # FEED: 插入followers的首页FEED
-    # TODO: 采用消息队列进行插入操作
-    for follower in g.user.followers:
-        home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
-                             question_id=question.id)
-        follower.follower.home_feeds.append(home_feed)
-        db.session.add(follower.follower)
+        # FEED: 插入followers的首页FEED
+        # TODO: 采用消息队列进行插入操作
+        for follower in g.user.followers:
+            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
+                                 question_id=question.id)
+            follower.follower.home_feeds.append(home_feed)
+            db.session.add(follower.follower)
 
     db.session.commit()
 

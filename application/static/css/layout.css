@@ -189,6 +189,7 @@ html {
   padding-top: 20px;
 }
 .ask-question-bg {
+  display: none;
   overflow: auto;
   position: fixed;
   z-index: 10000;
