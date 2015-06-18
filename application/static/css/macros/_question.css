@@ -15,3 +15,18 @@
 .dc-question-follow-wap.followed .for-unfollow {
   display: inline-block;
 }
+.dc-similar-question {
+  font-size: 16px;
+  margin-bottom: 13px;
+}
+.dc-similar-question a {
+  color: #333;
+}
+.dc-similar-question em {
+  color: #00cc99;
+  font-weight: bold;
+  font-style: normal;
+}
+.dc-similar-question .answers-count {
+  margin-left: 10px;
+}

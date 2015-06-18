@@ -1,3 +1,5 @@
+@import "../utils";
+
 .dc-question-follow-wap {
   .btn {
     background-color: #337ab7;
@@ -19,5 +21,24 @@
     .for-unfollow {
       display: inline-block;
     }
+  }
+}
+
+.dc-similar-question {
+  font-size: 16px;
+  margin-bottom: 13px;
+
+  a {
+    color: #333;
+  }
+
+  em {
+    color: @green;
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  .answers-count {
+    margin-left: 10px;
   }
 }

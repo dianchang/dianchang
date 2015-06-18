@@ -64,7 +64,7 @@
                 </li>
             </ul>
 
-            <a href="{{ url_for('question.add') }}"
+            <a href="javascript: void(0)"
                class="btn btn-default navbar-btn navbar-right btn-ask-question">
                 <span class="fa fa-plus"></span> 提问题
             </a>
@@ -129,6 +129,68 @@
     </div>
 </div>
 
+{# 提问modal #}
+<div class="ask-question-bg">
+    <div class="title">提问题</div>
+
+    <div class="ask-question-wap first">
+        <form action="" class="first-form">
+            <div class="input-wap">
+                <input type="text" name="question" class="form-control" placeholder="用一句话说清你的问题，以问号结尾"/>
+            </div>
+
+            <div class="similar-questions"></div>
+
+            <div class="commands-wap">
+                <label for="first-anonymous">
+                    <input type="checkbox" name="anonymous" id="first-anonymous"/> 匿名提问
+                </label>
+
+                <button type="button" class="btn-to-second btn btn-primary">下一步</button>
+            </div>
+        </form>
+
+        <form action="" method="post" class="second-form">
+            <div class="question-header">
+                <div class="question-title"></div>
+                <input type="hidden" name="title"/>
+
+                <a href="javascript:void(0)" class="text-light btn-add-desc">+ 补充问题描述</a>
+
+                <textarea name="desc" rows="4" class="form-control"></textarea>
+            </div>
+
+            <div class="topics-wap">
+                <div class="topics-header">
+                    给问题添加话题
+                    <span class="tip text-light">话题越精确，回答的质量越高</span>
+                </div>
+
+                <div class="topics">
+                    <div class="topics-inner-wap"></div>
+                </div>
+
+                <input type="text" name="search-topic" class="form-control"
+                       placeholder="搜索话题，回车添加"/>
+            </div>
+
+            <div class="commands-wap">
+                <a href="javascript: void(0)" class="btn-to-first text-light">
+                    上一步
+                </a>
+
+                <label>
+                    <input type="checkbox" name="anonymous" id="second-a"> 匿名提问
+                </label>
+
+                <button type="button" class="btn btn-primary btn-submit-question">提交问题</button>
+            </div>
+        </form>
+    </div>
+
+    <span class="btn-close-bg">x</span>
+</div>
+
 {# Inject vars on g for single page #}
 {% block page_vars %}{% endblock %}
 
@@ -137,6 +199,5 @@
 
 {# Access analysis #}
 {# TODO #}
-
 </body>
 </html>

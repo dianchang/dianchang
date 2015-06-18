@@ -27,6 +27,8 @@ class Topic(db.Model):
     parent_topics_locked = db.Column(db.Boolean, default=False)
     child_topics_locked = db.Column(db.Boolean, default=False)
 
+    followers_count = db.Column(db.Integer, default=0)
+
     def __setattr__(self, name, value):
         """为name赋值时，自动设置其拼音"""
         if name == 'name':

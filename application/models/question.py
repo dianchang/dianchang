@@ -11,7 +11,7 @@ class Question(db.Model):
     title = db.Column(db.String(100))
     desc = db.Column(db.Text)
     clicks = db.Column(db.Integer, default=0)
-    anonymous = db.Column(db.Boolean, default=False)
+    anonymous = db.Column(db.Boolean, default=False)  # 匿名提问
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     answers_count = db.Column(db.Integer, default=0)

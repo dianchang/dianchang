@@ -18,11 +18,11 @@
 {# 相关问题 #}
 {% macro similar_questions(questions) %}
     {% for question in questions %}
-        <div class="similar-question">
+        <div class="dc-similar-question">
             <a href="{{ url_for('question.view', uid=question.id) }}" target="_blank">
                 {{ (question.highlight_title or question.title)|safe }}
             </a>
-            <span>{{ question.answers.count() }} 个回答</span>
+            <span class="text-light answers-count">{{ question.answers_count }} 个回答</span>
         </div>
     {% endfor %}
 {% endmacro %}

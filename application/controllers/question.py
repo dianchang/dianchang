@@ -80,46 +80,56 @@ def view(uid):
 @UserPermission()
 def add():
     """添加问题"""
-    form = AddQuestionForm()
-    if form.validate_on_submit():
-        question = Question(title=form.title.data, desc=form.desc.data, user_id=g.user.id)
-        # Create question log
-        create_log = PublicEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
-                                   original_title=question.title, original_desc=question.desc)
-        question.logs.append(create_log)
+    title = request.form.get('title')
+    desc = request.form.get('desc')
 
-        # 添加话题
-        topics_id_list = request.form.getlist('topic')
-        for topic_id in topics_id_list:
-            topic = Topic.query.get(topic_id)
-            if topic:
-                question_topic = QuestionTopic(topic_id=topic_id)
-                question.topics.append(question_topic)
-                # Add topic log
-                add_topic_log = PublicEditLog(kind=QUESTION_EDIT_KIND.ADD_TOPIC, after=topic.name,
-                                              after_id=topic_id, user_id=g.user.id)
-                question.logs.append(add_topic_log)
+    if not title:
+        return json.dumps({
+            'result': False
+        })
 
-        db.session.add(question)
-        db.session.commit()
-        question.save_to_es()
+    question = Question(title=title, desc=desc, user_id=g.user.id)
 
-        # FEED: 插入本人的用户FEED
-        feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
-        g.user.feeds.append(feed)
-        db.session.add(g.user)
+    # Create question log
+    create_log = PublicEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
+                               original_title=question.title, original_desc=question.desc)
+    question.logs.append(create_log)
 
-        # FEED: 插入followers的首页FEED
-        # TODO: 采用消息队列进行插入操作
-        for follower in g.user.followers:
-            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
-                                 question_id=question.id)
-            follower.follower.home_feeds.append(home_feed)
-            db.session.add(follower.follower)
+    # 添加话题
+    topics_id_list = request.form.getlist('topic')
+    for topic_id in topics_id_list:
+        topic = Topic.query.get(topic_id)
+        if topic:
+            question_topic = QuestionTopic(topic_id=topic_id)
+            question.topics.append(question_topic)
+            # Add topic log
+            add_topic_log = PublicEditLog(kind=QUESTION_EDIT_KIND.ADD_TOPIC, after=topic.name,
+                                          after_id=topic_id, user_id=g.user.id)
+            question.logs.append(add_topic_log)
 
-        db.session.commit()
-        return redirect(url_for('.view', uid=question.id))
-    return render_template('question/add.html', form=form)
+    db.session.add(question)
+    db.session.commit()
+    question.save_to_es()
+
+    # FEED: 插入本人的用户FEED
+    feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
+    g.user.feeds.append(feed)
+    db.session.add(g.user)
+
+    # FEED: 插入followers的首页FEED
+    # TODO: 采用消息队列进行插入操作
+    for follower in g.user.followers:
+        home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
+                             question_id=question.id)
+        follower.follower.home_feeds.append(home_feed)
+        db.session.add(follower.follower)
+
+    db.session.commit()
+
+    return json.dumps({
+        'result': True,
+        'id': question.id
+    })
 
 
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])

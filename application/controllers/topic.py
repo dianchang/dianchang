@@ -43,7 +43,8 @@ def query():
                 excluded_list.append(descendant_topic_id)
                 topics = topics.filter(Topic.id.notin_(excluded_list))
         return json.dumps([{'name': topic.name,
-                            'id': topic.id}
+                            'id': topic.id,
+                            'followers_count': topic.followers_count}
                            for topic in topics])
     else:
         return json.dumps({})
@@ -224,7 +225,11 @@ def remove_child_topic(uid, child_topic_id):
 def get_by_name(name):
     """通过name获取话题，若不存在则创建"""
     topic = Topic.get_by_name(name, create_if_not_exist=True)
-    return json.dumps({'id': topic.id, 'name': topic.name})
+    return json.dumps({
+        'id': topic.id,
+        'name': topic.name,
+        'followers_count': topic.followers_count
+    })
 
 
 @bp.route('/topic/<int:uid>/follow', methods=['POST'])

@@ -231,3 +231,182 @@ html {
   border-top: 1px solid #e2e2e2;
   padding-top: 20px;
 }
+
+// 提问
+.ask-question-bg {
+  //display: none;
+  overflow: auto;
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(37, 46, 60, .92);
+  padding-top: 50px;
+  padding-bottom: 30px;
+
+  .title {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .ask-question-wap {
+    width: 650px;
+    border-radius: 2px;
+    background-color: @background-gray;
+    margin: 0 auto;
+
+    .first-form {
+      .input-wap {
+        padding: 20px 25px;
+        border-bottom: 1px solid #ccc;
+
+        input {
+          font-size: 16px;
+          padding: 10px 12px;
+          height: auto;
+        }
+      }
+
+      .similar-questions {
+        display: none;
+        font-size: 16px;
+        padding: 22px 25px;
+        background-color: white;
+
+        .tip {
+          margin-bottom: 15px;
+        }
+
+        .dc-similar-question:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .second-form {
+      .question-header {
+        padding: 20px 25px 15px 25px;
+
+        .question-title {
+          font-weight: bold;
+          font-size: 18px;
+          margin-bottom: 10px;
+        }
+
+        .btn-add-desc {
+          font-size: 16px;
+        }
+
+        textarea[name='desc'] {
+          display: none;
+        }
+
+        .simditor .simditor-body {
+          min-height: 100px;
+          padding: 15px 15px 40px;
+        }
+      }
+
+      .topics-wap {
+        background-color: white;
+        padding: 18px 25px;
+
+        .topics-header {
+          font-size: 16px;
+          margin-bottom: 15px;
+          padding-bottom: 15px;
+          border-bottom: 1px dashed #ccc;
+
+          .tip {
+            font-size: 14px;
+            display: block;
+            float: right;
+            margin-top: 3px;
+          }
+        }
+
+        .topic-wap {
+          position: relative;
+          border-bottom: 1px dashed #ccc;
+          padding: 0 0 18px 0;
+          margin-bottom: 18px;
+
+          input {
+            margin-right: 15px;
+          }
+
+          .followers-count {
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #999;
+          }
+        }
+
+        input[name='search-topic'] {
+          width: 280px;
+          height: auto;
+          padding: 8px 12px;
+        }
+      }
+
+      .btn-to-first {
+        float: left;
+        font-size: 16px;
+        margin-top: 8px;
+      }
+    }
+
+    &.first {
+      .first-form {
+        display: block;
+      }
+      .second-form {
+        display: none;
+      }
+    }
+
+    &.second {
+      .first-form {
+        display: none;
+      }
+      .second-form {
+        display: block;
+      }
+    }
+
+    label {
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .commands-wap {
+      padding: 20px 25px;
+      text-align: right;
+
+      .btn {
+        margin-left: 10px;
+        font-size: 16px;
+        padding: 8px 18px;
+        border-color: #009299;
+      }
+    }
+  }
+
+  .btn-close-bg {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 30px;
+    color: #333;
+
+    &:hover {
+      color: #666;
+    }
+  }
+}
