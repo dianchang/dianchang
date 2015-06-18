@@ -76,13 +76,14 @@ def view(uid):
                            topics_experience=topics_experience, invited_users_count=invited_users_count)
 
 
-@bp.route('/question/add', methods=['GET', 'POST'])
+@bp.route('/question/add', methods=['POST'])
 @UserPermission()
 def add():
     """添加问题"""
     title = request.form.get('title')
     desc = request.form.get('desc')
     anonymous = request.form.get('anonymous') is not None
+    title = _add_question_mark_to_title(title)
 
     if not title:
         return json.dumps({
@@ -245,13 +246,7 @@ def update(uid):
     title = request.form.get('title', "").strip()
     desc = request.form.get('desc', "").strip()
 
-    if title:
-        if title.endswith('?'):
-            title = title.rstrip('?') + "？"
-
-        if not title.endswith('？'):
-            print(title)
-            title += "？"
+    title = _add_question_mark_to_title(title)
 
     if title and title != question.title:
         # Update title log
@@ -437,3 +432,15 @@ def invite(uid, user_id):
         'user_profile_url': user.profile_url,
         'html': macro(user)
     })
+
+
+def _add_question_mark_to_title(title):
+    """在问题末尾追加问号"""
+    if title:
+        if title.endswith('?'):
+            title = title.rstrip('?') + "？"
+
+        if not title.endswith('？'):
+            print(title)
+            title += "？"
+    return title
