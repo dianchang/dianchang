@@ -208,6 +208,7 @@ html {
   margin-bottom: 40px;
 }
 .ask-question-bg .ask-question-wap {
+  overflow: hidden;
   width: 650px;
   border-radius: 2px;
   background-color: #f5f6f5;
@@ -242,7 +243,7 @@ html {
   font-size: 18px;
   margin-bottom: 10px;
 }
-.ask-question-bg .ask-question-wap .second-form .question-header .btn-add-desc {
+.ask-question-bg .ask-question-wap .second-form .question-header .btn-add-question-desc {
   font-size: 16px;
 }
 .ask-question-bg .ask-question-wap .second-form .question-header textarea[name='desc'] {
@@ -251,6 +252,9 @@ html {
 .ask-question-bg .ask-question-wap .second-form .question-header .simditor .simditor-body {
   min-height: 100px;
   padding: 15px 15px 40px;
+}
+.ask-question-bg .ask-question-wap .second-form .question-header.edit .btn-add-question-desc {
+  display: none;
 }
 .ask-question-bg .ask-question-wap .second-form .topics-wap {
   background-color: white;
@@ -321,11 +325,12 @@ html {
 }
 .ask-question-bg .btn-close-bg {
   position: absolute;
-  right: 20px;
-  top: 20px;
-  font-size: 30px;
-  color: #333;
+  right: 30px;
+  top: 0;
+  font-size: 60px;
+  color: #666;
+  cursor: pointer;
 }
 .ask-question-bg .btn-close-bg:hover {
-  color: #666;
+  color: #999;
 }

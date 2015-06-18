@@ -255,6 +255,7 @@ html {
   }
 
   .ask-question-wap {
+    overflow: hidden;
     width: 650px;
     border-radius: 2px;
     background-color: @background-gray;
@@ -298,7 +299,7 @@ html {
           margin-bottom: 10px;
         }
 
-        .btn-add-desc {
+        .btn-add-question-desc {
           font-size: 16px;
         }
 
@@ -309,6 +310,12 @@ html {
         .simditor .simditor-body {
           min-height: 100px;
           padding: 15px 15px 40px;
+        }
+
+        &.edit {
+          .btn-add-question-desc {
+            display: none;
+          }
         }
       }
 
@@ -400,13 +407,14 @@ html {
 
   .btn-close-bg {
     position: absolute;
-    right: 20px;
-    top: 20px;
-    font-size: 30px;
-    color: #333;
+    right: 30px;
+    top: 0;
+    font-size: 60px;
+    color: #666;
+    cursor: pointer;
 
     &:hover {
-      color: #666;
+      color: #999;
     }
   }
 }
