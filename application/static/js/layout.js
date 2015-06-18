@@ -48,6 +48,7 @@
     var $similarQuestions = $askQuestionBg.find('.similar-questions');
     var $toSecondBtn = $askQuestionBg.find('.btn-to-second');
     var $toFirstBtn = $askQuestionBg.find('.btn-to-first');
+    var $questionHeader = $askQuestionBg.find('.question-header-wap');
     var $questionTitle = $askQuestionBg.find(".question-title");
     var $questionTitleInput = $askQuestionBg.find("input[name='title']");
     var $firstAnonymousCheckbox = $askQuestionBg.find(".first-form input[name='anonymous']");
@@ -74,7 +75,7 @@
         $questionInput.val('');
         $similarQuestions.empty().hide();
         $secondForm.find('.topics').empty();
-        $secondForm.find('.question-header').removeClass('edit');
+        $questionHeader.removeClass('edit');
 
         if (descEditor !== null) {
             descEditor.destroy();
@@ -95,7 +96,7 @@
             }
         });
 
-        $secondForm.find('.question-header').addClass('edit');
+        $questionHeader.addClass('edit');
     });
 
     // 输入问题，返回类似问题

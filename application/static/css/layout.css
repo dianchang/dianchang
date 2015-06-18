@@ -236,25 +236,25 @@ html {
 .ask-question-bg .ask-question-wap .first-form .similar-questions .dc-similar-question:last-child {
   margin-bottom: 0;
 }
-.ask-question-bg .ask-question-wap .second-form .question-header {
+.ask-question-bg .ask-question-wap .second-form .question-header-wap {
   padding: 20px 25px 15px 25px;
 }
-.ask-question-bg .ask-question-wap .second-form .question-header .question-title {
+.ask-question-bg .ask-question-wap .second-form .question-header-wap .question-title {
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 10px;
 }
-.ask-question-bg .ask-question-wap .second-form .question-header .btn-add-question-desc {
+.ask-question-bg .ask-question-wap .second-form .question-header-wap .btn-add-question-desc {
   font-size: 16px;
 }
-.ask-question-bg .ask-question-wap .second-form .question-header textarea[name='desc'] {
+.ask-question-bg .ask-question-wap .second-form .question-header-wap textarea[name='desc'] {
   display: none;
 }
-.ask-question-bg .ask-question-wap .second-form .question-header .simditor .simditor-body {
+.ask-question-bg .ask-question-wap .second-form .question-header-wap .simditor .simditor-body {
   min-height: 100px;
   padding: 15px 15px 40px;
 }
-.ask-question-bg .ask-question-wap .second-form .question-header.edit .btn-add-question-desc {
+.ask-question-bg .ask-question-wap .second-form .question-header-wap.edit .btn-add-question-desc {
   display: none;
 }
 .ask-question-bg .ask-question-wap .second-form .topics-wap {
