@@ -19,6 +19,7 @@
 .question-header .title-desc-wap .title-wap .title-inner-wap .btn-edit-title {
   color: #999;
   margin-left: 10px;
+  display: none;
 }
 .question-header .title-desc-wap .title-wap .title-inner-wap:hover .btn-edit-title {
   display: inline-block;

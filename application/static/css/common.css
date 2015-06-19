@@ -133,3 +133,6 @@ del {
 .simditor {
   border: 1px solid #E4E4E4;
 }
+.simditor img {
+  max-width: 90%;
+}
