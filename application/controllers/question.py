@@ -114,6 +114,10 @@ def add():
     db.session.commit()
     question.save_to_es()
 
+    # 自动关注该问题
+    follow_question = FollowQuestion(question_id=question.id, user_id=g.user.id)
+    db.session.add(follow_question)
+
     if not anonymous:
         # FEED: 插入本人的用户FEED
         feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
