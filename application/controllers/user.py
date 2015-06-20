@@ -240,3 +240,12 @@ def query():
                 'name': user.name
             })
     return json.dumps(results)
+
+
+@bp.route('/user/followed_questions')
+@UserPermission()
+def followed_questions():
+    """我关注的问题"""
+    page = request.args.get('page', type=int, default=1)
+    questions = g.user.followed_questions.paginate(page, 15)
+    return render_template('user/followed_questions.html', questions=questions)

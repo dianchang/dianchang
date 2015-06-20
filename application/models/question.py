@@ -106,6 +106,12 @@ class Question(db.Model):
         """该问题是否被用户关注"""
         return g.user and g.user.followed_questions.filter(FollowQuestion.question_id == self.id).count() > 0
 
+    def answered_by_user(self):
+        """该问题是否被用户回答"""
+        from .answer import Answer
+
+        return g.user and self.answers.filter(Answer.user_id == g.user.id).count() > 0
+
     def __repr__(self):
         return '<Question %s>' % self.name
 
@@ -143,6 +149,14 @@ class FollowQuestion(db.Model):
     user = db.relationship('User', backref=db.backref('followed_questions',
                                                       lazy='dynamic',
                                                       order_by='desc(FollowQuestion.created_at)'))
+
+    def last_followed_in_that_day(self):
+        """该问题是否为当天最晚关注的问题"""
+        day = self.created_at.date()
+        last_followed_question = g.user.followed_questions. \
+            filter(db.func.date(FollowQuestion.created_at) == day). \
+            order_by(FollowQuestion.created_at.desc()).first()
+        return last_followed_question and last_followed_question.id == self.id
 
     def __repr__(self):
         return '<FollowQuestion %s>' % self.id

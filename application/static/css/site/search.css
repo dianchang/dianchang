@@ -56,8 +56,9 @@ em {
   left: -65px;
   text-align: center;
   background-color: #f5f6f5;
-  padding: 4px 10px;
+  padding: 4px 0px;
   color: #999;
+  width: 50px;
 }
 .question .answers-count-wap .count {
   display: block;

@@ -84,7 +84,9 @@ def register_jinja(app):
         COMPOSE_FEED_KIND
 
     app.jinja_env.filters.update({
-        'timesince': filters.timesince
+        'timesince': filters.timesince,
+        'cn_month': filters.cn_month,
+        'day': filters.day
     })
 
     def url_for_other_page(page):

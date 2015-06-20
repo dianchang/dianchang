@@ -1,0 +1,49 @@
+#main-wap .container {
+  width: 750px;
+  margin: 0 auto;
+}
+h3 {
+  text-align: center;
+  margin-top: 0;
+}
+.question {
+  position: relative;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eaeaea;
+}
+.question:last-child {
+  border-bottom: 1px solid #eaeaea;
+}
+.question .title {
+  margin-bottom: 8px;
+}
+.question .title a {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.question .answers-count {
+  margin-bottom: 14px;
+}
+.question .dc-question-follow-wap {
+  margin-right: 8px;
+}
+.question .date-wap {
+  position: absolute;
+  top: -1px;
+  width: 50px;
+  right: -70px;
+  border-radius: 2px;
+  text-align: center;
+  padding: 5px 0;
+  background-color: #f5f6f5;
+}
+.question .date-wap .day {
+  font-weight: bold;
+  font-size: 18px;
+}
+.question .date-wap .month {
+  color: #999;
+}
