@@ -5,3 +5,20 @@
   width: 750px;
   margin: 0 auto;
 }
+.item {
+  padding-bottom: 30px;
+  position: relative;
+  border-bottom: 1px solid #eaeaea;
+}
+.item .key {
+  font-size: 18px;
+  font-weight: bold;
+}
+.item .key .url-prefix {
+  font-weight: normal;
+}
+.item .commands {
+  position: absolute;
+  right: 0;
+  top: 0;
+}

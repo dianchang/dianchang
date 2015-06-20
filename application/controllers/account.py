@@ -206,3 +206,24 @@ def reset_password():
         })
     else:
         return render_template('account/reset_password.html')
+
+
+@bp.route('/account/update_setting', methods=['POST'])
+@UserPermission()
+def update_setting():
+    """更新用户设置"""
+    key = request.form.get('key')
+    value = request.form.get('value')
+
+    if not hasattr(g.user, key):
+        return json.dumps({
+            'result': False
+        })
+
+    setattr(g.user, key, True if value == 'on' else False)
+    db.session.add(g.user)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })

@@ -28,15 +28,56 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     has_seleted_expert_topics = db.Column(db.Boolean, default=False)
 
+    # 计数
+
     followers_count = db.Column(db.Integer, default=0)
     followings_count = db.Column(db.Integer, default=0)
-
     thanks_count = db.Column(db.Integer, default=0)
     shares_count = db.Column(db.Integer, default=0)
     upvotes_count = db.Column(db.Integer, default=0)
-
     questions_count = db.Column(db.Integer, default=0)
     answers_count = db.Column(db.Integer, default=0)
+
+    # 设置
+
+    # 邀请我回答
+    invite_message_from_all = db.Column(db.Boolean, default=True)
+    invite_message_via_notification = db.Column(db.Boolean, default=True)
+    invite_message_via_mail = db.Column(db.Boolean, default=True)
+
+    # 赞同/感谢了我的回答
+    upvote_answer_message_from_all = db.Column(db.Boolean, default=True)
+    upvote_answer_message_via_notification = db.Column(db.Boolean, default=True)
+    upvote_answer_message_via_mail = db.Column(db.Boolean, default=True)
+
+    # 赞了我的评论
+    like_comment_message_from_all = db.Column(db.Boolean, default=True)
+    like_comment_message_via_notification = db.Column(db.Boolean, default=True)
+    like_comment_message_via_mail = db.Column(db.Boolean, default=True)
+
+    # 关注了我
+    follow_message_from_all = db.Column(db.Boolean, default=True)
+    follow_message_via_notification = db.Column(db.Boolean, default=True)
+    follow_message_via_mail = db.Column(db.Boolean, default=True)
+
+    # 评论了我
+    reply_comment_message_from_all = db.Column(db.Boolean, default=True)
+    reply_comment_message_via_notification = db.Column(db.Boolean, default=True)
+    reply_comment_message_via_mail = db.Column(db.Boolean, default=True)
+
+    # 回答了关注的问题
+    answer_question_message_from_all = db.Column(db.Boolean, default=True)
+    answer_question_message_via_notification = db.Column(db.Boolean, default=True)
+    answer_question_message_via_mail = db.Column(db.Boolean, default=True)
+
+    # 每周精选
+    receive_weekly_digest_message = db.Column(db.Boolean, default=True)
+
+    # 不定期的新品/活动通知
+    receive_activity_message = db.Column(db.Boolean, default=True)
+
+    # 被搜索引擎搜索到时显示我的姓名
+    show_to_search_engine = db.Column(db.Boolean, default=True)
 
     def __setattr__(self, name, value):
         # Hash password when set it.

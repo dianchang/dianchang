@@ -1,3 +1,5 @@
+@import "../utils";
+
 .navbar {
   margin-bottom: 0;
 }
@@ -5,4 +7,24 @@
 #main-wap .container{
   width: 750px;
   margin: 0 auto;
+}
+.item {
+  padding-bottom: 30px;
+  position: relative;
+  border-bottom: 1px solid @border-color;
+
+  .key {
+    font-size: 18px;
+    font-weight: bold;
+
+    .url-prefix {
+      font-weight: normal;
+    }
+  }
+
+  .commands {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 }
