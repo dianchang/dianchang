@@ -1,16 +1,20 @@
-{# 个人设置页页首 #}
+{# 设置页页头 #}
 {% macro settings_page_header(active="settings") %}
-    <ul class="nav nav-tabs">
-        <li {% if active == 'settings' %}class='active'{% endif %}>
-            <a href="{{ url_for('account.settings') }}">账号和密码</a>
-        </li>
-        <li {% if active == 'notification-settings' %}class="active"{% endif %}>
-            <a href="{{ url_for('account.notification_settings') }}">消息和邮件</a>
-        </li>
-        <li {% if active == 'privacy-settings' %}class="active"{% endif %}>
-            <a href="{{ url_for('account.privacy_settings') }}">隐私</a>
-        </li>
-    </ul>
+    <div class="dc-settings-page-header">
+        <div class="container">
+            <ul class="list-inline list-unstyled">
+                <li {% if active == 'settings' %}class='active'{% endif %}>
+                    <a href="{{ url_for('account.settings') }}">账号和密码</a>
+                </li>
+                <li {% if active == 'notification-settings' %}class="active"{% endif %}>
+                    <a href="{{ url_for('account.notification_settings') }}">消息和邮件</a>
+                </li>
+                <li {% if active == 'privacy-settings' %}class="active"{% endif %}>
+                    <a href="{{ url_for('account.privacy_settings') }}">隐私</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endmacro %}
 
 

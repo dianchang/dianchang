@@ -1,3 +1,43 @@
-input[name='avatar'] {
-  display: none;
+@import "../utils";
+
+.navbar {
+  margin-bottom: 0;
+}
+
+#main-wap .container {
+  width: 750px;
+  margin: 0 auto;
+}
+
+.item {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  border-bottom: 1px solid @border-color;
+
+  .key {
+    color: #999;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .value {
+    font-size: 18px;
+    font-weight: bold;
+
+    .url-prefix {
+      font-weight: normal;
+    }
+  }
+
+  .commands {
+    position: absolute;
+    right: 0;
+    top: 10px;
+
+    .tip {
+      color: #999;
+      margin-right: 15px;
+    }
+  }
 }

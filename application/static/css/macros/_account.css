@@ -146,3 +146,24 @@
 .dc-reset-pwd-wap .message-wap {
   display: none;
 }
+.dc-settings-page-header {
+  background-color: #f5f6f5;
+  text-align: center;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 70px;
+}
+.dc-settings-page-header ul {
+  margin-bottom: -1px;
+}
+.dc-settings-page-header ul li a {
+  text-decoration: none;
+  text-align: center;
+  padding: 12px 8px;
+  display: inline-block;
+  color: #999;
+  border-bottom: 1px solid #eaeaea;
+}
+.dc-settings-page-header ul li.active a {
+  color: #333;
+  border-bottom: 1px solid #333;
+}

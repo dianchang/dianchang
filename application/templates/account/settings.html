@@ -4,31 +4,46 @@
 
 {% block page_title %}个人设置{% endblock %}
 {% block page_content %}
+    {{ settings_page_header() }}
+
     <div class="container">
-        {{ settings_page_header() }}
+        <div class="item">
+            <div class="key">称呼</div>
+            <div class="value">
+                {{ g.user.name }}
+            </div>
+            <div class="commands">
+                <span class="tip">
+                    还有 2 次修改机会
+                </span>
+                <button type="button" class="btn btn-light">修改称呼</button>
+            </div>
+        </div>
 
-        <div class="row">
-            <div class="col-md-8">
-                <form action="" method="post">
-                    {{ form.csrf_token() }}
+        <div class="item">
+            <div class="key">个人主页网址</div>
+            <div class="value">
+                <span class="text-light url-prefix">dianchang.com/people/</span><span
+                    class="url-token">{{ g.user.url_token or "" }}</span>
+            </div>
+            <div class="commands">
+                <button type="button" class="btn btn-light">修改网址</button>
+            </div>
+        </div>
 
-                    <div class="form-group clearfix">
-                        <label class="col-md-2 control-label" for="city">个人主页网址</label>
+        <div class="item">
+            <div class="key">邮箱</div>
+            <div class="value">{{ g.user.email }}</div>
+            <div class="commands">
+                <button type="button" class="btn btn-light">更换邮箱</button>
+            </div>
+        </div>
 
-                        <div class="col-md-6">
-                            <input class="form-control" id="city" name="url_token" placeholder="" type="text"
-                                   value="{{ form.url_token.data or "" }}" autocomplete="off">
-
-                            <span class="personal-url">
-                                dianchang.com/people/<span class="url-token">{{ form.url_token.data or "" }}</span>
-                            </span>
-
-                            {{ field_errors(form.url_token) }}
-                        </div>
-                    </div>
-
-                    {{ form_submit('保存') }}
-                </form>
+        <div class="item">
+            <div class="key">密码</div>
+            <div class="value">*********</div>
+            <div class="commands">
+                <button type="button" class="btn btn-light">修改密码</button>
             </div>
         </div>
     </div>

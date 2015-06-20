@@ -391,8 +391,7 @@
         </a>
 
         <div class="other text-light">
-            {# TODO #}
-            {% set answers_count = question.answers.count() %}
+            {% set answers_count = question.answers_count %}
             {% if answers_count %}
                 {{ answers_count }} 个回答
             {% else %}
@@ -412,6 +411,7 @@
 {% endmacro %}
 
 
+{# 用户主页FEED #}
 {% macro render_home_feeds(feeds) %}
     <div class="dc-home-feeds">
         {% for feed in feeds %}
