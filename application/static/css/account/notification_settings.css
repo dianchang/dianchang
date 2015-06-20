@@ -5,3 +5,9 @@
   width: 750px;
   margin: 0 auto;
 }
+.table {
+  table-layout: fixed;
+}
+.table tbody > tr > td {
+  padding: 20px 0;
+}

@@ -147,6 +147,9 @@ del {
   color: white;
   z-index: 2;
 }
+.btn-group-switch .btn {
+  border-radius: 0;
+}
 .btn-group-switch .btn:hover {
   z-index: 1;
 }

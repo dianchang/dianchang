@@ -20,7 +20,7 @@ def signin():
             signin_user(form.user, form.remember.data)
             return json.dumps({
                 'result': True,
-                'referer': session['referer'] or url_for('site.index')
+                'referer': session.get('referer') or url_for('site.index')
             })
         else:
             return json.dumps({

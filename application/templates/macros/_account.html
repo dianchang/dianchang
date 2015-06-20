@@ -510,3 +510,43 @@
         })();
     </script>
 {% endmacro %}
+
+
+{# 开关组件 #}
+{% macro btn_group_switch(key, on=True, on_text='开', off_text='关', with_script=True) %}
+    <div class="btn-group btn-group-switch {% if on %}on{% endif %}" data-key="{{ key }}">
+        <label class="btn btn-white btn-on">{{ on_text }}</label>
+        <label class="btn btn-white btn-off">{{ off_text }}</label>
+    </div>
+
+    {% if with_script %}
+        <script>
+            (function () {
+                $(document).on('click', '.btn-group-switch', function () {
+                    var on = $(this).hasClass('on');
+                    var key = $(this).data('key');
+
+                    if (on) {
+                        $(this).removeClass('on');
+                    } else {
+                        $(this).addClass('on');
+                    }
+
+                    $.ajax({
+                        url: urlFor('account.update_setting'),
+                        dataType: 'json',
+                        method: 'post',
+                        data: {
+                            key: key,
+                            value: on ? 'off' : 'on'
+                        }
+                    }).done(function (response) {
+                        if (!response.result) {
+                            $(this).toggleClass('on');
+                        }
+                    });
+                });
+            })();
+        </script>
+    {% endif %}
+{% endmacro %}

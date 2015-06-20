@@ -1,10 +1,120 @@
 {% extends "layout.html" %}
-{% from "macros/_account.html" import settings_page_header %}
+{% from "macros/_account.html" import settings_page_header, btn_group_switch %}
 
 {% block page_title %}消息和邮件 - 设置{% endblock %}
 {% block page_content %}
     {{ settings_page_header(active='notification-settings') }}
 
     <div class="container">
+        <table class="table">
+            <tr>
+                <td>哪些人</td>
+                <td>进行这些操作时</td>
+                <td>站内消息提醒我</td>
+                <td>发邮件提醒我</td>
+            </tr>
+
+            <tr>
+                <td>
+                    {{ btn_group_switch('invite_message_from_all', on_text='所有人', off_text='我关注的人') }}
+                </td>
+                <td>邀请我回答时</td>
+                <td>
+                    {{ btn_group_switch('invite_message_via_notification') }}
+                </td>
+                <td>
+                    {{ btn_group_switch('invite_message_via_mail') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {{ btn_group_switch('upvote_answer_message_from_all', on_text='所有人', off_text='我关注的人') }}
+                </td>
+                <td>赞同/感谢了我的回答时</td>
+                <td>
+                    {{ btn_group_switch('upvote_answer_message_via_notification') }}
+                </td>
+                <td>
+                    {{ btn_group_switch('upvote_answer_message_via_mail') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {{ btn_group_switch('like_comment_message_from_all', on_text='所有人', off_text='我关注的人') }}
+                </td>
+                <td>赞了我的评论时</td>
+                <td>
+                    {{ btn_group_switch('like_comment_message_via_notification') }}
+                </td>
+                <td>
+                    {{ btn_group_switch('like_comment_message_via_mail') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {{ btn_group_switch('follow_message_from_all', on_text='所有人', off_text='我关注的人') }}
+                </td>
+                <td>关注了我时</td>
+                <td>
+                    {{ btn_group_switch('follow_message_via_notification') }}
+                </td>
+                <td>
+                    {{ btn_group_switch('follow_message_via_mail') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {{ btn_group_switch('reply_comment_message_from_all', on_text='所有人', off_text='我关注的人') }}
+                </td>
+                <td>评论了我时</td>
+                <td>
+                    {{ btn_group_switch('reply_comment_message_via_notification') }}
+                </td>
+                <td>
+                    {{ btn_group_switch('reply_comment_message_via_mail') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    {{ btn_group_switch('answer_question_message_from_all', on_text='所有人', off_text='我关注的人') }}
+                </td>
+                <td>回答了我关注的问题</td>
+                <td>
+                    {{ btn_group_switch('answer_question_message_via_notification') }}
+                </td>
+                <td>
+                    {{ btn_group_switch('answer_question_message_via_mail') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    电场官方
+                </td>
+                <td>每周精选</td>
+                <td>
+                </td>
+                <td>
+                    {{ btn_group_switch('receive_weekly_digest_message') }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    电场官方
+                </td>
+                <td>不定期的新品/活动通知</td>
+                <td>
+                </td>
+                <td>
+                    {{ btn_group_switch('receive_activity_message') }}
+                </td>
+            </tr>
+        </table>
     </div>
 {% endblock %}

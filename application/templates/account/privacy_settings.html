@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_account.html" import settings_page_header %}
+{% from "macros/_account.html" import settings_page_header, btn_group_switch %}
 
 {% block page_title %}隐私 - 设置{% endblock %}
 {% block page_content %}
@@ -9,39 +9,7 @@
         <div class="item">
             <div class="key">被搜索引擎搜索到时显示我的姓名</div>
             <div class="commands">
-                <div class="btn-group btn-group-switch on" data-key="show_to_search_engine">
-                    <label class="btn btn-white btn-on">显示</label>
-                    <label class="btn btn-white btn-off">不显示</label>
-                </div>
-
-                <script>
-                    (function () {
-                        $('.btn-group-switch').click(function () {
-                            var on = $(this).hasClass('on');
-                            var key = $(this).data('key');
-
-                            if (on) {
-                                $(this).removeClass('on');
-                            } else {
-                                $(this).addClass('on');
-                            }
-
-                            $.ajax({
-                                url: urlFor('account.update_setting'),
-                                dataType: 'json',
-                                method: 'post',
-                                data: {
-                                    key: key,
-                                    value: on ? 'off' : 'on'
-                                }
-                            }).done(function (response) {
-                                if (!response.result) {
-                                    $(this).toggleClass('on');
-                                }
-                            });
-                        });
-                    })();
-                </script>
+                {{ btn_group_switch('show_to_search_engine', on_text='显示', off_text='不显示') }}
             </div>
         </div>
     </div>
