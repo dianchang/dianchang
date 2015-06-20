@@ -624,8 +624,8 @@
 
 
 {# 回答 #}
-{% macro render_answers(answers) %}
+{% macro render_answers(answers, with_topics=True) %}
     {% for answer in answers %}
-        {{ render_answer(answer) }}
+        {{ render_answer(answer, with_topics=with_topics) }}
     {% endfor %}
 {% endmacro %}

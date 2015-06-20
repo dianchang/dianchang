@@ -46,6 +46,7 @@ html {
   font-size: 28px;
   font-weight: bold;
   color: #D5DCE6;
+  padding: 15px 20px;
 }
 .navbar.navbar-default .navbar-brand:hover {
   color: white;
@@ -131,6 +132,7 @@ html {
   background-color: #3c4452;
   margin-top: 7px;
   margin-bottom: 7px;
+  margin-right: 20px;
 }
 .navbar .btn-ask-question:hover,
 .navbar .btn-ask-question:focus {

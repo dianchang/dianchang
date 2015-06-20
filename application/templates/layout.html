@@ -33,83 +33,81 @@
 {% endwith %}
 
 <nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#dc-navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('site.index') }}">
-                电场
-            </a>
-        </div>
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#dc-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ url_for('site.index') }}">
+            电场
+        </a>
+    </div>
 
-        <div class="collapse navbar-collapse" id="dc-navbar-collapse">
-            <form class="navbar-form navbar-left" role="search" method="get" action="{{ url_for('site.search') }}">
-                <input type="text" name="q" class="form-control input-sm" value="{{ q or "" }}"
-                       placeholder="" autocomplete="off">
-                <span class="fa fa-search search-icon"></span>
-                <span class="help-text">回车搜索</span>
-            </form>
+    <div class="collapse navbar-collapse" id="dc-navbar-collapse">
+        <form class="navbar-form navbar-left" role="search" method="get" action="{{ url_for('site.search') }}">
+            <input type="text" name="q" class="form-control input-sm" value="{{ q or "" }}"
+                   placeholder="" autocomplete="off">
+            <span class="fa fa-search search-icon"></span>
+            <span class="help-text">回车搜索</span>
+        </form>
 
-            <ul class="nav navbar-nav">
-                <li id="nav-index">
-                    <a href="{{ url_for('site.index') }}">首页</a>
+        <ul class="nav navbar-nav">
+            <li id="nav-index">
+                <a href="{{ url_for('site.index') }}">首页</a>
+            </li>
+            <li id="nav-compose">
+                <a href="{{ url_for('user.compose') }}">撰写</a>
+            </li>
+        </ul>
+
+        <a href="javascript: void(0)"
+           class="btn btn-default navbar-btn pull-right btn-ask-question">
+            <span class="fa fa-plus"></span> 提问题
+        </a>
+
+        <ul class="nav navbar-nav pull-right">
+            {% if g.user %}
+                <li id="nav-notification">
+                    <a href="javascript: void(0)">
+                        <span class="no-notifications"></span>
+                        <span class="notifications-count">2</span>
+                    </a>
                 </li>
-                <li id="nav-compose">
-                    <a href="{{ url_for('user.compose') }}">撰写</a>
+                <li id="nav-settings">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        {{ g.user.name }}
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="{{ g.user.profile_url }}">我的主页</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('user.drafts') }}">我的草稿</a>
+                        </li>
+                        <li>
+                            <a href="#">邀请我回答的问题</a>
+                        </li>
+                        <li>
+                            <a href="#">我关注的问题</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="{{ url_for('account.settings') }}">设置</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('account.signout') }}">退出账号</a>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-
-            <a href="javascript: void(0)"
-               class="btn btn-default navbar-btn navbar-right btn-ask-question">
-                <span class="fa fa-plus"></span> 提问题
-            </a>
-
-            <ul class="nav navbar-nav navbar-right">
-                {% if g.user %}
-                    <li id="nav-notification">
-                        <a href="javascript: void(0)">
-                            <span class="no-notifications"></span>
-                            <span class="notifications-count">2</span>
-                        </a>
-                    </li>
-                    <li id="nav-settings">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {{ g.user.name }}
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="{{ g.user.profile_url }}">我的主页</a>
-                            </li>
-                            <li>
-                                <a href="{{ url_for('user.drafts') }}">我的草稿</a>
-                            </li>
-                            <li>
-                                <a href="#">邀请我回答的问题</a>
-                            </li>
-                            <li>
-                                <a href="#">我关注的问题</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <a href="{{ url_for('account.settings') }}">设置</a>
-                            </li>
-                            <li>
-                                <a href="{{ url_for('account.signout') }}">退出账号</a>
-                            </li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li id="nav-signin">
-                        <a href="{{ url_for('account.signin') }}">注册 / 登录</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+            {% else %}
+                <li id="nav-signin">
+                    <a href="{{ url_for('account.signin') }}">注册 / 登录</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
 </nav>
 

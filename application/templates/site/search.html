@@ -6,24 +6,28 @@
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
+    <div class="tabs">
+        <div class="container">
+            <ul class="list-inline list-unstyled">
+                <li {% if _type == 'question' %}class="active"{% endif %}>
+                    <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
+                </li>
+                <li {% if _type == 'answer' %}class="active"{% endif %}>
+                    <a href="{{ url_for('site.search', type="answer", q=q) }}">回答</a>
+                </li>
+                <li {% if _type == 'topic' %}class="active"{% endif %}>
+                    <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
+                </li>
+                <li {% if _type == 'user' %}class="active"{% endif %}>
+                    <a href="{{ url_for('site.search', type="user", q=q) }}">人</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <ul class="nav nav-tabs">
-                    <li {% if _type == 'question' %}class="active"{% endif %}>
-                        <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
-                    </li>
-                    <li {% if _type == 'answer' %}class="active"{% endif %}>
-                        <a href="{{ url_for('site.search', type="answer", q=q) }}">回答</a>
-                    </li>
-                    <li {% if _type == 'topic' %}class="active"{% endif %}>
-                        <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
-                    </li>
-                    <li {% if _type == 'user' %}class="active"{% endif %}>
-                        <a href="{{ url_for('site.search', type="user", q=q) }}">人</a>
-                    </li>
-                </ul>
-
                 {% if _type == "question" %}
                     {% for question in results %}
                         <div class="search-result question">
@@ -31,19 +35,23 @@
                                 <a href="{{ url_for('question.view', uid=question.id) }}" target="_blank">
                                     {{ (question.highlight_title or question.title)|safe }}</a>
                             </div>
-                            <div class="desc">
-                                {{ (question.highlight_desc or question.desc or "")|safe }}
-                            </div>
+                            {% if question.highlight_desc or question.desc %}
+                                <div class="desc">
+                                    {{ (question.highlight_desc or question.desc or "")|safe }}
+                                </div>
+                            {% endif %}
                             <div class="meta">
-                                <span>{{ question.answers.count() }} 回答</span>
                                 {{ question_follow_wap(question) }}
-                                <span>提问于 {{ question.created_at|timesince }}</span>
+                                <span class="text-light">提问于 {{ question.created_at|timesince }}</span>
+                            </div>
+                            <div class="answers-count-wap">
+                                <span class="count">{{ question.answers_count }}</span>
+                                回答
                             </div>
                         </div>
-
                     {% endfor %}
                 {% elif _type == "answer" %}
-                    {{ render_answers(results) }}
+                    {{ render_answers(results, with_topics=False) }}
                 {% elif _type == "topic" %}
                     {% for topic in results %}
                         <div class="search-result topic">
@@ -86,9 +94,9 @@
                     {% endfor %}
                 {% endif %}
 
-                <div class="info">
-                    共 {{ total }} 条结果，耗时 {{ took }} ms
-                </div>
+                {#                <div class="info">#}
+                {#                    共 {{ total }} 条结果，耗时 {{ took }} ms#}
+                {#                </div>#}
 
                 <div class="pager btn-group">
                     {% if pre_page %}
