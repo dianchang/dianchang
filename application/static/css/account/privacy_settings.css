@@ -6,7 +6,7 @@
   margin: 0 auto;
 }
 .item {
-  padding-bottom: 30px;
+  padding-bottom: 35px;
   position: relative;
   border-bottom: 1px solid #eaeaea;
 }
@@ -20,5 +20,5 @@
 .item .commands {
   position: absolute;
   right: 0;
-  top: 0;
+  top: -5px;
 }
