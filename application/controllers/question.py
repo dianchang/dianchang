@@ -177,6 +177,10 @@ def add_topic(uid):
         if answer.upvotes_count > 0:
             UserTopicStatistic.upvote_answer_in_topic(g.user.id, topic.id, answer.upvotes_count)
 
+    topic.questions_count += 1
+    db.session.add(topic)
+    db.session.commit()
+
     macro = get_template_attribute('macros/_topic.html', 'topic_wap')
     return json.dumps({'result': True,
                        'id': topic.id,
@@ -199,7 +203,6 @@ def remove_topic(uid, topic_id):
     log = PublicEditLog(question_id=uid, user_id=g.user.id, before=topic.name, before_id=topic_id,
                         kind=QUESTION_EDIT_KIND.REMOVE_TOPIC)
     db.session.add(log)
-    db.session.commit()
 
     # 更新话题统计数据
     answer = question.answers.filter(Answer.user_id == g.user.id).first()
@@ -207,6 +210,11 @@ def remove_topic(uid, topic_id):
         UserTopicStatistic.remove_answer_from_topic(g.user.id, topic.id)
         if answer.upvotes_count > 0:
             UserTopicStatistic.cancel_upvote_answer_in_topic(g.user.id, topic.id, answer.upvotes_count)
+
+    topic.questions_count -= 1
+    db.session.add(topic)
+    db.session.commit()
+
     return json.dumps({'result': True})
 
 
@@ -382,6 +390,9 @@ def answer(uid):
             db.session.add(home_feed)
 
     question.answers_count += 1
+    g.user.answers_count += 1
+    db.session.add(question)
+    db.session.add(g.user)
     db.session.commit()
 
     macro = get_template_attribute("macros/_answer.html", "render_answer_in_question")

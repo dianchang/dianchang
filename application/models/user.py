@@ -106,6 +106,14 @@ class User(db.Model):
                                                    UserTopicStatistic.score != 0). \
                 order_by(UserTopicStatistic.score.desc()).limit(8)
 
+    def answered_topics(self, count=3):
+        """该用户回答过的话题"""
+        from .topic import UserTopicStatistic
+
+        return UserTopicStatistic.query.filter(UserTopicStatistic.user_id == self.id,
+                                               UserTopicStatistic.score != 0). \
+            order_by(UserTopicStatistic.score.desc()).limit(count)
+
     def save_to_es(self):
         """保存此用户到elasticsearch"""
         return save_object_to_es('user', self.id, {

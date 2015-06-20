@@ -28,6 +28,8 @@ class Topic(db.Model):
     child_topics_locked = db.Column(db.Boolean, default=False)
 
     followers_count = db.Column(db.Integer, default=0)
+    questions_count = db.Column(db.Integer, default=0)  # 问题数量
+    all_questions_count = db.Column(db.Integer, default=0)  # 问题数量（包含子话题下的问题）
 
     def __setattr__(self, name, value):
         """为name赋值时，自动设置其拼音"""

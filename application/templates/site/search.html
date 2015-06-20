@@ -2,7 +2,7 @@
 {% from "macros/_question.html" import question_follow_wap %}
 {% from "macros/_topic.html" import topic_follow_wap %}
 {% from "macros/_user.html" import user_follow_wap %}
-{% from "macros/_answer.html" import render_answers %}
+{% from "macros/_answer.html" import render_answer %}
 
 {% block page_title %}{{ q }} - 搜索结果{% endblock %}
 {% block page_content %}
@@ -49,9 +49,15 @@
                                 回答
                             </div>
                         </div>
+                    {% else %}
+                        <div class="text-light">没有找到相关的问题</div>
                     {% endfor %}
                 {% elif _type == "answer" %}
-                    {{ render_answers(results, with_topics=False) }}
+                    {% for answer in results %}
+                        {{ render_answer(answer, with_topics=False) }}
+                    {% else %}
+                        <div class="text-light">没有找到相关的回答</div>
+                    {% endfor %}
                 {% elif _type == "topic" %}
                     {% for topic in results %}
                         <div class="search-result topic">
@@ -65,32 +71,54 @@
                                             {{ (topic.highlight_name or topic.name)|safe }}
                                         </a>
                                     </div>
-                                    <div class="desc">{{ topic.desc or "" }}</div>
-                                    {{ topic_follow_wap(topic) }}
+                                    <div class="questions-count text-light">
+                                        {{ topic.questions_count }} 个相关问题
+                                    </div>
                                 </div>
                             </div>
+
+                            {{ topic_follow_wap(topic) }}
                         </div>
+                    {% else %}
+                        <div class="text-light">没有找到相关的话题</div>
                     {% endfor %}
                 {% elif _type == "user" %}
                     {% for user in results %}
                         <div class="search-result user">
                             <div class="media">
                                 <div class="media-left">
-                                    <img src="{{ user.avatar_url }}" alt=""/>
+                                    <a href="{{ user.profile_url }}">
+                                        <img src="{{ user.avatar_url }}" class="img-circle" alt=""/>
+                                    </a>
                                 </div>
                                 <div class="media-body">
                                     <div class="meta">
-                                        <a href="{{ user.profile_url }}">
+                                        <a href="{{ user.profile_url }}" class="name">
                                             {{ (user.highlight_name or user.name)|safe }}</a>
-                                        <span>{{ user.answers.count() }} 个回答</span>
+                                        {% if user.highlight_desc or user.desc %}
+                                            ，{{ (user.highlight_desc or user.desc or "")|safe }}
+                                        {% endif %}
                                     </div>
-                                    <div class="desc">
-                                        {{ (user.highlight_desc or user.desc or "")|safe }}
-                                        {{ user_follow_wap(user) }}
+
+                                    <div class="answers-count text-light">
+                                        {% if user.answers_count %}
+                                            在
+                                            {% for topic in user.answered_topics %}
+                                                <a href="{{ url_for('topic.view', uid=topic.topic_id) }}">
+                                                    {{ topic.topic.name }}</a>
+                                            {% endfor %}
+                                            等话题下有 {{ user.answers_count }} 个回答
+                                        {% else %}
+                                            还没有回答
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
+
+                            {{ user_follow_wap(user) }}
                         </div>
+                    {% else %}
+                        <div class="text-light">没有找到相关的人</div>
                     {% endfor %}
                 {% endif %}
 

@@ -66,3 +66,57 @@ em {
   color: #333;
   margin-bottom: 2px;
 }
+.topic {
+  position: relative;
+}
+.topic em {
+  font-style: normal;
+  background-color: white;
+  color: red;
+}
+.topic .media-left {
+  padding-right: 12px;
+}
+.topic .media-left img {
+  width: 40px;
+  height: 40px;
+}
+.topic .name {
+  margin-bottom: 2px;
+}
+.topic .name a {
+  font-weight: bold;
+  color: #333;
+}
+.topic .dc-topic-follow-wap {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.user {
+  position: relative;
+}
+.user em {
+  font-style: normal;
+  background-color: white;
+  color: red;
+}
+.user .media-left {
+  padding-right: 15px;
+}
+.user .media-left img {
+  width: 50px;
+  height: 50px;
+}
+.user .meta {
+  margin-bottom: 5px;
+  color: #333;
+}
+.user .meta .name {
+  font-weight: bold;
+}
+.user .dc-user-follow-wap {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
