@@ -124,6 +124,17 @@
             </ul>
         </div>
     </div>
+
+    <script>
+        (function () {
+            $('.btn-admin-topic').click(function () {
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return false;
+                }
+            });
+        })();
+    </script>
 {% endmacro %}
 
 
