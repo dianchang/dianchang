@@ -30,3 +30,36 @@
 .dc-similar-question .answers-count {
   margin-left: 10px;
 }
+.dc-question {
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #eaeaea;
+}
+.dc-question .asker {
+  margin-bottom: 10px;
+}
+.dc-question .asker img {
+  width: 20px;
+  height: 20px;
+}
+.dc-question .asker .name {
+  color: #999;
+  margin-left: 5px;
+}
+.dc-question .title {
+  margin-bottom: 8px;
+}
+.dc-question .title a {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+.dc-question .meta {
+  margin-bottom: 15px;
+}
+.dc-question .meta .divider {
+  margin: 0 5px;
+}
+.dc-question .dc-question-follow-wap {
+  margin-right: 8px;
+}

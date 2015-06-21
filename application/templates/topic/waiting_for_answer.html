@@ -2,6 +2,7 @@
 {% from "macros/_utils.html" import pagination %}
 {% from "macros/_topic.html" import topic_page_header, topic_discuss_page_header,
     topic_discuss_page_sidebar %}
+{% from "macros/_question.html" import render_questions %}
 
 {% block page_title %}等待回答 - 话题「{{ topic.name }}」{% endblock %}
 {% block page_content %}
@@ -12,15 +13,7 @@
             <div class="col-md-8">
                 {{ topic_discuss_page_header(topic, active='waiting_for_answer') }}
 
-                <h3>等待回答</h3>
-
-                {% for question in waiting_for_answer_questions.items %}
-                    <div>
-                        <a href="{{ url_for('question.view', uid=question.id) }}">
-                            {{ question.title }}
-                        </a>
-                    </div>
-                {% endfor %}
+                {{ render_questions(waiting_for_answer_questions.items) }}
 
                 {{ pagination(waiting_for_answer_questions) }}
             </div>

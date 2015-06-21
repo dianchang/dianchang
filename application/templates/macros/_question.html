@@ -1,20 +1,3 @@
-{# 问题 #}
-{% macro render_questions(questions) %}
-    {% for question in questions %}
-        <div class="dc-question">
-            <div>
-                <a href="{{ url_for('question.view', uid=question.id) }}">{{ question.title }}</a>
-            </div>
-            <div>{{ question.user.name }}</div>
-            <div>{{ question.desc|safe }}</div>
-            <div class="time" title="{{ question.created_at }}">
-                {{ question.created_at|timesince }}
-            </div>
-        </div>
-    {% endfor %}
-{% endmacro %}
-
-
 {# 相关问题 #}
 {% macro similar_questions(questions) %}
     {% for question in questions %}
@@ -99,4 +82,43 @@
             </a>
         </div>
     </span>
+{% endmacro %}
+
+
+{# 问题 #}
+{% macro render_questions(questions) %}
+    {% for question in questions %}
+        <div class="dc-question">
+            <div class="asker text-light">
+                <a href="{{ question.user.profile_url }}">
+                    <img src="{{ question.user.avatar_url }}" alt="" class="img-circle"/>
+                </a> <a href="{{ question.user.profile_url }}" class="name">{{ question.user.name }}</a> 提出了问题
+            </div>
+
+            <div class="title">
+                <a href="{{ url_for('question.view', uid=question.id) }}">{{ question.title }}</a>
+            </div>
+
+            <div class="meta text-light">
+                {% if question.answers_count %}
+                    {{ question.answers_count }} 个回答
+                {% else %}
+                    还没有回答
+                {% endif %}
+
+                <span class="divider">·</span>
+
+                <span class="time">提问于 {{ question.created_at|timesince }}</span>
+            </div>
+
+            <div class="commands">
+                {{ question_follow_wap(question) }}
+                {% if not question.answered_by_user() %}
+                    <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-white">
+                        写答案
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
 {% endmacro %}

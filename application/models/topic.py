@@ -177,7 +177,7 @@ class Topic(db.Model):
         topics_id_list = self.descendant_topics_id_list
         topics_id_list.append(self.id)
         return Question.query.filter(Question.topics.any(QuestionTopic.topic_id.in_(
-            topics_id_list)))
+            topics_id_list))).order_by(Question.created_at.desc())
 
     @property
     def all_answers(self):
