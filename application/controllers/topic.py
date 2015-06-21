@@ -2,11 +2,11 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
-    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND
+    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 from ..utils.uploadsets import process_topic_avatar, topic_avatars
-from ..forms import AdminTopicForm, EditTopicWikiForm
+from ..forms import AdminTopicForm
 
 bp = Blueprint('topic', __name__)
 
@@ -329,6 +329,19 @@ def update_experience(uid):
     db.session.add(statistic)
     db.session.commit()
 
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/topic/<int:uid>/apply_for_deletion', methods=['POST'])
+@UserPermission()
+def apply_for_deletion(uid):
+    """申请删除话题"""
+    topic = Topic.query.get_or_404(uid)
+    apply = ApplyTopicDeletion(user_id=g.user.id, topic_id=uid)
+    db.session.add(apply)
+    db.session.commit()
     return json.dumps({
         'result': True
     })

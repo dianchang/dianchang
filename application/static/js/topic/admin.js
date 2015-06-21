@@ -186,6 +186,27 @@ var wikiEditor = new Simditor({
     }
 });
 
+// 申请删除话题
+$('.btn-apply-for-deletion').click(function () {
+    var id = $(this).data('id');
+    var _this = $(this);
+    var applied = !$(this).hasClass('warning');
+
+    if (applied) {
+        return false;
+    }
+
+    $.ajax({
+        url: urlFor('topic.apply_for_deletion', {uid: id}),
+        dataType: 'json',
+        method: 'post'
+    }).done(function (response) {
+        if (response.result) {
+            _this.removeClass('warning').text('申请已提交');
+        }
+    });
+});
+
 /**
  * 添加直接父话题
  * @param {int} topicId - 问题id

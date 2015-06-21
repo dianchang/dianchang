@@ -469,6 +469,18 @@ class UserTopicStatistic(db.Model):
         pass
 
 
+class ApplyTopicDeletion(db.Model):
+    """申请删除话题"""
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+    topic = db.relationship('Topic')
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User')
+
+
 def _intersect_list(a, b):
     """求列表的并"""
     return list(set(a).intersection(b))

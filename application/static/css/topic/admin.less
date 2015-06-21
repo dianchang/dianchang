@@ -135,3 +135,27 @@
   margin-top: 20px;
   display: block;
 }
+
+.btn-apply-for-deletion {
+  border-color: #999;
+  padding: 8px 16px;
+  font-size: 16px;
+  color: #999;
+
+  &.warning {
+    color: #FD9A9B;
+
+    &:hover {
+      color: darken(#FD9A9B, 10%);
+    }
+  }
+
+  &:focus,
+  &:hover,
+  &:active,
+  &:active:focus {
+    background-color: #fff;
+    border-color: #999;
+    color: #999;
+  }
+}

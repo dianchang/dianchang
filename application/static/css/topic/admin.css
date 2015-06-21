@@ -109,3 +109,23 @@
   margin-top: 20px;
   display: block;
 }
+.btn-apply-for-deletion {
+  border-color: #999;
+  padding: 8px 16px;
+  font-size: 16px;
+  color: #999;
+}
+.btn-apply-for-deletion.warning {
+  color: #FD9A9B;
+}
+.btn-apply-for-deletion.warning:hover {
+  color: #fc6869;
+}
+.btn-apply-for-deletion:focus,
+.btn-apply-for-deletion:hover,
+.btn-apply-for-deletion:active,
+.btn-apply-for-deletion:active:focus {
+  background-color: #fff;
+  border-color: #999;
+  color: #999;
+}
