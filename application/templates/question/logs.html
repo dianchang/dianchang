@@ -3,69 +3,73 @@
 {% block page_title %}问题日志 - {{ question.title }}{% endblock %}
 {% block page_content %}
     <div class="container">
-        <h1>
-            <a href="{{ url_for('question.view', uid=question.id) }}">
-                {{ question.title }}
-            </a>
-        </h1>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="header">
+                    <a href="{{ url_for('question.view', uid=question.id) }}" class="name">
+                        {{ question.title }}</a>
 
-        <div>问题编辑日志：</div>
-
-        {% for log in question.logs %}
-            <div class="question-log media">
-                <div class="media-left">
-                    <img src="{{ log.user.avatar_url }}" alt=""/>
+                    <span class="tip">问题编辑日志</span>
                 </div>
-                <div class="media-body">
-                    <div class="title">
-                        <a href="{{ log.user.profile_url }}">
-                            {{ log.user.name }}
-                        </a>
 
-                        {% if log.kind == QUESTION_EDIT_KIND.CREATE %}
-                            添加了问题
-                        {% elif log.kind == QUESTION_EDIT_KIND.ADD_TOPIC %}
-                            添加了话题
-                        {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
-                            移除了话题
-                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TITLE %}
-                            更新了问题
-                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_DESC %}
-                            更新了问题描述
-                        {% endif %}
+                {% for log in question.logs %}
+                    <div class="question-log media">
+                        <div class="media-left">
+                            <a href="{{ log.user.profile_url }}">
+                                <img src="{{ log.user.avatar_url }}" alt="" class="img-circle"/>
+                            </a>
+                        </div>
 
-                        <span class="time">{{ log.created_at|timesince }}</span>
+                        <div class="media-body">
+                            <div class="title text-light">
+                                <a href="{{ log.user.profile_url }}" class="text-light">
+                                    {{ log.user.name }}</a>
+
+                                {% if log.kind == QUESTION_EDIT_KIND.CREATE %}
+                                    添加了问题
+                                {% elif log.kind == QUESTION_EDIT_KIND.ADD_TOPIC %}
+                                    添加了话题
+                                {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
+                                    移除了话题
+                                {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TITLE %}
+                                    更新了问题
+                                {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_DESC %}
+                                    更新了问题描述
+                                {% endif %}
+
+                                <span class="time pull-right text-light">
+                                    {{ log.created_at|timesince }}</span>
+                            </div>
+
+                            <div class="content rich-text-area">
+                                {% if log.kind == QUESTION_EDIT_KIND.CREATE %}
+                                    <ins>{{ log.original_title }}</ins>
+
+                                    {% if log.original_desc %}
+                                        <br/><br/>
+                                        问题描述：
+                                        <ins>{{ log.original_desc }}</ins>
+                                    {% endif %}
+                                {% elif log.kind == QUESTION_EDIT_KIND.ADD_TOPIC %}
+                                    <ins class="topic">
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}" class="dc-topic">
+                                            {{ log.after }}</a>
+                                    </ins>
+                                {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
+                                    <del class="topic">
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}" class="dc-topic">
+                                            {{ log.before }}</a>
+                                    </del>
+                                {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TITLE %}
+                                    {{ log.compare|safe }}
+                                {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_DESC %}
+                                    {{ log.compare|safe }}
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="content">
-                        {% if log.kind == QUESTION_EDIT_KIND.CREATE %}
-                            <ins>{{ log.original_title }}</ins>
-
-                            {% if log.original_desc %}
-                                <br/><br/>
-                                问题描述：
-                                <ins>{{ log.original_desc }}</ins>
-                            {% endif %}
-                        {% elif log.kind == QUESTION_EDIT_KIND.ADD_TOPIC %}
-                            <ins>
-                                <a href="{{ url_for('topic.view', uid=log.after_id) }}">
-                                    {{ log.after }}
-                                </a>
-                            </ins>
-                        {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
-                            <del>
-                                <a href="{{ url_for('topic.view', uid=log.before_id) }}">
-                                    {{ log.before }}
-                                </a>
-                            </del>
-                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TITLE %}
-                            {{ log.compare|safe }}
-                        {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_DESC %}
-                            {{ log.compare|safe }}
-                        {% endif %}
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </div>
 {% endblock %}

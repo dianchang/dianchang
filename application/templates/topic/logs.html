@@ -10,7 +10,8 @@
                     {#                <img src="{{ topic.avatar_url }}" alt=""/>#}
                     {#            </a>#}
 
-                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="name">{{ topic.name }}</a>
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="name">
+                        {{ topic.name }}</a>
 
                     <span class="tip">话题编辑日志</span>
                 </div>
