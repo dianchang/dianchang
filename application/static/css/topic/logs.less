@@ -1,0 +1,84 @@
+@import "../utils";
+
+.header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid @border-color;
+
+  .img-wap {
+    margin-right: 10px;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .name {
+    font-size: 24px;
+    color: #333;
+    margin-right: 10px;
+  }
+
+  .tip {
+    font-size: 18px;
+    color: #999;
+  }
+}
+
+.topic-log {
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid @border-color;
+
+  .media-left {
+    padding-right: 15px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .media-body {
+    overflow: visible;
+  }
+
+  .title {
+    margin-bottom: 20px;
+  }
+
+  .content {
+    .fa-long-arrow-right {
+      margin: 0 8px;
+    }
+
+    .topic-avatar {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  del.topic {
+    text-decoration: none;
+    padding: 0;
+    background-color: #fff;
+
+    a {
+      margin: 0;
+      text-decoration: line-through;
+    }
+  }
+
+  ins.topic {
+    padding: 0;
+    background-color: #fff;
+
+    a {
+      margin: 0;
+    }
+  }
+}
