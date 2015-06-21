@@ -268,6 +268,11 @@ def add_synonym(uid):
             topic_synonym = TopicSynonym(synonym=synonym)
             topic.synonyms.append(topic_synonym)
             db.session.add(topic)
+
+            # log
+            log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_SYNONYM, after=synonym,
+                                user_id=g.user.id, topic_id=uid)
+            db.session.add(log)
             db.session.commit()
             topic.save_to_es()
         macro = get_template_attribute('macros/_topic.html', 'topic_synonym_edit_wap')
@@ -283,9 +288,14 @@ def add_synonym(uid):
 def remove_synonym(uid):
     """移除话题同义词"""
     topic_synonym = TopicSynonym.query.get_or_404(uid)
+
+    # log
+    log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_SYNONYM, before=topic_synonym.synonym,
+                        user_id=g.user.id, topic_id=topic_synonym.topic_id)
+    db.session.add(log)
     db.session.delete(topic_synonym)
-    db.session.commit()
     topic_synonym.topic.save_to_es()
+    db.session.commit()
     return json.dumps({'result': True})
 
 

@@ -42,6 +42,10 @@
                                     添加了子话题
                                 {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
                                     移除了子话题
+                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_SYNONYM %}
+                                    添加了同义词
+                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_SYNONYM %}
+                                    移除了同义词
                                 {% endif %}
 
                                 <span class="time pull-right">{{ log.created_at|timesince }}</span>
@@ -85,6 +89,10 @@
                                         <a href="{{ url_for('topic.view', uid=log.before_id) }}" class="dc-topic">
                                             {{ log.before }}</a>
                                     </del>
+                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_SYNONYM %}
+                                    <ins>{{ log.after }}</ins>
+                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_SYNONYM %}
+                                    <del>{{ log.before }}</del>
                                 {% endif %}
                             </div>
                         </div>

@@ -113,7 +113,7 @@ $(document).on('click', '.btn-remove-child-topic', function () {
 });
 
 // 添加话题同义词
-$synonymInput.on('keyup', function (e) {
+$synonymInput.on('keypress', function (e) {
     var name = $.trim($(this).val());
     var _this = $(this);
 
@@ -125,14 +125,14 @@ $synonymInput.on('keyup', function (e) {
             method: 'post',
             dataType: 'json',
             data: {
-                synonym: $(this).val()
+                synonym: name
             }
         }).done(function (response) {
             if (response.result) {
                 $('.synonyms').append(response.html);
                 _this.val('').focus();
             }
-        })
+        });
     }
 });
 
