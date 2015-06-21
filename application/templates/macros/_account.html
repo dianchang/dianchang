@@ -513,7 +513,7 @@
 
 
 {# 开关组件 #}
-{% macro btn_group_switch(key, on=True, on_text='开', off_text='关', with_script=True) %}
+{% macro btn_group_switch(key, on=True, on_text='开', off_text='关', with_script=False) %}
     <div class="btn-group btn-group-switch {% if on %}on{% endif %}" data-key="{{ key }}">
         <label class="btn btn-white btn-on">{{ on_text }}</label>
         <label class="btn btn-white btn-off">{{ off_text }}</label>

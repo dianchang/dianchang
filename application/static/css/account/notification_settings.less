@@ -1,16 +1,48 @@
+@import "../utils";
+
 .navbar {
   margin-bottom: 0;
 }
 
 #main-wap .container {
   width: 750px;
+  padding: 0;
   margin: 0 auto;
 }
 
-.table {
-  table-layout: fixed;
+.settings-wap {
+  .item {
+    border-bottom: 1px solid @border-color;
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    font-size: 16px;
 
-  tbody > tr > td {
-    padding: 20px 0;
+    .from {
+      width: 255px;
+      float: left;
+    }
+
+    .action {
+      width: 244px;
+      float: left;
+    }
+
+    .notification {
+      width: 150px;
+      float: left;
+    }
+
+    .mail {
+      width: 100px;
+      float: right;
+    }
+
+    &.head {
+      padding-bottom: 25px;
+    }
+
+    .text {
+      padding-top: 5px;
+    }
   }
 }

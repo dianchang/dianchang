@@ -4,6 +4,7 @@
 #main-wap .container {
   width: 750px;
   margin: 0 auto;
+  padding: 0;
 }
 .item {
   padding-bottom: 35px;

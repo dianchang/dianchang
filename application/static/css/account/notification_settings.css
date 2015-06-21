@@ -3,11 +3,34 @@
 }
 #main-wap .container {
   width: 750px;
+  padding: 0;
   margin: 0 auto;
 }
-.table {
-  table-layout: fixed;
+.settings-wap .item {
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  font-size: 16px;
 }
-.table tbody > tr > td {
-  padding: 20px 0;
+.settings-wap .item .from {
+  width: 255px;
+  float: left;
+}
+.settings-wap .item .action {
+  width: 244px;
+  float: left;
+}
+.settings-wap .item .notification {
+  width: 150px;
+  float: left;
+}
+.settings-wap .item .mail {
+  width: 100px;
+  float: right;
+}
+.settings-wap .item.head {
+  padding-bottom: 25px;
+}
+.settings-wap .item .text {
+  padding-top: 5px;
 }

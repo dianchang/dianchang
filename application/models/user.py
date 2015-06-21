@@ -67,8 +67,8 @@ class User(db.Model):
 
     # 回答了关注的问题
     answer_question_message_from_all = db.Column(db.Boolean, default=True)
-    answer_question_message_via_notification = db.Column(db.Boolean, default=True)
-    answer_question_message_via_mail = db.Column(db.Boolean, default=True)
+    answer_question_message_via_notification = db.Column(db.Boolean, default=False)
+    answer_question_message_via_mail = db.Column(db.Boolean, default=False)
 
     # 每周精选
     receive_weekly_digest_message = db.Column(db.Boolean, default=True)
