@@ -70,11 +70,6 @@ em {
 .topic {
   position: relative;
 }
-.topic em {
-  font-style: normal;
-  background-color: white;
-  color: red;
-}
 .topic .media-left {
   padding-right: 12px;
 }
@@ -97,11 +92,6 @@ em {
 .user {
   position: relative;
 }
-.user em {
-  font-style: normal;
-  background-color: white;
-  color: red;
-}
 .user .media-left {
   padding-right: 15px;
 }
@@ -115,6 +105,7 @@ em {
 }
 .user .meta .name {
   font-weight: bold;
+  color: #333;
 }
 .user .dc-user-follow-wap {
   position: absolute;

@@ -14,33 +14,48 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <img src="{{ topic.avatar_url }}" alt="" class="topic-avatar"/>
-                <button type="button" class="btn btn-primary btn-sm btn-upload-topic-avatar">
-                    更换头像
-                </button>
-                <input type="file" name="avatar"/>
+                <div class="avatar-wap">
+                    <img src="{{ topic.avatar_url }}" alt="" class="topic-avatar"/>
+                    <span class="btn-upload-topic-avatar">
+                        更换头像
+                    </span>
+                    <input type="file" name="avatar"/>
+                </div>
 
                 <form action="" method="post">
                     {{ form.csrf_token() }}
 
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="name" placeholder="话题名称"
-                               value="{{ topic.name }}"/>
+                    <div class="form-group form-group-input no-border clearfix">
+                        <div class="inner-wap">
+                            <input type="text" class="form-control" name="name" placeholder="话题名称"
+                                   value="{{ topic.name }}"/>
+
+                            {% if topic.locked %}
+                                <span class="locked-flag text-light">
+                                    <span class="fa fa-lock"></span> 已锁定
+                                </span>
+                            {% endif %}
+                        </div>
+
                         {{ field_errors(form.name) }}
                     </div>
 
-                    <div class="form-group">
-                        <textarea name="wiki" id="" cols="30" rows="10" placeholder="话题描述"
+                    <div class="form-group no-border clearfix">
+                        <textarea name="wiki" id="" cols="30" rows="10" placeholder="话题百科"
                                   class="form-control">{{ topic.wiki or "" }}</textarea>
+                        <button type="submit" class="btn btn-primary btn-submit">保存</button>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">话题同义词</label>
 
                         <div class="col-sm-10">
                             <p class="help-block">同义词越多，越方便话题被检索到</p>
-                            <input type="text" class="form-control" id="" placeholder="添加同义词"
-                                   name="synonym">
+
+                            <div class="input-wap">
+                                <input type="text" class="form-control" id="" placeholder="输入同义词，回车添加"
+                                       name="synonym" autocomplete="off">
+                            </div>
 
                             <ul class="synonyms">
                                 {% for synonym in topic.synonyms %}
@@ -50,16 +65,18 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">父话题</label>
 
                         <div class="col-sm-10">
-                            <p class="text-light">
+                            <p class="help-block">
                                 完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题。
                             </p>
 
-                            <input type="text" class="form-control" id="" name="parent-topic"
-                                   placeholder="搜索话题，回车添加">
+                            <div class="input-wap">
+                                <input type="text" class="form-control" id="" name="parent-topic"
+                                       placeholder="搜索话题，回车添加" autocomplete="off">
+                            </div>
 
                             <ul class="parent-topics">
                                 {% for parent_topic in topic.parent_topics %}
@@ -69,16 +86,18 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">子话题</label>
 
                         <div class="col-sm-10">
-                            <p class="text-light">
+                            <p class="help-block">
                                 完全隶属于本话题的细分话题。例如：「香蕉」可以是「水果」的子话题。
                             </p>
 
-                            <input type="text" class="form-control" id="" name="child-topic"
-                                   placeholder="搜索话题，回车添加">
+                            <div class="input-wap">
+                                <input type="text" class="form-control" id="" name="child-topic"
+                                       placeholder="搜索话题，回车添加" autocomplete="off">
+                            </div>
 
                             <ul class="child-topics">
                                 {% for child_topic in topic.child_topics %}
@@ -88,27 +107,29 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">父级话题结构</label>
 
                         <div class="col-sm-10">
-                            {% for path in topic.ancestor_paths %}
-                                {% for topic in path %}
-                                    <a href="{{ url_for('topic.view', uid=topic.id) }}">
-                                        {{ topic.name }}
-                                    </a>
+                            <ul class="topics-path">
+                                {% for path in topic.ancestor_paths %}
+                                    <li>
+                                        {% for topic in path %}
+                                            <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                                                {{ topic.name }}
+                                            </a>
 
-                                    {% if not loop.last %}
-                                        <span class="fa fa-long-arrow-right"></span>
-                                    {% endif %}
+                                            {% if not loop.last %}
+                                                <span class="fa fa-long-arrow-right"></span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </li>
                                 {% endfor %}
-                                <br/>
-                            {% endfor %}
+                            </ul>
                         </div>
                     </div>
 
-
-                    <div class="form-group">
+                    <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">子级话题结构</label>
 
                         <div class="col-sm-10">
@@ -123,9 +144,11 @@
                             </ul>
                         </div>
                     </div>
-
-                    {{ form_submit('保存') }}
                 </form>
+            </div>
+
+            <div class="col-md-4">
+                <div class="tip">组织，管理</div>
             </div>
         </div>
     </div>

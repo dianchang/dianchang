@@ -142,8 +142,8 @@ del {
   z-index: 1;
 }
 .btn-group-switch .btn-off {
-  background-color: #999;
-  border-color: #999;
+  background-color: #333;
+  border-color: #333;
   color: white;
   z-index: 2;
 }
@@ -154,9 +154,9 @@ del {
   z-index: 1;
 }
 .btn-group-switch.on .btn-on {
-  background-color: #dcf8f1;
-  color: #009999;
-  border-color: #b7e1e2;
+  background-color: #17CA8A;
+  color: #FFFFFF;
+  border-color: #009299;
   z-index: 2;
 }
 .btn-group-switch.on .btn-off {
