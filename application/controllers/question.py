@@ -255,12 +255,12 @@ def logs(uid):
 def update(uid):
     """通过Ajax更新问题的title和desc"""
     question = Question.query.get_or_404(uid)
-    title = request.form.get('title', "").strip()
-    desc = request.form.get('desc', "").strip()
+    title = request.form.get('title')
+    desc = request.form.get('desc')
 
-    title = _add_question_mark_to_title(title)
-
-    if title and title != question.title:
+    if title is not None and title != question.title:
+        title = title.strip()
+        title = _add_question_mark_to_title(title)
         # Update title log
         title_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
                                   user_id=g.user.id, compare=generate_lcs_html(question.title, title))
@@ -277,7 +277,9 @@ def update(uid):
     #     desc = desc.replace("<p>", "<br>").replace("</p>", ""). \
     #         replace("<div>", "<br>").replace("</div>", "")
 
-    if desc != (question.desc or ""):
+    print(desc is None)
+    if desc is not None and desc != (question.desc or ""):
+        desc = desc.strip()
         # Update desc log
         desc_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
                                  user_id=g.user.id, compare=generate_lcs_html(question.desc, desc))
@@ -289,8 +291,8 @@ def update(uid):
 
     return json.dumps({
         'result': True,
-        'title': title,
-        'desc': desc
+        'title': question.title,
+        'desc': question.desc
     })
 
 
