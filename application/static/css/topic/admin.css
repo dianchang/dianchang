@@ -93,6 +93,10 @@ textarea[name="wiki"] {
   margin-left: 10px;
   font-size: 14px;
 }
+.form-group .root-topic-tip {
+  font-size: 16px;
+  color: #999;
+}
 .form-group .topics-path a {
   font-size: 16px;
   color: #009999;

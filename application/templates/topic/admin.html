@@ -123,21 +123,25 @@
                         <label for="" class="col-sm-2 control-label">父级话题结构</label>
 
                         <div class="col-sm-10">
-                            <ul class="topics-path">
-                                {% for path in topic.ancestor_paths %}
-                                    <li>
-                                        {% for topic in path %}
-                                            <a href="{{ url_for('topic.view', uid=topic.id) }}">
-                                                {{ topic.name }}
-                                            </a>
+                            {% if topic.root %}
+                                <div class="root-topic-tip">根话题</div>
+                            {% else %}
+                                <ul class="topics-path">
+                                    {% for path in topic.ancestor_paths %}
+                                        <li>
+                                            {% for topic in path %}
+                                                <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                                                    {{ topic.name }}
+                                                </a>
 
-                                            {% if not loop.last %}
-                                                <span class="fa fa-long-arrow-right"></span>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                                                {% if not loop.last %}
+                                                    <span class="fa fa-long-arrow-right"></span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         </div>
                     </div>
 
