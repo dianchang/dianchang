@@ -24,12 +24,31 @@
 .item .value .url-prefix {
   font-weight: normal;
 }
+.item .value input {
+  border: none;
+  outline: none;
+}
 .item .commands {
   position: absolute;
   right: 0;
-  top: 10px;
+  top: 12px;
+}
+.item .commands .btn-cancel {
+  margin-left: 10px;
+}
+.item .commands .for-edit {
+  display: none;
+}
+.item .commands .for-non-edit {
+  display: block;
 }
 .item .commands .tip {
   color: #999;
   margin-right: 15px;
+}
+.item .commands.edit .for-edit {
+  display: block;
+}
+.item .commands.edit .for-non-edit {
+  display: none;
 }

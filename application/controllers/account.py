@@ -227,3 +227,104 @@ def update_setting():
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/account/update_name', methods=['POST'])
+@UserPermission()
+def update_name():
+    """更新称谓"""
+    if g.user.name_edit_count == 0:
+        return json.dumps({
+            'result': False
+        })
+
+    name = request.form.get('name')
+    if not name:
+        return json.dumps({
+            'result': False
+        })
+
+    if name == g.user.name:
+        return json.dumps({
+            'result': True,
+            'name_edit_count': g.user.name_edit_count
+        })
+
+    g.user.name = name
+    g.user.name_edit_count -= 1
+    db.session.add(g.user)
+    db.session.commit()
+    return json.dumps({
+        'result': True,
+        'name_edit_count': g.user.name_edit_count
+    })
+
+
+@bp.route('/account/update_email', methods=['POST'])
+@UserPermission()
+def update_email():
+    """更新邮箱"""
+    email = request.form.get('email')
+    if not email:
+        return json.dumps({
+            'result': False
+        })
+
+    if email == g.user.email:
+        g.user.inactive_email = ""
+        db.session.add(g.user)
+        db.session.commit()
+
+        return json.dumps({
+            'result': True,
+            'active': g.user.is_active
+        })
+
+    g.user.inactive_email = email
+    db.session.add(g.user)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True,
+        'active': False
+    })
+
+
+@bp.route('/account/update_url_token', methods=['POST'])
+@UserPermission()
+def update_url_token():
+    """更新个人主页网址"""
+    url_token = request.form.get('url_token')
+
+    if not url_token:
+        return json.dumps({
+            'result': False
+        })
+
+    g.user.url_token = url_token
+    db.session.add(g.user)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/account/update_password', methods=['POST'])
+@UserPermission()
+def update_password():
+    """更新密码"""
+    password = request.form.get('password')
+
+    if not password:
+        return json.dumps({
+            'result': False
+        })
+
+    g.user.password = password
+    db.session.add(g.user)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })

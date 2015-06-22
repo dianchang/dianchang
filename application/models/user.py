@@ -13,7 +13,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), unique=True)
     name_pinyin = db.Column(db.String(200))
-    email = db.Column(db.String(50), unique=True)
+    name_edit_count = db.Column(db.Integer, default=2)  # 剩余的称呼修改次数
+    email = db.Column(db.String(100), unique=True)
+    inactive_email = db.Column(db.String(100))
     desc = db.Column(db.String(200), )
     avatar = db.Column(db.String(200), default='default.png')
     background = db.Column(db.String(200))
@@ -29,7 +31,6 @@ class User(db.Model):
     has_seleted_expert_topics = db.Column(db.Boolean, default=False)
 
     # 计数
-
     followers_count = db.Column(db.Integer, default=0)
     followings_count = db.Column(db.Integer, default=0)
     thanks_count = db.Column(db.Integer, default=0)

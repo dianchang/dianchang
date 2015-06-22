@@ -10,40 +10,76 @@
         <div class="item">
             <div class="key">称呼</div>
             <div class="value">
-                {{ g.user.name }}
+                <input type="text" value="{{ g.user.name }}" name="name" data-value="{{ g.user.name }}"
+                       autocomplete="off" disabled/>
             </div>
             <div class="commands">
-                <span class="tip">
-                    还有 2 次修改机会
-                </span>
-                <button type="button" class="btn btn-light">修改称呼</button>
+                {% if g.user.name_edit_count > 0 %}
+                    <span class="for-non-edit">
+                        <span class="tip">
+                            还有 <span class="name-edit-count">{{ g.user.name_edit_count }}</span> 次修改机会
+                        </span>
+                        <button type="button" class="btn btn-light btn-edit-name btn-edit">修改称呼</button>
+                    </span>
+                    <span class="for-edit">
+                        <button type="button" class="btn btn-primary btn-submit-name">保存</button>
+                        <a href="javascript: void(0)" class="text-light btn-cancel">取消</a>
+                    </span>
+                {% else %}
+                    <span class="tip">无法修改称呼</span>
+                {% endif %}
             </div>
         </div>
 
         <div class="item">
             <div class="key">个人主页网址</div>
             <div class="value">
-                <span class="text-light url-prefix">dianchang.com/people/</span><span
-                    class="url-token">{{ g.user.url_token or "" }}</span>
+                <span class="text-light url-prefix">dianchang.com/people/</span><input
+                    class="url-token" value="{{ g.user.url_token or "" }}" name="url_token"
+                    data-value="{{ g.user.url_token or "" }}" disabled autocomplete="off"/>
             </div>
             <div class="commands">
-                <button type="button" class="btn btn-light">修改网址</button>
+                <span class="for-non-edit">
+                    <button type="button" class="btn btn-light btn-edit-url-token btn-edit">修改网址</button>
+                </span>
+                <span class="for-edit">
+                    <button type="button" class="btn btn-primary btn-submit-url-token">保存</button>
+                    <a href="javascript: void(0)" class="text-light btn-cancel">取消</a>
+                </span>
             </div>
         </div>
 
         <div class="item">
             <div class="key">邮箱</div>
-            <div class="value">{{ g.user.email }}</div>
+            <div class="value">
+                <input type="text" value="{{ g.user.inactive_email or g.user.email }}" name="email" disabled
+                       data-value="{{ g.user.inactive_email or g.user.email }}" autocomplete="off"/>
+            </div>
             <div class="commands">
-                <button type="button" class="btn btn-light">更换邮箱</button>
+                <span class="for-non-edit">
+                    <span class="tip">{% if g.user.inactive_email %}尚未激活{% endif %}</span>
+                    <button type="button" class="btn btn-light btn-edit-email btn-edit">更换邮箱</button>
+                </span>
+                <span class="for-edit">
+                    <button type="button" class="btn btn-primary btn-submit-email">保存</button>
+                    <a href="javascript: void(0)" class="text-light btn-cancel">取消</a>
+                </span>
             </div>
         </div>
 
         <div class="item">
             <div class="key">密码</div>
-            <div class="value">*********</div>
+            <div class="value">
+                <input type="password" name="password" value="*********" placeholder="新密码" disabled autocomplete="off"/>
+            </div>
             <div class="commands">
-                <button type="button" class="btn btn-light">修改密码</button>
+                <span class="for-non-edit">
+                    <button type="button" class="btn btn-light btn-edit-password btn-edit">修改密码</button>
+                </span>
+                <span class="for-edit">
+                    <button type="button" class="btn btn-primary btn-submit-password">保存</button>
+                    <a href="javascript: void(0)" class="text-light btn-cancel btn-cancel-password">取消</a>
+                </span>
             </div>
         </div>
     </div>

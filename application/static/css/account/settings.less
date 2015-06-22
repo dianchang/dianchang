@@ -29,16 +29,41 @@
     .url-prefix {
       font-weight: normal;
     }
+
+    input {
+      border: none;
+      outline: none;
+    }
   }
 
   .commands {
     position: absolute;
     right: 0;
-    top: 10px;
+    top: 12px;
+
+    .btn-cancel {
+      margin-left: 10px;
+    }
+
+    .for-edit {
+      display: none;
+    }
+    .for-non-edit {
+      display: block;
+    }
 
     .tip {
       color: #999;
       margin-right: 15px;
+    }
+
+    &.edit {
+      .for-edit {
+        display: block;
+      }
+      .for-non-edit {
+        display: none;
+      }
     }
   }
 }
