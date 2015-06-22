@@ -4,25 +4,27 @@
 {% block page_title %}撰写{% endblock %}
 {% block page_content %}
     <div class="container">
-        <div class="col-md-8">
-            <h3>可能适合你回答的问题</h3>
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="no-margin-top">可能适合你回答的问题</h3>
 
-            {% for feed in g.user.compose_feeds %}
-                {% if feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}
-                    {# TODO #}
-                {% elif feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER %}
-                    {# TODO #}
-                {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ALL %}
-                    {# TODO #}
-                {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ANSWERD_TOPIC %}
-                    {# TODO #}
-                {% endif %}
-            {% endfor %}
-        </div>
-        <div class="col-md-4">
-            <h3>擅长话题</h3>
+                {% for feed in g.user.compose_feeds %}
+                    {% if feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}
+                        {# TODO #}
+                    {% elif feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER %}
+                        {# TODO #}
+                    {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ALL %}
+                        {# TODO #}
+                    {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ANSWERD_TOPIC %}
+                        {# TODO #}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                <h3 class="no-margin-top">擅长话题</h3>
 
-            {{ render_expert_topics(g.user.expert_topics) }}
+                {{ render_expert_topics(g.user.expert_topics) }}
+            </div>
         </div>
     </div>
 {% endblock %}
