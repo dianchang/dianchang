@@ -26,6 +26,9 @@
 .avatar-wap .btn-upload-topic-avatar:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
+textarea[name="wiki"] {
+  display: none;
+}
 .form-group.form-group-input {
   margin-bottom: 25px;
 }
