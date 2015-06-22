@@ -375,6 +375,7 @@ class ComposeFeed(db.Model):
     """撰写feed"""
     id = db.Column(db.Integer, primary_key=True)
     kind = db.Column(db.String(50))
+    ignore = db.Column(db.Boolean, default=False)  # 忽略
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

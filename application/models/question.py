@@ -197,3 +197,30 @@ class InviteAnswer(db.Model):
     question = db.relationship('Question', backref=db.backref('invites',
                                                               lazy='dynamic',
                                                               order_by='desc(InviteAnswer.created_at)'))
+
+
+class RejectInvitationFromUser(db.Model):
+    """拒绝来自某用户的邀请"""
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    reject_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 被拒绝用户
+
+
+class RejectInvitationFromTopic(db.Model):
+    """拒绝某话题下的邀请"""
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
+
+
+class NotGoodAtTopic(db.Model):
+    """不擅长某话题
+
+    即该话题下的问题不会出现在撰写页。
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    topic_id = db.Column(db.Integer, db.ForeignKey('topic.id'))

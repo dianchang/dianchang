@@ -423,10 +423,10 @@ def invite(uid, user_id):
     question = Question.query.get_or_404(uid)
     user = User.query.get_or_404(user_id)
 
+    # 取消邀请
     invitation = InviteAnswer.query.filter(InviteAnswer.question_id == uid,
                                            InviteAnswer.user_id == user_id,
                                            InviteAnswer.inviter_id == g.user.id).first()
-    # 取消邀请
     if invitation:
         feed = ComposeFeed.query.filter(ComposeFeed.invitation_id == invitation.id).first()
         db.session.delete(feed)
@@ -436,26 +436,26 @@ def invite(uid, user_id):
             'result': True,
             'invited': False
         })
+    else:
+        # 邀请
+        invitation = InviteAnswer(question_id=uid, user_id=user_id, inviter_id=g.user.id)
+        db.session.add(invitation)
+        db.session.commit()
 
-    # 邀请
-    invitation = InviteAnswer(question_id=uid, user_id=user_id, inviter_id=g.user.id)
-    db.session.add(invitation)
-    db.session.commit()
+        # FEED：插入到用户的撰写FEED中
+        feed = ComposeFeed(kind=COMPOSE_FEED_KIND.INVITE_TO_ANSWER, invitation_id=invitation.id,
+                           user_id=user_id)
+        db.session.add(feed)
+        db.session.commit()
 
-    # FEED：插入到用户的撰写FEED中
-    feed = ComposeFeed(kind=COMPOSE_FEED_KIND.INVITE_TO_ANSWER, invitation_id=invitation.id,
-                       user_id=user_id)
-    db.session.add(feed)
-    db.session.commit()
-
-    macro = get_template_attribute("macros/_question.html", "invited_user_wap")
-    return json.dumps({
-        'result': True,
-        'invited': True,
-        'username': user.name,
-        'user_profile_url': user.profile_url,
-        'html': macro(user)
-    })
+        macro = get_template_attribute("macros/_question.html", "invited_user_wap")
+        return json.dumps({
+            'result': True,
+            'invited': True,
+            'username': user.name,
+            'user_profile_url': user.profile_url,
+            'html': macro(user)
+        })
 
 
 def _add_question_mark_to_title(title):
