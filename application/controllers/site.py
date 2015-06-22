@@ -15,7 +15,8 @@ def index():
         answers = Answer.query.order_by(Answer.created_at.desc()).limit(5)
         return render_template('site/index.html', answers=answers)
     else:
-        return render_template('site/index_signin.html')
+        hot_topics = Topic.query.limit(8)
+        return render_template('site/index_signin.html', hot_topics=hot_topics)
 
 
 @bp.route('/about')

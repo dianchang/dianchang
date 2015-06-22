@@ -240,6 +240,13 @@ def follow(uid):
         g.user.feeds.append(user_feed)
         db.session.add(g.user)
 
+        # FEED: 插入到followers的首页FEED中
+        for follower in g.user.followers:
+            feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION, sender_id=g.user.id,
+                            question_id=uid)
+            follower.follower.home_feeds.append(feed)
+            db.session.add(follower.follower)
+
         db.session.commit()
         return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers.count()})
 

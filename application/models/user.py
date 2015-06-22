@@ -332,8 +332,9 @@ class Notification(db.Model):
 class HOME_FEED_KIND(object):
     """首页feed类型"""
     FOLLOWING_UPVOTE_ANSWER = "UdW38Gw"  # 我关注的人赞同某个回答
-    FOLLOWING_ASK_QUESTION = "groYn17"  # 我关注的人提出了问题
-    FOLLOWING_ANSWER_QUESTION = "wFyvyTI"  # 我关注的人回答了问题
+    FOLLOWING_ASK_QUESTION = "groYn17"  # 我关注的人提出了某个问题
+    FOLLOWING_ANSWER_QUESTION = "wFyvyTI"  # 我关注的人回答了某个问题
+    FOLLOWING_FOLLOW_QUESTION = "i1VEDr8"  # 我关注的人关注了某个问题
     WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC = "6UEXA9U"  # 我擅长的话题的热门待回答问题
     GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "HVKEV0N"  # 关注的话题下的精彩回答
     NEW_ANSWER_FROM_FOLLOWED_TOPIC = "VpuedTz"  # 关注的话题下的新人回答、刚出炉的回答

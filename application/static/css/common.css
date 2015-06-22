@@ -165,3 +165,6 @@ del {
 .btn-group-switch.on .btn-off:hover {
   color: #333;
 }
+.no-margin-top {
+  margin-top: 0;
+}

@@ -35,19 +35,19 @@
   padding-bottom: 22px;
   border-bottom: 1px solid #eaeaea;
 }
-.dc-question .asker {
+.dc-question .action {
   margin-bottom: 10px;
 }
-.dc-question .asker img {
+.dc-question .action img {
   width: 20px;
   height: 20px;
 }
-.dc-question .asker .name {
+.dc-question .action .name {
   color: #999;
   margin-left: 5px;
 }
 .dc-question .title {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .dc-question .title a {
   color: #333;
@@ -55,7 +55,7 @@
   font-weight: bold;
 }
 .dc-question .meta {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 .dc-question .meta .divider {
   margin: 0 5px;

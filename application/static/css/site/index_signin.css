@@ -1,0 +1,23 @@
+.action {
+  margin-bottom: 10px;
+}
+.action img {
+  width: 20px;
+  height: 20px;
+}
+.action .name {
+  color: #999;
+  margin-left: 5px;
+}
+.hot-topic {
+  margin-bottom: 15px;
+}
+.hot-topic .avatar-wap img {
+  width: 25px;
+  height: 25px;
+  border-radius: 2px;
+}
+.hot-topic .name {
+  color: #009999;
+  margin-left: 5px;
+}

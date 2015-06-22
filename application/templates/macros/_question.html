@@ -86,39 +86,46 @@
 
 
 {# 问题 #}
+{% macro render_question(question, user, action='提出了') %}
+    <div class="dc-question">
+        <div class="action text-light">
+            <a href="{{ user.profile_url }}">
+                <img src="{{ user.avatar_url }}" alt="" class="img-circle"/>
+            </a> <a href="{{ user.profile_url }}" class="name">{{ user.name }}</a> {{ action }}问题
+        </div>
+
+        <div class="title">
+            <a href="{{ url_for('question.view', uid=question.id) }}">{{ question.title }}</a>
+        </div>
+
+        <div class="meta text-light">
+            {% if question.answers_count %}
+                {{ question.answers_count }} 个回答
+            {% else %}
+                还没有回答
+            {% endif %}
+
+            <span class="divider">·</span>
+
+            <span class="time">提问于 {{ question.created_at|timesince }}</span>
+        </div>
+
+        <div class="commands">
+            {{ question_follow_wap(question) }}
+
+            {% if not question.answered_by_user() %}
+                <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-default">
+                    写答案
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# 问题 #}
 {% macro render_questions(questions) %}
     {% for question in questions %}
-        <div class="dc-question">
-            <div class="asker text-light">
-                <a href="{{ question.user.profile_url }}">
-                    <img src="{{ question.user.avatar_url }}" alt="" class="img-circle"/>
-                </a> <a href="{{ question.user.profile_url }}" class="name">{{ question.user.name }}</a> 提出了问题
-            </div>
-
-            <div class="title">
-                <a href="{{ url_for('question.view', uid=question.id) }}">{{ question.title }}</a>
-            </div>
-
-            <div class="meta text-light">
-                {% if question.answers_count %}
-                    {{ question.answers_count }} 个回答
-                {% else %}
-                    还没有回答
-                {% endif %}
-
-                <span class="divider">·</span>
-
-                <span class="time">提问于 {{ question.created_at|timesince }}</span>
-            </div>
-
-            <div class="commands">
-                {{ question_follow_wap(question) }}
-                {% if not question.answered_by_user() %}
-                    <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-white">
-                        写答案
-                    </a>
-                {% endif %}
-            </div>
-        </div>
+        {{ render_question(question, question.user) }}
     {% endfor %}
 {% endmacro %}
