@@ -33,6 +33,9 @@
   right: 0;
   top: 12px;
 }
+.item .commands .btn-edit {
+  margin-left: 15px;
+}
 .item .commands .btn-cancel {
   margin-left: 10px;
 }
@@ -44,7 +47,6 @@
 }
 .item .commands .tip {
   color: #999;
-  margin-right: 15px;
 }
 .item .commands.edit .for-edit {
   display: block;
