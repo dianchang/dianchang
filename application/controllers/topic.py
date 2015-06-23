@@ -394,7 +394,7 @@ def add_expert(uid):
     """添加擅长话题"""
     topic = Topic.query.get_or_404(uid)
     expert_topic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
-                                                       UserTopicStatistic.user_id == g.user.id).first()
+                                                   UserTopicStatistic.user_id == g.user.id).first()
     if not expert_topic:
         expert_topic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, selected=True)
         db.session.add(expert_topic)
@@ -428,4 +428,28 @@ def add_expert(uid):
     return json.dumps({
         'result': True,
         'html': macro(expert_topic)
+    })
+
+
+@bp.route('/topic/update_show_order', methods=['POST'])
+@UserPermission()
+def update_show_order():
+    show_orders = request.form.get('show_orders')
+    if not show_orders:
+        return json.dumps({
+            'result': False
+        })
+
+    show_orders = json.loads(show_orders)
+    for item in show_orders:
+        id = item['id']
+        show_order = item['show_order']
+        expert_topic = UserTopicStatistic.query.get(id)
+        if expert_topic:
+            expert_topic.show_order = show_order
+            db.session.add(expert_topic)
+
+    db.session.commit()
+    return json.dumps({
+        'result': True
     })

@@ -90,10 +90,39 @@ $('.btn-finish-expert-topic').click(function () {
 });
 
 // 拖拽排序
-var sortable = new Sortable($expertTopics[0], {
+var sortable = new Sortable($expertTopics.first()[0], {
     onEnd: function (evt) {
-        evt.oldIndex;
-        evt.newIndex;
+        var show_orders = [];
+
+        $('.expert-topic').each(function (index, element) {
+            var originalShowOrder = parseInt($(element).data('show-order'));
+            var id = parseInt($(element).data('id'));
+
+            if (index !== originalShowOrder) {
+                console.log(id + ", " + index);
+                show_orders.push({
+                    'id': id,
+                    'show_order': index
+                });
+            }
+        });
+
+        if (show_orders.length !== 0) {
+            $.ajax({
+                url: urlFor('topic.update_show_order'),
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    show_orders: JSON.stringify(show_orders)
+                }
+            }).done(function (response) {
+                if (response.result) {
+                    $('.expert-topic').each(function (index, element) {
+                        $(element).data('show-order', index);
+                    });
+                }
+            });
+        }
     }
 });
 
