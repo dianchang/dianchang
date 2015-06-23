@@ -448,7 +448,7 @@ def invite(uid, user_id):
 
         # FEED：插入到用户的撰写FEED中
         feed = ComposeFeed(kind=COMPOSE_FEED_KIND.INVITE_TO_ANSWER, invitation_id=invitation.id,
-                           user_id=user_id)
+                           user_id=user_id, question_id=uid)
         db.session.add(feed)
         db.session.commit()
 

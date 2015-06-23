@@ -27,7 +27,7 @@ def signin():
                 'result': False,
                 'email': form.email.errors[0] if len(form.email.errors) else "",
                 'password': form.password.errors[0] if len(form.password.errors) else "",
-                'referer': session['referer'] or url_for('site.index')
+                'referer': session.get('referer') or url_for('site.index')
             })
     else:
         session['referer'] = request.referrer or url_for('site.index')
