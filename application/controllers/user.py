@@ -123,7 +123,8 @@ def notifications():
 @UserPermission()
 def compose():
     """撰写"""
-    return render_template('user/compose.html')
+    feeds = g.user.compose_feeds
+    return render_template('user/compose.html', feeds=feeds)
 
 
 @bp.route('/drafts')

@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import render_expert_topic_in_compose_page %}
+{% from "macros/_user.html" import compose_drafts_page_header %}
 
 {% block page_title %}撰写{% endblock %}
 {% block page_content %}
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <h3 class="no-margin-top">可能适合你回答的问题</h3>
+                {{ compose_drafts_page_header() }}
 
                 {% for feed in g.user.compose_feeds %}
                     {% if feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}

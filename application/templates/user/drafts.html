@@ -1,28 +1,30 @@
 {% extends "layout.html" %}
+{% from "macros/_user.html" import compose_drafts_page_header %}
 
 {% block page_title %}Drafts{% endblock %}
 {% block page_content %}
     <div class="container">
-        <h1>我的草稿</h1>
+        <div class="row">
+            <div class="col-md-8">
+                {{ compose_drafts_page_header(active='drafts') }}
 
-        {% for draft in drafts %}
-            <div class="draft">
-                <a href="{{ url_for('question.view', uid=draft.question_id) }}">
-                    {{ draft.question.title }}
-                </a>
+                {% for draft in drafts %}
+                    <div class="draft">
+                        <a href="{{ url_for('question.view', uid=draft.question_id) }}">
+                            {{ draft.question.title }}</a>
 
-                <div>
-                    {{ draft.content|safe }}
-                </div>
-                <div class="meta">
-                    <a href="javascript: void(0)" class="btn-remove-draft" data-id="{{ draft.id }}">
-                        删除草稿</a>
-                    <a href="{{ url_for('question.view', uid=draft.question_id) }}#draft">编辑草稿</a>
-                <span title="{{ draft.created_at }}">
-                    {{ draft.created_at|timesince }}
-                </span>
-                </div>
+                        <div>{{ draft.content|safe }}</div>
+                        <div class="meta">
+                            <a href="javascript: void(0)" class="btn-remove-draft" data-id="{{ draft.id }}">
+                                删除草稿</a>
+                            <a href="{{ url_for('question.view', uid=draft.question_id) }}#draft">编辑草稿</a>
+                            <span title="{{ draft.created_at }}">
+                                {{ draft.created_at|timesince }}
+                            </span>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </div>
 {% endblock %}

@@ -330,6 +330,8 @@ def save_answer_draft(uid):
         db.session.commit()
     else:
         draft = AnswerDraft(user_id=g.user.id, question_id=uid, content=content)
+        g.user.drafts_count += 1
+        db.session.add(g.user)
         db.session.add(draft)
         db.session.commit()
     return json.dumps({'result': True})
@@ -360,9 +362,11 @@ def answer(uid):
     db.session.add(answer)
 
     # 删除草稿
-    draft = question.drafts.filter(AnswerDraft.user_id == g.user.id)
-    if draft.count():
-        map(db.session.delete, draft)
+    draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
+    if draft:
+        g.user.drafts_count -= 1
+        db.session.add(g.user)
+        db.session.delete(draft)
 
     db.session.commit()
     answer.save_to_es()

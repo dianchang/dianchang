@@ -261,7 +261,7 @@
     {% set topic = expert_topic.topic %}
 
     <div class="media expert-topic {% if not expert_topic.experience %}empty{% endif %}"
-            data-show-order="{{ expert_topic.show_order }}" data-id="{{ expert_topic.id }}">
+         data-show-order="{{ expert_topic.show_order }}" data-id="{{ expert_topic.id }}">
         <div class="media-left">
             <a href="{{ url_for('topic.view', uid=topic.id) }}">
                 <img src="{{ topic.avatar_url }}" alt=""/>

@@ -38,6 +38,7 @@ class User(db.Model):
     upvotes_count = db.Column(db.Integer, default=0)
     questions_count = db.Column(db.Integer, default=0)
     answers_count = db.Column(db.Integer, default=0)
+    drafts_count = db.Column(db.Integer, default=0)
 
     # 设置
 

@@ -378,3 +378,29 @@
     }
   }
 }
+
+// 撰写页和草稿页页头
+.dc-compose-drafts-page-header {
+  border-bottom: 1px solid @border-color;
+  margin-bottom: 30px;
+
+  a {
+    margin-bottom: -1px;
+    display: inline-block;
+    color: #999;
+    padding: 0 0 15px 0;
+    margin-right: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+
+    &.active {
+      color: #333;
+      border-bottom: 1px solid #333;
+    }
+  }
+
+  .drafts-count {
+    font-weight: normal;
+  }
+}

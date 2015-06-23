@@ -506,3 +506,16 @@
         {% endfor %}
     </div>
 {% endmacro %}
+
+
+{# 话题讨论页header #}
+{% macro compose_drafts_page_header(active="compose") %}
+    <div class="dc-compose-drafts-page-header no-margin-top clearfix">
+        <a href="{{ url_for('user.compose') }}"
+           class="{% if active == 'compose' %}active{% endif %}">
+            可能适合你回答的问题</a>
+        <a href="{{ url_for('user.drafts') }}"
+           class="{% if active == 'drafts' %}active{% endif %}">
+            草稿 <span class="drafts-count">{{ g.user.drafts_count }}</span></a>
+    </div>
+{% endmacro %}
