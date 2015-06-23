@@ -1,7 +1,63 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import render_expert_topic_in_compose_page %}
 {% from "macros/_user.html" import compose_drafts_page_header %}
-{% from "macros/_question.html" import render_question %}
+
+{% macro render_question(question, inviter=None, invited_at=None) %}
+    <div class="question">
+        {% if inviter %}
+            <div class="action text-light">
+                <a href="{{ inviter.profile_url }}">
+                    <img src="{{ inviter.avatar_url }}" alt="" class="img-circle"/>
+                </a> <a href="{{ inviter.profile_url }}" class="name">{{ inviter.name }}</a> 邀请你回答问题
+                <span class="divider">·</span>
+                <span class="time">{{ invited_at|timesince }}</span>
+            </div>
+        {% else %}
+            <div class="topics">
+                {% for topic in question.topics %}
+                    {% set topic = topic.topic %}
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-topic">
+                        {{ topic.name }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="title">
+            <a href="{{ url_for('question.view', uid=question.id) }}">{{ question.title }}</a>
+        </div>
+
+        <div class="desc">
+            {{ question.desc|safe }}
+        </div>
+
+        <div class="meta text-light">
+            {% if question.answers_count %}
+                {{ question.answers_count }} 个回答
+            {% else %}
+                还没有回答
+            {% endif %}
+
+            <span class="divider">·</span>
+
+            <span class="time">提问于 {{ question.created_at|timesince }}</span>
+        </div>
+
+        <div class="commands">
+            {% if not question.answered_by_user() %}
+                <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-light">
+                    写答案</a>
+
+                <a href="javascript: void(0)" class="btn btn-white">忽略</a>
+            {% endif %}
+
+            <a href="javascript: void(0)" {% if question.followed_by_user() %}followed{% endif %}>
+                <span class="for-non-followed">+ 关注问题</span>
+                <span class="for-followed">已关注</span>
+                <span class="followers-count">{{ question.followers_count }}</span>
+            </a>
+        </div>
+    </div>
+{% endmacro %}
 
 {% block page_title %}撰写{% endblock %}
 {% block page_content %}
@@ -12,13 +68,11 @@
 
                 {% for feed in g.user.compose_feeds %}
                     {% if feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER %}
-                        {{ render_question(feed.question, user=feed.question.user) }}
-                    {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}
-                        {{ render_question(feed.question, user=feed.question.user) }}
-                    {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ALL %}
-                        {{ render_question(feed.question, user=feed.question.user) }}
-                    {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ANSWERD_TOPIC %}
-                        {{ render_question(feed.question, user=feed.question.user) }}
+                        {{ render_question(feed.question, inviter=feed.invitation.user, invited_at=feed.created_at) }}
+                    {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC
+                            or feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ALL
+                            or feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ANSWERD_TOPIC %}
+                        {{ render_question(feed.question) }}
                     {% endif %}
                 {% endfor %}
             </div>

@@ -1,3 +1,36 @@
+.quesiton {
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #eaeaea;
+}
+.quesiton .action {
+  margin-bottom: 10px;
+}
+.quesiton .action img {
+  width: 20px;
+  height: 20px;
+}
+.quesiton .action .name {
+  color: #999;
+  margin-left: 5px;
+}
+.quesiton .title {
+  margin-bottom: 10px;
+}
+.quesiton .title a {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+.quesiton .meta {
+  margin-bottom: 16px;
+}
+.quesiton .meta .divider {
+  margin: 0 5px;
+}
+.quesiton .dc-question-follow-wap {
+  margin-right: 8px;
+}
 .expert-topics-outer-wap .add-expert-topic-wap {
   display: block;
 }
