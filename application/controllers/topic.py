@@ -392,6 +392,12 @@ def remove_expert(uid):
 @UserPermission()
 def add_expert(uid):
     """添加擅长话题"""
+    # 最多设置 8 个擅长话题
+    if g.user.expert_topics.count() == 8:
+        return json.dumps({
+            'result': False
+        })
+
     topic = Topic.query.get_or_404(uid)
     expert_topic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
                                                    UserTopicStatistic.user_id == g.user.id).first()
@@ -427,7 +433,8 @@ def add_expert(uid):
     macro = get_template_attribute("macros/_topic.html", "render_expert_topic_in_compose_page")
     return json.dumps({
         'result': True,
-        'html': macro(expert_topic)
+        'html': macro(expert_topic),
+        'full': g.user.expert_topics.count() == 8
     })
 
 

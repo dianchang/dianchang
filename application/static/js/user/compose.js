@@ -162,6 +162,7 @@ $topicInput.typeahead({
 // 通过选择 autocomplete 菜单项添加擅长话题
 $topicInput.on('typeahead:selected', function (e, topic) {
     var _this = $(this);
+    var $outerWap = $(this).parents('.expert-topics-outer-wap');
 
     $.ajax({
         url: urlFor('topic.add_expert', {uid: topic.id}),
@@ -170,9 +171,15 @@ $topicInput.on('typeahead:selected', function (e, topic) {
     }).done(function (response) {
         if (response.result) {
             $('.expert-topics').append(response.html);
+
+            if (response.full) {
+                $outerWap.addClass('full');
+                _this.parents('.add-expert-topic-wap').removeClass('edit');
+            } else {
+                $outerWap.removeClass('full');
+            }
         }
 
-        _this.parents('.add-expert-topic-wap').removeClass('edit');
         $topicInput.typeahead('val', '');
     });
 });

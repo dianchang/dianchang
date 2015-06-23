@@ -1,5 +1,24 @@
 @import "../utils";
 
+// 外层 wap
+.expert-topics-outer-wap {
+  .add-expert-topic-wap {
+    display: block;
+  }
+  .full-tip {
+    display: none;
+  }
+
+  &.full {
+    .add-expert-topic-wap {
+      display: none;
+    }
+    .full-tip {
+      display: block;
+    }
+  }
+}
+
 // 用户擅长话题
 .expert-topic {
   cursor: move;

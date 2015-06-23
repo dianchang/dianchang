@@ -26,24 +26,29 @@
             <div class="col-md-4">
                 <h3 class="no-margin-top">擅长话题</h3>
 
-                <div class="expert-topics">
-                    {% for expert_topic in g.user.expert_topics %}
-                        {{ render_expert_topic_in_compose_page(expert_topic) }}
-                    {% endfor %}
-                </div>
+                <div class="expert-topics-outer-wap {% if g.user.expert_topics.count() == 8 %}full{% endif %}">
+                    <div class="expert-topics">
+                        {% for expert_topic in g.user.expert_topics %}
+                            {{ render_expert_topic_in_compose_page(expert_topic) }}
+                        {% endfor %}
+                    </div>
 
-                <div class="add-expert-topic-wap">
-                    <a href="javascript: void(0)" class="btn-add-expert-topic" title="添加擅长话题" data-placement="right">
-                        <span class="fa fa-plus"></span>
-                    </a>
+                    <div class="add-expert-topic-wap">
+                        <a href="javascript: void(0)" class="btn-add-expert-topic" title="添加擅长话题"
+                           data-placement="right">
+                            <span class="fa fa-plus"></span>
+                        </a>
 
-                    <form class="form-wap">
-                        <input type="text" name="topic" class="form-control" placeholder="搜索话题，回车添加"/>
+                        <form class="form-wap">
+                            <input type="text" name="topic" class="form-control" placeholder="搜索话题，回车添加"/>
 
-                        <div class="commands">
-                            <button type="button" class="btn btn-sm btn-default btn-finish-expert-topic">完成</button>
-                        </div>
-                    </form>
+                            <div class="commands">
+                                <button type="button" class="btn btn-sm btn-default btn-finish-expert-topic">完成</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="text-light full-tip">最多设置 8 个擅长话题</div>
                 </div>
             </div>
         </div>
