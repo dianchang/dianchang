@@ -1,4 +1,5 @@
 .expert-topic {
+  cursor: move;
   margin-bottom: 18px;
   position: relative;
 }
@@ -9,14 +10,35 @@
   width: 40px;
   height: 40px;
 }
-.expert-topic .topic-name {
-  display: block;
+.expert-topic .name-wap {
+  margin-bottom: 3px;
+}
+.expert-topic .name-wap .topic-name {
   margin-bottom: 2px;
   font-weight: bold;
   color: #333;
 }
-.expert-topic .empty {
-  color: #cccccc;
+.expert-topic .experience-wap .btn-add-experience {
+  display: none;
+  color: #bbb;
+}
+.expert-topic .experience-wap .btn-add-experience:hover {
+  color: #999;
+}
+.expert-topic .experience-wap .experience {
+  display: inline-block;
+}
+.expert-topic .experience-wap .btn-edit-experience {
+  margin-left: 10px;
+  color: #999;
+  visibility: hidden;
+  display: inline-block;
+}
+.expert-topic .experience-wap .btn-edit-experience:hover {
+  color: #333;
+}
+.expert-topic .experience-wap:hover .btn-edit-experience {
+  visibility: visible;
 }
 .expert-topic .commands {
   visibility: hidden;
@@ -27,11 +49,38 @@
 .expert-topic .commands a {
   color: #999;
   display: inline-block;
-  margin-left: 5px;
 }
 .expert-topic .commands a:hover {
   color: #333;
 }
+.expert-topic .form-experience {
+  margin-top: 10px;
+  display: none;
+}
+.expert-topic .form-experience textarea {
+  resize: none;
+}
+.expert-topic .form-experience .buttons {
+  margin-top: 10px;
+}
+.expert-topic .form-experience .buttons .btn-submit-experience {
+  margin-left: 5px;
+}
 .expert-topic:hover .commands {
   visibility: visible;
+}
+.expert-topic.edit .form-experience {
+  display: block;
+}
+.expert-topic.edit .experience-wap {
+  display: none;
+}
+.expert-topic.empty .experience-wap .btn-add-experience {
+  display: inline-block;
+}
+.expert-topic.empty .experience-wap .experience {
+  display: none;
+}
+.expert-topic.empty .experience-wap .btn-edit-experience {
+  display: none;
 }

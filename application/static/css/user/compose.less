@@ -2,6 +2,7 @@
 
 // 用户擅长话题
 .expert-topic {
+  cursor: move;
   margin-bottom: 18px;
   position: relative;
 
@@ -14,15 +15,44 @@
     }
   }
 
-  .topic-name {
-    display: block;
-    margin-bottom: 2px;
-    font-weight: bold;
-    color: #333;
+  .name-wap {
+    margin-bottom: 3px;
+
+    .topic-name {
+      margin-bottom: 2px;
+      font-weight: bold;
+      color: #333;
+    }
   }
 
-  .empty {
-    color: #cccccc;
+  .experience-wap {
+    .btn-add-experience {
+      display: none;
+      color: #bbb;
+
+      &:hover {
+        color: #999;
+      }
+    }
+    .experience {
+      display: inline-block;
+    }
+    .btn-edit-experience {
+      margin-left: 10px;
+      color: #999;
+      visibility: hidden;
+      display: inline-block;
+
+      &:hover {
+        color: #333;
+      }
+    }
+
+    &:hover {
+      .btn-edit-experience {
+        visibility: visible;
+      }
+    }
   }
 
   .commands {
@@ -34,7 +64,6 @@
     a {
       color: #999;
       display: inline-block;
-      margin-left: 5px;
 
       &:hover {
         color: #333;
@@ -42,9 +71,47 @@
     }
   }
 
+  .form-experience {
+    margin-top: 10px;
+    display: none;
+
+    textarea {
+      resize: none;
+    }
+
+    .buttons {
+      margin-top: 10px;
+
+      .btn-submit-experience {
+        margin-left: 5px;
+      }
+    }
+  }
+
   &:hover {
     .commands {
       visibility: visible;
+    }
+  }
+
+  &.edit {
+    .form-experience {
+      display: block;
+    }
+    .experience-wap {
+      display: none;
+    }
+  }
+
+  &.empty .experience-wap {
+    .btn-add-experience {
+      display: inline-block;
+    }
+    .experience {
+      display: none;
+    }
+    .btn-edit-experience {
+      display: none;
     }
   }
 }

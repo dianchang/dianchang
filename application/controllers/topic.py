@@ -330,6 +330,8 @@ def update_experience(uid):
     """更新当前用户在该话题下的话题经验"""
     topic = Topic.query.get_or_404(uid)
     experience = request.form.get('experience', '')
+    from_compose = request.form.get('compose', type=int) == 1
+
     statistic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
                                                 UserTopicStatistic.user_id == g.user.id).first()
     if statistic:
@@ -337,6 +339,14 @@ def update_experience(uid):
     else:
         statistic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, experience=experience)
     db.session.add(statistic)
+
+    if not g.user.has_seleted_expert_topics:
+        for expert in g.user.expert_topics:
+            expert.selected = True
+            db.session.add(expert)
+        g.user.has_seleted_expert_topics = True
+        db.session.add(g.user)
+
     db.session.commit()
 
     return json.dumps({

@@ -476,6 +476,7 @@ form.answer-form .simditor .simditor-body {
 }
 #modal-edit-experience .topic-experience .experience-wap form textarea {
   margin-bottom: 10px;
+  resize: none;
 }
 #modal-edit-experience .topic-experience .experience-wap form .btn-submit-experience {
   margin-left: 8px;
