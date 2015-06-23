@@ -69,3 +69,17 @@ $('.btn-submit-experience').click(function () {
         }
     });
 });
+
+// 添加擅长话题
+$('.btn-add-expert-topic').tooltip().click(function () {
+    var $wap = $(this).parents('.add-expert-topic-wap');
+
+    $wap.addClass('edit');
+});
+
+// 取消添加擅长话题
+$('.btn-cancel-add-expert-topic').click(function () {
+    var $wap = $(this).parents('.add-expert-topic-wap');
+
+    $wap.removeClass('edit');
+});
