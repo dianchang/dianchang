@@ -1,35 +1,77 @@
-.quesiton {
-  margin-bottom: 22px;
-  padding-bottom: 22px;
+.question-wap {
   border-bottom: 1px solid #eaeaea;
+  transition: height 2s, background-color 0.2s;
 }
-.quesiton .action {
+.question-wap .question {
+  display: block;
+}
+.question-wap .ignore-tip {
+  display: none;
+}
+.question-wap.ignored {
+  background-color: #f5f6f5;
+  padding: 22px 20px;
+}
+.question-wap.ignored .question {
+  display: none;
+}
+.question-wap.ignored .ignore-tip {
+  display: block;
+}
+.ignore-tip {
+  position: relative;
+}
+.ignore-tip .divider {
+  margin: 0 5px;
+}
+.question {
+  padding: 22px 0;
+}
+.question .topics {
+  margin-bottom: 15px;
+}
+.question .action {
   margin-bottom: 10px;
 }
-.quesiton .action img {
+.question .action img {
   width: 20px;
   height: 20px;
 }
-.quesiton .action .name {
+.question .action .name {
   color: #999;
   margin-left: 5px;
 }
-.quesiton .title {
+.question .action .divider {
+  margin: 0 5px;
+}
+.question .title {
   margin-bottom: 10px;
 }
-.quesiton .title a {
+.question .title a {
   color: #333;
   font-size: 18px;
   font-weight: bold;
 }
-.quesiton .meta {
+.question .meta {
   margin-bottom: 16px;
 }
-.quesiton .meta .divider {
+.question .meta .divider {
   margin: 0 5px;
 }
-.quesiton .dc-question-follow-wap {
-  margin-right: 8px;
+.question .btn-ignore-feed {
+  margin: 0 15px 0 8px;
+}
+.question .btn-follow-question .for-non-followed {
+  display: inline;
+}
+.question .btn-follow-question .for-followed {
+  display: none;
+}
+.question .btn-follow-question.followed .for-non-followed {
+  display: none;
+}
+.question .btn-follow-question.followed .for-followed {
+  display: inline;
 }
 .expert-topics-outer-wap .add-expert-topic-wap {
   display: block;

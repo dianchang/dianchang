@@ -232,7 +232,7 @@ def follow(uid):
         question.followers_count -= 1
         db.session.add(question)
         db.session.commit()
-        return json.dumps({'result': True, 'followed': False, 'followers_count': question.followers.count()})
+        return json.dumps({'result': True, 'followed': False, 'followers_count': question.followers_count})
     else:
         # 关注
         follow_question = FollowQuestion(question_id=uid, user_id=g.user.id)
@@ -254,7 +254,7 @@ def follow(uid):
             db.session.add(follower.follower)
 
         db.session.commit()
-        return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers.count()})
+        return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers_count})
 
 
 @bp.route('/question/<int:uid>/logs')

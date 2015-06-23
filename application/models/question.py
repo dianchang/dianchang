@@ -185,6 +185,7 @@ class QuestionComment(db.Model):
 class InviteAnswer(db.Model):
     """邀请回答"""
     id = db.Column(db.Integer, primary_key=True)
+    ignore = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 被邀请者

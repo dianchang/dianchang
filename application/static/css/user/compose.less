@@ -1,10 +1,44 @@
 @import "../utils";
 
-// 问题
-.quesiton {
-  margin-bottom: 22px;
-  padding-bottom: 22px;
+.question-wap {
   border-bottom: 1px solid @border-color;
+  transition: height 2s, background-color 0.2s;
+
+  .question {
+    display: block;
+  }
+  .ignore-tip {
+    display: none;
+  }
+
+  &.ignored {
+    background-color: @background-gray;
+    padding: 22px 20px;
+
+    .question {
+      display: none;
+    }
+    .ignore-tip {
+      display: block;
+    }
+  }
+}
+
+.ignore-tip {
+  position: relative;
+
+  .divider {
+    margin: 0 5px;
+  }
+}
+
+// 问题
+.question {
+  padding: 22px 0;
+
+  .topics {
+    margin-bottom: 15px;
+  }
 
   .action {
     margin-bottom: 10px;
@@ -17,6 +51,10 @@
     .name {
       color: #999;
       margin-left: 5px;
+    }
+
+    .divider {
+      margin: 0 5px;
     }
   }
 
@@ -38,8 +76,26 @@
     }
   }
 
-  .dc-question-follow-wap {
-    margin-right: 8px;
+  .btn-ignore-feed {
+    margin: 0 15px 0 8px;
+  }
+
+  .btn-follow-question {
+    .for-non-followed {
+      display: inline;
+    }
+    .for-followed {
+      display: none;
+    }
+
+    &.followed {
+      .for-non-followed {
+        display: none;
+      }
+      .for-followed {
+        display: inline;
+      }
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 # coding: utf-8
 from flask import Blueprint, render_template, url_for, json, g, request
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
-    ReportUser, UserUpvoteStatistic
+    ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('user', __name__)
@@ -123,8 +123,42 @@ def notifications():
 @UserPermission()
 def compose():
     """撰写"""
-    feeds = g.user.compose_feeds
+    feeds = g.user.compose_feeds.filter(~ComposeFeed.ignore)
     return render_template('user/compose.html', feeds=feeds)
+
+
+@bp.route('/compose_feed/<int:uid>/ignore', methods=['POST'])
+@UserPermission()
+def ignore_compose_feed(uid):
+    """忽略邀请回答 & 推荐回答"""
+    feed = ComposeFeed.query.get_or_404(uid)
+    feed.ignore = True
+    db.session.add(feed)
+    if feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER:
+        invitation = InviteAnswer.query.get_or_404(feed.invitation_id)
+        invitation.ignore = True
+        db.session.add(invitation)
+    db.session.commit()
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/compose_feed/<int:uid>/recover', methods=['POST'])
+@UserPermission()
+def recover_compose_feed(uid):
+    """撤销对邀请回答 & 推荐回答的忽略"""
+    feed = ComposeFeed.query.get_or_404(uid)
+    feed.ignore = False
+    db.session.add(feed)
+    if feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER:
+        invitation = InviteAnswer.query.get_or_404(feed.invitation_id)
+        invitation.ignore = False
+        db.session.add(invitation)
+    db.session.commit()
+    return json.dumps({
+        'result': True
+    })
 
 
 @bp.route('/drafts')
