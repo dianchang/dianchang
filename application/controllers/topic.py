@@ -386,3 +386,46 @@ def remove_expert(uid):
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/topic/<int:uid>/add_expert', methods=['POST'])
+@UserPermission()
+def add_expert(uid):
+    """添加擅长话题"""
+    topic = Topic.query.get_or_404(uid)
+    expert_topic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
+                                                       UserTopicStatistic.user_id == g.user.id).first()
+    if not expert_topic:
+        expert_topic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, selected=True)
+        db.session.add(expert_topic)
+    else:
+        if expert_topic.selected:
+            return json.dumps({
+                'result': False
+            })
+        else:
+            expert_topic.selected = True
+
+    if not g.user.has_seleted_expert_topics:
+        g.user.has_seleted_expert_topics = True
+        db.session.add(g.user)
+        max_show_order_topic = 0
+        for index, expert_topic in enumerate(g.user.expert_topics):
+            expert_topic.show_order = index
+            expert_topic.selected = True
+            db.session.add(expert_topic)
+            max_show_order_topic = index
+        expert_topic.show_order = max_show_order_topic + 1
+        db.session.add(expert_topic)
+    else:
+        max_show_order_topic = g.user.expert_topics.from_self().order_by(UserTopicStatistic.show_order.desc()).first()
+        if max_show_order_topic:
+            expert_topic.show_order = max_show_order_topic.show_order + 1
+
+    db.session.commit()
+
+    macro = get_template_attribute("macros/_topic.html", "render_expert_topic_in_compose_page")
+    return json.dumps({
+        'result': True,
+        'html': macro(expert_topic)
+    })

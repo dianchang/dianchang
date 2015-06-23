@@ -107,6 +107,9 @@
 .add-expert-topic-wap .form-wap .commands .btn-submit-expert-topic {
   margin-left: 5px;
 }
+.add-expert-topic-wap .form-wap .twitter-typeahead {
+  width: 100%;
+}
 .add-expert-topic-wap.edit .btn-add-expert-topic {
   display: none;
 }

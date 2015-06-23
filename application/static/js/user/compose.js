@@ -1,5 +1,9 @@
+var timerForTopicTypeahead = null;
+var $expertTopics = $('.expert-topics');
+var $topicInput = $("input[name='topic']");
+
 // 去除擅长话题
-$('.btn-remove-topic').click(function () {
+$expertTopics.on('click', '.btn-remove-topic', function () {
     var id = $(this).data('id');
     var $topic = $(this).parents('.expert-topic');
 
@@ -15,7 +19,7 @@ $('.btn-remove-topic').click(function () {
 });
 
 // 添加话题经验
-$('.btn-add-experience').click(function () {
+$expertTopics.on('click', '.btn-add-experience', function () {
     var $expertTopicWap = $(this).parents('.expert-topic');
     var $textarea = $expertTopicWap.find('textarea');
 
@@ -24,7 +28,7 @@ $('.btn-add-experience').click(function () {
 });
 
 // 编辑话题经验
-$('.btn-edit-experience').click(function () {
+$expertTopics.on('click', '.btn-edit-experience', function () {
     var $expertTopicWap = $(this).parents('.expert-topic');
     var $experience = $expertTopicWap.find('.experience');
     var experience = $.trim($experience.text());
@@ -75,11 +79,71 @@ $('.btn-add-expert-topic').tooltip().click(function () {
     var $wap = $(this).parents('.add-expert-topic-wap');
 
     $wap.addClass('edit');
+    $topicInput.focus();
 });
 
 // 取消添加擅长话题
-$('.btn-cancel-add-expert-topic').click(function () {
+$('.btn-finish-expert-topic').click(function () {
     var $wap = $(this).parents('.add-expert-topic-wap');
 
     $wap.removeClass('edit');
+});
+
+// 拖拽排序
+var sortable = new Sortable($expertTopics[0], {
+    onEnd: function (evt) {
+        evt.oldIndex;
+        evt.newIndex;
+    }
+});
+
+// Topic input 启用 Typeahead 自动完成
+$topicInput.typeahead({
+    minLength: 1,
+    highlight: true,
+    hint: false
+}, {
+    displayKey: 'name',
+    source: function (q, cb) {
+        if (timerForTopicTypeahead) {
+            clearTimeout(timerForTopicTypeahead);
+        }
+
+        timerForTopicTypeahead = setTimeout(function () {
+            $.ajax({
+                url: urlFor('topic.query'),
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    q: q,
+                    ancestor_topic_id: g.topicId
+                }
+            }).done(function (matchs) {
+                cb(matchs);
+            });
+        }, 300);
+    },
+    templates: {
+        'suggestion': function (data) {
+            return '<p>' + data.name + '</p>';
+        }
+    }
+});
+
+// 通过选择 autocomplete 菜单项添加擅长话题
+$topicInput.on('typeahead:selected', function (e, topic) {
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('topic.add_expert', {uid: topic.id}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            $('.expert-topics').append(response.html);
+        }
+
+        _this.parents('.add-expert-topic-wap').removeClass('edit');
+        $topicInput.typeahead('val', '');
+    });
 });

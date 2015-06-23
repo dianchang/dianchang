@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_topic.html" import render_expert_topics %}
+{% from "macros/_topic.html" import render_expert_topic_in_compose_page %}
 
 {% block page_title %}撰写{% endblock %}
 {% block page_content %}
@@ -23,50 +23,11 @@
             <div class="col-md-4">
                 <h3 class="no-margin-top">擅长话题</h3>
 
-                {% for expert_topic in g.user.expert_topics %}
-                    {% set topic = expert_topic.topic %}
-
-                    <div class="media expert-topic {% if not expert_topic.experience %}empty{% endif %}">
-                        <div class="media-left">
-                            <a href="{{ url_for('topic.view', uid=topic.id) }}">
-                                <img src="{{ topic.avatar_url }}" alt=""/>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <div class="name-wap">
-                                <a href="{{ url_for('topic.view', uid=topic.id) }}"
-                                   class="topic-name">{{ topic.name }}</a>
-                            </div>
-
-                            <div class="experience-wap text-light">
-                                <span class="experience">{{ expert_topic.experience or "" }}</span>
-                                <a href="javascript: void(0)" class="btn-edit-experience" title="编辑话题经验">
-                                    <span class="fa fa-pencil"></span></a>
-                                <a class="btn-add-experience" href="javascript: void(0)">
-                                    + 添加话题经验</a>
-                            </div>
-
-                            <form action="" class="form-experience">
-                                <textarea name="experience" class="form-control" id="" rows=2></textarea>
-
-                                <div class="buttons text-right">
-                                    <a href="javascript: void(0)"
-                                       class="text-light btn-cancel-edit-experience">取消</a>
-                                    <a href="javascript: void(0)"
-                                       class="btn btn-default btn-submit-experience btn-sm"
-                                       data-topic-id="{{ topic.id }}">更新</a>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="commands">
-                            <a href="javascript: void(0)" class="btn-remove-topic" title="去除此话题"
-                               data-id="{{ expert_topic.id }}">
-                                <span class="fa fa-trash-o"></span>
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
+                <div class="expert-topics">
+                    {% for expert_topic in g.user.expert_topics %}
+                        {{ render_expert_topic_in_compose_page(expert_topic) }}
+                    {% endfor %}
+                </div>
 
                 <div class="add-expert-topic-wap">
                     <a href="javascript: void(0)" class="btn-add-expert-topic" title="添加擅长话题" data-placement="right">
@@ -77,8 +38,7 @@
                         <input type="text" name="topic" class="form-control" placeholder="搜索话题，回车添加"/>
 
                         <div class="commands">
-                            <a href="javascript: void(0)" class="text-light btn-cancel-add-expert-topic">取消</a>
-                            <button type="button" class="btn btn-sm btn-default btn-submit-expert-topic">完成</button>
+                            <button type="button" class="btn btn-sm btn-default btn-finish-expert-topic">完成</button>
                         </div>
                     </form>
                 </div>

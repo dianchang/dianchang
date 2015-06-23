@@ -1,6 +1,6 @@
 var timerForParentTopicTypeahead = null;
 var $parentTopicInput = $("input[name='parent-topic']");
-var timerForChildTopicTypeahead = null;
+var timerForTopicTypeahead = null;
 var $childTopicInput = $("input[name='child-topic']");
 var $synonymInput = $("input[name='synonym']");
 
@@ -66,11 +66,11 @@ $childTopicInput.typeahead({
 }, {
     displayKey: 'name',
     source: function (q, cb) {
-        if (timerForChildTopicTypeahead) {
-            clearTimeout(timerForChildTopicTypeahead);
+        if (timerForTopicTypeahead) {
+            clearTimeout(timerForTopicTypeahead);
         }
 
-        timerForChildTopicTypeahead = setTimeout(function () {
+        timerForTopicTypeahead = setTimeout(function () {
             $.ajax({
                 url: urlFor('topic.query'),
                 method: 'post',
