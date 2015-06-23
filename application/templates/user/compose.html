@@ -23,7 +23,41 @@
             <div class="col-md-4">
                 <h3 class="no-margin-top">擅长话题</h3>
 
-                {{ render_expert_topics(g.user.expert_topics) }}
+                {% for expert_topic in g.user.expert_topics %}
+                    {% set topic = expert_topic.topic %}
+
+                    <div class="media expert-topic">
+                        <div class="media-left">
+                            <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                                <img src="{{ topic.avatar_url }}" alt=""/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <div>
+                                <a href="{{ url_for('topic.view', uid=topic.id) }}"
+                                   class="topic-name">{{ topic.name }}</a>
+                            </div>
+                            <div class="experience text-light">
+                                {% if expert_topic.experience %}
+                                    {{ expert_topic.experience }}
+                                {% else %}
+                                    <span class="empty">暂无话题经验</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="commands">
+                            <a href="javascript: void(0)" class="btn-edit-experience" title="编辑话题经验">
+                                <span class="fa fa-edit"></span>
+                            </a>
+
+                            <a href="javascript: void(0)" class="btn-remove-topic" title="去除此话题"
+                               data-id="{{ expert_topic.id }}">
+                                <span class="fa fa-trash-o"></span>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>

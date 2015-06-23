@@ -1,0 +1,50 @@
+@import "../utils";
+
+// 用户擅长话题
+.expert-topic {
+  margin-bottom: 18px;
+  position: relative;
+
+  .media-left {
+    padding-right: 12px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .topic-name {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .empty {
+    color: #cccccc;
+  }
+
+  .commands {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    a {
+      color: #999;
+      display: inline-block;
+      margin-left: 5px;
+
+      &:hover {
+        color: #333;
+      }
+    }
+  }
+
+  &:hover {
+    .commands {
+      visibility: visible;
+    }
+  }
+}

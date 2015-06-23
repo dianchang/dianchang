@@ -355,3 +355,24 @@ def apply_for_deletion(uid):
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/topic/expert/<int:uid>/remove', methods=['POST'])
+@UserPermission()
+def remove_expert(uid):
+    """移除擅长话题"""
+    expert_topic = UserTopicStatistic.query.get_or_404(uid)
+    if not g.user.has_seleted_expert_topics:
+        for expert in g.user.expert_topics:
+            expert.selected = True
+            db.session.add(expert)
+        g.user.has_seleted_expert_topics = True
+        db.session.add(g.user)
+        db.session.commit()
+    expert_topic.selected = False
+    db.session.add(expert_topic)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })
