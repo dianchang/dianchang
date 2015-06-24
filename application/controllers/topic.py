@@ -240,7 +240,7 @@ def follow(uid):
     follow_topic = FollowTopic.query.filter(FollowTopic.topic_id == uid,
                                             FollowTopic.user_id == g.user.id).first()
     # 取消关注
-    if follow_topic.count():
+    if follow_topic:
         db.session.delete(follow_topic)
         topic.followers_count -= 1
         db.session.add(topic)
