@@ -32,10 +32,14 @@ def profile_with_url_token(url_token):
 def follow(uid):
     """关注 & 取消关注某用户"""
     user = User.query.get_or_404(uid)
-    follow_user = g.user.followings.filter(FollowUser.following_id == uid)
+    follow_user = g.user.followings.filter(FollowUser.following_id == uid).first()
     # 取消关注
-    if follow_user.count() > 0:
-        map(db.session.delete, follow_user)
+    if follow_user:
+        db.session.delete(follow_user)
+        g.user.followings_count -= 1
+        user.followers_count -= 1
+        db.session.add(g.user)
+        db.session.add(user)
         db.session.commit()
         return json.dumps({
             'result': True,
@@ -47,6 +51,11 @@ def follow(uid):
         if g.user.id != uid:
             follow_user = FollowUser(follower_id=g.user.id, following_id=uid)
             db.session.add(follow_user)
+
+            g.user.followings_count += 1
+            user.followers_count += 1
+            db.session.add(g.user)
+            db.session.add(user)
 
             # FEED: 插入被关注者的NOTI
             noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, sender_id=g.user.id)
