@@ -453,6 +453,13 @@ def update_show_order():
             'result': False
         })
 
+    # 若从未编辑过擅长话题，则首先赋予 show_order
+    if not g.user.has_seleted_expert_topics:
+        for index, expert_topic in enumerate(g.user.expert_topics):
+            expert_topic.show_order = index
+            expert_topic.selected = True
+            db.session.add(expert_topic)
+
     show_orders = json.loads(show_orders)
     for item in show_orders:
         id = item['id']
