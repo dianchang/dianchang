@@ -6,14 +6,15 @@ config = load_config()
 host_string = config.HOST_STRING
 
 
-def deploy():
+def deploy(upload_assets='yes'):
     """部署"""
     # 编译并上传静态文件
-    env.host_string = "localhost"
-    with cd('/var/www/dianchang'):
-        with prefix('source venv/bin/activate'):
-            local('python manage.py build')
-            local('python manage.py upload')
+    if upload_assets == 'yes':
+        env.host_string = "localhost"
+        with cd('/var/www/dianchang'):
+            with prefix('source venv/bin/activate'):
+                local('python manage.py build')
+                local('python manage.py upload')
     # 远程部署
     env.host_string = config.HOST_STRING
     with cd('/var/www/dianchang'):
