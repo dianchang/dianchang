@@ -118,10 +118,11 @@ def upvote(uid):
 def downvote(uid):
     """反对 & 取消反对"""
     answer = Answer.query.get_or_404(uid)
-    downvote_answer = answer.downvotes.filter(DownvoteAnswer.user_id == g.user.id)
+    downvote_answer = answer.downvotes.filter(DownvoteAnswer.user_id == g.user.id).first()
     # 取消反对
     if downvote_answer.count():
-        map(db.session.delete, downvote_answer)
+        db.session.delete(downvote_answer)
+        answer.downvotes_count -= 1
         answer.calculate_score()  # 更新回答分值
         db.session.add(answer)
         db.session.commit()
@@ -133,11 +134,13 @@ def downvote(uid):
     else:  # 反对
         downvote_answer = DownvoteAnswer(user_id=g.user.id)
         answer.downvotes.append(downvote_answer)
+        answer.downvotes_count += 1
 
         # 删除对该回答的赞同
         upvote_answer = answer.upvotes.filter(UpvoteAnswer.user_id == g.user.id).first()
         if upvote_answer:
             db.session.delete(upvote_answer)
+            answer.upvotes_count -= 1
             answer.user.upvotes_count -= 1
             db.session.add(answer.user)
 
