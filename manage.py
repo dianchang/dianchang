@@ -164,5 +164,34 @@ def pinyin():
         db.session.commit()
 
 
+@manager.command
+def uniform_count():
+    from application.models import db, User, Answer, Question, AnswerComment
+
+    for user in User.query:
+        user.followers_count = user.followers.count()
+        user.followings_count = user.followings.count()
+        user.questions_count = user.questions.count()
+        user.answers_count = user.answers.count()
+        user.drafts_count = user.drafts.count()
+        db.session.add(user)
+
+    for answer in Answer.query:
+        answer.comments_count = answer.comments.count()
+        answer.upvotes_count = answer.upvotes.count()
+        answer.downvotes_count = answer.downvotes.count()
+        answer.thanks_count = answer.thanks.count()
+        answer.nohelps_count = answer.nohelps.count()
+        db.session.add(answer)
+
+    for question in Question.query:
+        question.answers_count = question.answers.count()
+        question.followers_count = question.followers.count()
+        db.session.add(question)
+
+    for comment in AnswerComment.query:
+        comment.likes_count = comment.likes.count()
+        db.session.add(comment)
+
 if __name__ == "__main__":
     manager.run()
