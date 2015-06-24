@@ -110,6 +110,9 @@ def add():
                                           after_id=topic_id, user_id=g.user.id)
             question.logs.append(add_topic_log)
 
+    g.user.questions_count += 1
+    db.session.add(g.user)
+
     db.session.add(question)
     db.session.commit()
     question.save_to_es()
