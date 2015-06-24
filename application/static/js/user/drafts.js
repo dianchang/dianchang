@@ -9,7 +9,9 @@ $('.btn-remove-draft').click(function () {
         dataType: 'json'
     }).done(function (response) {
         if (response.result) {
-            $draftWap.detach();
+            $draftWap.hide('fast', function () {
+                $draftWap.detach();
+            });
         }
     });
 });

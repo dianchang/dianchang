@@ -213,6 +213,8 @@ def nohelp(uid):
 def remove_draft(uid):
     """移除草稿"""
     draft = AnswerDraft.query.get_or_404(uid)
+    g.user.drafts_count -= 1
+    db.session.add(g.user)
     db.session.delete(draft)
     db.session.commit()
     return json.dumps({'result': True})

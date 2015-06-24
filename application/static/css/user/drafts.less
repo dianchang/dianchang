@@ -1,0 +1,46 @@
+@import "../utils";
+
+.drafts {
+  margin-top: 20px;
+}
+
+.draft {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid @border-color;
+
+  .title {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .content {
+    font-size: 16px;
+    margin-bottom: 8px;
+
+    .preview {
+      display: block;
+    }
+
+    .full-content {
+      display: none;
+    }
+
+    .btn-continue-reading {
+      color: #999;
+    }
+  }
+
+  .time {
+    margin-bottom: 15px;
+  }
+
+  .commands {
+    .btn-remove-draft {
+      margin-left: 10px;
+    }
+  }
+}

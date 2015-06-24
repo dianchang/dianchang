@@ -368,8 +368,8 @@ class HomeFeed(db.Model):
 
 class COMPOSE_FEED_KIND(object):
     """撰写feed类型"""
-    WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC = "v0KJCX3"  # 我擅长的话题下的待回答问题
     INVITE_TO_ANSWER = "kdcKRfi"  # 别人邀请我回答的问题
+    WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC = "v0KJCX3"  # 我擅长的话题下的待回答问题
     WAITING_FOR_ANSWER_QUESTION_FROM_ALL = "4Q8wfm9"  # 全站热门的待回答问题
     WAITING_FOR_ANSWER_QUESTION_FROM_ANSWERD_TOPIC = "JlPzjXf"  # 我没有写进擅长话题，但我之前有过回答的话题下的热门待回答问题
 

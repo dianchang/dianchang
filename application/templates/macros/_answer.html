@@ -575,7 +575,7 @@
                 {% if answer.anonymous %}
                     <img src="{{ answer.user.anonymous_avatar_url }}" alt="" class="img-circle"/>
                 {% else %}
-                    <a href="{{ answer.user.avatar_url }}">
+                    <a href="{{ answer.user.profile_url }}">
                         <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
                     </a>
                 {% endif %}
