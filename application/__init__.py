@@ -17,7 +17,6 @@ from werkzeug.wsgi import SharedDataMiddleware
 from werkzeug.contrib.fixers import ProxyFix
 from six import iteritems
 from .utils.account import get_current_user
-from .utils.assets import register_assets
 from config import load_config
 
 # convert python's encoding to utf8
@@ -68,7 +67,6 @@ def create_app():
     register_db(app)
     register_routes(app)
     register_jinja(app)
-    register_assets(app)
     register_error_handle(app)
     register_uploadsets(app)
     register_hooks(app)
@@ -79,7 +77,7 @@ def create_app():
 
 def register_jinja(app):
     """Register jinja filters, vars, functions."""
-    from .utils import filters, permissions, helpers, assets
+    from .utils import filters, permissions, helpers
     from .models import QUESTION_EDIT_KIND, USER_FEED_KIND, NOTIFICATION_KIND, TOPIC_EDIT_KIND, HOME_FEED_KIND, \
         COMPOSE_FEED_KIND
 
