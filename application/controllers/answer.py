@@ -161,6 +161,8 @@ def thank(uid):
         answer.thanks.append(thank_answer)
         answer.calculate_score()  # 更新回答分值
         answer.thanks_count += 1
+        answer.user.thanks_count += 1
+        db.session.add(answer.user)
         db.session.add(answer)
 
         # FEED: 插入被感谢者的NOTI
