@@ -3,8 +3,6 @@ fis.config.set('project.exclude', ['static/bower_components/**', 'static/**.less
 fis.config.set('modules.postpackager', 'simple');
 fis.config.set('pack', {
     '/pkg/libs.js': [
-        'static/js/libs/*.js',
-        'static/js/init.js',
         '/static/js/libs/jquery.min.js',
         '/static/js/libs/typeahead.bundle.min.js',
         '/static/js/libs/bootstrap.min.js',
