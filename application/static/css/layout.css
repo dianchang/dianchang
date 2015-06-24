@@ -180,6 +180,7 @@ html {
   font-weight: bold;
   text-align: center;
   line-height: 1;
+  margin-left: -1px;
 }
 .navbar #nav-notification.on a {
   padding-top: 3px;
