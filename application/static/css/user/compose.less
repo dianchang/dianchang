@@ -1,6 +1,7 @@
 @import "../utils";
 
 .question-wap {
+  position: relative;
   border-bottom: 1px solid @border-color;
   transition: height 2s, background-color 0.2s;
 
@@ -20,6 +21,29 @@
     }
     .ignore-tip {
       display: block;
+    }
+  }
+
+  .new-flag {
+    position: absolute;
+    display: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    background-color: #999;
+    left: -18px;
+    top: 28px;
+  }
+
+  &.invited {
+    .new-flag {
+      display: block;
+    }
+
+    &.new {
+      .new-flag {
+        background-color: red;
+      }
     }
   }
 }
@@ -50,7 +74,7 @@
 
     .name {
       color: #999;
-      margin-left: 5px;
+      margin-left: 8px;
     }
 
     .divider {

@@ -99,6 +99,7 @@ def register_jinja(app):
         combined_args['page'] = page
         return url_for(request.endpoint, **combined_args)
 
+    # routes
     rules = {}
     for endpoint, _rules in iteritems(app.url_map._rules_by_endpoint):
         if any(item in endpoint for item in ['_debug_toolbar', 'debugtoolbar', 'static']):
@@ -168,6 +169,15 @@ def register_hooks(app):
         g.user = get_current_user()
         if g.user and g.user.is_admin:
             g._before_request_time = time.time()
+
+        if not g.user:
+            g.has_new_compose_feeds = False
+        else:
+            latest_compose_feed = g.user.compose_feeds.first()
+            if not latest_compose_feed:
+                g.has_new_compose_feeds = False
+            else:
+                g.has_new_compose_feeds = g.user.last_read_compose_feeds_at < latest_compose_feed.created_at
 
     @app.after_request
     def after_request(response):

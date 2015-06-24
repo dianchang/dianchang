@@ -34,6 +34,22 @@ html {
   color: #555;
   background-color: #e7e7e7;
 }
+#nav-compose {
+  position: relative;
+}
+#nav-compose .new-flag {
+  position: absolute;
+  display: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background-color: red;
+  right: 6px;
+  top: 10px;
+}
+#nav-compose.new .new-flag {
+  display: block;
+}
 .navbar {
   color: #D5DCE6;
   margin-bottom: 40px;

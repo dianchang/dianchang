@@ -88,8 +88,9 @@
             <li id="nav-index">
                 <a href="{{ url_for('site.index') }}">首页</a>
             </li>
-            <li id="nav-compose">
+            <li id="nav-compose" class="{% if g.has_new_compose_feeds %}new{% endif %}">
                 <a href="{{ url_for('user.compose') }}">撰写</a>
+                <span class="new-flag"></span>
             </li>
         </ul>
 

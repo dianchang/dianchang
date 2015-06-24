@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import datetime
 from flask import Blueprint, render_template, url_for, json, g, request
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
     ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer
@@ -133,7 +134,11 @@ def notifications():
 def compose():
     """撰写"""
     feeds = g.user.compose_feeds.filter(~ComposeFeed.ignore)
-    return render_template('user/compose.html', feeds=feeds)
+    last_read_compose_feeds_at = g.user.last_read_compose_feeds_at
+    g.user.last_read_compose_feeds_at = datetime.now()
+    db.session.add(g.user)
+    db.session.commit()
+    return render_template('user/compose.html', feeds=feeds, last_read_compose_feeds_at=last_read_compose_feeds_at)
 
 
 @bp.route('/compose_feed/<int:uid>/ignore', methods=['POST'])

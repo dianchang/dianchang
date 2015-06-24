@@ -25,6 +25,7 @@ class User(db.Model):
     organization = db.Column(db.String(100))
     position = db.Column(db.String(200))
     created_at = db.Column(db.DateTime, default=datetime.now)
+    last_read_compose_feeds_at = db.Column(db.DateTime, default=datetime.now)  # 最后读取撰写 FEED 的时间
 
     is_active = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)

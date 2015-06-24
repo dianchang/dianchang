@@ -2,7 +2,7 @@
 {% from "macros/_topic.html" import render_expert_topic_in_compose_page %}
 {% from "macros/_user.html" import compose_drafts_page_header %}
 
-{% macro render_compose_feed(feed) %}
+{% macro render_compose_feed(feed, last_read_compose_feeds_at) %}
     {% set question = feed.question %}
 
     {% if feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER %}
@@ -13,15 +13,16 @@
         {% set is_invited = False %}
     {% endif %}
 
-    <div class="question-wap">
+    <div class="question-wap {% if is_invited %}invited{% endif %} {% if feed.created_at > last_read_compose_feeds_at %}new{% endif %}">
+        <div class="new-flag"></div>
         <div class="question">
             {% if is_invited %}
                 {% set inviter = feed.invitation.user %}
 
                 <div class="action text-light">
                     <a href="{{ inviter.profile_url }}">
-                        <img src="{{ inviter.avatar_url }}" alt="" class="img-circle"/>
-                    </a> <a href="{{ inviter.profile_url }}" class="name">{{ inviter.name }}</a> 邀请你回答问题
+                        <img src="{{ inviter.avatar_url }}" alt="" class="img-circle"/></a><a
+                        href="{{ inviter.profile_url }}" class="name">{{ inviter.name }}</a> 邀请你回答问题
                     <span class="divider">·</span>
                     <span class="time">{{ feed.created_at|timesince }}</span>
                 </div>
@@ -97,7 +98,7 @@
                 {{ compose_drafts_page_header() }}
 
                 {% for feed in feeds %}
-                    {{ render_compose_feed(feed) }}
+                    {{ render_compose_feed(feed, last_read_compose_feeds_at) }}
                 {% endfor %}
             </div>
 

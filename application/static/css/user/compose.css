@@ -1,4 +1,5 @@
 .question-wap {
+  position: relative;
   border-bottom: 1px solid #eaeaea;
   transition: height 2s, background-color 0.2s;
 }
@@ -17,6 +18,22 @@
 }
 .question-wap.ignored .ignore-tip {
   display: block;
+}
+.question-wap .new-flag {
+  position: absolute;
+  display: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background-color: #999;
+  left: -18px;
+  top: 28px;
+}
+.question-wap.invited .new-flag {
+  display: block;
+}
+.question-wap.invited.new .new-flag {
+  background-color: red;
 }
 .ignore-tip {
   position: relative;
@@ -39,7 +56,7 @@
 }
 .question .action .name {
   color: #999;
-  margin-left: 5px;
+  margin-left: 8px;
 }
 .question .action .divider {
   margin: 0 5px;

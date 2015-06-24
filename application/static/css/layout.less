@@ -47,6 +47,27 @@ html {
   }
 }
 
+#nav-compose {
+  position: relative;
+
+  .new-flag {
+    position: absolute;
+    display: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    background-color: red;
+    right: 6px;
+    top: 10px;
+  }
+
+  &.new {
+    .new-flag {
+      display: block;
+    }
+  }
+}
+
 .navbar {
   color: #D5DCE6;
   margin-bottom: 40px;
