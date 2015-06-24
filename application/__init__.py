@@ -69,8 +69,8 @@ def create_app():
 
     # Register components
     register_db(app)
-    register_jinja(app)
     register_routes(app)
+    register_jinja(app)
     register_error_handle(app)
     register_uploadsets(app)
     register_hooks(app)
