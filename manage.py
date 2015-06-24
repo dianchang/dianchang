@@ -193,5 +193,7 @@ def uniform_count():
         comment.likes_count = comment.likes.count()
         db.session.add(comment)
 
+    db.session.commit()
+
 if __name__ == "__main__":
     manager.run()
