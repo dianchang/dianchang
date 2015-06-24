@@ -53,9 +53,8 @@ class Answer(db.Model):
 
     def calculate_score(self):
         """回答分值，体现该回答的精彩程度"""
-        # TODO: need to use original fields
-        self.score = self.upvotes.count() + self.thanks.count() + self.comments.count() \
-                     - self.downvotes.count() - self.nohelps.count()
+        self.score = self.upvotes_count + self.thanks_count + self.comments_count \
+                     - self.downvotes_count - self.nohelps_count
 
     def upvoted_by_user(self):
         """该回答被当前用户赞同"""
@@ -225,6 +224,8 @@ class AnswerComment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    likes_count = db.Column(db.Integer, default=0)
 
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
     answer = db.relationship('Answer', backref=db.backref('comments',

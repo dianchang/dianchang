@@ -45,11 +45,10 @@ def upvote(uid):
 
         db.session.commit()
 
-        # TODO: need to change to answer.upvotes_count
         return json.dumps({
             'result': True,
             'upvoted': False,
-            'count': answer.upvotes.count()
+            'count': answer.upvotes_count
         })
     else:  # 赞同
         upvote_answer = UpvoteAnswer(user_id=g.user.id)
@@ -105,11 +104,10 @@ def upvote(uid):
 
         db.session.commit()
 
-        # TODO: need to change to answer.upvotes_count
         return json.dumps({
             'result': True,
             'upvoted': True,
-            'count': answer.upvotes.count()
+            'count': answer.upvotes_count
         })
 
 
@@ -235,20 +233,22 @@ def remove_draft(uid):
 def like_comment(uid):
     """赞评论"""
     comment = AnswerComment.query.get_or_404(uid)
-    like = comment.likes.filter(LikeAnswerComment.user_id == g.user.id)
-    if like.count():  # 取消赞
-        map(db.session.delete, like)
+    like = comment.likes.filter(LikeAnswerComment.user_id == g.user.id).first()
+    if like:  # 取消赞
+        db.session.delete(like)
+        comment.likes_count -= 1
+        db.session.add(comment)
         db.session.commit()
-        # TODO: neet to use comment.likes_count
         return json.dumps({
             'result': True,
             'liked': False,
-            'count': comment.likes.count()
+            'count': comment.likes_count
         })
     else:
         # 赞评论
         like = LikeAnswerComment(user_id=g.user.id)
         comment.likes.append(like)
+        comment.likes_count += 1
         db.session.add(comment)
 
         # FEED: 插入被赞者的NOTI
@@ -260,11 +260,10 @@ def like_comment(uid):
 
         db.session.commit()
 
-        # TODO: neet to use comment.likes_count
         return json.dumps({
             'result': True,
             'liked': True,
-            'count': comment.likes.count()
+            'count': comment.likes_count
         })
 
 

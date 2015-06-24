@@ -235,8 +235,7 @@ class Topic(db.Model):
         """子孙话题id列表"""
         descendant_topics_id_list = db.session.query(TopicClosure.descendant_id). \
             filter(TopicClosure.ancestor_id == self.id,
-                   TopicClosure.descendant_id != self.id). \
-            all()
+                   TopicClosure.descendant_id != self.id).all()
         return [item.descendant_id for item in descendant_topics_id_list]
 
     @property

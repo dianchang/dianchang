@@ -26,12 +26,12 @@
                        data-root-id="{{ comment.root_id or comment.id }}">回复</a>
                     <span class="like-comment-wap
                         {% if comment.liked_by_user() %}liked{% endif %}
-                        {% if comment.likes.count() == 0 %}zero{% endif %}">
+                        {% if comment.likes_count == 0 %}zero{% endif %}">
                         <a href="javascript: void(0)" data-id="{{ comment.id }}"
                            class="btn-like-comment">
                             <span class="for-zero">赞同</span>
                             <span class="for-nonzero">
-                                <span class="likes-count">{{ comment.likes.count() }}</span> 赞
+                                <span class="likes-count">{{ comment.likes_count }}</span> 赞
                             </span>
                         </a>
                     </span>

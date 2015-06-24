@@ -28,7 +28,7 @@
         <a href="javascript: void(0)" class="btn-follow-topic">
             <span class="for-follow">关注话题</span><span class="for-unfollow">不再关注</span></a>
         <span class="divider">|</span>
-        <span class="followers-count">{{ topic.followers.count() }}</span>
+        <span class="followers-count">{{ topic.followers_count }}</span>
     </div>
 
     <script>
@@ -217,7 +217,7 @@
                         </a>
 
                         <div class="text-light">
-                            <strong>{{ child_topic.followers.count() }}</strong> 人关注
+                            <strong>{{ child_topic.followers_count }}</strong> 人关注
                         </div>
                     </div>
                 </div>

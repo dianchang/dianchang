@@ -23,9 +23,8 @@
         {% if followed %}followed{% endif %}" data-id="{{ question.id }}">
         <span class="for-follow">关注问题</span><span class="for-unfollow">不再关注</span>
         <span class="divider">|</span>
-        <span class="followers-count">{{ question.followers.count() }}</span>
+        <span class="followers-count">{{ question.followers_count }}</span>
     </div>
-
     <script>
         $('.dc-question-follow-wap').onOnce('click', function () {
             var questionId = $(this).data('id');
