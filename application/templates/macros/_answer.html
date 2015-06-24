@@ -324,8 +324,9 @@
 
     <script>
         var $answerCommands = $('.dc-answer-commands');
+
         // 赞同回答
-        $answerCommands.onOnce('click', '.dc-answer-commands .upvote-wap', function () {
+        $answerCommands.onOnce('click', '.upvote-wap', function () {
             var id = parseInt($(this).data('id'));
             var $voteWap = $(this).parents('.vote-wap').first();
             var answerer_id = parseInt($(this).data('user-id'));
@@ -374,7 +375,7 @@
         });
 
         // 反对回答
-        $answerCommands.onOnce('click', '.dc-answer-commands .btn-downvote-answer', function () {
+        $answerCommands.onOnce('click', '.btn-downvote-answer', function () {
             var id = parseInt($(this).data('id'));
             var $voteWap = $(this).parents('.vote-wap').first();
             var $upvoteWap = $voteWap.find('.upvote-wap');
@@ -448,7 +449,7 @@
         {% endif %}
 
         // 感谢回答
-        $answerCommands.onOnce('click', '.dc-answer-commands .btn-thank-answer', function () {
+        $answerCommands.onOnce('click', '.btn-thank-answer', function () {
             var id = parseInt($(this).data('id'));
             var thanked = $(this).hasClass('thanked');
             var answerer_id = parseInt($(this).data('user-id'));
@@ -477,7 +478,7 @@
         });
 
         // 没有帮助
-        $answerCommands.onOnce('click', '.dc-answer-commands .btn-nohelp-answer', function () {
+        $answerCommands.onOnce('click', '.btn-nohelp-answer', function () {
             var id = parseInt($(this).data('id'));
             var answerer_id = parseInt($(this).data('user-id'));
             var _this = $(this);
