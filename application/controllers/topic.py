@@ -237,16 +237,22 @@ def get_by_name(name):
 def follow(uid):
     """关注 & 取消关注话题"""
     topic = Topic.query.get_or_404(uid)
-    follow_topic = FollowTopic.query.filter(FollowTopic.topic_id == uid, FollowTopic.user_id == g.user.id)
+    follow_topic = FollowTopic.query.filter(FollowTopic.topic_id == uid,
+                                            FollowTopic.user_id == g.user.id).first()
     # 取消关注
     if follow_topic.count():
-        map(db.session.delete, follow_topic)
+        db.session.delete(follow_topic)
+        topic.followers_count -= 1
+        db.session.add(topic)
         db.session.commit()
         return json.dumps({'result': True, 'followed': False, 'followers_count': topic.followers.count()})
     else:
         # 关注
         follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
         db.session.add(follow_topic)
+
+        topic.followers_count += 1
+        db.session.add(topic)
 
         # FEED: 插入本人的用户FEED
         feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, topic_id=uid)
