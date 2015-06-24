@@ -1,5 +1,6 @@
 # coding: utf-8
 import glob2
+import os
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from application import create_app
@@ -71,6 +72,33 @@ def salt():
     from werkzeug.security import gen_salt
 
     print(gen_salt(7))
+
+
+@manager.command
+def upload():
+    """上传静态资源到CDN"""
+    from application.utils._qiniu import qiniu
+
+    for root, _, files in os.walk(os.path.join(os.getcwd(), 'output/pkg')):
+        for f in files:
+            absolute_path = os.path.join(root, f)
+            relative_path = absolute_path.split(os.path.join(os.getcwd(), 'output'))[1].lstrip('/')
+            qiniu.upload_file(relative_path, absolute_path)
+            print("%s - uploaded" % relative_path)
+
+    for root, _, files in os.walk(os.path.join(os.getcwd(), 'output/static')):
+        for f in files:
+            absolute_path = os.path.join(root, f)
+            relative_path = absolute_path.split(os.path.join(os.getcwd(), 'output'))[1].lstrip('/')
+            qiniu.upload_file(relative_path, absolute_path)
+            print("%s - uploaded" % relative_path)
+
+
+@manager.command
+def build():
+    """使用 FIS 编译静态资源"""
+    os.chdir('application')
+    os.system(' fis release -d ../output -opm --domains')
 
 
 @manager.command

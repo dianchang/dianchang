@@ -31,9 +31,13 @@ except (AttributeError, NameError):
 
 def create_app():
     """Create Flask app."""
-    app = Flask(__name__)
-
     config = load_config()
+
+    if config.DEBUG or config.TESTING:
+        app = Flask(__name__)
+    else:
+        app = Flask(__name__, template_folder=os.path.join(project_path, 'output/templates'))
+
     app.config.from_object(config)
 
     if not hasattr(app, 'production'):
@@ -65,8 +69,8 @@ def create_app():
 
     # Register components
     register_db(app)
-    register_routes(app)
     register_jinja(app)
+    register_routes(app)
     register_error_handle(app)
     register_uploadsets(app)
     register_hooks(app)
