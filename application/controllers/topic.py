@@ -455,6 +455,9 @@ def update_show_order():
 
     # 若从未编辑过擅长话题，则首先赋予 show_order
     if not g.user.has_seleted_expert_topics:
+        g.user.has_seleted_expert_topics = True
+        db.session.add(g.user)
+        
         for index, expert_topic in enumerate(g.user.expert_topics):
             expert_topic.show_order = index
             expert_topic.selected = True
