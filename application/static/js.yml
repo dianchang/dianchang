@@ -12,8 +12,8 @@ libs:
   - bower_components/jquery.scrollTo/jquery.scrollTo.min.js
   - libs/jquery.animate-colors-min.js
   - bower_components/jquery-form/jquery.form.js
-  - js/init.js
   - bower_components/Sortable/Sortable.min.js
+  - js/init.js
 
 layout:
   - js/layout.js

@@ -381,7 +381,7 @@ if (!g.answered) {
         }
     });
 
-    if (window.location.hash === "#answer") {
+    if (window.location.hash === "#answer" || window.location.hash === "#draft") {
         answerEditor.focus();
     }
 
