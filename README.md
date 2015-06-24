@@ -7,6 +7,13 @@ http://119.254.102.136
 
 ## 开发
 
+Install `fis`:
+
+```
+npm install -g fis
+npm install -g fis-postpackager-simple
+```
+
 Install `Flask-Boost` via:
 
 ```
