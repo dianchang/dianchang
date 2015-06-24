@@ -135,8 +135,11 @@ def downvote(uid):
         answer.downvotes.append(downvote_answer)
 
         # 删除对该回答的赞同
-        upvote_answer = answer.upvotes.filter(UpvoteAnswer.user_id == g.user.id)
-        map(db.session.delete, upvote_answer)
+        upvote_answer = answer.upvotes.filter(UpvoteAnswer.user_id == g.user.id).first()
+        if upvote_answer:
+            db.session.delete(upvote_answer)
+            answer.user.upvotes_count -= 1
+            db.session.add(answer.user)
 
         answer.calculate_score()  # 更新回答分值
         db.session.add(answer)
