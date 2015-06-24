@@ -2,6 +2,10 @@
 {% from "macros/_user.html" import user_page_header %}
 
 {% block page_title %}成就 - {{ user.name }}{% endblock %}
+{% block page_js %}
+    <script src="/static/js/user/achievements.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/user/achievements.css"/>{% endblock %}
 {% block page_content %}
     {{ user_page_header(user, active='achievements') }}
 

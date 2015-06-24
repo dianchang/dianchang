@@ -4,15 +4,16 @@
 {% from "macros/_answer.html" import render_answer_in_question %}
 
 {% block page_title %}{{ question.title }}{% endblock %}
-{% block page_vars %}
-    <script type="text/javascript">
+{% block page_js %}
+    <script>
         registerContext({
             questionId: {{ question.id }},
             answered: {% if answered %}true{% else %}false{% endif %}
         });
     </script>
-{% endblock %}
-
+    <script src="/static/js/question/view.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/question/view.css"/>{% endblock %}
 {% block page_content %}
     <div class="question-header">
         <div class="container">

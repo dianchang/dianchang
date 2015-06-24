@@ -3,13 +3,15 @@
 {% from "macros/_user.html" import user_follow_wap %}
 
 {% block page_title %}回答{% endblock %}
-{% block page_vars %}
+{% block page_js %}
     <script>
         registerContext({
             answerId: {{ answer.id }}
         });
     </script>
-{% endblock %}
+    <script src="/static/js/answer/view.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/answer/view.css"/>{% endblock %}
 {% block page_content %}
     <div class="question">
         <a href="{{ url_for('site.index') }}" class="logo link-no-underline">电</a>

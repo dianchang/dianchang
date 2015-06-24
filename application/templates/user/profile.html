@@ -3,6 +3,10 @@
 {% from "macros/_user.html" import user_page_header, user_follow_wap, render_home_feeds %}
 
 {% block page_title %}{{ user.name }}{% endblock %}
+{% block page_js %}
+    <script src="/static/js/user/profile.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/user/profile.css"/>{% endblock %}
 {% block page_content %}
     {{ user_page_header(user, preview=preview) }}
 

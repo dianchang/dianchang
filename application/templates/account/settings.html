@@ -3,6 +3,10 @@
 {% from "macros/_account.html" import settings_page_header %}
 
 {% block page_title %}账号和密码 - 设置{% endblock %}
+{% block page_js %}
+    <script src="/static/js/account/settings.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/account/settings.css"/>{% endblock %}
 {% block page_content %}
     {{ settings_page_header() }}
 

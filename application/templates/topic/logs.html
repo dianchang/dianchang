@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 
 {% block page_title %}日志 - 话题「{{ topic.name }}」{% endblock %}
+{% block page_js %}
+    <script src="/static/js/topic/logs.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/topic/logs.css"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         <div class="row">

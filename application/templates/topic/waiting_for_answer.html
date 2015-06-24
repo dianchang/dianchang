@@ -5,6 +5,10 @@
 {% from "macros/_question.html" import render_questions %}
 
 {% block page_title %}等待回答 - 话题「{{ topic.name }}」{% endblock %}
+{% block page_js %}
+    <script src="/static/js/topic/waiting_for_answer.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/topic/waiting_for_answer.css"/>{% endblock %}
 {% block page_content %}
     {{ topic_page_header(topic) }}
 

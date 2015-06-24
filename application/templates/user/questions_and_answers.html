@@ -4,6 +4,10 @@
 
 
 {% block page_title %}问答 - {{ user.name }}{% endblock %}
+{% block page_js %}
+    <script src="/static/js/user/questions_and_answers.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/user/questions_and_answers.css"/>{% endblock %}
 {% block page_content %}
     {{ user_page_header(user, active='questions_and_answers') }}
 

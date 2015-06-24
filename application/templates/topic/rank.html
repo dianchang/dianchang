@@ -4,6 +4,10 @@
 {% from "macros/_user.html" import user_follow_wap %}
 
 {% block page_title %}话题「{{ topic.name }}」榜单{% endblock %}
+{% block page_js %}
+    <script src="/static/js/topic/rank.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/topic/rank.css"/>{% endblock %}
 {% block page_content %}
     {{ topic_page_header(topic, active='rank') }}
 

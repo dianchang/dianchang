@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
 
 {% block page_title %}关于{% endblock %}
+{% block page_js %}
+    <script src="/static/js/site/about.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/site/about.css"/>{% endblock %}
 {% block page_content %}
-   <div class="container">
-      <h1>About</h1>
-   </div>
+    <div class="container">
+        <h3 class="no-margin-top">About</h3>
+    </div>
 {% endblock %}

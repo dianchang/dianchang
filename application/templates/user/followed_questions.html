@@ -3,6 +3,10 @@
 {% from "macros/_utils.html" import pagination %}
 
 {% block page_title %}我关注的问题{% endblock %}
+{% block page_js %}
+    <script src="/static/js/user/followed_questions.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/user/followed_questions.css"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         <h3>关注的问题</h3>

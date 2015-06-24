@@ -2,6 +2,10 @@
 {% from "macros/_account.html" import signin_signup_forgot_pwd_wap %}
 
 {% block page_title %}登录{% endblock %}
+{% block page_js %}
+    <script src="/static/js/account/signin.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/account/signin.css"/>{% endblock %}
 {% block page_content %}
     {{ signin_signup_forgot_pwd_wap() }}
 {% endblock %}

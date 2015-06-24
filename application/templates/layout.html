@@ -9,8 +9,23 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     {% block meta %}{% endblock %}
     <link rel="Shortcut Icon" href="{{ static('image/favicon.png') }}">
-    {{ libs_css() }}
-    {{ app_css(self) }}
+    {# CSS libs #}
+    <link rel="stylesheet" href="/static/css/libs/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/css/libs/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/libs/simditor.css"/>
+    <link rel="stylesheet" href="/static/css/libs/simditor-markdown.css"/>
+    {# CSS layout #}
+    <link rel="stylesheet" href="/static/css/bootstrap.theme.css"/>
+    <link rel="stylesheet" href="/static/css/common.css"/>
+    <link rel="stylesheet" href="/static/css/macros/_account.css"/>
+    <link rel="stylesheet" href="/static/css/macros/_answer.css"/>
+    <link rel="stylesheet" href="/static/css/macros/_question.css"/>
+    <link rel="stylesheet" href="/static/css/macros/_topic.css"/>
+    <link rel="stylesheet" href="/static/css/macros/_user.css"/>
+    <link rel="stylesheet" href="/static/css/layout.css"/>
+    {# CSS page #}
+    {% block page_css %}{% endblock %}
+    {# JS global vars #}
     <script type="text/javascript">
         var g = {
             domain: "{{ config.SITE_DOMAIN }}",
@@ -21,7 +36,22 @@
             userId: {% if g.user %}{{ g.user.id }}{% else %}false{% endif %}
         };
     </script>
-    {{ libs_js() }}
+    {# JS libs #}
+    <script src="/static/js/libs/jquery.min.js"></script>
+    <script src="/static/js/libs/typeahead.bundle.min.js"></script>
+    <script src="/static/js/libs/bootstrap.min.js"></script>
+    <script src="/static/js/libs/module.js"></script>
+    <script src="/static/js/libs/hotkeys.js"></script>
+    <script src="/static/js/libs/uploader.js"></script>
+    <script src="/static/js/libs/simditor.js"></script>
+    <script src="/static/js/libs/marked.min.js"></script>
+    <script src="/static/js/libs/to-markdown.js"></script>
+    <script src="/static/js/libs/simditor-markdown.js"></script>
+    <script src="/static/js/libs/jquery.scrollTo.min.js"></script>
+    <script src="/static/js/libs/jquery.form.js"></script>
+    <script src="/static/js/libs/Sortable.min.js"></script>
+    <script src="/static/js/libs/jquery.animate-colors-min.js"></script>
+    <script src="/static/js/init.js"></script>
 </head>
 <body>
 
@@ -185,11 +215,11 @@
     <span class="btn-close-bg">x</span>
 </div>
 
-{# Inject vars on g for single page #}
-{% block page_vars %}{% endblock %}
+{# JS layout #}
+<script src="/static/js/layout.js"></script>
 
-{# Layout js and page js #}
-{{ app_js(self) }}
+{# JS page #}
+{% block page_js %}{% endblock %}
 
 {# Access analysis #}
 {# TODO #}

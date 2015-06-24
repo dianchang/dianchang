@@ -3,6 +3,10 @@
 {% from "macros/_answer.html" import render_answers %}
 
 {% block page_title %}回答 - {{ user.name }}{% endblock %}
+{% block page_js %}
+    <script src="/static/js/user/answers.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/user/answers.css"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ user_page_header(user, active='answers') }}

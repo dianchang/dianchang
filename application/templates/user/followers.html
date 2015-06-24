@@ -2,6 +2,10 @@
 {% from "macros/_user.html" import user_page_header %}
 
 {% block page_title %}关注者 - {{ user.name }}{% endblock %}
+{% block page_js %}
+    <script src="/static/js/user/followers.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/user/followers.css"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ user_page_header(user, active='followers') }}

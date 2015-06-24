@@ -2,6 +2,10 @@
 {% from "macros/_account.html" import settings_page_header, btn_group_switch %}
 
 {% block page_title %}隐私 - 设置{% endblock %}
+{% block page_js %}
+    <script src="/static/js/account/privacy_settings.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/account/privacy_settings.css"/>{% endblock %}
 {% block page_content %}
     {{ settings_page_header(active='privacy-settings') }}
 

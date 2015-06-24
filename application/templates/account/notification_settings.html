@@ -2,6 +2,10 @@
 {% from "macros/_account.html" import settings_page_header, btn_group_switch %}
 
 {% block page_title %}消息和邮件 - 设置{% endblock %}
+{% block page_js %}
+    <script src="/static/js/account/notification_settings.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/account/notification_settings.css"/>{% endblock %}
 {% block page_content %}
     {{ settings_page_header(active='notification-settings') }}
 
