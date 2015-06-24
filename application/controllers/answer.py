@@ -196,6 +196,7 @@ def nohelp(uid):
     if nohelp_answer.count():
         map(db.session.delete, nohelp_answer)
         answer.calculate_score()  # 更新回答分值
+        answer.nohelps_count -= 1
         db.session.add(answer)
         db.session.commit()
 
@@ -207,6 +208,7 @@ def nohelp(uid):
         nohelp_answer = NohelpAnswer(user_id=g.user.id)
         answer.nohelps.append(nohelp_answer)
         answer.calculate_score()  # 更新回答分值
+        answer.nohelps_count += 1
         db.session.add(answer)
         db.session.commit()
 
