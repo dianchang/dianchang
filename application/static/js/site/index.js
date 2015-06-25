@@ -1,12 +1,34 @@
-$accountWap = $('.dc-signin-signup-forgot-pwd-wap');
+var $accountWap = $('.dc-signin-signup-forgot-pwd-wap');
+
+adjustWidth();
+
+$(window).resize(function () {
+    adjustWidth();
+});
 
 // 切换到登录框
 $('.btn-go-to-signin-signup').click(function () {
     $accountWap.css({
         'left': '-280px'
     }).show().animate({
-        'left': '0'
+        'left': '30px'
     }, 180, function () {
         $('.logo-wap').hide();
     });
 });
+
+/**
+ * 调整 leftWap 和 rightWap 的宽度
+ */
+function adjustWidth() {
+    var $leftWap = $('.left-wap');
+    var $rightWap = $('.right-wap');
+
+    if ($(window).width() > 1020) {
+        $leftWap.css('width', $(window).width() / 2.0 - 170);
+        $rightWap.css('width', $(window).width() / 2.0 + 170)
+    } else {
+        $leftWap.css('width', $(window).width() / 3.0);
+        $rightWap.css('width', $(window).width() * 2 / 3.0);
+    }
+}

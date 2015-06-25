@@ -145,12 +145,20 @@
      * @param tip
      */
     function showTip($element, tip) {
+        var placement;
+
+        if (typeof $element.attr('data-placement') === 'undefined') {
+            placement = 'right'
+        } else {
+            placement = $element.attr('data-placement');
+        }
+
         $element
             .attr('data-original-title', tip)
             .tooltip({
                 title: tip,
                 trigger: 'manual',
-                placement: 'right',
+                placement: placement,
                 container: 'body',
                 template: '<div class="tooltip tooltip-white" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
             }).tooltip('show');

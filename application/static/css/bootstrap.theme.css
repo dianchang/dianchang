@@ -143,6 +143,9 @@
 .tooltip.tooltip-white.right .tooltip-arrow {
   border-right-color: white;
 }
+.tooltip.tooltip-white.left .tooltip-arrow {
+  border-left-color: white;
+}
 .nav-tabs.nav-tabs-block {
   margin-bottom: -1px;
   border-bottom: 0;
@@ -200,4 +203,8 @@ textarea.form-control:focus,
 input[type=text].form-control:focus {
   box-shadow: none;
   border: 1px solid #cbcbcb;
+}
+textarea.form-control.dark,
+input[type=text].form-control.dark {
+  border: 1px solid #444D5C !important;
 }

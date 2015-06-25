@@ -18,10 +18,13 @@
                 <a href="javascript: void(0)" class="btn-go-to-signin-signup btn btn-default">注册 / 登录</a>
             </div>
 
-            {{ signin_signup_forgot_pwd_wap() }}
+            {{ signin_signup_forgot_pwd_wap(index_page=True) }}
         </div>
     </div>
-    <div class="answers">
-        {{ render_answers(answers) }}
+    <div class="right-wap">
+        <div class="answers">
+            {{ render_answers(answers) }}
+        </div>
+    </div>
     </div>
 {% endblock %}

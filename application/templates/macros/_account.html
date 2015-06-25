@@ -19,7 +19,7 @@
 
 
 {# 登录、注册、忘记密码 #}
-{% macro signin_signup_forgot_pwd_wap() %}
+{% macro signin_signup_forgot_pwd_wap(index_page=False) %}
     <div class="dc-account-wap dc-signin-signup-forgot-pwd-wap signin">
         <a class="text-logo link-no-underline" href="{{ url_for('site.index') }}">电</a>
 
@@ -31,8 +31,8 @@
             </div>
 
             <form>
-                <input type="text" name="email" class="form-control" placeholder="邮箱"/>
-                <input type="password" name="password" class="form-control" placeholder="密码"/>
+                <input type="text" name="email" class="form-control dark" placeholder="邮箱"/>
+                <input type="password" name="password" class="form-control dark" placeholder="密码"/>
                 <button type="button" class="btn-signin btn btn-primary btn-lg btn-block">登录</button>
                 <label>
                     <input type="checkbox" name="remember"> 保持登录
@@ -60,9 +60,9 @@
                 </div>
 
                 <div class="next">
-                    <input type="text" name="name" placeholder="真实姓名 / 常用昵称" class="form-control"/>
-                    <input type="text" name="email" placeholder="邮箱" class="form-control"/>
-                    <input type="password" name="password" placeholder="设置密码" class="form-control"/>
+                    <input type="text" name="name" placeholder="真实姓名 / 常用昵称" class="form-control dark"/>
+                    <input type="text" name="email" placeholder="邮箱" class="form-control dark"/>
+                    <input type="password" name="password" placeholder="设置密码" class="form-control dark"/>
                     <button type="button" class="btn-signup btn btn-inverse btn-lg btn-block">注册账号</button>
                 </div>
             </form>
@@ -82,7 +82,7 @@
             </div>
 
             <form autocomplete="off">
-                <input type="text" name="email" placeholder="输入你的注册邮箱" class="form-control"/>
+                <input type="text" name="email" placeholder="输入你的注册邮箱" class="form-control dark"/>
                 <button type="button" class="btn-send-reset btn btn-inverse btn-lg btn-block">
                     发送密码重置邮件
                 </button>
@@ -99,6 +99,8 @@
 
     <script>
         (function () {
+            var $accountWap = $('.dc-account-wap');
+
             var $signinWap = $(".signin-wap");
             var $signinEmail = $(".signin-wap input[name='email']");
             var $signinPwd = $(".signin-wap input[name='password']");
@@ -112,6 +114,10 @@
 
             var $forgotPwdWap = $(".forgot-pwd-wap");
             var $forgotPwdEmail = $(".forgot-pwd-wap input[name='email']");
+
+            {% if index_page %}
+                $accountWap.find('input').attr('data-placement', 'left');
+            {% endif %}
 
             // 切换到注册
             $('.btn-go-to-signup').click(function () {
@@ -167,6 +173,7 @@
                     $forgotPwdWap.css({
                         'z-index': 1
                     });
+                    $forgotPwdEmail.focus();
                 });
             });
 
