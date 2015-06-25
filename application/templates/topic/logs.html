@@ -27,7 +27,8 @@
                         </div>
                         <div class="media-body">
                             <div class="title text-light">
-                                <a href="{{ log.user.profile_url }}" class="text-light">
+                                <a href="{{ log.user.profile_url }}" class="text-light dc-show-user-card"
+                                   data-id="{{ log.user_id }}">
                                     {{ log.user.name }}</a>
 
                                 {% if log.kind == TOPIC_EDIT_KIND.CREATE %}

@@ -92,12 +92,14 @@
                             <div class="media">
                                 <div class="media-left">
                                     <a href="{{ user.profile_url }}">
-                                        <img src="{{ user.avatar_url }}" class="img-circle" alt=""/>
+                                        <img src="{{ user.avatar_url }}" class="img-circle dc-show-user-card" alt=""
+                                             data-id="{{ user.id }}"/>
                                     </a>
                                 </div>
                                 <div class="media-body">
                                     <div class="meta">
-                                        <a href="{{ user.profile_url }}" class="name">
+                                        <a href="{{ user.profile_url }}" class="name dc-show-user-card"
+                                           data-id="{{ user.id }}">
                                             {{ (user.highlight_name or user.name)|safe }}</a>
                                         {% if user.highlight_desc or user.desc %}
                                             ，{{ (user.highlight_desc or user.desc or "")|safe }}

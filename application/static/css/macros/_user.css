@@ -310,3 +310,46 @@
 .dc-compose-drafts-page-header .drafts-count {
   font-weight: normal;
 }
+.user-popover {
+  border-radius: 4px;
+}
+.user-popover .popover-content {
+  padding: 0;
+}
+.dc-user-card {
+  width: 240px;
+}
+.dc-user-card .user-wap {
+  padding: 30px 0 30px 0;
+  text-align: center;
+}
+.dc-user-card .user-wap .avatar-wap {
+  margin-bottom: 10px;
+}
+.dc-user-card .user-wap .avatar-wap img {
+  width: 80px;
+  height: 80px;
+}
+.dc-user-card .user-wap .name {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.dc-user-card .user-wap .name a {
+  color: #333;
+}
+.dc-user-card .user-wap .desc {
+  margin-bottom: 10px;
+}
+.dc-user-card .user-wap .other {
+  color: #999;
+}
+.dc-user-card .user-wap .other .divider {
+  margin: 0 2px;
+}
+.dc-user-card .follow-wap {
+  text-align: center;
+  background-color: #f5f6f5;
+  padding: 20px 0;
+  border-top: 1px solid #d6d6d6;
+}

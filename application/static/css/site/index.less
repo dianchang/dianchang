@@ -6,16 +6,15 @@ nav,
 }
 
 body {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  margin: 0;
+}
+
+#main-wap {
   margin: 0;
 }
 
 .left-wap {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
@@ -73,21 +72,11 @@ body {
   }
 }
 
-.right-wap {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  overflow: auto;
-
-  .answers {
-    background-color: white;
-    width: 720px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    padding: 30px 0 70px 40px;
-  }
+.answers {
+  display: none;
+  background-color: white;
+  width: 720px;
+  padding: 30px 0 70px 40px;
 }
 
 .tooltip.tooltip-white .tooltip-inner {

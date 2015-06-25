@@ -15,11 +15,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
+                                     data-id="{{ noti.sender_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
                             回答了你提出的问题
                             •
                             <span>{{ noti.created_at|timesince }}</span>
@@ -40,11 +42,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
+                                     data-id="{{ noti.sender_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
                             关注了你
                             •
                             <span>{{ noti.created_at|timesince }}</span>
@@ -54,11 +58,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
+                                     data-id="{{ noti.sender_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
                             赞同了你的回答
                             •
                             <span>{{ noti.created_at|timesince }}</span>
@@ -79,11 +85,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
+                                     data-id="{{ noti.sender_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
                             感谢了你的回答
                             •
                             <span>{{ noti.created_at|timesince }}</span>
@@ -104,11 +112,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
+                                     data-id="{{ noti.sender_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
                             评论了你的回答
                             •
                             <span>{{ noti.created_at|timesince }}</span>
@@ -122,11 +132,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
+                                     data-id="{{ noti.sender_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
                             回复了你的评论
                             •
                             <span>{{ noti.created_at|timesince }}</span>
@@ -140,11 +152,13 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt=""/>
+                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
+                                     data-id="{{ noti.sender_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}">{{ noti.sender.name }}</a>
+                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
                             赞了你的评论
                             •
                             <span>{{ noti.created_at|timesince }}</span>

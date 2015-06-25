@@ -1,6 +1,6 @@
 # coding: utf-8
 from datetime import datetime
-from flask import Blueprint, render_template, url_for, json, g, request
+from flask import Blueprint, render_template, url_for, json, g, request, get_template_attribute
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
     ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer
 from ..utils.permissions import UserPermission
@@ -298,3 +298,14 @@ def followed_questions():
     page = request.args.get('page', type=int, default=1)
     questions = g.user.followed_questions.paginate(page, 15)
     return render_template('user/followed_questions.html', questions=questions)
+
+
+@bp.route('/user/<int:uid>/get_data_for_card', methods=['POST'])
+def get_data_for_card(uid):
+    """获取用于显示用户卡片的数据"""
+    user = User.query.get_or_404(uid)
+    macro = get_template_attribute('macros/_user.html', 'user_card')
+    return json.dumps({
+        'result': True,
+        'html': macro(user)
+    })

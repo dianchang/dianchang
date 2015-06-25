@@ -106,11 +106,17 @@ def register_jinja(app):
             continue
         rules[endpoint] = [{'rule': rule.rule} for rule in _rules]
 
+    def page_id(template_reference):
+        """Generate page with format: page-<controller>-<action>."""
+        template_name = _get_template_name(template_reference)
+        return "page-%s" % template_name.replace('.html', '').replace('/', '-').replace('_', '-')
+
     app.jinja_env.globals.update({
         'absolute_url_for': helpers.absolute_url_for,
         'url_for_other_page': url_for_other_page,
         'rules': rules,
         'permissions': permissions,
+        'page_id': page_id,
         'QUESTION_EDIT_KIND': QUESTION_EDIT_KIND,
         'TOPIC_EDIT_KIND': TOPIC_EDIT_KIND,
         'NOTIFICATION_KIND': NOTIFICATION_KIND,
@@ -206,3 +212,8 @@ def _import_submodules_from_package(package):
                                                          prefix=package.__name__ + "."):
         modules.append(__import__(modname, fromlist="dummy"))
     return modules
+
+
+def _get_template_name(template_reference):
+    """Get current template name."""
+    return template_reference._TemplateReference__context.name

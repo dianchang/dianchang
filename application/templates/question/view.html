@@ -93,7 +93,8 @@
                     <div class="followers">
                         {% for follower in followers %}
                             <a href="{{ follower.user.profile_url }}" class="follower">
-                                <img src="{{ follower.user.avatar_url }}" class="img-circle" alt=""/>
+                                <img src="{{ follower.user.avatar_url }}" class="img-circle dc-show-user-card"
+                                     alt="" data-id="{{ follower.user_id }}"/>
                             </a>
                         {% endfor %}
                     </div>
@@ -151,7 +152,8 @@
                             <div class="candidates">
                                 {% for candidate in invite_candidates %}
                                     <a href="{{ candidate.user.profile_url }}">
-                                        <img src="{{ candidate.user.avatar_url }}" alt="" class="img-circle"/>
+                                        <img src="{{ candidate.user.avatar_url }}" alt=""
+                                             class="img-circle dc-show-user-card" data-id="{{ candidate.user_id }}"/>
                                     </a>
                                 {% endfor %}
                             </div>
@@ -187,17 +189,17 @@
                             <div class="item media">
                                 <div class="media-left">
                                     <a href="{{ candidate.user.profile_url }}">
-
-                                        <img src="{{ candidate.user.avatar_url }}" class="img-circle" alt=""/>
+                                        <img src="{{ candidate.user.avatar_url }}" class="img-circle dc-show-user-card"
+                                             alt="" data-id="{{ candidate.user_id }}"/>
                                     </a>
                                 </div>
 
                                 <div class="media-body">
                                     <div class="candidate-meta">
-                                        <a href="{{ candidate.user.profile_url }}">
+                                        <a href="{{ candidate.user.profile_url }}" class="dc-show-user-card"
+                                           data-id="{{ candidate.user_id }}">
                                             {{ candidate.user.name }}</a>{% if candidate.user.desc %}，
-                                        {{ candidate.user.desc }}
-                                    {% endif %}
+                                        {{ candidate.user.desc }}{% endif %}
                                     </div>
                                     <div class="statistic text-light">
                                         在 <a href="{{ url_for('topic.view', uid=candidate.topic_id) }}"
@@ -232,7 +234,6 @@
                                data-my-answer-id="{{ my_answer_id }}">现有的回答</a>
                             进行修改，或者 <a href="#">直接分享</a></p>
                     </div>
-
                 {% elif g.user %}
                     {# 回答表单 #}
                     <div class="new-answer-wap">

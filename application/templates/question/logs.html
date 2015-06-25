@@ -20,13 +20,15 @@
                     <div class="question-log media">
                         <div class="media-left">
                             <a href="{{ log.user.profile_url }}">
-                                <img src="{{ log.user.avatar_url }}" alt="" class="img-circle"/>
+                                <img src="{{ log.user.avatar_url }}" alt="" class="img-circle dc-show-user-card"
+                                     data-id="{{ log.user_id }}"/>
                             </a>
                         </div>
 
                         <div class="media-body">
                             <div class="title text-light">
-                                <a href="{{ log.user.profile_url }}" class="text-light">
+                                <a href="{{ log.user.profile_url }}" class="text-light dc-show-user-card"
+                                   data-id="{{ log.user_id }}">
                                     {{ log.user.name }}</a>
 
                                 {% if log.kind == QUESTION_EDIT_KIND.CREATE %}

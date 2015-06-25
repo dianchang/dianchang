@@ -14,7 +14,8 @@
             <div class="col-md-8">
                 {% for following in user.followings %}
                     <a href="{{ following.following.profile_url }}">
-                        <img src="{{ following.following.avatar_url }}" alt=""/>
+                        <img src="{{ following.following.avatar_url }}" alt="" class="dc-show-user-card"
+                             data-id="{{ following.following_id }}"/>
                     </a>
                 {% endfor %}
             </div>

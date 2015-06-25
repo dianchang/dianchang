@@ -26,9 +26,11 @@ function adjustWidth() {
 
     if ($(window).width() > 1020) {
         $leftWap.css('width', $(window).width() / 2.0 - 170);
-        $rightWap.css('width', $(window).width() / 2.0 + 170)
+        $('body').css('paddingLeft', $(window).width() / 2.0 - 170);
+        $('.answers').show();
     } else {
         $leftWap.css('width', $(window).width() / 3.0);
-        $rightWap.css('width', $(window).width() * 2 / 3.0);
+        $('body').css('paddingLeft', $(window).width() / 3.0);
+        $('.answers').show();
     }
 }

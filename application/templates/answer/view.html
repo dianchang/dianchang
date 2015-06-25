@@ -93,7 +93,7 @@
                 </a>
 
                 <div class="answerer text-light">
-                    <a href="{{ random_answer.user.profile_url }}" class="name">
+                    <a href="{{ random_answer.user.profile_url }}" class="name dc-show-user-card" data-id="{{ random_answer.user_id }}">
                         {{ random_answer.user.name }}</a>{% if random_answer.user.desc %}，{{ random_answer.user.desc }}
                 {% endif %}
                 </div>

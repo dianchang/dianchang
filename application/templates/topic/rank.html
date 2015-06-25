@@ -20,12 +20,14 @@
                     <div class="media expert">
                         <div class="media-left">
                             <a href="{{ expert.user.profile_url }}">
-                                <img class="img-circle" src="{{ expert.user.avatar_url }}" alt=""/>
+                                <img class="img-circle dc-show-user-card" src="{{ expert.user.avatar_url }}" alt=""
+                                     data-id="{{ expert.user_id }}"/>
                             </a>
                         </div>
                         <div class="media-body">
                             <div class="meta">
-                                <a href="{{ expert.user.profile_url }}" class="name">
+                                <a href="{{ expert.user.profile_url }}" class="name dc-show-user-card"
+                                   data-id="{{ expert.user_id }}">
                                     {{ expert.user.name }}</a>{% if expert.user.desc %}
                                 <span class="text-light">，{{ expert.user.desc }}</span>{% endif %}
                             </div>

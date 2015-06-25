@@ -22,7 +22,8 @@
                         {% set user = contributor.user %}
 
                         <a href="{{ user.profile_url }}">
-                            <img src="{{ user.avatar_url }}" alt=""/>
+                            <img src="{{ user.avatar_url }}" alt="" class="dc-show-user-card"
+                                 data-id="{{ user.id }}"/>
                         </a>
                     {% endfor %}
                 </div>

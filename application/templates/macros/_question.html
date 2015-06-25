@@ -72,7 +72,8 @@
 {# 已邀请的问题回答者 #}
 {% macro invited_user_wap(invited_user) %}
     <span class="dc-hide-commands-trigger dc-invited-user-wap">
-        <a href="{{ invited_user.profile_url }}" class="invited-user text-light">
+        <a href="{{ invited_user.profile_url }}" class="invited-user text-light dc-show-user-card"
+           data-id="{{ invited_user.id }}">
             {{ invited_user.name }}</a>
         <div class="dc-hide-commands">
             <a href="javascript: void(0)" class="btn-un-invite"
@@ -89,8 +90,9 @@
     <div class="dc-question">
         <div class="action text-light">
             <a href="{{ user.profile_url }}">
-                <img src="{{ user.avatar_url }}" alt="" class="img-circle"/>
-            </a> <a href="{{ user.profile_url }}" class="name">{{ user.name }}</a> {{ action }}问题
+                <img src="{{ user.avatar_url }}" alt="" class="img-circle dc-show-user-card" data-id="{{ user.id }}"/>
+            </a> <a href="{{ user.profile_url }}" class="name dc-show-user-card" data-id="{{ user.id }}">
+            {{ user.name }}</a> {{ action }}问题
         </div>
 
         <div class="title">

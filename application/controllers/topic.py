@@ -476,3 +476,8 @@ def update_show_order():
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/topic/get_data_for_card')
+def get_data_for_card():
+    pass

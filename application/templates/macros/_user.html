@@ -434,8 +434,9 @@
             {% elif feed.kind == USER_FEED_KIND.UPVOTE_ANSWER %}
                 <div class="dc-home-feed feed-upvote-answer">
                     <div class="meta">
-                                    <span>赞同了 <a href="{{ feed.answer.user.profile_url }}" class="text-light">
-                                        {{ feed.answer.user.name }}</a> 的回答</span>
+                        <span>赞同了 <a href="{{ feed.answer.user.profile_url }}" class="text-light dc-show-user-card"
+                                     data-id="{{ feed.answer.user_id }}">
+                            {{ feed.answer.user.name }}</a> 的回答</span>
                         <span class="time">{{ feed.created_at|timesince }}</span>
                     </div>
                     {{ render_answer(feed.answer, with_topics=False) }}
@@ -483,16 +484,19 @@
                         <span>关注了人</span>
                         <span class="time">{{ feed.created_at|timesince }}</span>
                     </div>
+
                     <div class="content">
                         <div class="media">
                             <div class="media-left">
                                 <a href="{{ following_user.profile_url }}">
-                                    <img src="{{ following_user.avatar_url }}" class="img-circle" alt=""/>
+                                    <img src="{{ following_user.avatar_url }}" class="img-circle dc-show-user-card"
+                                         alt="" data-id="{{ following_user.id }}"/>
                                 </a>
                             </div>
                             <div class="media-body">
                                 <div class="user-name">
-                                    <a href="{{ following_user.profile_url }}">
+                                    <a href="{{ following_user.profile_url }}" class="dc-show-user-card"
+                                       data-id="{{ following_user.id }}">
                                         {{ following_user.name }}</a>
                                 </div>
                                 <div class="desc text-light">{{ following_user.desc or "" }}</div>
@@ -517,5 +521,45 @@
         <a href="{{ url_for('user.drafts') }}"
            class="{% if active == 'drafts' %}active{% endif %}">
             草稿 <span class="drafts-count">{{ g.user.drafts_count }}</span></a>
+    </div>
+{% endmacro %}
+
+
+{# 用户卡片 #}
+{% macro user_card(user) %}
+    <div class="dc-user-card">
+        <div class="user-wap">
+            <div class="avatar-wap">
+                <a href="{{ user.profile_url }}">
+                    <img src="{{ user.avatar_url }}" class="img-circle" alt=""/>
+                </a>
+            </div>
+
+            <div class="name">
+                <a href="{{ user.profile_url }}">{{ user.name }}</a>
+            </div>
+
+            {% if user.desc %}
+                <div class="desc">{{ user.desc }}</div>
+            {% endif %}
+
+            <div class="other">
+                {% if user.organization %}
+                    <span class="organization">{{ user.organization }}</span>
+                {% endif %}
+
+                {% if user.organization and user.position %}
+                    <span class="divider">·</span>
+                {% endif %}
+
+                {% if user.position %}
+                    <span class="position">{{ user.position }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="follow-wap">
+            {{ user_follow_wap(user, dark=True) }}
+        </div>
     </div>
 {% endmacro %}

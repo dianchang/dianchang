@@ -10,6 +10,7 @@
         $('.navbar-form .help-text').hide();
     });
 
+    // 消息通知
     $('#nav-notification').click(function () {
         if ($(this).hasClass('on') && $(this).hasClass('more')) {
             $(this).removeClass('on').removeClass('more');
@@ -39,6 +40,7 @@
         }, 50);
     });
 
+    // 提问
     var timerForTopicTypeahead = null;
     var timerForQuestion = null;
     var $askQuestionBg = $('.ask-question-bg');
@@ -236,6 +238,70 @@
         $askQuestionWap.removeClass('second').addClass('first');
         $firstAnonymousCheckbox.prop('checked', $secoundAnonymousCheckbox.is(':checked'));
     });
+
+    // 弹出用户卡片
+    $(document).on('mouseenter', '.dc-show-user-card', function () {
+        var id = $(this).data('id');
+        var html = $(this).data('user');
+        var _this = $(this);
+
+        // 隐藏其他的用户卡片
+        $('.dc-show-user-card').popover('destroy');
+        
+        if (typeof html === 'undefined') {
+            $.ajax({
+                url: urlFor('user.get_data_for_card', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    _this.data('user', response.html);
+                    showUserCard(_this, response.html);
+                }
+            });
+        } else {
+            showUserCard(_this, html);
+        }
+    });
+
+    // 隐藏用户卡片
+    $(document).on('mouseleave', '.dc-show-user-card', function () {
+        var _this = $(this);
+
+        setTimeout(function () {
+            if (!$(".popover:hover").length) {
+                $(_this).popover("destroy");
+            }
+        }, 200);
+    });
+
+    /**
+     * 显示用户卡片
+     * @param $element
+     * @param html
+     */
+    function showUserCard($element, html) {
+        $element.popover({
+            content: function () {
+                return html;
+            },
+            html: true,
+            container: 'body',
+            trigger: 'manual',
+            placement: 'auto bottom',
+            animation: false,
+            viewport: {
+                selector: 'body',
+                padding: 15
+            },
+            template: '<div class="popover user-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+            selector: '.dc-show-user-card'
+        }).popover('show');
+
+        $(".popover").one("mouseleave", function () {
+            $element.popover('destroy');
+        });
+    }
 
     /**
      * Add topic.
