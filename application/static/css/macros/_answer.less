@@ -145,7 +145,7 @@
 
   .dc-answer-comments {
     background-color: #F5F6F5;
-    padding: 22px 18px 5px 18px;
+    padding: 0 18px 5px 18px;
     margin-top: 20px;
 
     .comments {
@@ -155,6 +155,10 @@
     .answer-comment {
       padding-top: 15px;
       padding-bottom: 15px;
+
+      &:first-child {
+        border-top: 0;
+      }
 
       .meta {
         margin-bottom: 5px;
@@ -166,8 +170,12 @@
     }
 
     .comment-form-wap {
+      border-bottom: 1px solid #e4e4e4;
+      padding-bottom: 10px;
+      padding-top: 22px;
+
       .commands {
-        margin-bottom: 12px;
+        margin-bottom: 2px;
       }
 
       .btn {

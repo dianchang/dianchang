@@ -331,7 +331,6 @@ def comment(uid):
 
 
 @bp.route('/answer/<int:uid>/load_comments_wap', methods=['POST'])
-@UserPermission()
 def load_comments_wap(uid):
     """加载回答的评论wap"""
     answer = Answer.query.get_or_404(uid)
