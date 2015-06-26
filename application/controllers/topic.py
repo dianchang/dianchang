@@ -481,3 +481,8 @@ def update_show_order():
 @bp.route('/topic/get_data_for_card')
 def get_data_for_card():
     pass
+
+
+@bp.route('/topic/get_card')
+def get_card():
+    pass

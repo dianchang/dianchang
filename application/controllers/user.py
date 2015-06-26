@@ -300,8 +300,8 @@ def followed_questions():
     return render_template('user/followed_questions.html', questions=questions)
 
 
-@bp.route('/user/<int:uid>/get_data_for_card', methods=['POST'])
-def get_data_for_card(uid):
+@bp.route('/user/<int:uid>/get_card', methods=['POST'])
+def get_card(uid):
     """获取用于显示用户卡片的数据"""
     user = User.query.get_or_404(uid)
     macro = get_template_attribute('macros/_user.html', 'user_card')

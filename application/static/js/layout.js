@@ -247,10 +247,10 @@
 
         // 隐藏其他的用户卡片
         $('.dc-show-user-card').popover('destroy');
-        
+
         if (typeof html === 'undefined') {
             $.ajax({
-                url: urlFor('user.get_data_for_card', {uid: id}),
+                url: urlFor('user.get_card', {uid: id}),
                 method: 'post',
                 dataType: 'json'
             }).done(function (response) {

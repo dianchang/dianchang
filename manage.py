@@ -98,7 +98,7 @@ def upload():
 def build():
     """使用 FIS 编译静态资源"""
     os.chdir('application')
-    os.system(' fis release -d ../output -opm --domains')
+    os.system('fis release -d ../output -opmD')
 
 
 @manager.command
@@ -194,6 +194,7 @@ def uniform_count():
         db.session.add(comment)
 
     db.session.commit()
+
 
 if __name__ == "__main__":
     manager.run()
