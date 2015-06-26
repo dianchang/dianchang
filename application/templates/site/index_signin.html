@@ -20,19 +20,21 @@
                         <div class="action text-light">
                             <a href="{{ feed.sender.profile_url }}">
                                 <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
-                                     data-id="{{ feed.sender_id }}"/>
-                            </a> <a href="{{ feed.sender.profile_url }}"
-                                    class="name dc-show-user-card"
-                                    data-id="{{ feed.sender_id }}">{{ feed.sender.name }}</a> 回答了问题
+                                     data-id="{{ feed.sender_id }}"/></a>
+                            <a href="{{ feed.sender.profile_url }}"
+                               class="name dc-show-user-card"
+                               data-id="{{ feed.sender_id }}">{{ feed.sender.name }}</a> 回答了问题
                         </div>
                         {{ render_answer(feed.answer, with_topics=False) }}
                     {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER %}
                         <div class="action text-light">
                             <a href="{{ feed.sender.profile_url }}">
                                 <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
-                                     data-id="{{ feed.sender_id }}"/>
-                            </a> <a href="{{ feed.sender.profile_url }}" class="name dc-show-user-card"
-                                    data-id="{{ feed.sender_id }}">{{ feed.sender.name }}</a> 赞同了回答
+                                     data-id="{{ feed.sender_id }}"/></a>
+                            <a href="{{ feed.sender.profile_url }}"
+                               class="name dc-show-user-card"
+                               data-id="{{ feed.sender_id }}">{{ feed.sender.name }}</a>
+                            赞同了回答
                         </div>
                         {{ render_answer(feed.answer, with_topics=False) }}
                     {% elif feed.kind == HOME_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}

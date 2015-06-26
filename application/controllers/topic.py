@@ -457,7 +457,7 @@ def update_show_order():
     if not g.user.has_seleted_expert_topics:
         g.user.has_seleted_expert_topics = True
         db.session.add(g.user)
-        
+
         for index, expert_topic in enumerate(g.user.expert_topics):
             expert_topic.show_order = index
             expert_topic.selected = True
@@ -478,11 +478,10 @@ def update_show_order():
     })
 
 
-@bp.route('/topic/get_data_for_card')
-def get_data_for_card():
-    pass
-
-
-@bp.route('/topic/get_card')
-def get_card():
-    pass
+@bp.route('/topic/<int:uid>/get_card')
+def get_card(uid):
+    """获取话题卡片"""
+    topic = Topic.query.get_or_404(uid)
+    return json.dumps({
+        'result': True
+    })

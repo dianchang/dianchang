@@ -248,20 +248,20 @@
         // 隐藏其他的用户卡片
         $('.dc-show-user-card').popover('destroy');
 
-        if (typeof html === 'undefined') {
-            $.ajax({
-                url: urlFor('user.get_card', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    _this.data('user', response.html);
-                    showUserCard(_this, response.html);
-                }
-            });
-        } else {
-            showUserCard(_this, html);
-        }
+        //if (typeof html === 'undefined') {
+        $.ajax({
+            url: urlFor('user.get_card', {uid: id}),
+            method: 'post',
+            dataType: 'json'
+        }).done(function (response) {
+            if (response.result) {
+                //_this.data('user', response.html);
+                showUserCard(_this, response.html);
+            }
+        });
+        //} else {
+        //    showUserCard(_this, html);
+        //}
     });
 
     // 隐藏用户卡片

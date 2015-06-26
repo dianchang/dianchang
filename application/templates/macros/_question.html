@@ -90,9 +90,10 @@
     <div class="dc-question">
         <div class="action text-light">
             <a href="{{ user.profile_url }}">
-                <img src="{{ user.avatar_url }}" alt="" class="img-circle dc-show-user-card" data-id="{{ user.id }}"/>
-            </a> <a href="{{ user.profile_url }}" class="name dc-show-user-card" data-id="{{ user.id }}">
-            {{ user.name }}</a> {{ action }}问题
+                <img src="{{ user.avatar_url }}" alt="" class="img-circle dc-show-user-card"
+                     data-id="{{ user.id }}"/></a>
+            <a href="{{ user.profile_url }}" class="name dc-show-user-card" data-id="{{ user.id }}">
+                {{ user.name }}</a> {{ action }}问题
         </div>
 
         <div class="title">
