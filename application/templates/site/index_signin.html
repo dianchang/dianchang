@@ -52,9 +52,10 @@
                 {% for topic in hot_topics %}
                     <div class="hot-topic">
                         <a href="{{ url_for('topic.view', uid=topic.id) }}" class="avatar-wap">
-                            <img src="{{ topic.avatar_url }}" alt=""/>
-                        </a>
-                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="name">
+                            <img src="{{ topic.avatar_url }}" class="dc-show-topic-card" alt=""
+                                 data-id="{{ topic.id }}"/></a>
+                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="name dc-show-topic-card"
+                           data-id="{{ topic.id }}">
                             {{ topic.name }}</a>
                     </div>
                 {% endfor %}

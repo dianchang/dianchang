@@ -275,6 +275,42 @@
         }, 200);
     });
 
+    // 弹出话题卡片
+    $(document).on('mouseenter', '.dc-show-topic-card', function () {
+        var id = $(this).data('id');
+        var html = $(this).data('topic');
+        var _this = $(this);
+
+        // 隐藏其他的用户卡片
+        $('.dc-show-topic-card').popover('destroy');
+
+        //if (typeof html === 'undefined') {
+        $.ajax({
+            url: urlFor('topic.get_card', {uid: id}),
+            method: 'post',
+            dataType: 'json'
+        }).done(function (response) {
+            if (response.result) {
+                //_this.data('topic', response.html);
+                showTopicCard(_this, response.html);
+            }
+        });
+        //} else {
+        //    showUserCard(_this, html);
+        //}
+    });
+
+    // 隐藏话题卡片
+    $(document).on('mouseleave', '.dc-show-topic-card', function () {
+        var _this = $(this);
+
+        setTimeout(function () {
+            if (!$(".popover:hover").length) {
+                $(_this).popover("destroy");
+            }
+        }, 200);
+    });
+
     /**
      * 显示用户卡片
      * @param $element
@@ -296,6 +332,34 @@
             },
             template: '<div class="popover user-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
             selector: '.dc-show-user-card'
+        }).popover('show');
+
+        $(".user-popover").one("mouseleave", function () {
+            $element.popover('destroy');
+        });
+    }
+
+    /**
+     * 显示话题卡片
+     * @param $element
+     * @param html
+     */
+    function showTopicCard($element, html) {
+        $element.popover({
+            content: function () {
+                return html;
+            },
+            html: true,
+            container: 'body',
+            trigger: 'manual',
+            placement: 'auto bottom',
+            animation: false,
+            viewport: {
+                selector: 'body',
+                padding: 15
+            },
+            template: '<div class="popover topic-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+            selector: '.dc-show-topic-card'
         }).popover('show');
 
         $(".popover").one("mouseleave", function () {

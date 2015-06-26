@@ -16,7 +16,7 @@
 
 
 {# 关注话题组件 #}
-{% macro topic_follow_wap(topic, dark=False) %}
+{% macro topic_follow_wap(topic, dark=False, text='关注话题') %}
     {% set followed = topic.followed_by_user() %}
     <div class="dc-topic-follow-wap btn {% if dark %}dark{% endif %}
         {% if followed %}
@@ -26,7 +26,7 @@
         {% endif %}
         {% if followed %}followed{% endif %}" data-id="{{ topic.id }}">
         <a href="javascript: void(0)" class="btn-follow-topic">
-            <span class="for-follow">关注话题</span><span class="for-unfollow">不再关注</span></a>
+            <span class="for-follow">{{ text }}</span><span class="for-unfollow">不再关注</span></a>
         <span class="divider">|</span>
         <span class="followers-count">{{ topic.followers_count }}</span>
     </div>
@@ -307,6 +307,23 @@
 {# 话题卡片 #}
 {% macro topic_card(topic) %}
     <div class="dc-topic-card">
+        <div class="topic-wap">
+            <div class="meta-wap">
+                <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                    <img src="{{ topic.avatar_url }}" alt="" class="img-rounded"/></a>
 
+                <a class="name" href="{{ url_for('topic.view', uid=topic.id) }}">
+                    {{ topic.name }}</a>
+            </div>
+
+            {% if topic.wiki_preview %}
+                <div class="desc text-light">
+                    {{ topic.wiki_preview|truncate(30, true) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="follow-wap">
+            {{ topic_follow_wap(topic, dark=True, text='关注') }}
+        </div>
     </div>
 {% endmacro %}

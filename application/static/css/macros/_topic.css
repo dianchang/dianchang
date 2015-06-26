@@ -132,3 +132,40 @@
 .dc-topic.dc-topic-white:hover {
   border-color: #E8E8E8;
 }
+.topic-popover {
+  border-radius: 4px;
+}
+.topic-popover.top {
+  background-color: #f5f6f5;
+}
+.topic-popover.top .arrow:after {
+  border-top-color: #f5f6f5;
+}
+.topic-popover .popover-content {
+  padding: 0;
+}
+.dc-topic-card {
+  width: 240px;
+}
+.dc-topic-card .topic-wap {
+  padding: 10px 10px;
+  background-color: #fff;
+}
+.dc-topic-card .topic-wap .meta-wap {
+  margin-bottom: 8px;
+}
+.dc-topic-card .topic-wap .meta-wap img {
+  width: 40px;
+  height: 40px;
+}
+.dc-topic-card .topic-wap .meta-wap .name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 5px;
+  color: #333;
+}
+.dc-topic-card .follow-wap {
+  background-color: #f5f6f5;
+  padding: 10px 0 10px 10px;
+  border-top: 1px solid #d6d6d6;
+}

@@ -174,3 +174,52 @@
     }
   }
 }
+
+// 用户卡片
+.topic-popover {
+  border-radius: 4px;
+
+  &.top {
+    background-color: @background-gray;
+
+    .arrow:after {
+      border-top-color: @background-gray;
+    }
+  }
+
+  .popover-content {
+    padding: 0;
+  }
+}
+
+// 话题卡片
+.dc-topic-card {
+  width: 240px;
+
+  .topic-wap {
+    padding: 10px 10px;
+    background-color: #fff;
+
+    .meta-wap {
+      margin-bottom: 8px;
+
+      img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .name {
+        font-size: 16px;
+        font-weight: bold;
+        margin-left: 5px;
+        color: #333;
+      }
+    }
+  }
+
+  .follow-wap {
+    background-color: @background-gray;
+    padding: 10px 0 10px 10px;
+    border-top: 1px solid #d6d6d6;
+  }
+}

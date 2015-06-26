@@ -312,6 +312,8 @@
 }
 .user-popover {
   border-radius: 4px;
+}
+.user-popover.top {
   background-color: #f5f6f5;
 }
 .user-popover.top .arrow:after {
