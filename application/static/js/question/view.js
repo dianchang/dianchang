@@ -369,7 +369,7 @@ $(document).on('click', '.btn-un-invite', function () {
 });
 
 // 初始化回答富文本编辑器
-if (!g.answered) {
+if (!g.answered && g.signin) {
     var answerEditor = new Simditor({
         textarea: $("textarea[name='answer']"),
         toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
