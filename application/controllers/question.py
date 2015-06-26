@@ -120,6 +120,8 @@ def add():
     # 自动关注该问题
     follow_question = FollowQuestion(question_id=question.id, user_id=g.user.id)
     db.session.add(follow_question)
+    question.followers_count += 1
+    db.session.add(question)
 
     if not anonymous:
         # FEED: 插入本人的用户FEED
@@ -385,6 +387,8 @@ def answer(uid):
     if not follow_question:
         follow_question = FollowQuestion(question_id=uid, user_id=g.user.id)
         db.session.add(follow_question)
+        question.followers_count += 1
+        db.session.add(question)
 
     # FEED: 插入提问者的用户NOTI
     if g.user.id != question.user_id:
