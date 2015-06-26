@@ -132,9 +132,9 @@
                                     {% for path in topic.ancestor_paths %}
                                         <li>
                                             {% for topic in path %}
-                                                <a href="{{ url_for('topic.view', uid=topic.id) }}">
-                                                    {{ topic.name }}
-                                                </a>
+                                                <a href="{{ url_for('topic.view', uid=topic.id) }}"
+                                                   class="dc-show-topic-card" data-id="{{ topic.id }}">
+                                                    {{ topic.name }}</a>
 
                                                 {% if not loop.last %}
                                                     <span class="fa fa-long-arrow-right"></span>
@@ -154,9 +154,9 @@
                             <ul>
                                 {% for child_topic in topic.child_topics %}
                                     <li>
-                                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}">
-                                            {{ child_topic.name }}
-                                        </a>
+                                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}"
+                                           class="{{ child_topic.id }}" data-id="{{ child_topic.id }}">
+                                            {{ child_topic.name }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>

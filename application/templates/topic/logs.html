@@ -10,11 +10,13 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="header">
-                    {#            <a href="{{ url_for('topic.view', uid=topic.id) }}" class="img-wap">#}
-                    {#                <img src="{{ topic.avatar_url }}" alt=""/>#}
-                    {#            </a>#}
+                    {#                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="img-wap">#}
+                    {#                        <img src="{{ topic.avatar_url }}" alt="" class="dc-show-topic-card"#}
+                    {#                             data-id="{{ topic.id }}"/>#}
+                    {#                    </a>#}
 
-                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="name">
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="name dc-show-topic-card"
+                       data-id="{{ topic.id }}">
                         {{ topic.name }}</a>
 
                     <span class="tip">话题编辑日志</span>
@@ -64,34 +66,40 @@
                                     <img src="{{ log.after }}" alt="" class="topic-avatar"/>
                                 {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
                                     <del class="topic">
-                                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=topic.id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ topic.id }}">
                                             {{ log.before }}</a>
                                     </del>
                                     <span class="fa fa-long-arrow-right"></span>
                                     <inc class="topic">
-                                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=topic.id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ topic.id }}">
                                             {{ log.after }}</a>
                                     </inc>
                                 {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_WIKI %}
                                     {# TODO #}
                                 {% elif log.kind == TOPIC_EDIT_KIND.ADD_PARENT_TOPIC %}
                                     <ins class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
                                             {{ log.after }}</a>
                                     </ins>
                                 {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC %}
                                     <del class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
                                             {{ log.before }}</a>
                                     </del>
                                 {% elif log.kind == TOPIC_EDIT_KIND.ADD_CHILD_TOPIC %}
                                     <ins class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
                                             {{ log.after }}</a>
                                     </ins>
                                 {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
                                     <del class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
                                             {{ log.before }}</a>
                                     </del>
                                 {% elif log.kind == TOPIC_EDIT_KIND.ADD_SYNONYM %}

@@ -32,7 +32,8 @@
                 <div class="topics">
                     {% for topic in question.topics %}
                         {% set topic = topic.topic %}
-                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-topic">
+                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-topic dc-show-topic-card"
+                           data-id="{{ topic.id }}">
                             {{ topic.name }}</a>
                     {% endfor %}
                 </div>

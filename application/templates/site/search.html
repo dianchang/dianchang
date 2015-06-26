@@ -71,9 +71,9 @@
                                 </div>
                                 <div class="media-body">
                                     <div class="name">
-                                        <a href="{{ url_for('topic.view', uid=topic.id) }}" target="_blank">
-                                            {{ (topic.highlight_name or topic.name)|safe }}
-                                        </a>
+                                        <a href="{{ url_for('topic.view', uid=topic.id) }}" target="_blank"
+                                           class="dc-show-topic-card" data-id="{{ topic.id }}">
+                                            {{ (topic.highlight_name or topic.name)|safe }}</a>
                                     </div>
                                     <div class="questions-count text-light">
                                         {{ topic.questions_count }} 个相关问题
@@ -110,7 +110,8 @@
                                         {% if user.answers_count %}
                                             在
                                             {% for topic in user.answered_topics %}
-                                                <a href="{{ url_for('topic.view', uid=topic.topic_id) }}">
+                                                <a href="{{ url_for('topic.view', uid=topic.topic_id) }}"
+                                                   class="dc-show-topic-card" data-id="{{ topic.topic_id }}">
                                                     {{ topic.topic.name }}</a>
                                             {% endfor %}
                                             等话题下有 {{ user.answers_count }} 个回答

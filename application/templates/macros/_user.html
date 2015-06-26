@@ -455,20 +455,22 @@
                         <span>关注了话题</span>
                         <span class="time">{{ feed.created_at|timesince }}</span>
                     </div>
+
                     <div class="content">
                         <div class="media">
                             <div class="media-left">
                                 <a href="{{ url_for('topic.view', uid=feed.topic_id) }}">
-                                    <img src="{{ feed.topic.avatar_url }}" class="img-rounded" alt=""/>
+                                    <img src="{{ feed.topic.avatar_url }}" class="img-rounded dc-show-topic-card"
+                                         data-id="{{ feed.topic_id }}" alt=""/>
                                 </a>
                             </div>
                             <div class="media-body">
                                 <div class="topic-name">
-                                    <a href="{{ url_for('topic.view', uid=feed.topic_id) }}">
+                                    <a href="{{ url_for('topic.view', uid=feed.topic_id) }}" class="dc-show-topic-card"
+                                       data-id="{{ feed.topic_id }}">
                                         {{ feed.topic.name }}</a>
                                 </div>
                                 <div class="text-light">
-                                    {# TODO: need to use all questions count #}
                                     {{ feed.topic.questions_count }} 个相关问题
                                 </div>
                             </div>

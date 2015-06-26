@@ -203,7 +203,7 @@
                                     </div>
                                     <div class="statistic text-light">
                                         在 <a href="{{ url_for('topic.view', uid=candidate.topic_id) }}"
-                                             class="text-light">
+                                             class="text-light dc-show-topic-card" data-id="{{ candidate.topic_id }}">
                                         {{ candidate.topic.name }}</a> 话题下有 {{ candidate.answers_count }} 个回答
                                     </div>
                                     <button class="btn btn-default btn-invite" data-id="{{ candidate.user_id }}">
@@ -339,9 +339,9 @@
                         {% for topic in question.topics %}
                             <div class="topic-experience">
                                 <div class="topic">
-                                    <a href="{{ url_for('topic.view', uid=topic.topic_id) }}">
-                                        {{ topic.topic.name }}
-                                    </a>
+                                    <a href="{{ url_for('topic.view', uid=topic.topic_id) }}"
+                                       class="dc-show-topic-card" data-id="{{ topic.topic_id }}">
+                                        {{ topic.topic.name }}</a>
                                 </div>
 
                                 {% set experience = topic.topic.experience_from_user %}

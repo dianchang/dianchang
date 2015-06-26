@@ -25,7 +25,8 @@
             {% endif %}
 
             {% for topic in answer.question.topics %}
-                <a href="{{ url_for('topic.view', uid=topic.topic.id) }}" class="dc-topic dc-topic-white">
+                <a href="{{ url_for('topic.view', uid=topic.topic.id) }}"
+                   class="dc-topic dc-topic-white dc-show-topic-card" data-id="{{ topic.topic_id }}">
                     {{ topic.topic.name }}</a>
             {% endfor %}
         </div>
@@ -93,7 +94,8 @@
                 </a>
 
                 <div class="answerer text-light">
-                    <a href="{{ random_answer.user.profile_url }}" class="name dc-show-user-card" data-id="{{ random_answer.user_id }}">
+                    <a href="{{ random_answer.user.profile_url }}" class="name dc-show-user-card"
+                       data-id="{{ random_answer.user_id }}">
                         {{ random_answer.user.name }}</a>{% if random_answer.user.desc %}，{{ random_answer.user.desc }}
                 {% endif %}
                 </div>

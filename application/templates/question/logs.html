@@ -58,12 +58,14 @@
                                     {% endif %}
                                 {% elif log.kind == QUESTION_EDIT_KIND.ADD_TOPIC %}
                                     <ins class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
                                             {{ log.after }}</a>
                                     </ins>
                                 {% elif log.kind == QUESTION_EDIT_KIND.REMOVE_TOPIC %}
                                     <del class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}" class="dc-topic">
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
                                             {{ log.before }}</a>
                                     </del>
                                 {% elif log.kind == QUESTION_EDIT_KIND.UPDATE_TITLE %}

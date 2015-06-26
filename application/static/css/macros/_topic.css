@@ -56,8 +56,8 @@
 }
 .dc-topic-discuss-page-sidebar .related-topics .related-topic .name {
   color: #333;
-  display: block;
   font-weight: bold;
+  display: inline-block;
   margin-bottom: 2px;
 }
 .dc-topic-discuss-page-header {
