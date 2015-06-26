@@ -478,10 +478,12 @@ def update_show_order():
     })
 
 
-@bp.route('/topic/<int:uid>/get_card')
+@bp.route('/topic/<int:uid>/get_card', methods=['POST'])
 def get_card(uid):
     """获取话题卡片"""
     topic = Topic.query.get_or_404(uid)
+    macro = get_template_attribute('macros/_topic.html', 'topic_card')
     return json.dumps({
-        'result': True
+        'result': True,
+        'html': macro(topic)
     })

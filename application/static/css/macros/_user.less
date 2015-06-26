@@ -407,6 +407,13 @@
 // 用户卡片
 .user-popover {
   border-radius: 4px;
+  background-color: @background-gray;
+
+  &.top {
+    .arrow:after {
+      border-top-color: @background-gray;
+    }
+  }
 
   .popover-content {
     padding: 0;
@@ -419,6 +426,7 @@
   .user-wap {
     padding: 30px 0 30px 0;
     text-align: center;
+    background-color: #fff;
 
     .avatar-wap {
       margin-bottom: 10px;

@@ -312,6 +312,10 @@
 }
 .user-popover {
   border-radius: 4px;
+  background-color: #f5f6f5;
+}
+.user-popover.top .arrow:after {
+  border-top-color: #f5f6f5;
 }
 .user-popover .popover-content {
   padding: 0;
@@ -322,6 +326,7 @@
 .dc-user-card .user-wap {
   padding: 30px 0 30px 0;
   text-align: center;
+  background-color: #fff;
 }
 .dc-user-card .user-wap .avatar-wap {
   margin-bottom: 10px;
