@@ -124,12 +124,12 @@ def add():
     db.session.add(question)
 
     if not anonymous:
-        # FEED: 插入本人的用户FEED
+        # USER FEED: 插入本人的用户FEED
         feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
         g.user.feeds.append(feed)
         db.session.add(g.user)
 
-        # FEED: 插入followers的首页FEED
+        # HOME FEED: 插入followers的首页FEED
         # TODO: 采用消息队列进行插入操作
         for follower in g.user.followers:
             home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
@@ -246,12 +246,12 @@ def follow(uid):
         question.followers_count += 1
         db.session.add(question)
 
-        # FEED: 插入到本人的用户FEED
+        # USER FEED: 插入到本人的用户FEED
         user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_QUESTION, question_id=uid)
         g.user.feeds.append(user_feed)
         db.session.add(g.user)
 
-        # FEED: 插入到followers的首页FEED中
+        # HOME FEED: 插入到followers的首页FEED中
         for follower in g.user.followers:
             feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION, sender_id=g.user.id,
                             question_id=uid)
@@ -390,7 +390,7 @@ def answer(uid):
         question.followers_count += 1
         db.session.add(question)
 
-    # FEED: 插入提问者的用户NOTI
+    # NOTI: 插入提问者的用户NOTI
     if g.user.id != question.user_id:
         noti = Notification(kind=NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION, sender_id=g.user.id,
                             answer_id=answer.id)
@@ -402,12 +402,12 @@ def answer(uid):
         for topic in question.topics:
             UserTopicStatistic.add_answer_in_topic(g.user.id, topic.topic_id)
 
-        # FEED: 插入本人的用户FEED
+        # USER FEED: 插入本人的用户FEED
         user_feed = UserFeed(kind=USER_FEED_KIND.ANSWER_QUESTION, answer_id=answer.id)
         g.user.feeds.append(user_feed)
         db.session.add(g.user)
 
-        # FEED: 插入followers的HOME FEED
+        # HOME FEED: 插入followers的HOME FEED
         # TODO: 使用消息队列
         for follower in g.user.followers:
             home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,

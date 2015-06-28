@@ -1,5 +1,5 @@
 # coding: utf-8
-from datetime import datetime
+from datetime import datetime, date
 from flask import g, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
@@ -297,13 +297,18 @@ class UserFeed(db.Model):
 
 class NOTIFICATION_KIND(object):
     """用户消息类型"""
-    ANSWER_FROM_ASKED_QUESTION = "WFHhwmW"  # 回答了我提出的问题
+    # 关注类消息
     FOLLOW_ME = "nK8BQ99"  # 关注了我
+
+    # 赞同类消息
     UPVOTE_ANSWER = "Vu69o4V"  # 赞同了我的回答
     THANK_ANSWER = "gIWr7dg"  # 感谢了我的回答
+    LIKE_ANSWER_COMMENT = "1oY78lq"  # 赞了我的评论
+
+    # 其他类消息
+    ANSWER_FROM_ASKED_QUESTION = "WFHhwmW"  # 回答了我提出的问题
     COMMENT_ANSWER = "Fk3cIIH"  # 评论了我的回答
     REPLY_ANSWER_COMMENT = "ibWxLaC"  # 回复了我的评论
-    LIKE_ANSWER_COMMENT = "1oY78lq"  # 赞了我的评论
     GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "FAKeWIP"  # 关注的问题有了精彩的回答
     SYSTEM_NOTI = "ezjwiCu"  # 系统通知
     HIDE_ANSWER = "E0CzTCk"  # 回答被折叠
@@ -314,13 +319,19 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     kind = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at_date = db.Column(db.Date, default=date.today())
+    unread = db.Column(db.Boolean, default=True)
 
+    # 消息接收者
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User',
                            backref=db.backref('notifications',
                                               lazy='dynamic',
                                               order_by='desc(Notification.created_at)'),
                            foreign_keys=[user_id])
+
+    # 消息发起者，为用户 id 的列表
+    senders_list = db.Column(db.Text)
 
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     sender = db.relationship('User', foreign_keys=[sender_id])

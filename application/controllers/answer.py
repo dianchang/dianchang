@@ -61,19 +61,19 @@ def upvote(uid):
         answer.calculate_score()  # 更新回答分值
         db.session.add(answer)
 
-        # FEED: 插入到本人的用户FEED
+        # USER FEED: 插入到本人的用户FEED
         user_feed = UserFeed(kind=USER_FEED_KIND.UPVOTE_ANSWER, answer_id=uid)
         g.user.feeds.append(user_feed)
         db.session.add(g.user)
 
-        # FEED: 插入到followers的首页FEED
+        # HOME FEED: 插入到followers的首页FEED
         for follower in g.user.followers:
             home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER, sender_id=g.user.id,
                                  answer_id=uid)
             follower.follower.home_feeds.append(home_feed)
             db.session.add(follower.follower)
 
-        # FEED: 插入到被赞回答者的NOTI
+        # NOTI: 插入到被赞回答者的NOTI
         if g.user.id != answer.user_id:
             noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, sender_id=g.user.id,
                                 answer_id=uid)
@@ -169,7 +169,7 @@ def thank(uid):
         db.session.add(answer.user)
         db.session.add(answer)
 
-        # FEED: 插入被感谢者的NOTI
+        # NOTI: 插入被感谢者的NOTI
         if g.user.id != answer.user_id:
             noti = Notification(kind=NOTIFICATION_KIND.THANK_ANSWER, sender_id=g.user.id,
                                 answer_id=uid)
@@ -251,7 +251,7 @@ def like_comment(uid):
         comment.likes_count += 1
         db.session.add(comment)
 
-        # FEED: 插入被赞者的NOTI
+        # NOTI: 插入被赞者的NOTI
         if g.user.id != comment.user_id:
             noti = Notification(kind=NOTIFICATION_KIND.LIKE_ANSWER_COMMENT, sender_id=g.user.id,
                                 answer_comment_id=uid)
@@ -280,7 +280,7 @@ def reply_comment(uid):
     db.session.add(parent_comment.answer)
     db.session.commit()
 
-    # FEED: 插入到被回复者的NOTI
+    # NOTI: 插入到被回复者的NOTI
     if g.user.id != parent_comment.user_id:
         noti = Notification(kind=NOTIFICATION_KIND.REPLY_ANSWER_COMMENT, sender_id=g.user.id,
                             answer_comment_id=new_comment.id)
@@ -314,7 +314,7 @@ def comment(uid):
     answer.comments_count += 1
     db.session.add(answer)
 
-    # FEED: 插入被评论回答者的NOTI
+    # NOTI: 插入被评论回答者的NOTI
     if g.user.id != answer.user_id:
         noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, sender_id=g.user.id,
                             answer_comment_id=comment.id)

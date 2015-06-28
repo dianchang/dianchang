@@ -58,12 +58,12 @@ def follow(uid):
             db.session.add(g.user)
             db.session.add(user)
 
-            # FEED: 插入被关注者的NOTI
+            # NOTI: 插入被关注者的NOTI
             noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, sender_id=g.user.id)
             user.notifications.append(noti)
             db.session.add(user)
 
-            # FEED：插入本人的用户FEED
+            # USER FEED：插入本人的用户FEED
             feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_USER, following_id=uid)
             g.user.feeds.append(feed)
             db.session.add(g.user)

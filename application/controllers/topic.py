@@ -254,7 +254,7 @@ def follow(uid):
         topic.followers_count += 1
         db.session.add(topic)
 
-        # FEED: 插入本人的用户FEED
+        # USER FEED: 插入本人的用户FEED
         feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, topic_id=uid)
         g.user.feeds.append(feed)
         db.session.add(g.user)
