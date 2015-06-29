@@ -61,3 +61,12 @@ h3 {
 .noti .date-wap .month {
   color: #999;
 }
+.noti .new-flag {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background-color: red;
+  left: -20px;
+  top: 32px;
+}

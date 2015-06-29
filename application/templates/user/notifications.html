@@ -36,6 +36,10 @@
 
         {% for noti in g.user.notifications %}
             <div class="noti">
+                {% if noti.created_at > last_read_notifications_at %}
+                    <div class="new-flag"></div>
+                {% endif %}
+
                 {% if noti.kind == NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION %}
                     {# 某人回答了你提出的问题 #}
                     <div class="header">

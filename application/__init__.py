@@ -176,6 +176,7 @@ def register_hooks(app):
         if g.user and g.user.is_admin:
             g._before_request_time = time.time()
 
+        # 是否有新的撰写消息
         if not g.user:
             g.has_new_compose_feeds = False
         else:

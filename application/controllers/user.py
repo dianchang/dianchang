@@ -126,7 +126,13 @@ def followers(uid):
 @UserPermission()
 def notifications():
     """用户消息"""
-    return render_template('user/notifications.html')
+    last_read_notifications_at = g.user.last_read_notifications_at
+    g.user.last_read_notifications_at = datetime.now()
+    for noti in g.user.notifications.filter(Notification.unread):
+        noti.unread = False
+        db.session.add(noti)
+    db.session.commit()
+    return render_template('user/notifications.html', last_read_notifications_at=last_read_notifications_at)
 
 
 @bp.route('/compose')
