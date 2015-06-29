@@ -15,6 +15,12 @@ h3 {
 .noti:last-child {
   border-bottom: 1px solid #eaeaea;
 }
+.noti .sender {
+  margin-left: 4px;
+}
+.noti .sender:first-child {
+  margin-left: 0;
+}
 .noti .sender img {
   width: 20px;
   height: 20px;

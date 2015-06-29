@@ -1,5 +1,5 @@
 # coding: utf-8
-from datetime import datetime
+from datetime import datetime, date
 from flask import Blueprint, render_template, url_for, json, g, request, get_template_attribute
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
     ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer
@@ -59,9 +59,21 @@ def follow(uid):
             db.session.add(user)
 
             # NOTI: 插入被关注者的 NOTI（需合并）
-            noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, senders_list=json.dumps([g.user.id]))
-            user.notifications.append(noti)
-            db.session.add(user)
+            noti = user.notifications.filter(
+                Notification.kind == NOTIFICATION_KIND.FOLLOW_ME,
+                Notification.unread,
+                Notification.created_at_date == date.today()).first()
+            if noti:
+                # 若当天已经有人关注他，且该条消息未读，则进行消息合并
+                senders_list = set(json.loads(noti.senders_list))
+                senders_list.add(g.user.id)
+                noti.senders_list = json.dumps(list(senders_list))
+                db.session.add(noti)
+                db.session.commit()
+            else:
+                noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, senders_list=json.dumps([g.user.id]))
+                user.notifications.append(noti)
+                db.session.add(user)
 
             # USER FEED：插入本人的用户 FEED
             feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_USER, following_id=uid)
