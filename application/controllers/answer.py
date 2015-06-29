@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import date
 from flask import Blueprint, render_template, json, g, request, redirect, url_for, get_template_attribute
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistic, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
     AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
@@ -75,10 +76,20 @@ def upvote(uid):
 
         # NOTI: 插入到被赞回答者的 NOTI（需合并）
         if g.user.id != answer.user_id:
-            noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, senders_list=json.dumps([g.user.id]),
-                                answer_id=uid)
-            answer.user.notifications.append(noti)
-            db.session.add(answer.user)
+            noti = answer.user.notifications.filter(
+                Notification.kind == NOTIFICATION_KIND.UPVOTE_ANSWER,
+                Notification.unread,
+                Notification.created_at_date == date.today()).first()
+            if noti:
+                senders_list = set(json.loads(noti.senders_list))
+                senders_list.add(g.user.id)
+                noti.senders_list = json.dumps(list(senders_list))
+                db.session.add(noti)
+            else:
+                noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, senders_list=json.dumps([g.user.id]),
+                                    answer_id=uid)
+                answer.user.notifications.append(noti)
+                db.session.add(answer.user)
 
         # 更新话题统计数据
         for topic in answer.question.topics:
