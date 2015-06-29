@@ -340,11 +340,21 @@ def get_message_notifications():
         NOTIFICATION_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC,
         NOTIFICATION_KIND.SYSTEM_NOTI,
         NOTIFICATION_KIND.HIDE_ANSWER
-    ])).limit(20)
+    ]))
+
+    g.user.last_read_notifications_at = datetime.now()
+    db.session.add(g.user)
+
+    for noti in notifications:
+        noti.unread = False
+        db.session.add(noti)
+
+    db.session.commit()
+
     macro = get_template_attribute('macros/_user.html', 'render_message_notifications')
     return json.dumps({
         'result': True,
-        'html': macro(notifications)
+        'html': macro(notifications.limit(20))
     })
 
 
@@ -352,11 +362,19 @@ def get_message_notifications():
 @UserPermission()
 def get_user_notifications():
     """获取用户类通知"""
-    followers = g.user.followers.limit(20)
+    for noti in g.user.notifications.filter(Notification.kind == NOTIFICATION_KIND.FOLLOW_ME):
+        noti.unread = False
+        db.session.add(noti)
+
+    g.user.last_read_notifications_at = datetime.now()
+    db.session.add(g.user)
+
+    db.session.commit()
+
     macro = get_template_attribute('macros/_user.html', 'render_user_notifications')
     return json.dumps({
         'result': True,
-        'html': macro(followers)
+        'html': macro(g.user.followers.limit(20))
     })
 
 
@@ -368,9 +386,19 @@ def get_thanks_notifications():
         NOTIFICATION_KIND.UPVOTE_ANSWER,
         NOTIFICATION_KIND.THANK_ANSWER,
         NOTIFICATION_KIND.LIKE_ANSWER_COMMENT
-    ])).limit(20)
+    ]))
+
+    g.user.last_read_notifications_at = datetime.now()
+    db.session.add(g.user)
+
+    for noti in notifications:
+        noti.unread = False
+        db.session.add(noti)
+
+    db.session.commit()
+
     macro = get_template_attribute('macros/_user.html', 'render_thanks_notifications')
     return json.dumps({
         'result': True,
-        'html': macro(notifications)
+        'html': macro(notifications.limit(20))
     })

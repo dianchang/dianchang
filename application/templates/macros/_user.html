@@ -127,7 +127,7 @@
                             {% if user.desc %}
                                 {{ user.desc }}
                             {% elif g.user.id == user.id %}
-                                尚无描述
+                                <span class="text-light">尚无描述</span>
                             {% endif %}
                         </span>
                         <span class="btn-edit-desc">
@@ -151,9 +151,11 @@
                                     <span class="{{ attr }}">{{ user[attr] }}</span>
                                     <span class="divider">·</span>
                                 {% endif %}
-                            {% else %}
-                                尚未填写相关资料
                             {% endfor %}
+
+                            {% if not user.location and not user.organization and not user.position %}
+                                <span class="text-light">尚未填写相关资料</span>
+                            {% endif %}
                         </span>
                         <span class="btn-edit-meta">
                             <span class="fa fa-pencil"></span> 编辑
@@ -574,8 +576,34 @@
 
 
 {# 用户类通知 #}
-{% macro render_user_notifications(notifications) %}
-    用户
+{% macro render_user_notifications(followers) %}
+    {% for follower in followers %}
+        {% set follower = follower.follower %}
+
+        <div class="noti-in-nav noti-user media">
+            <div class="media-left">
+                <a href="{{ follower.profile_url }}">
+                    <img src="{{ follower.avatar_url }}" alt="" class="dc-show-user-card"
+                         data-id="{{ follower.id }}"/>
+                </a>
+            </div>
+
+            <div class="media-body">
+                <div class="user">
+                    <a href="{{ follower.profile_url }}" class="dc-show-user-card"
+                       data-id="{{ follower.id }}">{{ follower.name }}</a>
+                    {% if follower.desc %}，{{ follower.desc }}{% endif %}
+                </div>
+                <div class="other text-light">
+                    {% if follower.organization %}{{ follower.organization }}{% endif %}
+                    {% if follower.organization and follower.position %}<span class="divider">·</span>{% endif %}
+                    {% if follower.position %}{{ follower.position }}{% endif %}
+                </div>
+            </div>
+
+            {{ following_user(follower) }}
+        </div>
+    {% endfor %}
 {% endmacro %}
 
 
