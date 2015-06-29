@@ -270,10 +270,18 @@ def like_comment(uid):
 
         # NOTI: 插入被赞者的 NOTI（需合并）
         if g.user.id != comment.user_id:
-            noti = Notification(kind=NOTIFICATION_KIND.LIKE_ANSWER_COMMENT, senders_list=json.dumps([g.user.id]),
-                                answer_comment_id=uid)
-            comment.user.notifications.append(noti)
-            db.session.add(comment.user)
+            noti = comment.user.notifications.filter(
+                Notification.unread,
+                Notification.kind == NOTIFICATION_KIND.LIKE_ANSWER_COMMENT,
+                Notification.created_at_date == date.today()).first()
+            if noti:
+                noti.add_sender(g.user.id)
+                db.session.add(noti)
+            else:
+                noti = Notification(kind=NOTIFICATION_KIND.LIKE_ANSWER_COMMENT, senders_list=json.dumps([g.user.id]),
+                                    answer_comment_id=uid)
+                comment.user.notifications.append(noti)
+                db.session.add(comment.user)
 
         db.session.commit()
 
