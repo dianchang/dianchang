@@ -390,9 +390,9 @@ def answer(uid):
         question.followers_count += 1
         db.session.add(question)
 
-    # NOTI: 插入提问者的用户NOTI
+    # NOTI: 插入提问者的用户 NOTI
     if g.user.id != question.user_id:
-        noti = Notification(kind=NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION, sender_id=g.user.id,
+        noti = Notification(kind=NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION, senders_list=json.dumps([g.user.id]),
                             answer_id=answer.id)
         question.user.notifications.append(noti)
         db.session.add(question.user)

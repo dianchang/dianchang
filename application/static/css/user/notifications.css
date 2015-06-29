@@ -1,0 +1,63 @@
+#main-wap .container {
+  width: 750px;
+  margin: 0 auto;
+}
+h3 {
+  text-align: center;
+  margin-top: 0;
+}
+.noti {
+  position: relative;
+  padding-bottom: 25px;
+  padding-top: 25px;
+  border-top: 1px solid #eaeaea;
+}
+.noti:last-child {
+  border-bottom: 1px solid #eaeaea;
+}
+.noti .sender img {
+  width: 20px;
+  height: 20px;
+}
+.noti .sender-name {
+  color: #333;
+}
+.noti .content {
+  margin-top: 8px;
+}
+.noti .content .question-title {
+  margin-bottom: 5px;
+}
+.noti .content .question-title a {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+.noti .content .answer-content {
+  font-size: 16px;
+  color: #999;
+}
+.noti .content .answer-content p:last-child {
+  margin-bottom: 0;
+}
+.noti .content .answer-comment {
+  font-size: 16px;
+  color: #999;
+}
+.noti .date-wap {
+  position: absolute;
+  top: -1px;
+  width: 50px;
+  right: -70px;
+  border-radius: 2px;
+  text-align: center;
+  padding: 5px 0;
+  background-color: #f5f6f5;
+}
+.noti .date-wap .day {
+  font-weight: bold;
+  font-size: 18px;
+}
+.noti .date-wap .month {
+  color: #999;
+}

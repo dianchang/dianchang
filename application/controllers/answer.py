@@ -66,16 +66,16 @@ def upvote(uid):
         g.user.feeds.append(user_feed)
         db.session.add(g.user)
 
-        # HOME FEED: 插入到followers的首页FEED
+        # HOME FEED: 插入到 followers 的首页 FEED
         for follower in g.user.followers:
             home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER, sender_id=g.user.id,
                                  answer_id=uid)
             follower.follower.home_feeds.append(home_feed)
             db.session.add(follower.follower)
 
-        # NOTI: 插入到被赞回答者的NOTI
+        # NOTI: 插入到被赞回答者的 NOTI（需合并）
         if g.user.id != answer.user_id:
-            noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, sender_id=g.user.id,
+            noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, senders_list=json.dumps([g.user.id]),
                                 answer_id=uid)
             answer.user.notifications.append(noti)
             db.session.add(answer.user)
@@ -169,9 +169,9 @@ def thank(uid):
         db.session.add(answer.user)
         db.session.add(answer)
 
-        # NOTI: 插入被感谢者的NOTI
+        # NOTI: 插入被感谢者的 NOTI（需合并）
         if g.user.id != answer.user_id:
-            noti = Notification(kind=NOTIFICATION_KIND.THANK_ANSWER, sender_id=g.user.id,
+            noti = Notification(kind=NOTIFICATION_KIND.THANK_ANSWER, senders_list=json.dumps([g.user.id]),
                                 answer_id=uid)
             answer.user.notifications.append(noti)
             db.session.add(answer.user)
@@ -251,9 +251,9 @@ def like_comment(uid):
         comment.likes_count += 1
         db.session.add(comment)
 
-        # NOTI: 插入被赞者的NOTI
+        # NOTI: 插入被赞者的 NOTI（需合并）
         if g.user.id != comment.user_id:
-            noti = Notification(kind=NOTIFICATION_KIND.LIKE_ANSWER_COMMENT, sender_id=g.user.id,
+            noti = Notification(kind=NOTIFICATION_KIND.LIKE_ANSWER_COMMENT, senders_list=json.dumps([g.user.id]),
                                 answer_comment_id=uid)
             comment.user.notifications.append(noti)
             db.session.add(comment.user)
@@ -274,15 +274,16 @@ def reply_comment(uid):
     parent_comment = AnswerComment.query.get_or_404(uid)
     comment_content = request.form.get('content')
     new_comment = AnswerComment(user_id=g.user.id, answer_id=parent_comment.answer_id, parent_id=uid,
-                                content=comment_content, root_id=parent_comment.root_id or uid)
+                                content=comment_content, root_id=parent_comment.root_id or uid,
+                                question_id=parent_comment.question_id)
     db.session.add(new_comment)
     parent_comment.answer.comments_count += 1
     db.session.add(parent_comment.answer)
     db.session.commit()
 
-    # NOTI: 插入到被回复者的NOTI
+    # NOTI: 插入到被回复者的 NOTI
     if g.user.id != parent_comment.user_id:
-        noti = Notification(kind=NOTIFICATION_KIND.REPLY_ANSWER_COMMENT, sender_id=g.user.id,
+        noti = Notification(kind=NOTIFICATION_KIND.REPLY_ANSWER_COMMENT, senders_list=json.dumps([g.user.id]),
                             answer_comment_id=new_comment.id)
         parent_comment.user.notifications.append(noti)
         db.session.add(parent_comment.user)
@@ -309,14 +310,15 @@ def comment(uid):
             'result': False
         })
 
-    comment = AnswerComment(content=comment_content, user_id=g.user.id)
+    comment = AnswerComment(content=comment_content, user_id=g.user.id, question_id=answer.question_id)
     answer.comments.append(comment)
     answer.comments_count += 1
     db.session.add(answer)
+    db.session.commit()
 
-    # NOTI: 插入被评论回答者的NOTI
+    # NOTI: 插入被评论回答者的 NOTI
     if g.user.id != answer.user_id:
-        noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, sender_id=g.user.id,
+        noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, senders_list=json.dumps([g.user.id]),
                             answer_comment_id=comment.id)
         answer.user.notifications.append(noti)
         db.session.add(answer.user)

@@ -1,171 +1,136 @@
 {% extends "layout.html" %}
 {% from "macros/_answer.html" import render_answer_commands %}
 
-{% block page_title %}Notifications{% endblock %}
+{% block page_title %}全部消息{% endblock %}
 {% block page_js %}
     <script src="/static/js/user/notifications.js"></script>{% endblock %}
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/user/notifications.css"/>{% endblock %}
+
+{% macro render_senders(senders, action) %}
+    {% set senders_count = senders.count() %}
+
+    {% if senders_count <= 2 %}
+        {% for sender in senders %}
+            <a href="{{ sender.profile_url }}" class="sender">
+                <img src="{{ sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
+                     data-id="{{ sender.id }}"/></a>
+            <a href="{{ sender.profile_url }}" class="sender-name dc-show-user-card"
+               data-id="{{ sender.id }}">
+                {{ sender.name }}</a>
+        {% endfor %}
+    {% else %}
+        <a href="{{ sender.profile_url }}" class="sender">
+            <img src="{{ sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
+                 data-id="{{ sender.id }}"/></a>
+    {% endif %}
+
+    <span class="action">
+        {% if senders_count == 3 %}3 人{% elif senders_count > 3 %}等 {{ senders_count }} 人{% endif %}{{ action }}
+    </span>
+{% endmacro %}
+
 {% block page_content %}
     <div class="container">
-        <div class="col-md-8">
-            <h3>通知</h3>
-            {% for noti in g.user.notifications %}
+        <h3>全部消息</h3>
+
+        {% for noti in g.user.notifications %}
+            <div class="noti">
                 {% if noti.kind == NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION %}
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
-                                     data-id="{{ noti.sender_id }}"/>
+                    {# 某人回答了你提出的问题 #}
+                    <div class="header">
+                        {{ render_senders(noti.senders, action='回答了你提出的问题') }}
+                    </div>
+                    <div class="content">
+                        <div class="question-title">
+                            <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                                {{ noti.answer.question.title }}
                             </a>
                         </div>
-                        <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
-                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
-                            回答了你提出的问题
-                            •
-                            <span>{{ noti.created_at|timesince }}</span>
 
-                            <div>
-                                <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
-                                    {{ noti.answer.question.title }}
-                                </a>
+                        <div class="answer-content">{{ noti.answer.content|safe }}</div>
 
-                                <div>
-                                    {{ noti.answer.content|safe }}
-                                    {{ render_answer_commands(noti.answer) }}
-                                </div>
-                            </div>
-                        </div>
+                        {#                        {{ render_answer_commands(noti.answer) }}#}
                     </div>
                 {% elif noti.kind == NOTIFICATION_KIND.FOLLOW_ME %}
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
-                                     data-id="{{ noti.sender_id }}"/>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
-                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
-                            关注了你
-                            •
-                            <span>{{ noti.created_at|timesince }}</span>
-                        </div>
+                    {# 某人关注了你 #}
+                    <div class="header">
+                        {{ render_senders(noti.senders, action='关注了你') }}
                     </div>
                 {% elif noti.kind == NOTIFICATION_KIND.UPVOTE_ANSWER %}
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
-                                     data-id="{{ noti.sender_id }}"/>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
-                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
-                            赞同了你的回答
-                            •
-                            <span>{{ noti.created_at|timesince }}</span>
+                    {# 某人赞同了你的回答 #}
+                    <div class="header">
+                        {{ render_senders(noti.senders, action='赞同了你的回答') }}
+                    </div>
 
-                            <div>
-                                <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
-                                    {{ noti.answer.question.title }}
-                                </a>
-
-                                <div>
-                                    {{ noti.answer.content|safe }}
-                                    {{ render_answer_commands(noti.answer) }}
-                                </div>
-                            </div>
+                    <div class="content">
+                        <div class="question-title">
+                            <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                                {{ noti.answer.question.title }}</a>
                         </div>
+
+                        <div class="answer-content">
+                            {{ noti.answer.content|safe }}
+                        </div>
+
+                        {#                        {{ render_answer_commands(noti.answer) }}#}
                     </div>
                 {% elif noti.kind == NOTIFICATION_KIND.THANK_ANSWER %}
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
-                                     data-id="{{ noti.sender_id }}"/>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
-                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
-                            感谢了你的回答
-                            •
-                            <span>{{ noti.created_at|timesince }}</span>
+                    {# 某人感谢了你的回答 #}
+                    <div class="header">
+                        {{ render_senders(noti.senders, action='感谢了你的回答') }}
+                    </div>
 
-                            <div>
-                                <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
-                                    {{ noti.answer.question.title }}
-                                </a>
-
-                                <div>
-                                    {{ noti.answer.content|safe }}
-                                    {{ render_answer_commands(noti.answer) }}
-                                </div>
-                            </div>
+                    <div class="content">
+                        <div class="question-title">
+                            <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                                {{ noti.answer.question.title }}</a>
                         </div>
+
+                        <div class="answer-content">
+                            {{ noti.answer.content|safe }}
+                        </div>
+
+                        {#                        {{ render_answer_commands(noti.answer) }}#}
                     </div>
                 {% elif noti.kind == NOTIFICATION_KIND.COMMENT_ANSWER %}
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
-                                     data-id="{{ noti.sender_id }}"/>
-                            </a>
+                    {# 评论了回答 #}
+                    <div class="header">
+                        {{ render_senders(noti.senders, action='评论了你的回答') }}
+                    </div>
+                    <div class="content">
+                        <div class="question-title">
+                            <a href="{{ url_for('question.view', uid=noti.answer_comment.question_id) }}">
+                                {{ noti.answer_comment.question.title }}</a>
                         </div>
-                        <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
-                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
-                            评论了你的回答
-                            •
-                            <span>{{ noti.created_at|timesince }}</span>
 
-                            <div>
-                                {{ noti.answer_comment.content|safe }}
-                            </div>
+                        <div class="answer-comment">
+                            {{ noti.answer_comment.content|safe }}
                         </div>
                     </div>
                 {% elif noti.kind == NOTIFICATION_KIND.REPLY_ANSWER_COMMENT %}
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
-                                     data-id="{{ noti.sender_id }}"/>
-                            </a>
+                    {# 回复了评论 #}
+                    <div class="header">
+                        {{ render_senders(noti.senders, action='回复了你的评论') }}
+                    </div>
+                    <div class="content">
+                        <div class="question-title">
+                            <a href="{{ url_for('question.view', uid=noti.answer_comment.question_id) }}">
+                                {{ noti.answer_comment.question.title }}</a>
                         </div>
-                        <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
-                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
-                            回复了你的评论
-                            •
-                            <span>{{ noti.created_at|timesince }}</span>
 
-                            <div>
-                                {{ noti.answer_comment.content|safe }}
-                            </div>
+                        <div class="answer-comment">
+                            {{ noti.answer_comment.content|safe }}
                         </div>
                     </div>
                 {% elif noti.kind == NOTIFICATION_KIND.LIKE_ANSWER_COMMENT %}
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="{{ noti.sender.profile_url }}">
-                                <img src="{{ noti.sender.avatar_url }}" alt="" class="dc-show-user-card"
-                                     data-id="{{ noti.sender_id }}"/>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <a href="{{ noti.sender.profile_url }}" class="dc-show-user-card"
-                               data-id="{{ noti.sender_id }}">{{ noti.sender.name }}</a>
-                            赞了你的评论
-                            •
-                            <span>{{ noti.created_at|timesince }}</span>
-
-                            <div>
-                                {{ noti.answer_comment.content }}
-                            </div>
+                    {# 赞了评论 #}
+                    <div class="header">
+                        {{ render_senders(noti.senders, action='赞了你的评论') }}
+                    </div>
+                    <div class="content">
+                        <div class="answer-comment">
+                            {{ noti.answer_comment.content|safe }}
                         </div>
                     </div>
                 {% elif noti.kind == NOTIFICATION_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC %}
@@ -175,9 +140,14 @@
                 {% elif noti.kind == NOTIFICATION_KIND.HIDE_ANSWER %}
                     {# TODO #}
                 {% endif %}
-            {% endfor %}
-        </div>
-        <div class="col-md-4">
-        </div>
+
+                {% if noti.last_in_that_day() %}
+                    <div class="date-wap">
+                        <div class="day">{{ noti.created_at.date()|day }}</div>
+                        <div class="month">{{ noti.created_at.date()|cn_month }}</div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

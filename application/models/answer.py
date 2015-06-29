@@ -232,6 +232,9 @@ class AnswerComment(db.Model):
                                                           lazy='dynamic',
                                                           order_by='asc(AnswerComment.created_at)'))
 
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    question = db.relationship('Question')
+
     parent_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
     parent = db.relationship('AnswerComment', remote_side=[id], foreign_keys=[parent_id])
 

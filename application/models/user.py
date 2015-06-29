@@ -1,6 +1,6 @@
 # coding: utf-8
 from datetime import datetime, date
-from flask import g, url_for
+from flask import g, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars, images
@@ -344,6 +344,22 @@ class Notification(db.Model):
 
     answer_comment_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
     answer_comment = db.relationship('AnswerComment')
+
+    def last_in_that_day(self):
+        """该问题是否为当天最晚的消息"""
+        day = self.created_at.date()
+        noti = g.user.notifications. \
+            filter(db.func.date(Notification.created_at) == day). \
+            order_by(Notification.created_at.desc()).first()
+        return noti is not None and noti.id == self.id
+
+    @property
+    def senders(self):
+        """该消息的全部发起者"""
+        if not self.senders_list:
+            return None
+        senders_id_list = json.loads(self.senders_list)
+        return User.query.filter(User.id.in_(senders_id_list))
 
 
 class HOME_FEED_KIND(object):

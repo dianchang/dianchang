@@ -1,1 +1,81 @@
 @import "../utils";
+
+#main-wap .container {
+  width: 750px;
+  margin: 0 auto;
+}
+
+h3 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.noti {
+  position: relative;
+  padding-bottom: 25px;
+  padding-top: 25px;
+  border-top: 1px solid @border-color;
+
+  &:last-child {
+    border-bottom: 1px solid @border-color;
+  }
+
+  .sender {
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .sender-name {
+    color: #333;
+  }
+
+  .content {
+    margin-top: 8px;
+
+    .question-title {
+      margin-bottom: 5px;
+
+      a {
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+    .answer-content {
+      font-size: 16px;
+      color: #999;
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .answer-comment {
+      font-size: 16px;
+      color: #999;
+    }
+  }
+
+  .date-wap {
+    position: absolute;
+    top: -1px;
+    width: 50px;
+    right: -70px;
+    border-radius: 2px;
+    text-align: center;
+    padding: 5px 0;
+    background-color: @background-gray;
+
+    .day {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .month {
+      color: #999;
+    }
+  }
+}
