@@ -21,6 +21,7 @@ h3 {
 }
 .noti .sender-name {
   color: #333;
+  margin-left: 2px;
 }
 .noti .content {
   margin-top: 8px;
