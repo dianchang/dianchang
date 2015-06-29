@@ -81,9 +81,7 @@ def upvote(uid):
                 Notification.unread,
                 Notification.created_at_date == date.today()).first()
             if noti:
-                senders_list = set(json.loads(noti.senders_list))
-                senders_list.add(g.user.id)
-                noti.senders_list = json.dumps(list(senders_list))
+                noti.add_sender(g.user.id)
                 db.session.add(noti)
             else:
                 noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, senders_list=json.dumps([g.user.id]),
@@ -182,10 +180,18 @@ def thank(uid):
 
         # NOTI: 插入被感谢者的 NOTI（需合并）
         if g.user.id != answer.user_id:
-            noti = Notification(kind=NOTIFICATION_KIND.THANK_ANSWER, senders_list=json.dumps([g.user.id]),
-                                answer_id=uid)
-            answer.user.notifications.append(noti)
-            db.session.add(answer.user)
+            noti = answer.user.notifications.filter(
+                Notification.unread,
+                Notification.kind == NOTIFICATION_KIND.THANK_ANSWER,
+                Notification.created_at_date == date.today()).first()
+            if noti:
+                noti.add_sender(g.user.id)
+                db.session.add(noti)
+            else:
+                noti = Notification(kind=NOTIFICATION_KIND.THANK_ANSWER, senders_list=json.dumps([g.user.id]),
+                                    answer_id=uid)
+                answer.user.notifications.append(noti)
+                db.session.add(answer.user)
 
         db.session.commit()
 

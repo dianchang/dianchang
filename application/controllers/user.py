@@ -65,11 +65,8 @@ def follow(uid):
                 Notification.created_at_date == date.today()).first()
             if noti:
                 # 若当天已经有人关注他，且该条消息未读，则进行消息合并
-                senders_list = set(json.loads(noti.senders_list))
-                senders_list.add(g.user.id)
-                noti.senders_list = json.dumps(list(senders_list))
+                noti.add_sender(g.user.id)
                 db.session.add(noti)
-                db.session.commit()
             else:
                 noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, senders_list=json.dumps([g.user.id]))
                 user.notifications.append(noti)
@@ -81,6 +78,7 @@ def follow(uid):
             db.session.add(g.user)
 
             db.session.commit()
+            
             return json.dumps({
                 'result': True,
                 'followed': True,

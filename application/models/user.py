@@ -353,6 +353,12 @@ class Notification(db.Model):
             order_by(Notification.created_at.desc()).first()
         return noti is not None and noti.id == self.id
 
+    def add_sender(self, sender_id):
+        """添加发起者"""
+        senders_list = set(json.loads(self.senders_list))
+        senders_list.add(sender_id)
+        self.senders_list = json.dumps(list(senders_list))
+
     @property
     def senders(self):
         """该消息的全部发起者"""
