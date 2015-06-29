@@ -177,29 +177,88 @@ html {
 .navbar #nav-notification {
   margin-right: 15px;
 }
-.navbar #nav-notification a {
+.navbar #nav-notification > a {
   width: 18px;
   height: 18px;
   border-radius: 9px;
   font-size: 12px;
   margin-top: 16px;
+  margin-bottom: 16px;
   background-color: #0f1828;
   padding: 2px;
 }
-.navbar #nav-notification a .no-notifications {
+.navbar #nav-notification > a .no-notifications {
   width: 14px;
   height: 14px;
   border-radius: 7px;
   background-color: #404855;
   display: block;
 }
-.navbar #nav-notification a .notifications-count {
+.navbar #nav-notification > a .notifications-count {
   color: white;
   display: none;
   font-weight: bold;
   text-align: center;
   line-height: 1;
   margin-left: -1px;
+}
+.navbar #nav-notification .dropdown-menu-noti {
+  padding: 0;
+  width: 360px;
+  left: -171px;
+  border-top: 0;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-tabs {
+  padding: 0;
+  margin: 0;
+  background-color: #f5f6f5;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-tabs li {
+  padding: 8px 0;
+  text-align: center;
+  display: block;
+  float: left;
+  font-size: 18px;
+  cursor: pointer;
+  width: 33.33333333333333%;
+  color: #c1c2c1;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-tabs li.active {
+  color: #515151;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-content {
+  max-height: 300px;
+  overflow: auto;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-content .noti-panel {
+  display: none;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-content .noti-panel.empty {
+  text-align: center;
+  padding: 12px 0;
+  color: #999;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-content .noti-panel.active {
+  display: block;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-footer {
+  text-align: center;
+  padding: 10px 0;
+  position: relative;
+  border-top: 1px solid #eaeaea;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications {
+  color: #999;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications-settings {
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  color: #999;
+  font-size: 18px;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications-settings:hover {
+  color: #666;
 }
 .navbar #nav-notification.on a {
   padding-top: 3px;

@@ -297,15 +297,15 @@ class UserFeed(db.Model):
 
 class NOTIFICATION_KIND(object):
     """用户消息类型"""
-    # 关注类消息
+    # 用户类消息
     FOLLOW_ME = "nK8BQ99"  # 关注了我
 
-    # 赞同类消息
+    # 感谢类消息
     UPVOTE_ANSWER = "Vu69o4V"  # 赞同了我的回答
     THANK_ANSWER = "gIWr7dg"  # 感谢了我的回答
     LIKE_ANSWER_COMMENT = "1oY78lq"  # 赞了我的评论
 
-    # 其他类消息
+    # 消息类消息
     ANSWER_FROM_ASKED_QUESTION = "WFHhwmW"  # 回答了我提出的问题
     COMMENT_ANSWER = "Fk3cIIH"  # 评论了我的回答
     REPLY_ANSWER_COMMENT = "ibWxLaC"  # 回复了我的评论

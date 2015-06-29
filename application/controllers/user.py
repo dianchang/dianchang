@@ -78,7 +78,7 @@ def follow(uid):
             db.session.add(g.user)
 
             db.session.commit()
-            
+
             return json.dumps({
                 'result': True,
                 'followed': True,
@@ -326,4 +326,51 @@ def get_card(uid):
     return json.dumps({
         'result': True,
         'html': macro(user)
+    })
+
+
+@bp.route('/user/get_message_notifications', methods=['POST'])
+@UserPermission()
+def get_message_notifications():
+    """获取消息类通知"""
+    notifications = g.user.notifications.filter(Notification.kind.in_([
+        NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION,
+        NOTIFICATION_KIND.COMMENT_ANSWER,
+        NOTIFICATION_KIND.REPLY_ANSWER_COMMENT,
+        NOTIFICATION_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC,
+        NOTIFICATION_KIND.SYSTEM_NOTI,
+        NOTIFICATION_KIND.HIDE_ANSWER
+    ])).limit(20)
+    macro = get_template_attribute('macros/_user.html', 'render_message_notifications')
+    return json.dumps({
+        'result': True,
+        'html': macro(notifications)
+    })
+
+
+@bp.route('/user/get_user_notifications', methods=['POST'])
+@UserPermission()
+def get_user_notifications():
+    """获取用户类通知"""
+    followers = g.user.followers.limit(20)
+    macro = get_template_attribute('macros/_user.html', 'render_user_notifications')
+    return json.dumps({
+        'result': True,
+        'html': macro(followers)
+    })
+
+
+@bp.route('/user/get_thanks_notifications', methods=['POST'])
+@UserPermission()
+def get_thanks_notifications():
+    """获取感谢类通知"""
+    notifications = g.user.notifications.filter(Notification.kind.in_([
+        NOTIFICATION_KIND.UPVOTE_ANSWER,
+        NOTIFICATION_KIND.THANK_ANSWER,
+        NOTIFICATION_KIND.LIKE_ANSWER_COMMENT
+    ])).limit(20)
+    macro = get_template_attribute('macros/_user.html', 'render_thanks_notifications')
+    return json.dumps({
+        'result': True,
+        'html': macro(notifications)
     })

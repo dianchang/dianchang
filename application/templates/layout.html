@@ -105,10 +105,44 @@
                 <li id="nav-notification" class="{% if g.notifications_count %}on{% endif %}
                     {% if g.notifications_count > 9 %}more{% endif %}">
 
-                    <a href="{{ url_for('user.notifications') }}">
+                    <a href="#" class="dropdown-toggle notifications-count-wap" data-toggle="dropdown">
                         <span class="no-notifications"></span>
                         <span class="notifications-count">{{ g.notifications_count or "" }}</span>
                     </a>
+
+                    <ul class="dropdown-menu dropdown-menu-noti" role="menu">
+                        <ul class="noti-tabs clearfix">
+                            <li class="active noti-tab-message" data-toggle="message">
+                                <span class="fa fa-comment"></span>
+                            </li>
+                            <li data-toggle="thanks" class="noti-tab-thanks">
+                                <span class="fa fa-heart"></span>
+                            </li>
+                            <li data-toggle="user" class="noti-tab-user">
+                                <span class="fa fa-user"></span>
+                            </li>
+                        </ul>
+
+                        <div class="noti-content">
+                            <div class="noti-panel active noti-panel-message empty">
+                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                            </div>
+                            <div class="noti-panel noti-panel-thanks empty">
+                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                            </div>
+                            <div class="noti-panel noti-panel-user empty">
+                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                            </div>
+                        </div>
+
+                        <div class="noti-footer">
+                            <a href="{{ url_for('user.notifications') }}" class="btn-go-to-notifications">
+                                查看全部</a>
+                            <a href="{{ url_for('account.notification_settings') }}"
+                               class="btn-go-to-notifications-settings">
+                                <span class="fa fa-gear"></span></a>
+                        </div>
+                    </ul>
                 </li>
 
                 <li id="nav-settings">

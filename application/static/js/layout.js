@@ -11,17 +11,78 @@
     });
 
     // 消息通知
-    //$('#nav-notification').click(function () {
-    //    if ($(this).hasClass('on') && $(this).hasClass('more')) {
-    //        $(this).removeClass('on').removeClass('more');
-    //    } else if ($(this).hasClass('on')) {
-    //        $(this).addClass('more');
-    //        $(this).find('.notifications-count').text(23);
-    //    } else {
-    //        $(this).addClass('on');
-    //        $(this).find('.notifications-count').text(2);
-    //    }
-    //});
+    $('.dropdown-menu-noti').on('click', function (e) {
+        e.stopPropagation();
+    });
+
+    // 切换通知面板
+    $('.noti-tabs li').click(function () {
+        var targetClass = $(this).data('toggle');
+
+        $(this).addClass('active');
+        $('.noti-tabs li').not(this).removeClass('active');
+
+        $('.noti-panel').removeClass('active');
+        console.log('.noti-panel-' + targetClass);
+        $('.noti-panel-' + targetClass).addClass('active');
+    });
+
+    // 显示消息类通知
+    $('.notifications-count-wap, .noti-tab-message').click(function () {
+        var $messageNotiWap = $('.noti-panel-message');
+
+        if (!$messageNotiWap.hasClass('empty')) {
+            return true;
+        }
+
+        $.ajax({
+            url: urlFor('user.get_message_notifications'),
+            method: 'post',
+            dataType: 'json'
+        }).done(function (response) {
+            if (response.result) {
+                $messageNotiWap.html(response.html);
+            }
+        });
+    });
+
+    // 显示用户类通知
+    $('.noti-tab-user').click(function () {
+        var $userNotiWap = $('.noti-panel-user');
+
+        if (!$userNotiWap.hasClass('empty')) {
+            return true;
+        }
+
+        $.ajax({
+            url: urlFor('user.get_user_notifications'),
+            method: 'post',
+            dataType: 'json'
+        }).done(function (response) {
+            if (response.result) {
+                $userNotiWap.html(response.html);
+            }
+        });
+    });
+
+    // 显示感谢类通知
+    $('.noti-tab-thanks').click(function () {
+        var $thanksNotiWap = $('.noti-panel-thanks');
+
+        if (!$thanksNotiWap.hasClass('empty')) {
+            return true;
+        }
+
+        $.ajax({
+            url: urlFor('user.get_thanks_notifications'),
+            method: 'post',
+            dataType: 'json'
+        }).done(function (response) {
+            if (response.result) {
+                $thanksNotiWap.html(response.html);
+            }
+        });
+    });
 
     // 调整modal高度
     $('.modal-adjust-position').on('show.bs.modal', function () {
