@@ -11,7 +11,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {% for feed in g.user.home_feeds %}
+                {% for feed in feeds %}
                     {% if feed.kind == HOME_FEED_KIND.FOLLOWING_ASK_QUESTION %}
                         {{ render_question(feed.question, user=feed.question.user) }}
                     {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION %}

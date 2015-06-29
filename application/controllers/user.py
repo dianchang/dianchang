@@ -132,7 +132,9 @@ def notifications():
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
-    return render_template('user/notifications.html', last_read_notifications_at=last_read_notifications_at)
+    notifications = g.user.notifications.limit(20)
+    return render_template('user/notifications.html', last_read_notifications_at=last_read_notifications_at,
+                           notifications=notifications)
 
 
 @bp.route('/compose')

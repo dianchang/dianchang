@@ -34,7 +34,7 @@
     <div class="container">
         <h3>全部消息</h3>
 
-        {% for noti in g.user.notifications %}
+        {% for noti in notifications %}
             <div class="noti">
                 {% if noti.created_at > last_read_notifications_at %}
                     <div class="new-flag"></div>
