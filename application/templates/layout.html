@@ -101,10 +101,12 @@
 
         <ul class="nav navbar-nav pull-right">
             {% if g.user %}
-                <li id="nav-notification">
-                    <a href="javascript: void(0)">
+                <li id="nav-notification" class="{% if g.notifications_count %}on{% endif %}
+                    {% if g.notifications_count > 9 %}more{% endif %}">
+
+                    <a href="{{ url_for('user.notifications') }}">
                         <span class="no-notifications"></span>
-                        <span class="notifications-count">2</span>
+                        <span class="notifications-count">{{ g.notifications_count or "" }}</span>
                     </a>
                 </li>
                 <li id="nav-settings">

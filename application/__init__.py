@@ -172,6 +172,8 @@ def register_hooks(app):
 
     @app.before_request
     def before_request():
+        from application.models import Notification
+
         g.user = get_current_user()
         if g.user and g.user.is_admin:
             g._before_request_time = time.time()
@@ -185,6 +187,12 @@ def register_hooks(app):
                 g.has_new_compose_feeds = False
             else:
                 g.has_new_compose_feeds = g.user.last_read_compose_feeds_at < latest_compose_feed.created_at
+
+        # 新消息条数
+        if not g.user:
+            g.notifications_count = 0
+        else:
+            g.notifications_count = g.user.notifications.filter(Notification.unread).count()
 
     @app.after_request
     def after_request(response):

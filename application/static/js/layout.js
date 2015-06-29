@@ -11,17 +11,17 @@
     });
 
     // 消息通知
-    $('#nav-notification').click(function () {
-        if ($(this).hasClass('on') && $(this).hasClass('more')) {
-            $(this).removeClass('on').removeClass('more');
-        } else if ($(this).hasClass('on')) {
-            $(this).addClass('more');
-            $(this).find('.notifications-count').text(23);
-        } else {
-            $(this).addClass('on');
-            $(this).find('.notifications-count').text(2);
-        }
-    });
+    //$('#nav-notification').click(function () {
+    //    if ($(this).hasClass('on') && $(this).hasClass('more')) {
+    //        $(this).removeClass('on').removeClass('more');
+    //    } else if ($(this).hasClass('on')) {
+    //        $(this).addClass('more');
+    //        $(this).find('.notifications-count').text(23);
+    //    } else {
+    //        $(this).addClass('on');
+    //        $(this).find('.notifications-count').text(2);
+    //    }
+    //});
 
     // 调整modal高度
     $('.modal-adjust-position').on('show.bs.modal', function () {
