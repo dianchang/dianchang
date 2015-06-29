@@ -101,6 +101,7 @@
 
         <ul class="nav navbar-nav pull-right">
             {% if g.user %}
+                {# 消息 #}
                 <li id="nav-notification" class="{% if g.notifications_count %}on{% endif %}
                     {% if g.notifications_count > 9 %}more{% endif %}">
 
@@ -109,10 +110,13 @@
                         <span class="notifications-count">{{ g.notifications_count or "" }}</span>
                     </a>
                 </li>
+
                 <li id="nav-settings">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{{ g.user.avatar_url }}" alt="" class="img-circle"/>
                         {{ g.user.name }}
                     </a>
+
                     <ul class="dropdown-menu" role="menu">
                         <li>
                             <a href="{{ g.user.profile_url }}">我的主页</a>
