@@ -374,6 +374,9 @@
   color: #333;
   margin-left: 2px;
 }
+.dc-noti-sender .action {
+  margin-left: 2px;
+}
 .noti-in-nav {
   border-top: 1px solid #eaeaea;
   padding: 12px 15px;
