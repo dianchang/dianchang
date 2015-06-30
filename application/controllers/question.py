@@ -336,15 +336,19 @@ def save_answer_draft(uid):
     content = request.form.get('content', '')
     draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
     if draft:
-        draft.content = content
-        db.session.add(draft)
-        db.session.commit()
+        content = content.strip()
+        if content == '':
+            db.session.delete(draft)
+            g.user.drafts_count -= 1
+        else:
+            draft.content = content
+            db.session.add(draft)
     else:
         draft = AnswerDraft(user_id=g.user.id, question_id=uid, content=content)
         g.user.drafts_count += 1
         db.session.add(g.user)
         db.session.add(draft)
-        db.session.commit()
+    db.session.commit()
     return json.dumps({'result': True})
 
 
