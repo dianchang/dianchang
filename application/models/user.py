@@ -309,9 +309,9 @@ class NOTIFICATION_KIND(object):
     ANSWER_FROM_ASKED_QUESTION = "WFHhwmW"  # 回答了我提出的问题
     COMMENT_ANSWER = "Fk3cIIH"  # 评论了我的回答
     REPLY_ANSWER_COMMENT = "ibWxLaC"  # 回复了我的评论
-    GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "FAKeWIP"  # 关注的问题有了精彩的回答
-    SYSTEM_NOTI = "ezjwiCu"  # 系统通知
-    HIDE_ANSWER = "E0CzTCk"  # 回答被折叠
+    GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "FAKeWIP"  # 关注的问题有了精彩的回答（后台）
+    SYSTEM_NOTI = "ezjwiCu"  # 系统通知（后台）
+    HIDE_ANSWER = "E0CzTCk"  # 回答被折叠（后台）
 
 
 class Notification(db.Model):
