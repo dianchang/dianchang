@@ -166,7 +166,8 @@ def pinyin():
 
 @manager.command
 def uniform():
-    from application.models import db, User, Answer, Question, AnswerComment
+    from flask import json
+    from application.models import db, User, Answer, Question, AnswerComment, Notification
 
     # for user in User.query:
     #     user.followers_count = user.followers.count()
@@ -196,6 +197,10 @@ def uniform():
     for answer_comment in AnswerComment.query:
         answer_comment.question_id = answer_comment.answer.question_id
         db.session.add(answer_comment)
+
+    for noti in Notification.query:
+        noti.senders_list = json.dumps([noti.sender_id])
+        db.session.add(noti)
 
     db.session.commit()
 
