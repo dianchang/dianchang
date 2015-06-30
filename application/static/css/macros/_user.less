@@ -469,10 +469,37 @@
   }
 }
 
+// 通知发起者
+.dc-noti-sender {
+  .sender {
+    margin-left: 4px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .sender-name {
+    color: #333;
+    margin-left: 2px;
+  }
+}
+
+// 导航通知
 .noti-in-nav {
   border-top: 1px solid @border-color;
-  padding: 15px 15px;
+  padding: 12px 15px;
   margin-top: 0;
+  color: #333;
+
+  .dc-noti-sender {
+    margin-bottom: 4px;
+  }
 
   &.noti-user {
     position: relative;
@@ -506,6 +533,14 @@
       right: 15px;
       top: 20px;
     }
+  }
 
+  .question-title {
+    font-weight: bold;
+    margin-bottom: 2px;
+
+    a {
+      color: @main-color;
+    }
   }
 }

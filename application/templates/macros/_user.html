@@ -571,6 +571,33 @@
 {% endmacro %}
 
 
+{# 通知发起者 #}
+{% macro render_notification_senders(senders, action) %}
+    {% set senders_count = senders.count() %}
+
+    <div class="dc-noti-sender">
+        {% if senders_count <= 2 %}
+            {% for sender in senders %}
+                <a href="{{ sender.profile_url }}" class="sender">
+                    <img src="{{ sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
+                         data-id="{{ sender.id }}"/></a>
+                <a href="{{ sender.profile_url }}" class="sender-name dc-show-user-card"
+                   data-id="{{ sender.id }}">
+                    {{ sender.name }}</a>
+            {% endfor %}
+        {% else %}
+            <a href="{{ sender.profile_url }}" class="sender">
+                <img src="{{ sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
+                     data-id="{{ sender.id }}"/></a>
+        {% endif %}
+
+        <span class="action">
+        {% if senders_count == 3 %}3 人{% elif senders_count > 3 %}等 {{ senders_count }} 人{% endif %}{{ action }}
+    </span>
+    </div>
+{% endmacro %}
+
+
 {# 消息类通知 #}
 {% macro render_message_notifications(notifications) %}
     消息
@@ -610,6 +637,38 @@
 
 
 {# 感谢类通知 #}
-{% macro render_thanks_notifications(followers) %}
-    感谢
+{% macro render_thanks_notifications(notifications) %}
+    {% for noti in notifications %}
+        <div class="noti-in-nav noti-thanks">
+            {% if noti.kind == NOTIFICATION_KIND.THANK_ANSWER %}
+                {{ render_notification_senders(noti.senders, action='感谢了你的回答') }}
+
+                <div class="question-title">
+                    <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                        {{ noti.answer.question.title }}</a>
+                </div>
+
+                <div class="answer-content text-light">
+                    {{ noti.answer.content_preview|truncate(40, true) }}
+                </div>
+            {% elif noti.kind == NOTIFICATION_KIND.UPVOTE_ANSWER %}
+                {{ render_notification_senders(noti.senders, action='赞同了你的回答') }}
+
+                <div class="question-title">
+                    <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
+                        {{ noti.answer.question.title }}</a>
+                </div>
+
+                <div class="answer-content text-light">
+                    {{ noti.answer.content_preview|truncate(40, true) }}
+                </div>
+            {% elif noti.kind == NOTIFICATION_KIND.LIKE_ANSWER_COMMENT %}
+                {{ render_notification_senders(noti.senders, action='赞了你的评论') }}
+
+                <div class="answer-comment text-light">
+                    {{ noti.answer_comment.content|truncate(40, true) }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
 {% endmacro %}

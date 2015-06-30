@@ -360,10 +360,28 @@
   padding: 20px 0;
   border-top: 1px solid #d6d6d6;
 }
+.dc-noti-sender .sender {
+  margin-left: 4px;
+}
+.dc-noti-sender .sender:first-child {
+  margin-left: 0;
+}
+.dc-noti-sender .sender img {
+  width: 20px;
+  height: 20px;
+}
+.dc-noti-sender .sender-name {
+  color: #333;
+  margin-left: 2px;
+}
 .noti-in-nav {
   border-top: 1px solid #eaeaea;
-  padding: 15px 15px;
+  padding: 12px 15px;
   margin-top: 0;
+  color: #333;
+}
+.noti-in-nav .dc-noti-sender {
+  margin-bottom: 4px;
 }
 .noti-in-nav.noti-user {
   position: relative;
@@ -388,4 +406,11 @@
   position: absolute;
   right: 15px;
   top: 20px;
+}
+.noti-in-nav .question-title {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.noti-in-nav .question-title a {
+  color: #009999;
 }
