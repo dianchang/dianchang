@@ -172,7 +172,7 @@ def register_hooks(app):
 
     @app.before_request
     def before_request():
-        from application.models import Notification
+        from application.models import Notification, NOTIFICATION_KIND, NOTIFICATION_KIND_TYPE
 
         g.user = get_current_user()
         if g.user and g.user.is_admin:
@@ -191,8 +191,22 @@ def register_hooks(app):
         # 新消息条数
         if not g.user:
             g.notifications_count = 0
+            g.message_notifications_count = 0
+            g.user_notifications_count = 0
+            g.thanks_notifications_count = 0
         else:
             g.notifications_count = g.user.notifications.filter(Notification.unread).count()
+            if g.notifications_count != 0:
+                g.message_notifications_count = g.user.notifications.filter(
+                    Notification.unread, Notification.kind.in_(NOTIFICATION_KIND_TYPE.MESSAGE)).count()
+                g.user_notifications_count = g.user.notifications.filter(
+                    Notification.unread, Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER)).count()
+                g.thanks_notifications_count = g.user.notifications.filter(
+                    Notification.unread, Notification.kind.in_(NOTIFICATION_KIND_TYPE.THANKS)).count()
+            else:
+                g.message_notifications_count = 0
+                g.user_notifications_count = 0
+                g.thanks_notifications_count = 0
 
     @app.after_request
     def after_request(response):

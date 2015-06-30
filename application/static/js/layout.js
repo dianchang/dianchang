@@ -28,7 +28,7 @@
     });
 
     // 显示消息类通知
-    $('.notifications-count-wap, .noti-tab-message').click(function () {
+    $('.notifications-count-wap').click(function () {
         var $messageNotiWap = $('.noti-panel-message');
 
         if (!$messageNotiWap.hasClass('empty')) {
@@ -50,9 +50,14 @@
         });
     });
 
+    $('.noti-tab-message').click(function () {
+        $(this).removeClass('new');
+    });
+
     // 显示用户类通知
     $('.noti-tab-user').click(function () {
         var $userNotiWap = $('.noti-panel-user');
+        var _this = $(this);
 
         if (!$userNotiWap.hasClass('empty')) {
             return true;
@@ -69,6 +74,8 @@
                 } else {
                     $userNotiWap.addClass('empty');
                 }
+
+                _this.removeClass('new');
             }
         });
     });
@@ -76,6 +83,7 @@
     // 显示感谢类通知
     $('.noti-tab-thanks').click(function () {
         var $thanksNotiWap = $('.noti-panel-thanks');
+        var _this = $(this);
 
         if (!$thanksNotiWap.hasClass('empty')) {
             return true;
@@ -92,6 +100,8 @@
                 } else {
                     $thanksNotiWap.addClass('empty');
                 }
+
+                _this.removeClass('new');
             }
         });
     });

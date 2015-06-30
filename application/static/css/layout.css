@@ -222,12 +222,26 @@ html {
   cursor: pointer;
   width: 33.33333333333333%;
   color: #c1c2c1;
+  position: relative;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-tabs li .new-flag {
+  position: absolute;
+  width: 8px;
+  display: none;
+  height: 8px;
+  border-radius: 8px;
+  background-color: red;
+  right: 20px;
+  top: 10px;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-tabs li.active {
   color: #515151 !important;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-tabs li:hover {
   color: #999;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-tabs li.new .new-flag {
+  display: block;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-content {
   max-height: 300px;
@@ -263,15 +277,15 @@ html {
 .navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications-settings:hover {
   color: #666;
 }
-.navbar #nav-notification.on a {
+.navbar #nav-notification.on > a {
   padding-top: 3px;
   padding-bottom: 3px;
   background-color: red;
 }
-.navbar #nav-notification.on a .no-notifications {
+.navbar #nav-notification.on > a .no-notifications {
   display: none;
 }
-.navbar #nav-notification.on a .notifications-count {
+.navbar #nav-notification.on > a .notifications-count {
   display: block;
 }
 .navbar #nav-notification.on.more a {

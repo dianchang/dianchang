@@ -112,14 +112,20 @@
 
                     <ul class="dropdown-menu dropdown-menu-noti" role="menu">
                         <ul class="noti-tabs clearfix">
-                            <li class="active noti-tab-message" data-toggle="message">
+                            <li class="active noti-tab-message {% if g.message_notifications_count %}new{% endif %}"
+                                data-toggle="message">
                                 <span class="fa fa-comment"></span>
+                                <span class="new-flag"></span>
                             </li>
-                            <li data-toggle="thanks" class="noti-tab-thanks">
+                            <li data-toggle="thanks"
+                                class="noti-tab-thanks {% if g.thanks_notifications_count %}new{% endif %}">
                                 <span class="fa fa-heart"></span>
+                                <span class="new-flag"></span>
                             </li>
-                            <li data-toggle="user" class="noti-tab-user">
+                            <li data-toggle="user"
+                                class="noti-tab-user {% if g.user_notifications_count %}new{% endif %}">
                                 <span class="fa fa-user"></span>
+                                <span class="new-flag"></span>
                             </li>
                         </ul>
 

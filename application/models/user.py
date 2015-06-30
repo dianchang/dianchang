@@ -27,7 +27,10 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     last_read_compose_feeds_at = db.Column(db.DateTime, default=datetime.now)  # 最后浏览撰写 FEED 的时间
-    last_read_notifications_at = db.Column(db.DateTime, default=datetime.now)  # 最后浏览消息的时间
+    last_read_notifications_at = db.Column(db.DateTime, default=datetime.now)  # 最后浏览通知的时间
+    last_read_message_notifications_at = db.Column(db.DateTime, default=datetime.now)  # 最后浏览消息类通知的时间
+    last_read_user_notifications_at = db.Column(db.DateTime, default=datetime.now)  # 最后浏览用户类消息的时间
+    last_read_thanks_notifications_at = db.Column(db.DateTime, default=datetime.now)  # 最后浏览感谢类消息的时间
 
     is_active = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
@@ -296,7 +299,7 @@ class UserFeed(db.Model):
 
 
 class NOTIFICATION_KIND(object):
-    """用户消息类型"""
+    """用户通知子类型"""
     # 用户类消息
     FOLLOW_ME = "nK8BQ99"  # 关注了我
 
@@ -305,13 +308,30 @@ class NOTIFICATION_KIND(object):
     THANK_ANSWER = "gIWr7dg"  # 感谢了我的回答
     LIKE_ANSWER_COMMENT = "1oY78lq"  # 赞了我的评论
 
-    # 消息类消息
+    # 消息类通知
     ANSWER_FROM_ASKED_QUESTION = "WFHhwmW"  # 回答了我提出的问题
     COMMENT_ANSWER = "Fk3cIIH"  # 评论了我的回答
     REPLY_ANSWER_COMMENT = "ibWxLaC"  # 回复了我的评论
     GOOD_ANSWER_FROM_FOLLOWED_TOPIC = "FAKeWIP"  # 关注的问题有了精彩的回答（后台）
     SYSTEM_NOTI = "ezjwiCu"  # 系统通知（后台）
     HIDE_ANSWER = "E0CzTCk"  # 回答被折叠（后台）
+
+
+class NOTIFICATION_KIND_TYPE(object):
+    """用户通知主类型"""
+    # 消息类
+    MESSAGE = [NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION,
+               NOTIFICATION_KIND.COMMENT_ANSWER,
+               NOTIFICATION_KIND.REPLY_ANSWER_COMMENT,
+               NOTIFICATION_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC,
+               NOTIFICATION_KIND.SYSTEM_NOTI,
+               NOTIFICATION_KIND.HIDE_ANSWER]
+
+    USER = [NOTIFICATION_KIND.FOLLOW_ME]
+
+    THANKS = [NOTIFICATION_KIND.UPVOTE_ANSWER,
+              NOTIFICATION_KIND.THANK_ANSWER,
+              NOTIFICATION_KIND.LIKE_ANSWER_COMMENT]
 
 
 class Notification(db.Model):

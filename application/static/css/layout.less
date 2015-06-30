@@ -269,6 +269,18 @@ html {
           cursor: pointer;
           width: 33.33333333333333%;
           color: #c1c2c1;
+          position: relative;
+
+          .new-flag {
+            position: absolute;
+            width: 8px;
+            display: none;
+            height: 8px;
+            border-radius: 8px;
+            background-color: red;
+            right: 20px;
+            top: 10px;
+          }
 
           &.active {
             color: #515151 !important;
@@ -276,6 +288,12 @@ html {
 
           &:hover {
             color: #999;
+          }
+
+          &.new {
+            .new-flag {
+              display: block;
+            }
           }
         }
       }
@@ -323,7 +341,7 @@ html {
       }
     }
 
-    &.on a {
+    &.on > a {
       padding-top: 3px;
       padding-bottom: 3px;
       background-color: red;

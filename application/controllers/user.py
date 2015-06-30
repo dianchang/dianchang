@@ -2,7 +2,7 @@
 from datetime import datetime, date
 from flask import Blueprint, render_template, url_for, json, g, request, get_template_attribute
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
-    ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer
+    ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer, NOTIFICATION_KIND_TYPE
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('user', __name__)
@@ -136,14 +136,25 @@ def followers(uid):
 @UserPermission()
 def notifications():
     """用户消息"""
-    last_read_notifications_at = g.user.last_read_notifications_at
+    last_read_message_notifications_at = g.user.last_read_message_notifications_at
     g.user.last_read_notifications_at = datetime.now()
+
+    last_read_user_notifications_at = g.user.last_read_user_notifications_at
+    g.user.last_read_user_notifications_at = datetime.now()
+
+    last_read_thanks_notifications_at = g.user.last_read_thanks_notifications_at
+    g.user.last_read_thanks_notifications_at = datetime.now()
+
+    db.session.add(g.user)
     for noti in g.user.notifications.filter(Notification.unread):
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
     notifications = g.user.notifications.limit(20)
-    return render_template('user/notifications.html', last_read_notifications_at=last_read_notifications_at,
+    return render_template('user/notifications.html',
+                           last_read_message_notifications_at=last_read_message_notifications_at,
+                           last_read_user_notifications_at=last_read_user_notifications_at,
+                           last_read_thanks_notifications_at=last_read_thanks_notifications_at,
                            notifications=notifications)
 
 
@@ -333,16 +344,9 @@ def get_card(uid):
 @UserPermission()
 def get_message_notifications():
     """获取消息类通知"""
-    notifications = g.user.notifications.filter(Notification.kind.in_([
-        NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION,
-        NOTIFICATION_KIND.COMMENT_ANSWER,
-        NOTIFICATION_KIND.REPLY_ANSWER_COMMENT,
-        NOTIFICATION_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC,
-        NOTIFICATION_KIND.SYSTEM_NOTI,
-        NOTIFICATION_KIND.HIDE_ANSWER
-    ]))
+    notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.MESSAGE))
 
-    g.user.last_read_notifications_at = datetime.now()
+    g.user.last_read_message_notifications_at = datetime.now()
     db.session.add(g.user)
 
     for noti in notifications:
@@ -362,11 +366,11 @@ def get_message_notifications():
 @UserPermission()
 def get_user_notifications():
     """获取用户类通知"""
-    for noti in g.user.notifications.filter(Notification.kind == NOTIFICATION_KIND.FOLLOW_ME):
+    for noti in g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER)):
         noti.unread = False
         db.session.add(noti)
 
-    g.user.last_read_notifications_at = datetime.now()
+    g.user.last_read_user_notifications_at = datetime.now()
     db.session.add(g.user)
 
     db.session.commit()
@@ -382,13 +386,9 @@ def get_user_notifications():
 @UserPermission()
 def get_thanks_notifications():
     """获取感谢类通知"""
-    notifications = g.user.notifications.filter(Notification.kind.in_([
-        NOTIFICATION_KIND.UPVOTE_ANSWER,
-        NOTIFICATION_KIND.THANK_ANSWER,
-        NOTIFICATION_KIND.LIKE_ANSWER_COMMENT
-    ]))
+    notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.THANKS))
 
-    g.user.last_read_notifications_at = datetime.now()
+    g.user.last_read_thanks_notifications_at = datetime.now()
     db.session.add(g.user)
 
     for noti in notifications:
