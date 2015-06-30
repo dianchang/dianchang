@@ -3,10 +3,10 @@
 {% from "macros/_question.html" import question_follow_wap %}
 
 {# 关注用户 #}
-{% macro user_follow_wap(user, dark=False) %}
+{% macro user_follow_wap(user, dark=False, sm=False, with_count=True) %}
     {% set followed = user.followed_by_user() %}
 
-    <div class="dc-user-follow-wap btn {% if dark %}dark{% endif %}
+    <div class="dc-user-follow-wap btn {% if sm %}btn-sm{% endif %} {% if dark %}dark{% endif %}
         {% if followed %}
             btn-default
         {% else %}
@@ -14,8 +14,10 @@
         {% endif %}
         {% if followed %}followed{% endif %}" data-id="{{ user.id }}">
         <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span>
-        <span class="divider">|</span>
-        <span class="followers-count">{{ user.followers.count() }}</span>
+        {% if with_count %}
+            <span class="divider">|</span>
+            <span class="followers-count">{{ user.followers.count() }}</span>
+        {% endif %}
     </div>
 
     <script>
@@ -583,25 +585,25 @@
         <div class="noti-in-nav noti-user media">
             <div class="media-left">
                 <a href="{{ follower.profile_url }}">
-                    <img src="{{ follower.avatar_url }}" alt="" class="dc-show-user-card"
+                    <img src="{{ follower.avatar_url }}" alt="" class="dc-show-user-card img-circle"
                          data-id="{{ follower.id }}"/>
                 </a>
             </div>
 
             <div class="media-body">
-                <div class="user">
+                <div class="user-info">
                     <a href="{{ follower.profile_url }}" class="dc-show-user-card"
                        data-id="{{ follower.id }}">{{ follower.name }}</a>
                     {% if follower.desc %}，{{ follower.desc }}{% endif %}
                 </div>
-                <div class="other text-light">
+                <div class="other-info text-light">
                     {% if follower.organization %}{{ follower.organization }}{% endif %}
                     {% if follower.organization and follower.position %}<span class="divider">·</span>{% endif %}
                     {% if follower.position %}{{ follower.position }}{% endif %}
                 </div>
             </div>
 
-            {{ following_user(follower) }}
+            {{ user_follow_wap(follower, sm=True, with_count=False) }}
         </div>
     {% endfor %}
 {% endmacro %}

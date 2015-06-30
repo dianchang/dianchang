@@ -41,7 +41,11 @@
             dataType: 'json'
         }).done(function (response) {
             if (response.result) {
-                $messageNotiWap.html(response.html);
+                if ($.trim(response.html) !== '') {
+                    $messageNotiWap.html(response.html).removeClass('empty');
+                } else {
+                    $messageNotiWap.addClass('empty');
+                }
             }
         });
     });
@@ -60,7 +64,11 @@
             dataType: 'json'
         }).done(function (response) {
             if (response.result) {
-                $userNotiWap.html(response.html);
+                if ($.trim(response.html) !== '') {
+                    $userNotiWap.html(response.html).removeClass('empty');
+                } else {
+                    $userNotiWap.addClass('empty');
+                }
             }
         });
     });
@@ -79,7 +87,11 @@
             dataType: 'json'
         }).done(function (response) {
             if (response.result) {
-                $thanksNotiWap.html(response.html);
+                if ($.trim(response.html) !== '') {
+                    $thanksNotiWap.html(response.html).removeClass('empty');
+                } else {
+                    $thanksNotiWap.addClass('empty');
+                }
             }
         });
     });

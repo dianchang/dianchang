@@ -468,3 +468,44 @@
     border-top: 1px solid #d6d6d6;
   }
 }
+
+.noti-in-nav {
+  border-top: 1px solid @border-color;
+  padding: 15px 15px;
+  margin-top: 0;
+
+  &.noti-user {
+    position: relative;
+
+    .media-left {
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .user-info {
+      color: #333;
+      margin-bottom: 2px;
+
+      a {
+        color: #333;
+        font-weight: bold;
+      }
+    }
+
+    .other-info {
+      .divider {
+        background-color: white;
+        margin: 0 3px;
+      }
+    }
+
+    .dc-user-follow-wap {
+      position: absolute;
+      right: 15px;
+      top: 20px;
+    }
+
+  }
+}

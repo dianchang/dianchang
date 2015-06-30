@@ -224,7 +224,10 @@ html {
   color: #c1c2c1;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-tabs li.active {
-  color: #515151;
+  color: #515151 !important;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-tabs li:hover {
+  color: #999;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-content {
   max-height: 300px;

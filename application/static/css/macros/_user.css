@@ -360,3 +360,32 @@
   padding: 20px 0;
   border-top: 1px solid #d6d6d6;
 }
+.noti-in-nav {
+  border-top: 1px solid #eaeaea;
+  padding: 15px 15px;
+  margin-top: 0;
+}
+.noti-in-nav.noti-user {
+  position: relative;
+}
+.noti-in-nav.noti-user .media-left img {
+  width: 40px;
+  height: 40px;
+}
+.noti-in-nav.noti-user .user-info {
+  color: #333;
+  margin-bottom: 2px;
+}
+.noti-in-nav.noti-user .user-info a {
+  color: #333;
+  font-weight: bold;
+}
+.noti-in-nav.noti-user .other-info .divider {
+  background-color: white;
+  margin: 0 3px;
+}
+.noti-in-nav.noti-user .dc-user-follow-wap {
+  position: absolute;
+  right: 15px;
+  top: 20px;
+}
