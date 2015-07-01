@@ -145,11 +145,13 @@
   margin-bottom: 18px;
 }
 .dc-answer .title {
+  display: block;
+  margin-bottom: 8px;
+}
+.dc-answer .title a {
   color: #333;
   font-size: 18px;
   font-weight: bold;
-  display: block;
-  margin-bottom: 8px;
 }
 .dc-answer .answerer {
   color: #999;

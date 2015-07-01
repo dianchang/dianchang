@@ -527,9 +527,10 @@
             </div>
         {% endif %}
 
-        <a href="{{ url_for('question.view', uid=answer.question.id) }}" class="title">
-            {{ (answer.highlight_question_title or answer.question.title)|safe }}
-        </a>
+        <div class="title">
+            <a href="{{ url_for('question.view', uid=answer.question.id) }}">
+                {{ (answer.highlight_question_title or answer.question.title)|safe }}</a>
+        </div>
 
         <div class="answerer">
             <a href="{{ answer.user.profile_url }}" class="text-light dc-show-user-card" data-id="{{ answer.user_id }}">
