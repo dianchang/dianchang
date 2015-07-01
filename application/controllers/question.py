@@ -13,7 +13,6 @@ bp = Blueprint('question', __name__)
 @bp.route('/question/<int:uid>')
 def view(uid):
     """问题首页"""
-    raise ValueError('test sentry')
     question = Question.query.get_or_404(uid)
 
     # 当前用户的回答信息
