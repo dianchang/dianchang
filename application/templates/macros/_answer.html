@@ -546,7 +546,7 @@
                     {% endif %}
                 </div>
 
-                <div class="full-content">
+                <div class="full-content rich-text-area">
                     {{ answer.content|safe }}
                 </div>
             </div>
@@ -620,7 +620,7 @@
             </div>
         </div>
 
-        <div class="answer-content">{{ answer.content|safe }}</div>
+        <div class="answer-content rich-text-area">{{ answer.content|safe }}</div>
 
         <div class="time text-light">
             发布于 {{ answer.created_at|timesince }}
