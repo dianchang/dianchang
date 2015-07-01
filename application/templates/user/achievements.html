@@ -37,11 +37,13 @@
                     <div class="upvoter">
                         <a href="{{ upvoter.upvoter.profile_url }}">
                             <img src="{{ upvoter.upvoter.avatar_url }}" class="img-circle dc-show-user-card" alt=""
-                                 data-id="{{ upvoter.upvoter_id }}"/>
-                        </a>
-                        <a href="{{ upvoter.upvoter.profile_url }}" class="user-name dc-show-user-card"
-                           data-id="{{ upvoter.upvoter_id }}">
-                            {{ upvoter.upvoter.name }}</a>
+                                 data-id="{{ upvoter.upvoter_id }}"/></a>
+
+                        <div class="user-name">
+                            <a href="{{ upvoter.upvoter.profile_url }}" class="dc-show-user-card"
+                               data-id="{{ upvoter.upvoter_id }}">
+                                {{ upvoter.upvoter.name }}</a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

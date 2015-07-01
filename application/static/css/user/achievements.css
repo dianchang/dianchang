@@ -43,14 +43,17 @@ nav,
 }
 .upvoters-wap .upvoter {
   margin: 0 20px 20px 0;
+  float: left;
 }
 .upvoters-wap .upvoter img {
   width: 50px;
   height: 50px;
 }
 .upvoters-wap .upvoter .user-name {
-  display: block;
+  margin-top: 10px;
+  text-align: center;
+}
+.upvoters-wap .upvoter .user-name a {
   color: #333;
   font-weight: bold;
-  margin-top: 10px;
 }
