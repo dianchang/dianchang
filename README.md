@@ -7,7 +7,7 @@ http://119.254.102.136
 
 ## 开发
 
-Install `fis`:
+Install [FIS](http://fis.baidu.com):
 
 ```
 npm install -g fis
