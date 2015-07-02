@@ -4,8 +4,7 @@ from flask import g, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars, images
-from ..utils.helpers import pinyin
-from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
+from ._helpers import pinyin, save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
 class User(db.Model):

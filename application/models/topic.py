@@ -4,8 +4,7 @@ from datetime import datetime
 from flask import g, current_app
 from ._base import db
 from ..utils.uploadsets import topic_avatars
-from ..utils.helpers import pinyin, get_pure_content
-from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
+from ._helpers import pinyin, get_pure_content, save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
 class Topic(db.Model):

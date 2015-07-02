@@ -1,10 +1,7 @@
 # coding: utf-8
 import os
-import re
 import errno
-from HTMLParser import HTMLParser
 from flask import current_app, url_for
-from pypinyin import lazy_pinyin
 
 
 def absolute_url_for(endpoint, **values):
@@ -167,44 +164,6 @@ def get_domain_from_email(email):
             break
 
     return email_domain
-
-
-def pinyin(text):
-    """将文本转换为拼音"""
-    return ''.join(lazy_pinyin(unicode(text)))
-
-
-def get_pure_content(content):
-    """获取用于摘要的文本"""
-
-    pure_content = remove_html(content)  # 去除HTML标签
-    pure_content = pure_content.strip().strip('　')  # 去除首位的空格、缩进
-    pure_content = pure_content.replace('　', ' ')  # 将缩进替换为空格
-    pure_content = re.sub('\s+', ' ', pure_content)  # 将多个空格替换为单个空格
-    return pure_content
-
-
-class MLStripper(HTMLParser):
-    """
-    See: http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
-    """
-
-    def __init__(self):
-        self.reset()
-        self.fed = []
-
-    def handle_data(self, d):
-        self.fed.append(d)
-
-    def get_data(self):
-        return ''.join(self.fed)
-
-
-def remove_html(text):
-    """Remove HTML elements from string."""
-    s = MLStripper()
-    s.feed(text)
-    return s.get_data()
 
 
 def increase_count(model, attr):

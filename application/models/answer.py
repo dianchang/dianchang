@@ -2,9 +2,7 @@
 from datetime import datetime
 from flask import g
 from ._base import db
-from ..utils.es import save_object_to_es, delete_object_from_es, search_objects_from_es
-from ..utils.helpers import get_pure_content
-
+from ._helpers import save_object_to_es, delete_object_from_es, search_objects_from_es, get_pure_content
 
 class Answer(db.Model):
     """回答"""
