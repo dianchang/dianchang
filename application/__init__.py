@@ -128,9 +128,9 @@ def register_jinja(app):
 
 def register_db(app):
     """Register models."""
-    from .models import db
+    from .models import db, init_models
 
-    db.init_app(app)
+    init_models(app)
 
 
 def register_routes(app):

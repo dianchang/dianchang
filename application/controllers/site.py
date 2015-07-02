@@ -1,6 +1,6 @@
 # coding: utf-8
 import math
-from flask import render_template, Blueprint, request, redirect, abort, g, json
+from flask import render_template, Blueprint, request, redirect, g, json
 from ..models import db, Question, Answer, Topic, User
 from ..utils.permissions import UserPermission
 from ..utils.uploadsets import process_site_image, images
