@@ -8,3 +8,6 @@ class DevelopmentConfig(Config):
 
     # SQLAlchemy config
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:password@localhost/dianchang"
+    SQLALCHEMY_BINDS = {
+        'dc': "mysql+pymysql://root:password@localhost/dianchang"
+    }

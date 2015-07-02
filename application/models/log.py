@@ -25,6 +25,7 @@ class TOPIC_EDIT_KIND(object):
 
 
 class PublicEditLog(db.Model):
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     kind = db.Column(db.String(50), nullable=False)

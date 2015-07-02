@@ -10,6 +10,7 @@ from ._helpers import pinyin, save_object_to_es, delete_object_from_es, search_o
 
 class User(db.Model):
     """用户"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), unique=True)
     name_pinyin = db.Column(db.String(200))
@@ -220,6 +221,7 @@ class User(db.Model):
 
 class FollowUser(db.Model):
     """关注用户"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -241,6 +243,7 @@ class FollowUser(db.Model):
 
 class InvitationCode(db.Model):
     """邀请码"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(200))
     email = db.Column(db.String(100))
@@ -276,6 +279,7 @@ class USER_FEED_KIND(object):
 
 class UserFeed(db.Model):
     """用户feed"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     kind = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -338,6 +342,7 @@ class NOTIFICATION_KIND_TYPE(object):
 
 class Notification(db.Model):
     """用户消息"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     kind = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -404,6 +409,7 @@ class HOME_FEED_KIND(object):
 
 class HomeFeed(db.Model):
     """登录用户的首页feed"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     kind = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -435,6 +441,7 @@ class COMPOSE_FEED_KIND(object):
 
 class ComposeFeed(db.Model):
     """撰写feed"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     kind = db.Column(db.String(50))
     ignore = db.Column(db.Boolean, default=False)  # 忽略
@@ -455,6 +462,7 @@ class ComposeFeed(db.Model):
 
 class BlockUser(db.Model):
     """屏蔽用户"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -470,6 +478,7 @@ class BlockUser(db.Model):
 
 class ReportUser(db.Model):
     """举报用户"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 

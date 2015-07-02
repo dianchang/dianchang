@@ -6,6 +6,7 @@ from ._helpers import save_object_to_es, delete_object_from_es, search_objects_f
 
 class Question(db.Model):
     """问题"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     desc = db.Column(db.Text)
@@ -119,6 +120,7 @@ class Question(db.Model):
 
 class QuestionTopic(db.Model):
     """问题所属的话题"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -138,6 +140,7 @@ class QuestionTopic(db.Model):
 
 class FollowQuestion(db.Model):
     """关注问题"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -166,6 +169,7 @@ class FollowQuestion(db.Model):
 
 class QuestionComment(db.Model):
     """对问题的评论"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -186,6 +190,7 @@ class QuestionComment(db.Model):
 
 class InviteAnswer(db.Model):
     """邀请回答"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     ignore = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -204,6 +209,7 @@ class InviteAnswer(db.Model):
 
 class RejectInvitationFromUser(db.Model):
     """拒绝来自某用户的邀请"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -212,6 +218,7 @@ class RejectInvitationFromUser(db.Model):
 
 class RejectInvitationFromTopic(db.Model):
     """拒绝某话题下的邀请"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -223,6 +230,7 @@ class NotGoodAtTopic(db.Model):
 
     即该话题下的问题不会出现在撰写页。
     """
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

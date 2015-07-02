@@ -6,6 +6,7 @@ from ._helpers import save_object_to_es, delete_object_from_es, search_objects_f
 
 class Answer(db.Model):
     """回答"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     content_preview = db.Column(db.Text)
@@ -126,6 +127,7 @@ class Answer(db.Model):
 
 class AnswerDraft(db.Model):
     """回答草稿"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -143,6 +145,7 @@ class AnswerDraft(db.Model):
 
 class UpvoteAnswer(db.Model):
     """赞同回答"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -162,6 +165,7 @@ class UpvoteAnswer(db.Model):
 
 class DownvoteAnswer(db.Model):
     """反对回答"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -181,6 +185,7 @@ class DownvoteAnswer(db.Model):
 
 class ThankAnswer(db.Model):
     """感谢回答"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -200,6 +205,7 @@ class ThankAnswer(db.Model):
 
 class NohelpAnswer(db.Model):
     """回答没有帮助"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -219,6 +225,7 @@ class NohelpAnswer(db.Model):
 
 class AnswerComment(db.Model):
     """对回答的评论"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -259,6 +266,7 @@ class AnswerComment(db.Model):
 
 class LikeAnswerComment(db.Model):
     """赞回答评论"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -279,6 +287,7 @@ class LikeAnswerComment(db.Model):
 
 class UserUpvoteStatistic(db.Model):
     """用户赞同数据统计"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     upvotes_count = db.Column(db.Integer, default=0)
     upvoter_followings_count = db.Column(db.Integer, default=0)

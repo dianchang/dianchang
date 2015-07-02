@@ -1,4 +1,4 @@
-import flask
+from flask import Flask
 from ._base import db
 from .user import *
 from .question import *

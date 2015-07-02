@@ -8,6 +8,7 @@ from ._helpers import pinyin, get_pure_content, save_object_to_es, delete_object
 
 class Topic(db.Model):
     """话题"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     name_pinyin = db.Column(db.String(100))
@@ -307,6 +308,7 @@ class Topic(db.Model):
 
 class TopicClosure(db.Model):
     """话题的closure table"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     ancestor_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
     descendant_id = db.Column(db.Integer, db.ForeignKey('topic.id'))
@@ -318,6 +320,7 @@ class TopicClosure(db.Model):
 
 class TopicSynonym(db.Model):
     """话题同义词"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     synonym = db.Column(db.String(200))
     synonym_pinyin = db.Column(db.String(200))
@@ -337,6 +340,7 @@ class TopicSynonym(db.Model):
 
 class FollowTopic(db.Model):
     """关注话题"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -356,6 +360,7 @@ class FollowTopic(db.Model):
 
 class TopicWikiContributor(db.Model):
     """话题Wiki贡献者"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     count = db.Column(db.Integer, default=0)
     last_contributed_at = db.Column(db.DateTime, default=datetime.now)
@@ -377,6 +382,7 @@ class UserTopicStatistic(db.Model):
 
     记录用户在某话题下的数据。
     """
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     answers_count = db.Column(db.Integer, default=0)  # 用户在该话题下的回答数
     upvotes_count = db.Column(db.Integer, default=0)  # 用户在该话题下收获的赞同数
@@ -475,6 +481,7 @@ class UserTopicStatistic(db.Model):
 
 class ApplyTopicDeletion(db.Model):
     """申请删除话题"""
+    __bind_key__ = 'dc'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
