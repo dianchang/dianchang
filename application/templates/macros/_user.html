@@ -4,7 +4,7 @@
 
 {# 关注用户 #}
 {% macro user_follow_wap(user, dark=False, sm=False, with_count=True) %}
-    {% set followed = user.followed_by_user() %}
+    {% set followed = g.user and user.followed_by_user(g.user.id) %}
 
     <div class="dc-user-follow-wap btn {% if sm %}btn-sm{% endif %} {% if dark %}dark{% endif %}
         {% if followed %}
@@ -82,7 +82,7 @@
                     <div class="dc-hide-commands">
                         <a href="#" target="_blank">向他提问</a>
                         <a href="javascript: void(0)"
-                           class="btn-block-user {% if user.blocked_by_user() %}blocked{% endif %}"
+                           class="btn-block-user {% if g.user and user.blocked_by_user(g.user.id) %}blocked{% endif %}"
                            data-id="{{ user.id }}">
                             <span class="for-blocked">取消屏蔽</span>
                             <span class="for-un-blocked">屏蔽此人</span></a>

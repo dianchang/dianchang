@@ -13,7 +13,8 @@
 
 {# 关注问题 #}
 {% macro question_follow_wap(question, dark=False) %}
-    {% set followed = question.followed_by_user() %}
+    {% set followed = g.user and question.followed_by_user(g.user.id) %}
+
     <div class="dc-question-follow-wap btn {% if dark %}dark{% endif %}
         {% if followed %}
             btn-default
@@ -115,10 +116,9 @@
         <div class="commands">
             {{ question_follow_wap(question) }}
 
-            {% if not question.answered_by_user() %}
+            {% if not g.user or not question.answered_by_user(g.user.id) %}
                 <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-default">
-                    写答案
-                </a>
+                    写答案</a>
             {% endif %}
         </div>
     </div>

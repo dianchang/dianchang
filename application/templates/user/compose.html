@@ -67,8 +67,9 @@
                 <a href="javascript: void(0)" class="btn btn-white btn-ignore-feed" data-id="{{ feed.id }}">忽略</a>
                 {#                {% endif %}#}
 
-                <a href="javascript: void(0)" class="{% if question.followed_by_user() %}followed{% endif %}
-                text-light btn-follow-question" data-id="{{ question.id }}">
+                <a href="javascript: void(0)"
+                   class="{% if g.user and question.followed_by_user(g.user.id) %}followed{% endif %}
+                        text-light btn-follow-question" data-id="{{ question.id }}">
                     <span class="for-non-followed">+ 关注问题</span>
                     <span class="for-followed">已关注</span>
                     <span class="followers-count">{{ question.followers_count }}</span>

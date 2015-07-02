@@ -1,6 +1,7 @@
 # coding: utf-8
+import json
 from datetime import datetime, date
-from flask import g, url_for, json
+from flask import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars, images
@@ -98,13 +99,15 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-    def followed_by_user(self):
+    def followed_by_user(self, user_id):
         """该用户是否被当前用户关注"""
-        return g.user and self.followers.filter(FollowUser.follower_id == g.user.id).count() > 0
+        return FollowUser.query.filter(FollowUser.follower_id == user_id,
+                                       FollowUser.following_id == user_id).count() > 0
 
-    def blocked_by_user(self):
+    def blocked_by_user(self, user_id):
         """该用户是否被当前用户屏蔽"""
-        return g.user and g.user.blocks.filter(BlockUser.blocked_user_id == self.id).count() > 0
+        return BlockUser.query.filter(BlockUser.blocked_user_id == self.id,
+                                      BlockUser.user_id == user_id).count() > 0
 
     @property
     def profile_url(self):
@@ -364,11 +367,12 @@ class Notification(db.Model):
     answer_comment_id = db.Column(db.Integer, db.ForeignKey('answer_comment.id'))
     answer_comment = db.relationship('AnswerComment')
 
-    def last_in_that_day(self):
+    def last_in_that_day(self, user_id):
         """该问题是否为当天最晚的消息"""
         day = self.created_at.date()
-        noti = g.user.notifications. \
-            filter(db.func.date(Notification.created_at) == day). \
+        noti = Notification.query. \
+            filter(db.func.date(Notification.created_at) == day,
+                   Notification.user_id == user_id). \
             order_by(Notification.created_at.desc()).first()
         return noti is not None and noti.id == self.id
 

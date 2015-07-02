@@ -1,7 +1,7 @@
 # coding: utf-8
 import json
 from datetime import datetime
-from flask import g, current_app
+from flask import current_app
 from ._base import db
 from ..utils.uploadsets import topic_avatars
 from ._helpers import pinyin, get_pure_content, save_object_to_es, delete_object_from_es, search_objects_from_es
@@ -49,16 +49,13 @@ class Topic(db.Model):
         """话题图像"""
         return topic_avatars.url(self.avatar)
 
-    def followed_by_user(self):
+    def followed_by_user(self, user_id):
         """此话题是否被用户关注"""
-        return g.user and g.user.followed_topics.filter(FollowTopic.topic_id == self.id).count() > 0
+        return FollowTopic.query.filter(FollowTopic.topic_id == self.id, FollowTopic.user_id == user_id).count() > 0
 
-    @property
-    def experience_from_user(self):
+    def experience_from_user(self, user_id):
         """当前用户在该话题下的话题经验"""
-        if not g.user:
-            return None
-        statistic = UserTopicStatistic.query.filter(UserTopicStatistic.user_id == g.user.id,
+        statistic = UserTopicStatistic.query.filter(UserTopicStatistic.user_id == user_id,
                                                     UserTopicStatistic.topic_id == self.id).first()
         if statistic:
             return statistic.experience
@@ -137,7 +134,7 @@ class Topic(db.Model):
         return result_topics, results["hits"]["total"], results['took']
 
     @staticmethod
-    def get_by_name(name, create_if_not_exist=False):
+    def get_by_name(name, user_id, create_if_not_exist=False):
         """通过name获取句集"""
         from .log import PublicEditLog, TOPIC_EDIT_KIND
 
@@ -156,7 +153,7 @@ class Topic(db.Model):
                 topic.add_parent_topic(DEFAULT_PARENT_TOPIC_ID)
 
                 # Create topic log
-                log = PublicEditLog(kind=TOPIC_EDIT_KIND.CREATE, user_id=g.user.id, after=name, after_id=topic.id,
+                log = PublicEditLog(kind=TOPIC_EDIT_KIND.CREATE, user_id=user_id, after=name, after_id=topic.id,
                                     original_name=topic.name)
                 topic.logs.append(log)
                 db.session.add(topic)

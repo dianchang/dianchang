@@ -344,7 +344,7 @@
                                         {{ topic.topic.name }}</a>
                                 </div>
 
-                                {% set experience = topic.topic.experience_from_user %}
+                                {% set experience = topic.topic.experience_from_user(g.user.id) %}
                                 <div class="experience-wap {% if not experience %}empty{% endif %}">
                                     <span class="experience">
                                         {% if experience %}{{ experience }}{% endif %}

@@ -1,6 +1,5 @@
 # coding: utf-8
 from datetime import datetime
-from flask import g
 from ._base import db
 from ._helpers import save_object_to_es, delete_object_from_es, search_objects_from_es
 
@@ -102,15 +101,17 @@ class Question(db.Model):
 
         return result_questions
 
-    def followed_by_user(self):
+    def followed_by_user(self, user_id):
         """该问题是否被用户关注"""
-        return g.user and g.user.followed_questions.filter(FollowQuestion.question_id == self.id).count() > 0
+        return FollowQuestion.query.filter(FollowQuestion.question_id == self.id,
+                                           FollowQuestion.user_id == user_id).count() > 0
 
-    def answered_by_user(self):
+    def answered_by_user(self, user_id):
         """该问题是否被用户回答"""
         from .answer import Answer
 
-        return g.user and self.answers.filter(Answer.user_id == g.user.id).count() > 0
+        return Answer.query.filter(Answer.user_id == user_id,
+                                   Answer.question_id == self.id).count() > 0
 
     def __repr__(self):
         return '<Question %s>' % self.name
@@ -150,11 +151,12 @@ class FollowQuestion(db.Model):
                                                       lazy='dynamic',
                                                       order_by='desc(FollowQuestion.created_at)'))
 
-    def last_followed_in_that_day(self):
+    def last_followed_in_that_day(self, user_id):
         """该问题是否为当天最晚关注的问题"""
         day = self.created_at.date()
-        last_followed_question = g.user.followed_questions. \
-            filter(db.func.date(FollowQuestion.created_at) == day). \
+        last_followed_question = FollowQuestion.query. \
+            filter(FollowQuestion.user_id == user_id,
+                   db.func.date(FollowQuestion.created_at) == day). \
             order_by(FollowQuestion.created_at.desc()).first()
         return last_followed_question and last_followed_question.id == self.id
 

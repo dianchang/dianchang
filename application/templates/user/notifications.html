@@ -149,7 +149,7 @@
                     {# TODO #}
                 {% endif %}
 
-                {% if noti.last_in_that_day() %}
+                {% if noti.last_in_that_day(g.user.id) %}
                     <div class="date-wap">
                         <div class="day">{{ noti.created_at.date()|day }}</div>
                         <div class="month">{{ noti.created_at.date()|cn_month }}</div>

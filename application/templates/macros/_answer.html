@@ -27,7 +27,7 @@
                        data-id="{{ comment.id }}"
                        data-root-id="{{ comment.root_id or comment.id }}">回复</a>
                     <span class="like-comment-wap
-                        {% if comment.liked_by_user() %}liked{% endif %}
+                        {% if g.user and comment.liked_by_user(g.user.id) %}liked{% endif %}
                         {% if comment.likes_count == 0 %}zero{% endif %}">
                         <a href="javascript: void(0)" data-id="{{ comment.id }}"
                            class="btn-like-comment">
@@ -247,10 +247,10 @@
 {# 回答操作 #}
 {% macro render_answer_commands(answer, with_comments=True, with_full_screen=True, bottom=False, dark=False) %}
     <div class="dc-answer-commands {% if bottom %}bottom{% endif %}">
-        {% set upvoted = answer.upvoted_by_user() %}
-        {% set downvoted = answer.downvoted_by_user() %}
-        {% set thanked = answer.thanked_by_user() %}
-        {% set nohelped = answer.nohelped_by_user() %}
+        {% set upvoted = g.user and answer.upvoted_by_user(g.user.id) %}
+        {% set downvoted = g.user and answer.downvoted_by_user(g.user.id) %}
+        {% set thanked = g.user and answer.thanked_by_user(g.user.id) %}
+        {% set nohelped = g.user and answer.nohelped_by_user(g.user.id) %}
 
         <div class="inner-wap">
             {# 赞同 & 反对 #}

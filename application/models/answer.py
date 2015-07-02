@@ -1,8 +1,8 @@
 # coding: utf-8
 from datetime import datetime
-from flask import g
 from ._base import db
 from ._helpers import save_object_to_es, delete_object_from_es, search_objects_from_es, get_pure_content
+
 
 class Answer(db.Model):
     """回答"""
@@ -54,21 +54,21 @@ class Answer(db.Model):
         self.score = self.upvotes_count + self.thanks_count + self.comments_count \
                      - self.downvotes_count - self.nohelps_count
 
-    def upvoted_by_user(self):
+    def upvoted_by_user(self, user_id):
         """该回答被当前用户赞同"""
-        return g.user and self.upvotes.filter(UpvoteAnswer.user_id == g.user.id).count() > 0
+        return self.upvotes.filter(UpvoteAnswer.user_id == user_id).count() > 0
 
-    def downvoted_by_user(self):
+    def downvoted_by_user(self, user_id):
         """该回答被当前用户反对"""
-        return g.user and self.downvotes.filter(DownvoteAnswer.user_id == g.user.id).count() > 0
+        return self.downvotes.filter(DownvoteAnswer.user_id == user_id).count() > 0
 
-    def thanked_by_user(self):
+    def thanked_by_user(self, user_id):
         """该回答被当前用户感谢"""
-        return g.user and self.thanks.filter(ThankAnswer.user_id == g.user.id).count() > 0
+        return self.thanks.filter(ThankAnswer.user_id == user_id).count() > 0
 
-    def nohelped_by_user(self):
+    def nohelped_by_user(self, user_id):
         """该回答被当前用户标记为没有帮助"""
-        return g.user and self.nohelps.filter(NohelpAnswer.user_id == g.user.id).count() > 0
+        return self.nohelps.filter(NohelpAnswer.user_id == user_id).count() > 0
 
     def save_to_es(self):
         """保存此回答到elasticsearch"""
@@ -249,9 +249,9 @@ class AnswerComment(db.Model):
                                                       lazy='dynamic',
                                                       order_by='desc(AnswerComment.created_at)'))
 
-    def liked_by_user(self):
+    def liked_by_user(self, user_id):
         """该评论是否被用户赞过"""
-        return g.user and self.likes.filter(LikeAnswerComment.user_id == g.user.id).count() > 0
+        return self.likes.filter(LikeAnswerComment.user_id == user_id).count() > 0
 
     def __repr__(self):
         return '<AnswerComment %s>' % self.id

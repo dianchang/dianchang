@@ -155,7 +155,7 @@ def add_topic(uid):
 
     topic = None
     if name:
-        topic = Topic.get_by_name(name, create_if_not_exist=True)
+        topic = Topic.get_by_name(name, user_id=g.user.id, create_if_not_exist=True)
     elif topic_id:
         topic = Topic.query.get_or_404(topic_id)
 

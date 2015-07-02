@@ -17,7 +17,8 @@
 
 {# 关注话题组件 #}
 {% macro topic_follow_wap(topic, dark=False, text='关注话题') %}
-    {% set followed = topic.followed_by_user() %}
+    {% set followed = g.user and topic.followed_by_user(g.user.id) %}
+
     <div class="dc-topic-follow-wap btn {% if dark %}dark{% endif %}
         {% if followed %}
             btn-default

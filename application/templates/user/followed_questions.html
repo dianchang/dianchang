@@ -23,14 +23,15 @@
                     {{ question.answers_count }} 个回答
                 </div>
 
-                <div class="commans">
+                <div class="commands">
                     {{ question_follow_wap(question) }}
-                    {% if not question.answered_by_user() %}
+
+                    {% if not g.user or not question.answered_by_user(g.user.id) %}
                         <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="text-light">写答案</a>
                     {% endif %}
                 </div>
 
-                {% if item.last_followed_in_that_day() %}
+                {% if item.last_followed_in_that_day(g.user.id) %}
                     <div class="date-wap">
                         <div class="day">{{ item.created_at.date()|day }}</div>
                         <div class="month">{{ item.created_at.date()|cn_month }}</div>
