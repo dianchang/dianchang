@@ -2,6 +2,14 @@
 
 ## Usage
 
+Clone it as git submodule:
+
+```sh
+$ git submodule add https://github.com/dianchang/dianchang-models models
+```
+
+Then:
+
 ```py
 from models import init_models
 
