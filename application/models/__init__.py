@@ -8,8 +8,13 @@ from .log import *
 
 
 def init_models(app):
+    from ._helpers import es
+    from elasticsearch import Elasticsearch
+
     db.init_app(app)
     db.config = {
-        'ROOT_TOPIC_ID': app.config['ROOT_TOPIC_ID'],
-        'DEFAULT_PARENT_TOPIC_ID': app.config['DEFAULT_PARENT_TOPIC_ID']
+        'ROOT_TOPIC_ID': app.config.get('ROOT_TOPIC_ID'),
+        'DEFAULT_PARENT_TOPIC_ID': app.config.get('DEFAULT_PARENT_TOPIC_ID')
     }
+
+    es = Elasticsearch(hosts=[app.config.get('ELASTICSEARCH_HOST')])
