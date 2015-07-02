@@ -1,4 +1,5 @@
 # coding: utf-8
+import json
 from datetime import datetime
 from flask import g, current_app
 from ._base import db
@@ -464,8 +465,17 @@ class UserTopicStatistic(db.Model):
 
     def calculate_week_score(self):
         """计算近7天的得分"""
-        # TODO
-        pass
+        score = 0
+
+        week_answers_count = json.loads(self.week_answers_count)
+        for count in week_answers_count:
+            score += count
+
+        week_upvotes_count = json.loads(self.week_upvotes_count)
+        for count in week_upvotes_count:
+            score += count
+
+        self.week_score = score
 
 
 class ApplyTopicDeletion(db.Model):
