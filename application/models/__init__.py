@@ -15,4 +15,4 @@ def init_models(app):
         'DEFAULT_PARENT_TOPIC_ID': app.config.get('DEFAULT_PARENT_TOPIC_ID')
     }
 
-    init_es([app.config.get('ELASTICSEARCH_HOST')])
+    init_es(app.config.get('ELASTICSEARCH_HOSTS'))
