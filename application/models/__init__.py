@@ -1,4 +1,3 @@
-from flask import Flask
 from ._base import db
 from .user import *
 from .question import *
@@ -8,8 +7,7 @@ from .log import *
 
 
 def init_models(app):
-    from ._helpers import es
-    from elasticsearch import Elasticsearch
+    from ._helpers import init_es
 
     db.init_app(app)
     db.config = {
@@ -17,4 +15,4 @@ def init_models(app):
         'DEFAULT_PARENT_TOPIC_ID': app.config.get('DEFAULT_PARENT_TOPIC_ID')
     }
 
-    es = Elasticsearch(hosts=[app.config.get('ELASTICSEARCH_HOST')])
+    init_es([app.config.get('ELASTICSEARCH_HOST')])
