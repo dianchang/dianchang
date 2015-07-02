@@ -1,7 +1,6 @@
 # coding: utf-8
 import json
 from datetime import datetime, date
-from flask import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
 from ..utils.uploadsets import avatars, images
@@ -114,9 +113,9 @@ class User(db.Model):
     def profile_url(self):
         """用户个人主页url"""
         if self.url_token:
-            return url_for('user.profile_with_url_token', url_token=self.url_token)
+            return '/people/%s' % self.url_token
         else:
-            return url_for('user.profile', uid=self.id)
+            return '/people/%d' % self.id
 
     @property
     def avatar_url(self):
