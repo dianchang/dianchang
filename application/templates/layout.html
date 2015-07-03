@@ -34,7 +34,8 @@
             method: "{{ request.method }}",
             signin: {% if g.user %}true{% else %}false{% endif %},
             userId: {% if g.user %}{{ g.user.id }}{% else %}false{% endif %},
-            cdnHost: "{{ config.CDN_HOST }}"
+            cdnHost: "{{ config.CDN_HOST }}",
+            editorUptoken: "{{ g.editorUptoken }}"
         };
     </script>
     {# JS libs #}

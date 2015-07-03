@@ -1,6 +1,6 @@
 # coding: utf-8
 import math
-from flask import render_template, Blueprint, request, redirect, g, json
+from flask import render_template, Blueprint, request, redirect, g, json, current_app
 from ..models import db, Question, Answer, Topic, User
 from ..utils.permissions import UserPermission
 from ..utils.uploadsets import process_site_image, images
@@ -64,3 +64,13 @@ def upload_image():
             'success': True,
             'file_path': images.url(filename),
         })
+
+
+@bp.route('/qiniu_upload_callback_for_simditor', methods=['POST'])
+def qiniu_upload_callback_for_simditor():
+    key = request.form.get('key')
+    cdn_host = current_app.config.get('CDN_HOST')
+    return json.dumps({
+        'success': True,
+        'file_path': "%s/%s" % (cdn_host, key)
+    })

@@ -173,6 +173,8 @@ def register_hooks(app):
     @app.before_request
     def before_request():
         from application.models import Notification, NOTIFICATION_KIND, NOTIFICATION_KIND_TYPE
+        from application.utils._qiniu import qiniu
+        from application.utils.helpers import absolute_url_for
 
         g.user = get_current_user()
         if g.user and g.user.is_admin:
@@ -207,6 +209,12 @@ def register_hooks(app):
                 g.message_notifications_count = 0
                 g.user_notifications_count = 0
                 g.thanks_notifications_count = 0
+
+        # Simditor 上传七牛 token
+        g.editorUptoken = qiniu.generate_token(policy={
+            'callbackUrl': absolute_url_for('site.qiniu_upload_callback_for_simditor'),
+            'callbackBody': "key=$(key)"
+        })
 
     @app.after_request
     def after_request(response):
