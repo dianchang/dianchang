@@ -174,10 +174,13 @@
             toolbarFloat: false,
             toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
             upload: {
-                url: urlFor('site.upload_image'),
+                url: 'http://upload.qiniu.com',
                 fileKey: 'file',
                 connectionCount: 1,
-                leaveConfirm: '正在上传文件，如果离开上传会自动取消'
+                leaveConfirm: '正在上传文件，如果离开上传会自动取消',
+                params: {
+                    token: g.editorUptoken
+                }
             }
         });
 
