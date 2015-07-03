@@ -240,9 +240,8 @@
         {% set topic = expert_topic.topic %}
         <div class="media dc-expert-topic">
             <div class="media-left">
-                <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-show-topic-card"
-                   data-id="{{ topic.id }}">
-                    <img src="{{ topic.avatar_url }}" alt=""/>
+                <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                    <img src="{{ topic.avatar_url }}" alt="" class="dc-show-topic-card" data-id="{{ topic.id }}"/>
                 </a>
             </div>
             <div class="media-body">
