@@ -153,9 +153,12 @@ $(document).on('click', '.btn-remove-topic-synonym', function () {
 });
 
 var uploader = simple.uploader({
-    url: urlFor('topic.upload_avatar', {uid: g.topicId}),
+    url: 'http://upload.qiniu.com',
     fileKey: 'file',
-    connectionCount: 1
+    connectionCount: 1,
+    'params': {
+        token: g.uptoken
+    }
 });
 
 // 上传头像
@@ -164,13 +167,7 @@ $('.btn-upload-topic-avatar').click(function () {
 });
 
 $("input[name='avatar']").on('change', function (e) {
-    uploader.upload(this.files, {
-        'url': 'http://upload.qiniu.com',
-        'fileKey': 'file',
-        'params': {
-            token: g.uptoken
-        }
-    });
+    uploader.upload(this.files);
 });
 
 uploader.on('uploadsuccess', function (e, file, response) {
