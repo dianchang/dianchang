@@ -65,7 +65,7 @@
 
 
 {# 用户页页头 #}
-{% macro user_page_header(user, active='profile', preview=False) %}
+{% macro user_page_header(user, active='profile', preview=False, avatar_uptoken='', background_uptoken='') %}
     <div class="dc-user-page-header
         {% if user.background %}has-background{% endif %}
         {% if preview %}preview{% endif %}
@@ -206,9 +206,12 @@
         (function () {
             // 上传背景图
             var bgUploader = simple.uploader({
-                url: urlFor('account.upload_background'),
+                url: 'http://upload.qiniu.com',
                 fileKey: 'file',
-                connectionCount: 1
+                connectionCount: 1,
+                params: {
+                    token: '{{ background_uptoken }}'
+                }
             });
 
             $('.btn-upload-background').click(function () {
@@ -220,7 +223,6 @@
             });
 
             bgUploader.on('uploadsuccess', function (e, file, response) {
-                response = JSON.parse(response);
                 if (response.result) {
                     $('.background-wap').css({
                         'background-image': 'url(' + response.url + ')'
@@ -231,9 +233,12 @@
 
             // 上传头像
             var avatarUploader = simple.uploader({
-                url: urlFor('account.upload_avatar'),
+                url: 'http://upload.qiniu.com',
                 fileKey: 'file',
-                connectionCount: 1
+                connectionCount: 1,
+                params: {
+                    token: '{{ avatar_uptoken }}'
+                }
             });
 
             $('.btn-upload-avatar').click(function () {
@@ -245,7 +250,6 @@
             });
 
             avatarUploader.on('uploadsuccess', function (e, file, response) {
-                response = JSON.parse(response);
                 if (response.result) {
                     $('.user-avatar').attr('src', response.url);
                 }
@@ -289,8 +293,6 @@
                 } else {
                     location = "";
                 }
-
-                console.log(location);
 
                 if ($('.organization').length !== 0) {
                     organization = $.trim($('.organization').text());

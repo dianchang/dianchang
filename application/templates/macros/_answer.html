@@ -579,7 +579,7 @@
         <div class="answerer-info media">
             <div class="media-left">
                 {% if answer.anonymous %}
-                    <img src="{{ answer.user.anonymous_avatar_url }}" alt="" class="img-circle"/>
+                    <img src="{{ config.CDN_HOST }}/anonymous_user_avatar.png" alt="" class="img-circle"/>
                 {% else %}
                     <a href="{{ answer.user.profile_url }}">
                         <img src="{{ answer.user.avatar_url }}" class="img-circle dc-show-user-card" alt=""

@@ -3,7 +3,6 @@ import json
 from datetime import datetime, date
 from werkzeug.security import generate_password_hash, check_password_hash
 from ._base import db
-from ..utils.uploadsets import avatars, images
 from ._helpers import pinyin, save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
@@ -120,17 +119,12 @@ class User(db.Model):
     @property
     def avatar_url(self):
         """用户头像"""
-        return avatars.url(self.avatar)
-
-    @property
-    def anonymous_avatar_url(self):
-        """匿名头像"""
-        return avatars.url('default.png')
+        return "%s/%s?imageView2/1/w/240" % (db.config.get('CDN_HOST'), self.avatar)
 
     @property
     def background_url(self):
         """背景图片"""
-        return images.url(self.background) if self.background else None
+        return "%s/%s" % (db.config.get('CDN_HOST'), self.background) if self.background else None
 
     @property
     def random_answers(self, count=3):
