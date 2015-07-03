@@ -503,3 +503,6 @@ def update_avatar():
     topic.avatar = avatar
     db.session.add(topic)
     db.session.commit()
+    return json.dumps({
+        'result': True
+    })
