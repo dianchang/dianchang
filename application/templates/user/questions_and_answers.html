@@ -5,9 +5,9 @@
 
 {% block page_title %}问答 - {{ user.name }}{% endblock %}
 {% block page_js %}
-    <script src="/static/js/user/questions_and_answers.js"></script>{% endblock %}
+    <script src="/static/js/user/questions_and_answers.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/user/questions_and_answers.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/user/questions_and_answers.css?__inline"/>{% endblock %}
 {% block page_content %}
     {{ user_page_header(user, active='questions_and_answers', avatar_uptoken=avatar_uptoken,
         background_uptoken=background_uptoken) }}

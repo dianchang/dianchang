@@ -3,9 +3,9 @@
 
 {% block page_title %}话题「{{ topic.name }}」百科{% endblock %}
 {% block page_js %}
-    <script src="/static/js/topic/wiki.js"></script>{% endblock %}
+    <script src="/static/js/topic/wiki.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/topic/wiki.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/topic/wiki.css?__inline"/>{% endblock %}
 {% block page_content %}
     {{ topic_page_header(topic, active='wiki') }}
 

@@ -3,9 +3,9 @@
 
 {% block page_title %}关注 - {{ user.name }}{% endblock %}
 {% block page_js %}
-    <script src="/static/js/user/followings.js"></script>{% endblock %}
+    <script src="/static/js/user/followings.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/user/followings.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/user/followings.css?__inline"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ user_page_header(user, active='followings') }}

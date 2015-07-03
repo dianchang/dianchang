@@ -3,9 +3,9 @@
 
 {% block page_title %}公共编辑 - {{ user.name }}{% endblock %}
 {% block page_js %}
-    <script src="/static/js/user/edits.js"></script>{% endblock %}
+    <script src="/static/js/user/edits.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/user/edits.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/user/edits.css?__inline"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ user_page_header(user, active='edits') }}

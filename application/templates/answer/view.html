@@ -9,9 +9,9 @@
             answerId: {{ answer.id }}
         });
     </script>
-    <script src="/static/js/answer/view.js"></script>{% endblock %}
+    <script src="/static/js/answer/view.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/answer/view.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/answer/view.css?__inline"/>{% endblock %}
 {% block page_content %}
     <div class="question">
         <a href="{{ url_for('site.index') }}" class="logo link-no-underline">电</a>

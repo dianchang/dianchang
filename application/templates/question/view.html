@@ -11,9 +11,9 @@
             answered: {% if answered %}true{% else %}false{% endif %}
         });
     </script>
-    <script src="/static/js/question/view.js"></script>{% endblock %}
+    <script src="/static/js/question/view.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/question/view.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/question/view.css?__inline"/>{% endblock %}
 {% block page_content %}
     <div class="question-header">
         <div class="container">

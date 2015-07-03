@@ -3,9 +3,9 @@
 
 {% block page_title %}收藏 - {{ user.name }}{% endblock %}
 {% block page_js %}
-    <script src="/static/js/user/collects.js"></script>{% endblock %}
+    <script src="/static/js/user/collects.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/user/collects.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/user/collects.css?__inline"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ user_page_header(user, active='collects') }}

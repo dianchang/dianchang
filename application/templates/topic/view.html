@@ -6,9 +6,9 @@
 
 {% block page_title %}话题「{{ topic.name }}」{% endblock %}
 {% block page_js %}
-    <script src="/static/js/topic/view.js"></script>{% endblock %}
+    <script src="/static/js/topic/view.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/topic/view.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/topic/view.css?__inline"/>{% endblock %}
 {% block page_content %}
     {{ topic_page_header(topic, active='view') }}
 

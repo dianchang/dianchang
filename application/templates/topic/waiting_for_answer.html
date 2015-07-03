@@ -6,9 +6,9 @@
 
 {% block page_title %}等待回答 - 话题「{{ topic.name }}」{% endblock %}
 {% block page_js %}
-    <script src="/static/js/topic/waiting_for_answer.js"></script>{% endblock %}
+    <script src="/static/js/topic/waiting_for_answer.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/topic/waiting_for_answer.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/topic/waiting_for_answer.css?__inline"/>{% endblock %}
 {% block page_content %}
     {{ topic_page_header(topic) }}
 

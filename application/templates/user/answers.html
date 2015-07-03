@@ -4,9 +4,9 @@
 
 {% block page_title %}回答 - {{ user.name }}{% endblock %}
 {% block page_js %}
-    <script src="/static/js/user/answers.js"></script>{% endblock %}
+    <script src="/static/js/user/answers.js?__inline"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/user/answers.css"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/user/answers.css?__inline"/>{% endblock %}
 {% block page_content %}
     <div class="container">
         {{ user_page_header(user, active='answers') }}
