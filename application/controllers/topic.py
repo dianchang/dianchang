@@ -4,8 +4,9 @@ from flask import Blueprint, render_template, request, json, get_template_attrib
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
     PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion
 from ..utils.permissions import UserPermission
-from ..utils.helpers import generate_lcs_html
+from ..utils.helpers import generate_lcs_html, absolute_url_for
 from ..utils.uploadsets import process_topic_avatar, topic_avatars
+from ..utils._qiniu import qiniu
 from ..forms import AdminTopicForm
 
 bp = Blueprint('topic', __name__)
@@ -84,6 +85,10 @@ def admin(uid):
     """话题管理"""
     topic = Topic.query.get_or_404(uid)
     form = AdminTopicForm()
+    uptoken = qiniu.generate_token(policy={
+        'callbackUrl': absolute_url_for('.update_avatar'),
+        'callbackBody': "id=%d&key=$(key)" % uid
+    })
     if form.validate_on_submit():
         # Update name log
         if topic.name != form.name.data:
@@ -113,7 +118,7 @@ def admin(uid):
         db.session.commit()
         topic.save_to_es()
         return redirect(url_for('.view', uid=uid))
-    return render_template('topic/admin.html', topic=topic, form=form)
+    return render_template('topic/admin.html', topic=topic, form=form, uptoken=uptoken)
 
 
 @bp.route('/topic/<int:uid>/questions')
@@ -487,3 +492,14 @@ def get_card(uid):
         'result': True,
         'html': macro(topic)
     })
+
+
+@bp.route('/topic/update_avatar', methods=['POST'])
+def update_avatar():
+    """更新话题头像"""
+    id = request.form.get('id', type=int)
+    topic = Topic.query.get_or_404(id)
+    avatar = request.form.get('key')
+    topic.avatar = avatar
+    db.session.add(topic)
+    db.session.commit()

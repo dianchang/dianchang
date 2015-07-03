@@ -1,4 +1,4 @@
-import os
+# coding: utf-8
 from qiniu import Auth, put_file
 
 
@@ -16,6 +16,11 @@ class Qiniu(object):
 
         if info.exception is not None:
             raise UploadError(info)
+
+    def generate_token(self, filename=None, policy=None):
+        """生成上传凭证"""
+        print(policy)
+        return self.auth.upload_token(self.bucket, filename, policy=policy)
 
 
 class UploadError(Exception):

@@ -6,7 +6,8 @@
 {% block page_js %}
     <script>
         registerContext({
-            topicId: {{ topic.id }}
+            topicId: {{ topic.id }},
+            uptoken: '{{ uptoken }}'
         })
     </script>
     <script src="/static/js/topic/admin.js"></script>{% endblock %}

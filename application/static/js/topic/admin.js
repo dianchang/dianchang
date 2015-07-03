@@ -164,14 +164,17 @@ $('.btn-upload-topic-avatar').click(function () {
 });
 
 $("input[name='avatar']").on('change', function (e) {
-    uploader.upload(this.files);
+    uploader.upload(this.files, {
+        'url': 'http://upload.qiniu.com',
+        'fileKey': 'file',
+        'params': {
+            token: g.uptoken
+        }
+    });
 });
 
 uploader.on('uploadsuccess', function (e, file, response) {
-    response = JSON.parse(response);
-    if (response.result) {
-        $('img.topic-avatar').attr('src', response.image_url);
-    }
+    $('img.topic-avatar').attr('src', g.cdnHost + '/' + response.key + '?imageView2/1/w/160');
 });
 
 // 初始化wiki富文本编辑框

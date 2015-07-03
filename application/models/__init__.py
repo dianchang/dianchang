@@ -11,6 +11,7 @@ def init_models(app):
 
     db.init_app(app)
     db.config = {
+        'CDN_HOST': app.config.get('CDN_HOST'),
         'ROOT_TOPIC_ID': app.config.get('ROOT_TOPIC_ID'),
         'DEFAULT_PARENT_TOPIC_ID': app.config.get('DEFAULT_PARENT_TOPIC_ID')
     }

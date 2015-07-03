@@ -2,7 +2,6 @@
 import json
 from datetime import datetime
 from ._base import db
-from ..utils.uploadsets import topic_avatars
 from ._helpers import pinyin, get_pure_content, save_object_to_es, delete_object_from_es, search_objects_from_es
 
 
@@ -47,7 +46,7 @@ class Topic(db.Model):
     @property
     def avatar_url(self):
         """话题图像"""
-        return topic_avatars.url(self.avatar)
+        return "%s/%s?imageView2/1/w/160" % (db.config.get('CDN_HOST'), self.avatar)
 
     def followed_by_user(self, user_id):
         """此话题是否被用户关注"""
