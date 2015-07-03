@@ -174,7 +174,9 @@ $("input[name='avatar']").on('change', function (e) {
 });
 
 uploader.on('uploadsuccess', function (e, file, response) {
-    $('img.topic-avatar').attr('src', g.cdnHost + '/' + response.key + '?imageView2/1/w/160');
+    if (response.result) {
+        $('img.topic-avatar').attr('src', response.url);
+    }
 });
 
 // 初始化wiki富文本编辑框
