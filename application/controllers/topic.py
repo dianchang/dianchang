@@ -127,7 +127,6 @@ def questions(uid):
     topic = Topic.query.get_or_404(uid)
     page = request.args.get('page', 1, int)
     questions = topic.all_questions.paginate(page, 15)
-    print(type(questions))
     return render_template('topic/questions.html', topic=topic, questions=questions)
 
 

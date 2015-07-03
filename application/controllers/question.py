@@ -295,7 +295,6 @@ def update(uid):
     #     desc = desc.replace("<p>", "<br>").replace("</p>", ""). \
     #         replace("<div>", "<br>").replace("</div>", "")
 
-    print(desc is None)
     if desc is not None and desc != (question.desc or ""):
         desc = desc.strip()
         # Update desc log
@@ -486,6 +485,5 @@ def _add_question_mark_to_title(title):
             title = title.rstrip('?') + "？"
 
         if not title.endswith('？'):
-            print(title)
             title += "？"
     return title

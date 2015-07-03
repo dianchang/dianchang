@@ -79,7 +79,6 @@ class Topic(db.Model):
         topic_paths = []
         for path in paths:
             topic_path = Topic.query.filter(Topic.id.in_(path))
-            print(topic_path)
             topic_paths.append(topic_path)
         return topic_paths
 
