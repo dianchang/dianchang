@@ -68,7 +68,7 @@ def rank(uid):
     experts = UserTopicStatistic.query. \
         filter(UserTopicStatistic.topic_id == uid,
                UserTopicStatistic.score != 0). \
-        order_by(UserTopicStatistic.score.desc()).paginate(page, 15)
+        order_by(UserTopicStatistic.week_score.desc()).paginate(page, 15)
     return render_template('topic/rank.html', topic=topic, experts=experts)
 
 
