@@ -22,7 +22,6 @@ $('.btn-go-to-signin-signup').click(function () {
  */
 function adjustWidth() {
     var $leftWap = $('.left-wap');
-    var $rightWap = $('.right-wap');
 
     if ($(window).width() > 1020) {
         $leftWap.css('width', $(window).width() / 2.0 - 170);
