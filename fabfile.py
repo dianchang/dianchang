@@ -21,7 +21,8 @@ def deploy(upload_assets='yes'):
         with shell_env(MODE='PRODUCTION'):
             run('git reset --hard HEAD')
             run('git pull')
-            run('git pull --recurse-submodules')
+            run('git submodule foreach git checkout master')
+            run('git submodule foreach git pull origin master')
             with prefix('source venv/bin/activate'):
                 run('pip install -r requirements.txt')
                 run('pip install -r application/models/requirements.txt')
