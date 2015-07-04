@@ -407,8 +407,12 @@
 }
 .noti-in-nav.noti-user .dc-user-follow-wap {
   position: absolute;
+  visibility: hidden;
   right: 15px;
   top: 20px;
+}
+.noti-in-nav.noti-user:hover .dc-user-follow-wap {
+  visibility: visible;
 }
 .noti-in-nav .question-title {
   font-weight: bold;

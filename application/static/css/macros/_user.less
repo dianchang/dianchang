@@ -534,8 +534,15 @@
 
     .dc-user-follow-wap {
       position: absolute;
+      visibility: hidden;
       right: 15px;
       top: 20px;
+    }
+
+    &:hover {
+      .dc-user-follow-wap {
+        visibility: visible;
+      }
     }
   }
 
