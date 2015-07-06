@@ -397,12 +397,16 @@
         }, 200);
     });
 
+    var timerForUserCard = null;
+
     /**
      * 显示用户卡片
      * @param $element
      * @param html
      */
     function showUserCard($element, html) {
+        clearTimeout(timerForUserCard);
+
         $element.popover({
             content: function () {
                 return html;
@@ -418,12 +422,18 @@
             },
             template: '<div class="popover user-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
             selector: '.dc-show-user-card'
-        }).popover('show');
+        });
+
+        timerForUserCard = setTimeout(function () {
+            $element.popover('show');
+        }, 500);
 
         $(".user-popover").one("mouseleave", function () {
             $element.popover('destroy');
         });
     }
+
+    var timerForTopicCard = null;
 
     /**
      * 显示话题卡片
@@ -431,6 +441,8 @@
      * @param html
      */
     function showTopicCard($element, html) {
+        clearTimeout(timerForTopicCard);
+
         $element.popover({
             content: function () {
                 return html;
@@ -446,7 +458,11 @@
             },
             template: '<div class="popover topic-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
             selector: '.dc-show-topic-card'
-        }).popover('show');
+        });
+
+        timerForTopicCard = setTimeout(function () {
+            $element.popover('show');
+        }, 500);
 
         $(".popover").one("mouseleave", function () {
             $element.popover('destroy');
