@@ -111,8 +111,8 @@
                                             在
                                             {% for topic in user.answered_topics() %}
                                                 <a href="{{ url_for('topic.view', uid=topic.topic_id) }}"
-                                                   class="dc-show-topic-card" data-id="{{ topic.topic_id }}">
-                                                    {{ topic.topic.name }}</a>
+                                                   class="dc-show-topic-card text-light" data-id="{{ topic.topic_id }}">
+                                                    {{ topic.topic.name }}</a>{% if not loop.last %}、{% endif %}
                                             {% endfor %}
                                             等话题下有 {{ user.answers_count }} 个回答
                                         {% else %}
