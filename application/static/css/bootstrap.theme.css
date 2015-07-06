@@ -132,7 +132,7 @@
 .tooltip.in {
   opacity: 1;
 }
-.tooltip.tooltip-inner {
+.tooltip .tooltip-inner {
   border-radius: 2px;
 }
 .tooltip.tooltip-white .tooltip-inner {

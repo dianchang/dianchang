@@ -100,6 +100,11 @@ def add():
 
     # 添加话题
     topics_id_list = request.form.getlist('topic')
+    if len(topics_id_list) == 0:
+        return json.dumps({
+            'result': False,
+            'error': 'notopic'
+        })
     for topic_id in topics_id_list:
         topic = Topic.query.get(topic_id)
         if topic:

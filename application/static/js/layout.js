@@ -305,6 +305,8 @@
         }
     });
 
+    var timerForSubmitQuestion = null;
+
     // 提交问题
     $btnSubmitQuestion.click(function () {
         $secondForm.ajaxSubmit({
@@ -314,6 +316,19 @@
             success: function (response) {
                 if (response.result) {
                     window.location = urlFor('question.view', {uid: response.id});
+                } else {
+                    clearTimeout(timerForSubmitQuestion);
+
+                    if (response.error === 'notopic') {
+                        $btnSubmitQuestion.tooltip({
+                            title: '请至少添加一个话题',
+                            trigger: 'manual'
+                        }).tooltip('show');
+
+                        timerForSubmitQuestion = setTimeout(function () {
+                            $btnSubmitQuestion.tooltip('hide');
+                        }, 3000);
+                    }
                 }
             }
         });
