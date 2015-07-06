@@ -18,22 +18,18 @@
                         {{ render_question(feed.question, user=feed.sender, action='关注了') }}
                     {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION %}
                         <div class="action text-light">
-                            <a href="{{ feed.sender.profile_url }}">
-                                <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
-                                     data-id="{{ feed.sender_id }}"/></a>
-                            <a href="{{ feed.sender.profile_url }}"
-                               class="name dc-show-user-card"
-                               data-id="{{ feed.sender_id }}">{{ feed.sender.name }}</a> 回答了问题
+                            <a href="{{ feed.sender.profile_url }}" class="dc-show-user-card dc-img-text-link-wap"
+                               data-id="{{ feed.sender_id }}">
+                                <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle"/>
+                                <span class="name">{{ feed.sender.name }}</span></a> 回答了问题
                         </div>
                         {{ render_answer(feed.answer, with_topics=False) }}
                     {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER %}
                         <div class="action text-light">
-                            <a href="{{ feed.sender.profile_url }}">
-                                <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
-                                     data-id="{{ feed.sender_id }}"/></a>
-                            <a href="{{ feed.sender.profile_url }}"
-                               class="name dc-show-user-card"
-                               data-id="{{ feed.sender_id }}">{{ feed.sender.name }}</a>
+                            <a href="{{ feed.sender.profile_url }}" class="dc-show-user-card dc-img-text-link-wap"
+                               data-id="{{ feed.sender_id }}">
+                                <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle"/>
+                                <span class="name">{{ feed.sender.name }}</span></a>
                             赞同了回答
                         </div>
                         {{ render_answer(feed.answer, with_topics=False) }}
@@ -51,12 +47,10 @@
 
                 {% for topic in hot_topics %}
                     <div class="hot-topic">
-                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="avatar-wap">
-                            <img src="{{ topic.avatar_url }}" class="dc-show-topic-card" alt=""
-                                 data-id="{{ topic.id }}"/></a>
-                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="name dc-show-topic-card"
-                           data-id="{{ topic.id }}">
-                            {{ topic.name }}</a>
+                        <a href="{{ url_for('topic.view', uid=topic.id) }}" data-id="{{ topic.id }}"
+                           class="avatar-wap dc-show-topic-card dc-img-text-link-wap">
+                            <img src="{{ topic.avatar_url }}" alt=""/>
+                            <span class="name">{{ topic.name }}</span></a>
                     </div>
                 {% endfor %}
             </div>

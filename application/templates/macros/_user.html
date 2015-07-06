@@ -580,12 +580,10 @@
     <div class="dc-noti-sender">
         {% if senders_count <= 2 %}
             {% for sender in senders %}
-                <a href="{{ sender.profile_url }}" class="sender">
-                    <img src="{{ sender.avatar_url }}" alt="" class="img-circle dc-show-user-card"
-                         data-id="{{ sender.id }}"/></a>
-                <a href="{{ sender.profile_url }}" class="sender-name dc-show-user-card"
+                <a href="{{ sender.profile_url }}" class="sender dc-img-text-link-wap dc-show-user-card"
                    data-id="{{ sender.id }}">
-                    {{ sender.name }}</a>
+                    <img src="{{ sender.avatar_url }}" alt="" class="img-circle"/>
+                    <span class="sender-name">{{ sender.name }}</span></a>
             {% endfor %}
         {% else %}
             <a href="{{ sender.profile_url }}" class="sender">

@@ -374,7 +374,7 @@
   width: 20px;
   height: 20px;
 }
-.dc-noti-sender .sender-name {
+.dc-noti-sender .sender .sender-name {
   color: #333;
   margin-left: 2px;
 }

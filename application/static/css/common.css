@@ -168,3 +168,12 @@ del {
 .no-margin-top {
   margin-top: 0;
 }
+a.dc-img-text-link-wap {
+  display: inline-block;
+}
+a.dc-img-text-link-wap:hover {
+  text-decoration: none;
+}
+a.dc-img-text-link-wap:hover span {
+  text-decoration: underline;
+}

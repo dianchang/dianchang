@@ -90,11 +90,9 @@
 {% macro render_question(question, user, action='提出了') %}
     <div class="dc-question">
         <div class="action text-light">
-            <a href="{{ user.profile_url }}">
-                <img src="{{ user.avatar_url }}" alt="" class="img-circle dc-show-user-card"
-                     data-id="{{ user.id }}"/></a>
-            <a href="{{ user.profile_url }}" class="name dc-show-user-card" data-id="{{ user.id }}">
-                {{ user.name }}</a> {{ action }}问题
+            <a href="{{ user.profile_url }}" class="dc-show-user-card dc-img-text-link-wap" data-id="{{ user.id }}">
+                <img src="{{ user.avatar_url }}" alt="" class="img-circle"/>
+                <span class="name">{{ user.name }}</span></a> {{ action }}问题
         </div>
 
         <div class="title">
