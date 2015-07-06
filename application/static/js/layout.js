@@ -443,8 +443,8 @@
             $element.popover('show');
         }, 500);
 
-        $(".user-popover").one("mouseleave", function () {
-            $element.popover('destroy');
+        $(document).onOnce("mouseleave", ".user-popover", function () {
+            $element.popover('destory');
         });
     }
 
@@ -479,7 +479,7 @@
             $element.popover('show');
         }, 500);
 
-        $(".popover").one("mouseleave", function () {
+        $(document).onOnce("mouseleave", ".topic-popover", function () {
             $element.popover('destroy');
         });
     }
