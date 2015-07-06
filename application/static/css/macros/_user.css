@@ -213,7 +213,8 @@
 .dc-user-page-header .follows-data .item:first-child {
   border-right: 1px solid #ccc;
 }
-.dc-user-page-header .follows-data .item:hover {
+.dc-user-page-header .follows-data .item:hover,
+.dc-user-page-header .follows-data .item:focus {
   text-decoration: none;
   color: #666;
 }
@@ -223,6 +224,118 @@
   color: #333;
   margin-bottom: 15px;
   font-weight: bold;
+}
+.dc-user-page-header .follow-bg {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1000;
+  padding: 40px 0;
+}
+.dc-user-page-header .follow-bg .outer-wap {
+  width: 680px;
+  margin: 0 auto;
+}
+.dc-user-page-header .follow-bg .btn-close-bg {
+  position: absolute;
+  right: 30px;
+  top: 0;
+  font-size: 60px;
+  color: #bbb;
+  cursor: pointer;
+}
+.dc-user-page-header .follow-bg .btn-close-bg:hover {
+  color: #999;
+}
+.dc-user-page-header .followings-bg .outer-wap .selector-wap {
+  text-align: center;
+  border-bottom: 1px solid #eaeaea;
+}
+.dc-user-page-header .followings-bg .outer-wap .selector-wap .selector-show-followed-users,
+.dc-user-page-header .followings-bg .outer-wap .selector-wap .selector-show-followed-topics {
+  cursor: pointer;
+  margin-bottom: -1px;
+  display: inline-block;
+  color: #999;
+  padding: 0 0 15px 0;
+  margin-right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.dc-user-page-header .followings-bg .outer-wap .selector-wap .selector-show-followed-users.active,
+.dc-user-page-header .followings-bg .outer-wap .selector-wap .selector-show-followed-topics.active {
+  color: #333;
+  border-bottom: 1px solid #333;
+}
+.dc-user-page-header .followings-bg .outer-wap .selector-wap .selector-show-followed-users:hover,
+.dc-user-page-header .followings-bg .outer-wap .selector-wap .selector-show-followed-topics:hover {
+  color: #333;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .fa-spin,
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap .fa-spin {
+  font-size: 20px;
+  color: #999;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap.empty,
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap.empty {
+  text-align: center;
+  padding-top: 40px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .followed-user {
+  padding: 30px 0;
+  position: relative;
+  border-bottom: 1px solid #eaeaea;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .followed-user .media-left {
+  padding-right: 15px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .followed-user .media-left img {
+  width: 50px;
+  height: 50px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .followed-user .user-info {
+  margin-bottom: 5px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .followed-user .divider {
+  margin: 0 3px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .followed-user .followed-user-name {
+  font-weight: bold;
+  color: #333;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-users-wap .followed-user .dc-user-follow-wap {
+  position: absolute;
+  right: 0;
+  top: 38px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap {
+  display: none;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap .followed-topic {
+  position: relative;
+  padding: 30px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap .followed-topic .media-left img {
+  width: 40px;
+  height: 40px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap .followed-topic .topic-name-wap {
+  margin-bottom: 2px;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap .followed-topic .topic-name-wap a {
+  color: #333;
+  font-weight: bold;
+}
+.dc-user-page-header .followings-bg .outer-wap .followed-topics-wap .followed-topic .dc-topic-follow-wap {
+  position: absolute;
+  right: 0;
+  top: 35px;
 }
 .dc-home-feed {
   margin-bottom: 18px;

@@ -1,6 +1,7 @@
 {% from "macros/_topic.html" import topic_follow_wap %}
 {% from "macros/_answer.html" import render_answer_commands, render_answer %}
 {% from "macros/_question.html" import question_follow_wap %}
+{% from "macros/_topic.html" import topic_follow_wap %}
 
 {# 关注用户 #}
 {% macro user_follow_wap(user, dark=False, sm=False, with_count=True) %}
@@ -175,11 +176,11 @@
             </div>
 
             <div class="follows-data">
-                <a class="item" href="{{ url_for('user.followings', uid=user.id) }}">
+                <a class="item btn-show-followings" href="javascript: void(0)">
                     <span class="count">{{ user.followings.count() }}</span>
                     <br/>
                     关注
-                </a><a class="item" href="{{ url_for('user.followers', uid=user.id) }}">
+                </a><a class="item btn-show-followers" href="javascript: void(0)">
                 <span class="count">{{ user.followers.count() }}</span>
                 <br/>
                 关注者
@@ -200,10 +201,35 @@
                 </ul>
             {% endif %}
         </div>
+
+        <div class="follow-bg followings-bg">
+            <div class="outer-wap">
+                <div class="selector-wap">
+                    <span class="selector">
+                        <span class="selector-show-followed-users active">关注的人</span>
+                        <span class="selector-show-followed-topics">关注的话题</span>
+                    </span>
+                </div>
+
+                <div class="followed-users-wap empty">
+                    <span class="fa fa-spin fa-spinner"></span>
+                </div>
+
+                <div class="followed-topics-wap empty">
+                    <span class="fa fa-spin fa-spinner"></span>
+                </div>
+            </div>
+
+            <span class="btn-close-bg btn-close-followings-bg">x</span>
+        </div>
+
+        <div class="follow-bg followers-bg"></div>
     </div>
 
     <script>
         (function () {
+            var $userHeader = $('.dc-user-page-header');
+
             // 上传背景图
             var bgUploader = simple.uploader({
                 url: 'http://upload.qiniu.com',
@@ -382,6 +408,74 @@
                         }
                     }
                 });
+            });
+
+            // 打开关注弹窗
+            $userHeader.on('click', '.btn-show-followings', function () {
+                var $followedUsersWap = $userHeader.find('.followed-users-wap');
+
+                $('.followings-bg').fadeIn('fast');
+
+                if ($followedUsersWap.hasClass('empty')) {
+                    $.ajax({
+                        url: urlFor('user.get_followed_users_html'),
+                        method: 'post',
+                        dataType: 'json'
+                    }).done(function (response) {
+                        if (response.result) {
+                            $followedUsersWap.removeClass('empty').html(response.html);
+                        }
+                    });
+                }
+            });
+
+            // 切换到关注的人
+            $userHeader.on('click', '.selector-show-followed-users', function () {
+                var $followedUsersWap = $userHeader.find('.followed-users-wap');
+                var $followedTopicsWap = $userHeader.find('.followed-topics-wap');
+
+                $(this).addClass('active').siblings().removeClass('active');
+                $followedUsersWap.show();
+                $followedTopicsWap.hide();
+
+                if ($followedUsersWap.hasClass('empty')) {
+                    $.ajax({
+                        url: urlFor('user.get_followed_users_html'),
+                        method: 'post',
+                        dataType: 'json'
+                    }).done(function (response) {
+                        if (response.result) {
+                            $followedUsersWap.removeClass('empty').html(response.html);
+                        }
+                    });
+                }
+            });
+
+            // 切换到关注的话题
+            $userHeader.on('click', '.selector-show-followed-topics', function () {
+                var $followedTopicsWap = $userHeader.find('.followed-topics-wap');
+                var $followedUsersWap = $userHeader.find('.followed-users-wap');
+
+                $(this).addClass('active').siblings().removeClass('active');
+                $followedTopicsWap.show();
+                $followedUsersWap.hide();
+
+                if ($followedTopicsWap.hasClass('empty')) {
+                    $.ajax({
+                        url: urlFor('user.get_followed_topics_html'),
+                        method: 'post',
+                        dataType: 'json'
+                    }).done(function (response) {
+                        if (response.result) {
+                            $followedTopicsWap.removeClass('empty').html(response.html);
+                        }
+                    });
+                }
+            });
+
+            // 关闭弹出框
+            $('.btn-close-bg').click(function () {
+                $(this).parents('.follow-bg').fadeOut('fast');
             });
         })();
     </script>
@@ -699,3 +793,68 @@
         </div>
     {% endfor %}
 {% endmacro %}
+
+
+{# 关注的用户 #}
+{% macro render_followed_users(followings) %}
+    {% for following in followings %}
+        {% set user = following.following %}
+
+        <div class="followed-user media">
+            <div class="media-left">
+                <a href="{{ user.profile_url }}">
+                    <img src="{{ user.avatar_url }}" alt="" class="dc-show-user-card img-circle"
+                         data-id="{{ user.id }}"/>
+                </a>
+            </div>
+
+            <div class="media-body">
+                <div class="user-info">
+                    <a href="{{ user.profile_url }}" class="dc-show-user-card followed-user-name"
+                       data-id="{{ user.id }}">{{ user.name }}</a>{% if user.desc %}，{{ user.desc }}{% endif %}
+                </div>
+                <div class="user-other-info text-light">
+                    {% if user.organization %}{{ user.organization }}{% endif %}
+                    {% if user.organization and user.position %}
+                        <span class="divider">·</span>
+                    {% endif %}
+                    {% if user.position %}{{ user.position }}{% endif %}
+                </div>
+            </div>
+
+            {{ user_follow_wap(user) }}
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+
+{# 关注的话题 #}
+{% macro render_followed_topics(followed_topics) %}
+    {% for followed_topic in followed_topics %}
+        {% set topic = followed_topic.topic %}
+
+        <div class="followed-topic media">
+            <div class="media-left">
+                <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                    <img src="{{ topic.avatar_url }}" class="img-rounded dc-show-topic-card"
+                         data-id={{ topic.id }} alt=""/>
+                </a>
+            </div>
+
+            <div class="media-body">
+                <div class="topic-name-wap">
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-show-topic-card"
+                       data-id="{{ topic.id }}">{{ topic.name }}</a>
+                </div>
+                <div class="questions-count text-light">
+                    {{ topic.all_questions_count }} 个相关问题
+                </div>
+            </div>
+
+            {{ topic_follow_wap(topic) }}
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+
+{# 关注者 #}

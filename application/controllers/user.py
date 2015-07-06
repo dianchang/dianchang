@@ -248,6 +248,7 @@ def recover_compose_feed(uid):
 
 
 @bp.route('/drafts')
+@UserPermission()
 def drafts():
     """我的草稿"""
     drafts = g.user.drafts
@@ -487,4 +488,37 @@ def update_background():
     return json.dumps({
         'result': True,
         'url': user.background_url
+    })
+
+
+@bp.route('/user/get_followed_users_html', methods=['POST'])
+@UserPermission()
+def get_followed_users_html():
+    """获取关注的用户HTML"""
+    macro = get_template_attribute('macros/_user.html', 'render_followed_users')
+    return json.dumps({
+        'result': True,
+        'html': macro(g.user.followings.limit(15))
+    })
+
+
+@bp.route('/user/get_followed_topics_html', methods=['POST'])
+@UserPermission()
+def get_followed_topics_html():
+    """获取关注的话题HTML"""
+    macro = get_template_attribute('macros/_user.html', 'render_followed_topics')
+    return json.dumps({
+        'result': True,
+        'html': macro(g.user.followed_topics.limit(15))
+    })
+
+
+@bp.route('/user/get_followers_html', methods=['POST'])
+@UserPermission()
+def get_followers_html():
+    """获取关注者HTML"""
+    macro = get_template_attribute('macros/_user.html', 'render_followers')
+    return json.dumps({
+        'result': True,
+        'html': macro(g.user.followers.limit(15))
     })

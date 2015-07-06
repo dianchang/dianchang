@@ -208,3 +208,6 @@ textarea.form-control.dark,
 input[type=text].form-control.dark {
   border: 1px solid #444D5C !important;
 }
+.media {
+  margin-top: 0;
+}

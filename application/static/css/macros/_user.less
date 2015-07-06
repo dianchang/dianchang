@@ -279,7 +279,8 @@
         border-right: 1px solid #ccc;
       }
 
-      &:hover {
+      &:hover,
+      &:focus {
         text-decoration: none;
         color: #666;
       }
@@ -290,6 +291,148 @@
         color: #333;
         margin-bottom: 15px;
         font-weight: bold;
+      }
+    }
+  }
+
+  .follow-bg {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, .9);
+    z-index: 1000;
+    padding: 40px 0;
+
+    .outer-wap {
+      width: 680px;
+      margin: 0 auto;
+    }
+
+    .btn-close-bg {
+      position: absolute;
+      right: 30px;
+      top: 0;
+      font-size: 60px;
+      color: #bbb;
+      cursor: pointer;
+
+      &:hover {
+        color: #999;
+      }
+    }
+  }
+
+  .followings-bg {
+    .outer-wap {
+      .selector-wap {
+        text-align: center;
+        border-bottom: 1px solid @border-color;
+
+        .selector-show-followed-users,
+        .selector-show-followed-topics {
+          cursor: pointer;
+          margin-bottom: -1px;
+          display: inline-block;
+          color: #999;
+          padding: 0 0 15px 0;
+          margin-right: 20px;
+          font-size: 16px;
+          font-weight: bold;
+          text-decoration: none;
+
+          &.active {
+            color: #333;
+            border-bottom: 1px solid #333;
+          }
+
+          &:hover {
+            color: #333;
+          }
+        }
+      }
+
+      .followed-users-wap,
+      .followed-topics-wap {
+        .fa-spin {
+          font-size: 20px;
+          color: #999;
+        }
+
+        &.empty {
+          text-align: center;
+          padding-top: 40px;
+        }
+      }
+
+      .followed-users-wap {
+        .followed-user {
+          padding: 30px 0;
+          position: relative;
+          border-bottom: 1px solid @border-color;
+
+          .media-left {
+            padding-right: 15px;
+
+            img {
+              width: 50px;
+              height: 50px;
+            }
+          }
+
+          .user-info {
+            margin-bottom: 5px;
+          }
+
+          .divider {
+            margin: 0 3px;
+          }
+
+          .followed-user-name {
+            font-weight: bold;
+            color: #333;
+          }
+
+          .dc-user-follow-wap {
+            position: absolute;
+            right: 0;
+            top: 38px;
+          }
+        }
+      }
+
+      .followed-topics-wap {
+        display: none;
+
+        .followed-topic {
+          position: relative;
+          padding: 30px 0;
+          border-bottom: 1px solid @border-color;
+
+          .media-left {
+            img {
+              width: 40px;
+              height: 40px;
+            }
+          }
+
+          .topic-name-wap {
+            margin-bottom: 2px;
+
+            a {
+              color: #333;
+              font-weight: bold;
+            }
+          }
+
+          .dc-topic-follow-wap {
+            position: absolute;
+            right: 0;
+            top: 35px;
+          }
+        }
       }
     }
   }
