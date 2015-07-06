@@ -249,7 +249,7 @@
   margin-bottom: -1px;
   display: inline-block;
   color: #999;
-  padding: 0 0 15px 0;
+  padding: 0 0 20px 0;
   margin-right: 20px;
   font-size: 16px;
   font-weight: bold;
@@ -264,6 +264,10 @@
 }
 .dc-user-page-header .follow-bg .outer-wap .selector-wap .selector:last-child {
   margin-right: 0;
+}
+.dc-user-page-header .follow-bg .outer-wap .selector-wap .selector.no-border {
+  margin-bottom: 0;
+  border-bottom: none !important;
 }
 .dc-user-page-header .follow-bg .outer-wap .followed-users-wap .fa-spin,
 .dc-user-page-header .follow-bg .outer-wap .followed-topics-wap .fa-spin,
