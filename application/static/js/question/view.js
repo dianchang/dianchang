@@ -261,16 +261,17 @@ $topicInput.on('keypress', function (e) {
     }
 });
 
-// 切换content tabs
-$('.content-tabs a').click(function () {
-    $('.content-tabs a').not(this)
-        .removeClass('active')
-        .each(function (index, element) {
-            $("." + $(element).data('target')).hide();
-        });
+// 显示/隐藏邀请
+$('.btn-toggle-invitation').click(function () {
+    var active = $(this).hasClass('active');
 
-    $(this).addClass('active');
-    $("." + $(this).data('target')).show();
+    $(this).toggleClass('active');
+
+    if (active) {
+        $('.invitation-wap').hide('fast');
+    } else {
+        $('.invitation-wap').show('fast');
+    }
 });
 
 var $invitationInput = $('.invitation-wap input');

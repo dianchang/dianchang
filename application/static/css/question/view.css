@@ -215,62 +215,43 @@
 }
 .content-tabs a {
   display: inline-block;
-  color: #999;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
-}
-.content-tabs a.active {
   color: #333;
+}
+.content-tabs a.btn-toggle-invitation {
+  color: #999;
+}
+.content-tabs a.btn-toggle-invitation .for-active {
+  display: none;
+}
+.content-tabs a.btn-toggle-invitation .for-unactive {
+  display: inline-block;
+}
+.content-tabs a.btn-toggle-invitation:hover {
+  color: #333;
+}
+.content-tabs a.btn-toggle-invitation.active {
+  color: #333;
+}
+.content-tabs a.btn-toggle-invitation.active .for-active {
+  display: inline-block;
+}
+.content-tabs a.btn-toggle-invitation.active .for-unactive {
+  display: none;
 }
 .content-tabs .divider {
   color: #999;
   margin: 0 5px;
 }
-.content-item {
-  display: none;
-}
-.content-item.active {
-  display: block;
-}
-.answers .answer {
-  padding-top: 25px;
-  padding-bottom: 25px;
-  border-top: 1px solid #eaeaea;
-}
-.answers .answer .media-left img {
-  width: 40px;
-  height: 40px;
-}
-.answers .answer .answerer-info {
-  margin-bottom: 20px;
-}
-.answers .answer .answerer-info .answerer {
-  margin-bottom: 2px;
-}
-.answers .answer .answerer-info .answerer .name {
-  color: #333;
-  font-weight: bold;
-}
-.answers .answer .answer-content {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-.answers .answer .time {
-  margin-bottom: 25px;
-}
-.answers .toogle-hided-answers-wap {
-  border-top: 1px solid #eaeaea;
-  border-bottom: 1px solid #eaeaea;
-  padding: 20px 0;
-  font-size: 16px;
-  color: #999;
-}
-h3 {
-  margin-top: 30px;
-}
 .invitation-wap {
   border: 1px solid #ddd;
+  display: none;
+  margin-bottom: 30px;
+}
+.invitation-wap.active {
+  display: block;
 }
 .invitation-wap .invited-users-wap {
   padding: 15px 15px 0 15px;
@@ -317,7 +298,7 @@ h3 {
 }
 .invitation-wap .recommend-wap .item .btn-invite {
   position: absolute;
-  right: 15px;
+  right: 0;
   top: 22px;
 }
 .invitation-wap .recommend-wap .item .btn-invite .for-invited {
@@ -337,6 +318,42 @@ h3 {
 }
 .invitation-wap .recommend-wap .tip {
   padding: 15px 0;
+}
+.answers .answer {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  border-top: 1px solid #eaeaea;
+}
+.answers .answer .media-left img {
+  width: 40px;
+  height: 40px;
+}
+.answers .answer .answerer-info {
+  margin-bottom: 20px;
+}
+.answers .answer .answerer-info .answerer {
+  margin-bottom: 2px;
+}
+.answers .answer .answerer-info .answerer .name {
+  color: #333;
+  font-weight: bold;
+}
+.answers .answer .answer-content {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.answers .answer .time {
+  margin-bottom: 25px;
+}
+.answers .toogle-hided-answers-wap {
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+  padding: 20px 0;
+  font-size: 16px;
+  color: #999;
+}
+h3 {
+  margin-top: 30px;
 }
 .hided-answers {
   display: none;

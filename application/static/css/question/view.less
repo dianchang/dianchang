@@ -302,13 +302,35 @@
 
   a {
     display: inline-block;
-    color: #999;
     font-size: 16px;
     font-weight: bold;
     text-decoration: none;
+    color: #333;
 
-    &.active {
-      color: #333;
+    &.btn-toggle-invitation {
+      color: #999;
+
+      .for-active {
+        display: none;
+      }
+      .for-unactive {
+        display: inline-block;
+      }
+
+      &:hover {
+        color: #333;
+      }
+
+      &.active {
+        color: #333;
+
+        .for-active {
+          display: inline-block;
+        }
+        .for-unactive {
+          display: none;
+        }
+      }
     }
   }
 
@@ -318,66 +340,15 @@
   }
 }
 
-.content-item {
+// 邀请
+.invitation-wap {
+  border: 1px solid #ddd;
   display: none;
+  margin-bottom: 30px;
 
   &.active {
     display: block;
   }
-}
-
-.answers {
-  .answer {
-    padding-top: 25px;
-    padding-bottom: 25px;
-    border-top: 1px solid @border-color;
-
-    .media-left {
-      img {
-        width: 40px;
-        height: 40px;
-      }
-    }
-
-    .answerer-info {
-      margin-bottom: 20px;
-
-      .answerer {
-        margin-bottom: 2px;
-
-        .name {
-          color: #333;
-          font-weight: bold;
-        }
-      }
-    }
-
-    .answer-content {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .time {
-      margin-bottom: 25px;
-    }
-  }
-
-  .toogle-hided-answers-wap {
-    border-top: 1px solid @border-color;
-    border-bottom: 1px solid @border-color;
-    padding: 20px 0;
-    font-size: 16px;
-    color: #999;
-  }
-}
-
-h3 {
-  margin-top: 30px;
-}
-
-// 邀请
-.invitation-wap {
-  border: 1px solid #ddd;
 
   .invited-users-wap {
     padding: 15px 15px 0 15px;
@@ -434,7 +405,7 @@ h3 {
 
       .btn-invite {
         position: absolute;
-        right: 15px;
+        right: 0;
         top: 22px;
 
         .for-invited {
@@ -461,6 +432,55 @@ h3 {
       padding: 15px 0;
     }
   }
+}
+
+.answers {
+  .answer {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border-top: 1px solid @border-color;
+
+    .media-left {
+      img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .answerer-info {
+      margin-bottom: 20px;
+
+      .answerer {
+        margin-bottom: 2px;
+
+        .name {
+          color: #333;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .answer-content {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .time {
+      margin-bottom: 25px;
+    }
+  }
+
+  .toogle-hided-answers-wap {
+    border-top: 1px solid @border-color;
+    border-bottom: 1px solid @border-color;
+    padding: 20px 0;
+    font-size: 16px;
+    color: #999;
+  }
+}
+
+h3 {
+  margin-top: 30px;
 }
 
 .hided-answers {

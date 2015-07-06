@@ -110,61 +110,18 @@
 
                 {# 切换组件 #}
                 <div class="content-tabs clearfix">
-                    <a href="javascript: void(0)" class="{% if answers_count %}active{% endif %} answers-tab-item"
-                       data-target="answers">
+                    <a href="javascript: void(0)">
                         <span class="answers-count">{{ answers_count }}</span> 人回答</a>
                     <span class="divider">·</span>
                     <a href="javascript: void(0)"
-                       class="{% if not answers_count %}active{% endif %} invitation-tab-item"
-                       data-target="invitation-wap">邀请回答</a>
+                       class="{% if not answers_count %}active{% endif %} btn-toggle-invitation">
+                        <span class="for-unactive">邀请回答</span>
+                        <span class="for-active">收起邀请</span>
+                    </a>
                 </div>
 
-                {# 回答 #}
-                <div class="answers content-item {% if answers_count %}active{% endif %}">
-                    <div class="showed-answers">
-                        {% for answer in answers %}
-                            {{ render_answer_in_question(answer) }}
-                        {% endfor %}
-                    </div>
-
-                    {% set hided_answers_count = hided_answers.count() %}
-
-                    {% if hided_answers_count %}
-                        <div class="toogle-hided-answers-wap">
-                            <a href="javascript:void(0)" class="btn-toggle-hided-answers text-light">
-                                {{ hided_answers_count }} 个回答被折叠
-                            </a>（<a target="_blank" class="text-light"
-                                    href="http://www.zhihu.com/question/20120168">为什么？</a>）
-                        </div>
-
-                        <div class="hided-answers">
-                            {% for answer in hided_answers %}
-                                {{ render_answer_in_question(answer) }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    {# 底部的邀请框 #}
-                    {% if 1 <= question.answers_count <= 5 %}
-                        <div class="bottom-invitation-wap">
-                            <div class="tip">邀请合适的人回答，每一个答案都是一次新的启发</div>
-
-                            <div class="candidates">
-                                {% for candidate in invite_candidates %}
-                                    <a href="{{ candidate.user.profile_url }}">
-                                        <img src="{{ candidate.user.avatar_url }}" alt=""
-                                             class="img-circle dc-show-user-card" data-id="{{ candidate.user_id }}"/>
-                                    </a>
-                                {% endfor %}
-                            </div>
-
-                            <button class="btn btn-white btn-go-to-invitation-wap">邀请回答</button>
-                        </div>
-                    {% endif %}
-                </div>
-
-                {# 邀请 #}
-                <div class="invitation-wap content-item {% if not answers_count %}active{% endif %}">
+                {# 邀请回答 #}
+                <div class="invitation-wap {% if not answers_count %}active{% endif %}">
                     <div class="invited-users-wap {% if not invited_users_count %}empty{% endif %} text-light">
                         你已经邀请
                         <span class="invited-users">
@@ -224,6 +181,50 @@
                     </div>
                 </div>
 
+                {# 回答 #}
+                <div class="answers content-item {% if answers_count %}active{% endif %}">
+                    <div class="showed-answers">
+                        {% for answer in answers %}
+                            {{ render_answer_in_question(answer) }}
+                        {% endfor %}
+                    </div>
+
+                    {% set hided_answers_count = hided_answers.count() %}
+
+                    {% if hided_answers_count %}
+                        <div class="toogle-hided-answers-wap">
+                            <a href="javascript:void(0)" class="btn-toggle-hided-answers text-light">
+                                {{ hided_answers_count }} 个回答被折叠
+                            </a>（<a target="_blank" class="text-light"
+                                    href="http://www.zhihu.com/question/20120168">为什么？</a>）
+                        </div>
+
+                        <div class="hided-answers">
+                            {% for answer in hided_answers %}
+                                {{ render_answer_in_question(answer) }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {# 底部的邀请框 #}
+                    {% if 1 <= question.answers_count <= 5 %}
+                        <div class="bottom-invitation-wap">
+                            <div class="tip">邀请合适的人回答，每一个答案都是一次新的启发</div>
+
+                            <div class="candidates">
+                                {% for candidate in invite_candidates %}
+                                    <a href="{{ candidate.user.profile_url }}">
+                                        <img src="{{ candidate.user.avatar_url }}" alt=""
+                                             class="img-circle dc-show-user-card" data-id="{{ candidate.user_id }}"/>
+                                    </a>
+                                {% endfor %}
+                            </div>
+
+                            <button class="btn btn-white btn-go-to-invitation-wap">邀请回答</button>
+                        </div>
+                    {% endif %}
+                </div>
+
                 {% if answered %}
                     <div class="answered-tip-wap">
                         <img src="{{ g.user.avatar_url }}" alt="" class="img-circle"/>
@@ -260,7 +261,7 @@
                             </div>
                         </div>
 
-                        <form action="" class="answer-form" method="post">
+                        <form class="answer-form" method="post">
                             <input type="hidden" name="identity"/>
                             <input type="hidden" name="experience"/>
                             <textarea name="answer" id="" cols="30" rows="10" class="form-control"
