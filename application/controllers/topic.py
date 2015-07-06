@@ -228,7 +228,7 @@ def remove_child_topic(uid, child_topic_id):
 @UserPermission()
 def get_by_name(name):
     """通过name获取话题，若不存在则创建"""
-    topic = Topic.get_by_name(name, create_if_not_exist=True)
+    topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
     return json.dumps({
         'id': topic.id,
         'name': topic.name,
