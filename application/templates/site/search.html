@@ -144,6 +144,60 @@
                     {% endif %}
                 </div>
             </div>
+
+            <div class="col-md-4">
+                {% if exact_user %}
+                    <div class="exact-user">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{{ exact_user.profile_url }}">
+                                    <img src="{{ exact_user.avatar_url }}" class="img-circle" alt=""/>
+                                </a>
+                            </div>
+
+                            <div class="media-body">
+                                <div class="name">
+                                    <a href="{{ exact_user.profile_url }}">
+                                        {{ exact_user.name }}</a>
+                                </div>
+                                {% if exact_user.desc %}
+                                    <div class="desc">{{ exact_user.desc|truncate(10, true) }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="more">
+                        <a href="{{ url_for('site.search', q=q, type='user') }}" class="text-light">
+                            查看更多用户搜索结果</a>
+                    </div>
+                {% endif %}
+
+                {% if exact_topic %}
+                    <div class="exact-topic">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{{ url_for('topic.view', uid=exact_topic.id) }}">
+                                    <img src="{{ exact_topic.avatar_url }}" alt="" class="img-rounded"/></a>
+                            </div>
+
+                            <div class="media-body">
+                                <div class="name">
+                                    <a href="{{ url_for('topic.view', uid=exact_topic.id) }}">
+                                        {{ exact_topic.name }}</a>
+                                </div>
+                                <div class="questions-count text-light">
+                                    {{ exact_topic.all_questions_count }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="more">
+                        <a href="{{ url_for('site.search', q=q, type='topic') }}" class="text-light">
+                            查看更多话题搜索结果</a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

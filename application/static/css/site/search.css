@@ -116,3 +116,41 @@ em {
   right: 0;
   top: 0;
 }
+.exact-user {
+  margin-bottom: 10px;
+  border: 1px solid #eaeaea;
+  padding: 15px;
+  border-radius: 2px;
+}
+.exact-user .name {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.exact-user .name a {
+  color: #333;
+}
+.exact-user .media-left img {
+  width: 50px;
+  height: 50px;
+}
+.exact-topic {
+  margin-bottom: 10px;
+  border: 1px solid #eaeaea;
+  padding: 15px;
+  border-radius: 2px;
+}
+.exact-topic .name {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.exact-topic .name a {
+  color: #333;
+}
+.exact-topic .media-left img {
+  width: 50px;
+  height: 50px;
+}
+.more {
+  text-align: right;
+  margin-bottom: 20px;
+}
