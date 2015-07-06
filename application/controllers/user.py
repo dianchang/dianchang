@@ -170,7 +170,8 @@ def followings(uid):
 def followers(uid):
     """关注者"""
     user = User.query.get_or_404(uid)
-    return render_template('user/followers.html', user=user)
+    followers = user.followers.limit(100)
+    return render_template('user/followers.html', user=user, followers=followers)
 
 
 @bp.route('/notifications')

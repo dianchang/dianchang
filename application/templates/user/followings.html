@@ -7,9 +7,9 @@
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/user/followings.css?__inline"/>{% endblock %}
 {% block page_content %}
-    <div class="container">
-        {{ user_page_header(user, active='followings') }}
+    {{ user_page_header(user, with_tabs=False) }}
 
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
                 {% for following in user.followings %}

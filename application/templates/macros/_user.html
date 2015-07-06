@@ -65,7 +65,7 @@
 
 
 {# 用户页页头 #}
-{% macro user_page_header(user, active='profile', preview=False, avatar_uptoken='', background_uptoken='') %}
+{% macro user_page_header(user, active='profile', preview=False, avatar_uptoken='', background_uptoken='', with_tabs=True) %}
     <div class="dc-user-page-header
         {% if user.background %}has-background{% endif %}
         {% if preview %}preview{% endif %}
@@ -113,9 +113,7 @@
             <div class="avatar-wap">
                 <img src="{{ user.avatar_url }}" class="img-circle user-avatar" alt=""/>
                 {% if g.user and g.user.id == user.id %}
-                    <span class="btn-upload-avatar">
-                        上传头像
-                    </span>
+                    <span class="btn-upload-avatar">上传头像</span>
                     <input type="file" name="avatar"/>
                 {% endif %}
             </div>
@@ -177,28 +175,30 @@
             </div>
 
             <div class="follows-data">
-                <span class="item">
+                <a class="item" href="{{ url_for('user.followings', uid=user.id) }}">
                     <span class="count">{{ user.followings.count() }}</span>
                     <br/>
                     关注
-                </span><span class="item">
-                    <span class="count">{{ user.followers.count() }}</span>
-                    <br/>
-                    关注者
-                </span>
+                </a><a class="item" href="{{ url_for('user.followers', uid=user.id) }}">
+                <span class="count">{{ user.followers.count() }}</span>
+                <br/>
+                关注者
+            </a>
             </div>
 
-            <ul class="nav nav-tabs nav-tabs-block">
-                <li {% if active == 'profile' %}class="active"{% endif %}>
-                    <a href="{{ user.profile_url }}">主页</a>
-                </li>
-                <li {% if active == 'questions_and_answers' %}class="active"{% endif %}>
-                    <a href="{{ url_for('user.questions_and_answers', uid=user.id) }}">问答</a>
-                </li>
-                <li {% if active == 'achievements' %}class="active"{% endif %}>
-                    <a href="{{ url_for('user.achievements', uid=user.id) }}">成就</a>
-                </li>
-            </ul>
+            {% if with_tabs %}
+                <ul class="nav nav-tabs nav-tabs-block">
+                    <li {% if active == 'profile' %}class="active"{% endif %}>
+                        <a href="{{ user.profile_url }}">主页</a>
+                    </li>
+                    <li {% if active == 'questions_and_answers' %}class="active"{% endif %}>
+                        <a href="{{ url_for('user.questions_and_answers', uid=user.id) }}">问答</a>
+                    </li>
+                    <li {% if active == 'achievements' %}class="active"{% endif %}>
+                        <a href="{{ url_for('user.achievements', uid=user.id) }}">成就</a>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 

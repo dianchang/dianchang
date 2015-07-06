@@ -7,20 +7,25 @@
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/user/followers.css?__inline"/>{% endblock %}
 {% block page_content %}
-    <div class="container">
-        {{ user_page_header(user, active='followers') }}
+    {{ user_page_header(user, with_tabs=False) }}
 
-        <div class="row">
-            <div class="col-md-8">
-                {% for follower in user.followers %}
+    <div class="container">
+        <div class="title text-light">{{ user.name }}被这些人关注</div>
+
+        <div class="followers">
+            {% for follower in user.followers %}
+                <div class="follower">
                     <a href="{{ follower.follower.profile_url }}">
-                        <img src="{{ follower.follower.avatar_url }}" alt="" class="dc-show-user-card"
-                             data-id="{{ follower.follower_id }}"/>
-                    </a>
-                {% endfor %}
-            </div>
-            <div class="col-md-4">
-            </div>
+                        <img src="{{ follower.follower.avatar_url }}" alt="" class="dc-show-user-card img-circle"
+                             data-id="{{ follower.follower_id }}"/></a>
+
+                    <div class="name">
+                        <a href="{{ follower.follower.profile_url }}" class="dc-show-user-card"
+                           data-id="{{ follower.follower_id }}">
+                            {{ follower.follower.name }}</a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
