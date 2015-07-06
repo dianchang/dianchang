@@ -34,7 +34,7 @@
 
     <div class="container">
         <div class="answer">
-            <div class="content {% if answer.content|length < 60 %}less{% endif %}">
+            <div class="content rich-text-area {% if answer.content|length < 60 %}less{% endif %}">
                 {{ answer.content|safe }}
             </div>
 
