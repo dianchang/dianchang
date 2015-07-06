@@ -10,17 +10,22 @@
     {{ user_page_header(user, with_tabs=False) }}
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                {% for following in user.followings %}
+        <div class="title text-light">{{ user.name }}关注的人</div>
+
+        <div class="followings">
+            {% for following in followings %}
+                <div class="following">
                     <a href="{{ following.following.profile_url }}">
-                        <img src="{{ following.following.avatar_url }}" alt="" class="dc-show-user-card"
-                             data-id="{{ following.following_id }}"/>
-                    </a>
-                {% endfor %}
-            </div>
-            <div class="col-md-4">
-            </div>
+                        <img src="{{ following.following.avatar_url }}" alt="" class="dc-show-user-card img-circle"
+                             data-id="{{ following.following_id }}"/></a>
+
+                    <div class="name">
+                        <a href="{{ following.following.profile_url }}" class="dc-show-user-card"
+                           data-id="{{ following.following_id }}">
+                            {{ following.following.name }}</a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

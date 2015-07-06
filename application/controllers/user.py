@@ -163,7 +163,8 @@ def edits(uid):
 def followings(uid):
     """关注"""
     user = User.query.get_or_404(uid)
-    return render_template('user/followings.html', user=user)
+    followings = user.followings.limit(100)
+    return render_template('user/followings.html', user=user, followings=followings)
 
 
 @bp.route('/people/<int:uid>/followers')
