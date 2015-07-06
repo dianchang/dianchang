@@ -109,7 +109,7 @@
                                     <div class="answers-count text-light">
                                         {% if user.answers_count %}
                                             在
-                                            {% for topic in user.answered_topics %}
+                                            {% for topic in user.answered_topics() %}
                                                 <a href="{{ url_for('topic.view', uid=topic.topic_id) }}"
                                                    class="dc-show-topic-card" data-id="{{ topic.topic_id }}">
                                                     {{ topic.topic.name }}</a>
