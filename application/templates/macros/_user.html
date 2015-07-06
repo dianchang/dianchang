@@ -205,10 +205,8 @@
         <div class="follow-bg followings-bg">
             <div class="outer-wap">
                 <div class="selector-wap">
-                    <span class="selector">
-                        <span class="selector-show-followed-users active">关注的人</span>
-                        <span class="selector-show-followed-topics">关注的话题</span>
-                    </span>
+                    <span class="selector selector-show-followed-users active">关注的人</span>
+                    <span class="selector selector-show-followed-topics">关注的话题</span>
                 </div>
 
                 <div class="followed-users-wap empty">
@@ -223,7 +221,19 @@
             <span class="btn-close-bg btn-close-followings-bg">x</span>
         </div>
 
-        <div class="follow-bg followers-bg"></div>
+        <div class="follow-bg followers-bg">
+            <div class="outer-wap">
+                <div class="selector-wap">
+                    <span class="selector selector-show-followers active">关注者</span>
+                </div>
+
+                <div class="followers-wap empty">
+                    <span class="fa fa-spin fa-spinner"></span>
+                </div>
+            </div>
+
+            <span class="btn-close-bg btn-close-followings-bg">x</span>
+        </div>
     </div>
 
     <script>
@@ -414,7 +424,8 @@
             $userHeader.on('click', '.btn-show-followings', function () {
                 var $followedUsersWap = $userHeader.find('.followed-users-wap');
 
-                $('.followings-bg').fadeIn('fast');
+                $userHeader.find('.followings-bg').fadeIn('fast');
+                $userHeader.find('.selector-show-followed-users').click();
 
                 if ($followedUsersWap.hasClass('empty')) {
                     $.ajax({
@@ -468,6 +479,25 @@
                     }).done(function (response) {
                         if (response.result) {
                             $followedTopicsWap.removeClass('empty').html(response.html);
+                        }
+                    });
+                }
+            });
+
+            // 打开关注者弹窗
+            $userHeader.on('click', '.btn-show-followers', function () {
+                var $followersWap = $userHeader.find('.followers-wap');
+
+                $('.followers-bg').fadeIn('fast');
+
+                if ($followersWap.hasClass('empty')) {
+                    $.ajax({
+                        url: urlFor('user.get_followers_html'),
+                        method: 'post',
+                        dataType: 'json'
+                    }).done(function (response) {
+                        if (response.result) {
+                            $followersWap.removeClass('empty').html(response.html);
                         }
                     });
                 }
@@ -858,3 +888,33 @@
 
 
 {# 关注者 #}
+{% macro render_followers(followers) %}
+    {% for follower in followers %}
+        {% set user = follower.follower %}
+
+        <div class="follower media">
+            <div class="media-left">
+                <a href="{{ user.profile_url }}">
+                    <img src="{{ user.avatar_url }}" alt="" class="dc-show-user-card img-circle"
+                         data-id="{{ user.id }}"/>
+                </a>
+            </div>
+
+            <div class="media-body">
+                <div class="user-info">
+                    <a href="{{ user.profile_url }}" class="dc-show-user-card follower-name"
+                       data-id="{{ user.id }}">{{ user.name }}</a>{% if user.desc %}，{{ user.desc }}{% endif %}
+                </div>
+                <div class="user-other-info text-light">
+                    {% if user.organization %}{{ user.organization }}{% endif %}
+                    {% if user.organization and user.position %}
+                        <span class="divider">·</span>
+                    {% endif %}
+                    {% if user.position %}{{ user.position }}{% endif %}
+                </div>
+            </div>
+
+            {{ user_follow_wap(user) }}
+        </div>
+    {% endfor %}
+{% endmacro %}

@@ -309,30 +309,12 @@
     .outer-wap {
       width: 680px;
       margin: 0 auto;
-    }
 
-    .btn-close-bg {
-      position: absolute;
-      right: 30px;
-      top: 0;
-      font-size: 60px;
-      color: #bbb;
-      cursor: pointer;
-
-      &:hover {
-        color: #999;
-      }
-    }
-  }
-
-  .followings-bg {
-    .outer-wap {
       .selector-wap {
         text-align: center;
         border-bottom: 1px solid @border-color;
 
-        .selector-show-followed-users,
-        .selector-show-followed-topics {
+        .selector {
           cursor: pointer;
           margin-bottom: -1px;
           display: inline-block;
@@ -351,11 +333,16 @@
           &:hover {
             color: #333;
           }
+
+          &:last-child {
+            margin-right: 0;
+          }
         }
       }
 
       .followed-users-wap,
-      .followed-topics-wap {
+      .followed-topics-wap,
+      .followers-wap {
         .fa-spin {
           font-size: 20px;
           color: #999;
@@ -366,72 +353,129 @@
           padding-top: 40px;
         }
       }
+    }
 
-      .followed-users-wap {
-        .followed-user {
-          padding: 30px 0;
-          position: relative;
-          border-bottom: 1px solid @border-color;
+    .btn-close-bg {
+      position: absolute;
+      right: 30px;
+      top: 0;
+      font-size: 60px;
+      color: #bbb;
+      cursor: pointer;
 
-          .media-left {
-            padding-right: 15px;
+      &:hover {
+        color: #999;
+      }
+    }
+  }
 
-            img {
-              width: 50px;
-              height: 50px;
-            }
-          }
+  .followings-bg {
+    display: none;
 
-          .user-info {
-            margin-bottom: 5px;
-          }
+    .followed-users-wap {
+      .followed-user {
+        padding: 30px 0;
+        position: relative;
+        border-bottom: 1px solid @border-color;
 
-          .divider {
-            margin: 0 3px;
-          }
+        .media-left {
+          padding-right: 15px;
 
-          .followed-user-name {
-            font-weight: bold;
-            color: #333;
-          }
-
-          .dc-user-follow-wap {
-            position: absolute;
-            right: 0;
-            top: 38px;
+          img {
+            width: 50px;
+            height: 50px;
           }
         }
+
+        .user-info {
+          margin-bottom: 5px;
+        }
+
+        .divider {
+          margin: 0 3px;
+        }
+
+        .followed-user-name {
+          font-weight: bold;
+          color: #333;
+        }
+
+        .dc-user-follow-wap {
+          position: absolute;
+          right: 0;
+          top: 38px;
+        }
       }
+    }
 
-      .followed-topics-wap {
-        display: none;
+    .followed-topics-wap {
+      display: none;
 
-        .followed-topic {
-          position: relative;
-          padding: 30px 0;
-          border-bottom: 1px solid @border-color;
+      .followed-topic {
+        position: relative;
+        padding: 30px 0;
+        border-bottom: 1px solid @border-color;
 
-          .media-left {
-            img {
-              width: 40px;
-              height: 40px;
-            }
+        .media-left {
+          img {
+            width: 40px;
+            height: 40px;
           }
+        }
 
-          .topic-name-wap {
-            margin-bottom: 2px;
+        .topic-name-wap {
+          margin-bottom: 2px;
 
-            a {
-              color: #333;
-              font-weight: bold;
-            }
+          a {
+            color: #333;
+            font-weight: bold;
           }
+        }
 
-          .dc-topic-follow-wap {
-            position: absolute;
-            right: 0;
-            top: 35px;
+        .dc-topic-follow-wap {
+          position: absolute;
+          right: 0;
+          top: 35px;
+        }
+      }
+    }
+  }
+
+  .followers-bg {
+    display: none;
+
+    .followers-wap {
+      .follower {
+        padding: 30px 0;
+        position: relative;
+        border-bottom: 1px solid @border-color;
+
+        .media-left {
+          padding-right: 15px;
+
+          img {
+            width: 50px;
+            height: 50px;
           }
+        }
+
+        .user-info {
+          margin-bottom: 5px;
+        }
+
+        .divider {
+          margin: 0 3px;
+        }
+
+        .follower-name {
+          font-weight: bold;
+          color: #333;
+        }
+
+        .dc-user-follow-wap {
+          position: absolute;
+          right: 0;
+          top: 38px;
         }
       }
     }
