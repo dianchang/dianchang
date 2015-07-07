@@ -114,33 +114,30 @@
 
                     <ul class="dropdown-menu dropdown-menu-noti" role="menu">
                         <ul class="noti-tabs clearfix">
-                            <li class="active noti-tab-message {% if g.message_notifications_count %}new{% endif %}"
+                            <li class="noti-tab noti-tab-message {% if g.message_notifications_count %}new{% endif %}
+                                {% if g.notification_active =='message' %}active{% endif %}"
                                 data-toggle="message" data-new-count="{{ g.message_notifications_count }}">
                                 <span class="fa fa-comment"></span>
                                 <span class="new-flag"></span>
                             </li>
-                            <li class="noti-tab-thanks {% if g.thanks_notifications_count %}new{% endif %}"
+                            <li class="noti-tab noti-tab-thanks {% if g.thanks_notifications_count %}new{% endif %}
+                                {% if g.notification_active =='thanks' %}active{% endif %}"
                                 data-toggle="thanks" data-new-count="{{ g.thanks_notifications_count }}">
                                 <span class="fa fa-heart"></span>
                                 <span class="new-flag"></span>
                             </li>
-                            <li class="noti-tab-user {% if g.user_notifications_count %}new{% endif %}"
+                            <li class="noti-tab noti-tab-user {% if g.user_notifications_count %}new{% endif %}
+                                {% if g.notification_active =='user' %}active{% endif %}"
                                 data-toggle="user" data-new-count="{{ g.user_notifications_count }}">
                                 <span class="fa fa-user"></span>
                                 <span class="new-flag"></span>
                             </li>
                         </ul>
 
-                        <div class="noti-content">
-                            <div class="noti-panel active noti-panel-message empty">
-                                {#                                <span class="fa fa-spin fa-spinner loading-flag"></span>#}
-                            </div>
-                            <div class="noti-panel noti-panel-thanks empty">
-                                {#                                <span class="fa fa-spin fa-spinner loading-flag"></span>#}
-                            </div>
-                            <div class="noti-panel noti-panel-user empty">
-                                {#                                <span class="fa fa-spin fa-spinner loading-flag"></span>#}
-                            </div>
+                        <div class="noti-content empty">
+                            <div class="noti-panel noti-panel-message {% if g.notification_active =='message' %}active{% endif %}"></div>
+                            <div class="noti-panel noti-panel-thanks {% if g.notification_active =='thanks' %}active{% endif %}"></div>
+                            <div class="noti-panel noti-panel-user {% if g.notification_active =='user' %}active{% endif %}"></div>
                         </div>
 
                         <div class="noti-footer">

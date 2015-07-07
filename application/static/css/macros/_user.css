@@ -582,6 +582,9 @@
   right: 15px;
   top: 18px;
 }
+.noti-in-nav.noti-user .new-flag {
+  top: 26px;
+}
 .noti-in-nav.noti-user:hover .dc-user-follow-wap {
   visibility: visible;
 }

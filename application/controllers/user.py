@@ -398,75 +398,69 @@ def get_card(uid):
     })
 
 
-@bp.route('/user/get_message_notifications', methods=['POST'])
+@bp.route('/user/get_notifications_html', methods=['POST'])
 @UserPermission()
-def get_message_notifications():
-    """获取消息类通知"""
-    notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.MESSAGE))
+def get_notifications_html():
+    """获取用于导航栏的通知HTML"""
+    message_notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.MESSAGE))
+    message_notifications_macro = get_template_attribute('macros/_user.html', 'render_message_notifications')
+    message_notifications_html = message_notifications_macro(message_notifications.limit(20))
 
-    macro = get_template_attribute('macros/_user.html', 'render_message_notifications')
-    html = macro(notifications.limit(20))
+    thanks_notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.THANKS))
+    thanks_notifications_macro = get_template_attribute('macros/_user.html', 'render_thanks_notifications')
+    thanks_notifications_html = thanks_notifications_macro(thanks_notifications.limit(20))
 
-    g.user.last_read_message_notifications_at = datetime.now()
-    db.session.add(g.user)
-
-    for noti in notifications:
-        noti.unread = False
-        db.session.add(noti)
-
-    db.session.commit()
+    user_notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER))
+    user_notifications_macro = get_template_attribute('macros/_user.html', 'render_user_notifications')
+    user_notifications_html = user_notifications_macro(user_notifications.limit(20))
 
     return json.dumps({
         'result': True,
-        'html': html
+        'message_notifications_html': message_notifications_html,
+        'user_notifications_html': user_notifications_html,
+        'thanks_notifications_html': thanks_notifications_html
     })
 
 
-@bp.route('/user/get_user_notifications', methods=['POST'])
+@bp.route('/user/read_user_notifications', methods=['POST'])
 @UserPermission()
-def get_user_notifications():
-    """获取用户类通知"""
+def read_user_notifications():
+    """标记用户类通知为已读"""
     notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER))
-
-    macro = get_template_attribute('macros/_user.html', 'render_user_notifications')
-    html = macro(notifications.limit(20))
-
     for noti in notifications:
         noti.unread = False
         db.session.add(noti)
-
-    g.user.last_read_user_notifications_at = datetime.now()
-    db.session.add(g.user)
-
     db.session.commit()
-
     return json.dumps({
         'result': True,
-        'html': html
     })
 
 
-@bp.route('/user/get_thanks_notifications', methods=['POST'])
+@bp.route('/user/read_message_notifications', methods=['POST'])
 @UserPermission()
-def get_thanks_notifications():
-    """获取感谢类通知"""
-    notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.THANKS))
-
-    macro = get_template_attribute('macros/_user.html', 'render_thanks_notifications')
-    html = macro(notifications.limit(20))
-
-    g.user.last_read_thanks_notifications_at = datetime.now()
-    db.session.add(g.user)
-
+def read_message_notifications():
+    """标记消息类通知为已读"""
+    notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.MESSAGE))
     for noti in notifications:
         noti.unread = False
         db.session.add(noti)
-
     db.session.commit()
-
     return json.dumps({
-        'result': True,
-        'html': html
+        'result': True
+    })
+
+
+@bp.route('/user/read_thanks_notifications', methods=['POST'])
+@UserPermission()
+def read_thanks_notifications():
+    """标记感谢类通知为已读"""
+    notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.THANKS))
+    for noti in notifications:
+        noti.unread = False
+        db.session.add(noti)
+    db.session.commit()
+    return json.dumps({
+        'result': True
     })
 
 

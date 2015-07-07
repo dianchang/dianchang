@@ -192,6 +192,8 @@ def register_hooks(app):
             else:
                 g.has_new_compose_feeds = g.user.last_read_compose_feeds_at < latest_compose_feed.created_at
 
+
+
         # 新消息条数
         if not g.user:
             g.notifications_count = 0
@@ -203,14 +205,21 @@ def register_hooks(app):
             if g.notifications_count != 0:
                 g.message_notifications_count = g.user.notifications.filter(
                     Notification.unread, Notification.kind.in_(NOTIFICATION_KIND_TYPE.MESSAGE)).count()
-                g.user_notifications_count = g.user.notifications.filter(
-                    Notification.unread, Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER)).count()
                 g.thanks_notifications_count = g.user.notifications.filter(
                     Notification.unread, Notification.kind.in_(NOTIFICATION_KIND_TYPE.THANKS)).count()
+                g.user_notifications_count = g.user.notifications.filter(
+                    Notification.unread, Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER)).count()
             else:
                 g.message_notifications_count = 0
-                g.user_notifications_count = 0
                 g.thanks_notifications_count = 0
+                g.user_notifications_count = 0
+
+        # 需优先显示的通知类型
+        g.notification_active = 'message'
+        if g.message_notifications_count == 0 and g.thanks_notifications_count != 0:
+            g.notification_active = 'thanks'
+        elif g.message_notifications_count == 0 and g.thanks_notifications_count == 0 and g.user_notifications_count != 0:
+            g.notification_active = 'user'
 
         # Simditor 上传七牛 token
         g.editorUptoken = qiniu.generate_token(policy={

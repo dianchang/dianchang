@@ -10,6 +10,8 @@
         $('.navbar-form .help-text').hide();
     });
 
+    var $navNotification = $('#nav-notification');
+
     // 通知
     $('.dropdown-menu-noti').on('click', function (e) {
         e.stopPropagation();
@@ -37,87 +39,85 @@
         $('.noti-panel-' + targetClass).addClass('active');
     });
 
-    // 显示消息类通知
+    // 显示通知
     $('.notifications-count-wap').click(function () {
+        var $notiContent = $navNotification.find('.noti-content');
         var $messageNotiWap = $('.noti-panel-message');
+        var $userNotiWap = $('.noti-panel-user');
+        var $thanksNotiWap = $('.noti-panel-thanks');
 
-        if (!$messageNotiWap.hasClass('empty')) {
+        if (!$notiContent.hasClass('empty')) {
             return true;
         }
 
         $.ajax({
-            url: urlFor('user.get_message_notifications'),
+            url: urlFor('user.get_notifications_html'),
             method: 'post',
             dataType: 'json'
         }).done(function (response) {
             if (response.result) {
-                if ($.trim(response.html) !== '') {
-                    $messageNotiWap.html(response.html).removeClass('empty');
-                } else {
-                    $messageNotiWap.addClass('empty');
-                }
+                $notiContent.removeClass('empty');
+
+                $messageNotiWap.html(response.message_notifications_html);
+                $userNotiWap.html(response.user_notifications_html);
+                $thanksNotiWap.html(response.thanks_notifications_html);
+
+                $navNotification.find('.noti-tab.active').click();
             }
         });
     });
 
-    //$('.noti-tab-message').click(function () {
-    //    //$(this).removeClass('new');
-    //});
-
-    // 显示用户类通知
-    $('.noti-tab-user').click(function () {
-        var $userNotiWap = $('.noti-panel-user');
-        var _this = $(this);
-
-        if (!$userNotiWap.hasClass('empty')) {
-            return true;
-        }
-
+    // 显示消息类通知
+    $('.noti-tab-message').click(function () {
         $.ajax({
-            url: urlFor('user.get_user_notifications'),
+            url: urlFor('user.read_message_notifications'),
             method: 'post',
             dataType: 'json'
-        }).done(function (response) {
-            if (response.result) {
-                if ($.trim(response.html) !== '') {
-                    $userNotiWap.html(response.html).removeClass('empty');
-                } else {
-                    $userNotiWap.addClass('empty');
-                }
-
-                //_this.removeClass('new');
-            }
         });
     });
 
     // 显示感谢类通知
     $('.noti-tab-thanks').click(function () {
-        var $thanksNotiWap = $('.noti-panel-thanks');
-        var _this = $(this);
-
-        if (!$thanksNotiWap.hasClass('empty')) {
-            return true;
-        }
-
         $.ajax({
-            url: urlFor('user.get_thanks_notifications'),
+            url: urlFor('user.read_thanks_notifications'),
             method: 'post',
             dataType: 'json'
-        }).done(function (response) {
-            if (response.result) {
-                if ($.trim(response.html) !== '') {
-                    $thanksNotiWap.html(response.html).removeClass('empty');
-                } else {
-                    $thanksNotiWap.addClass('empty');
-                }
-            }
         });
     });
 
+    // 显示用户类通知
+    $('.noti-tab-user').click(function () {
+        $.ajax({
+            url: urlFor('user.read_user_notifications'),
+            method: 'post',
+            dataType: 'json'
+        });
+    });
+
+    // 显示通知面板时，切换到第一个有新消息的面板
+    $navNotification.on('show.bs.dropdown', function () {
+        if (!$navNotification.find('.noti-content').hasClass('empty')) {
+            $navNotification.find('.noti-tab').each(function (index, element) {
+                if (parseInt($(element).data('new-count')) !== 0) {
+                    $(element).click();
+                    return false;
+                }
+            });
+        }
+    });
+
     // 隐藏通知面板时，标记当前 active 的通知为已读
-    $('#nav-notification').on('hidden.bs.dropdown', function () {
-        $(this).find('.noti-tabs li.active').removeClass('new');
-        $(this).find('.noti-panel.active').find('.noti-in-nav').removeClass('unread');
+    $navNotification.on('hidden.bs.dropdown', function () {
+        var $currentActiveNotiTab = $('.noti-tabs li.active');
+        var $currentActiveNotiPanel = $('.noti-panel.active');
+
+        // 标记当前 active 的通知为已读
+        $currentActiveNotiTab.removeClass('new');
+        $currentActiveNotiPanel.find('.noti-in-nav').removeClass('unread');
+
+        // 调整通知数目
+        reduceNotificationsCount($currentActiveNotiTab.data('new-count'));
+        $currentActiveNotiTab.data('new-count', 0);
     });
 
     // 通知跳转
