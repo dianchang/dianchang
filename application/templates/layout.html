@@ -104,7 +104,7 @@
         <ul class="nav navbar-nav pull-right">
             {% if g.user %}
                 {# 消息 #}
-                <li id="nav-notification" class="{% if g.notifications_count %}on{% endif %}
+                <li id="nav-notification" class="{% if g.notifications_count %}new{% endif %}
                     {% if g.notifications_count > 9 %}more{% endif %}">
 
                     <a href="#" class="dropdown-toggle notifications-count-wap" data-toggle="dropdown">
@@ -115,17 +115,17 @@
                     <ul class="dropdown-menu dropdown-menu-noti" role="menu">
                         <ul class="noti-tabs clearfix">
                             <li class="active noti-tab-message {% if g.message_notifications_count %}new{% endif %}"
-                                data-toggle="message">
+                                data-toggle="message" data-new-count="{{ g.message_notifications_count }}">
                                 <span class="fa fa-comment"></span>
                                 <span class="new-flag"></span>
                             </li>
-                            <li data-toggle="thanks"
-                                class="noti-tab-thanks {% if g.thanks_notifications_count %}new{% endif %}">
+                            <li class="noti-tab-thanks {% if g.thanks_notifications_count %}new{% endif %}"
+                                data-toggle="thanks" data-new-count="{{ g.thanks_notifications_count }}">
                                 <span class="fa fa-heart"></span>
                                 <span class="new-flag"></span>
                             </li>
-                            <li data-toggle="user"
-                                class="noti-tab-user {% if g.user_notifications_count %}new{% endif %}">
+                            <li class="noti-tab-user {% if g.user_notifications_count %}new{% endif %}"
+                                data-toggle="user" data-new-count="{{ g.user_notifications_count }}">
                                 <span class="fa fa-user"></span>
                                 <span class="new-flag"></span>
                             </li>

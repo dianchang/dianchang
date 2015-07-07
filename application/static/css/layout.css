@@ -276,18 +276,18 @@ html {
 .navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications-settings:hover {
   color: #666;
 }
-.navbar #nav-notification.on > a {
+.navbar #nav-notification.new > a {
   padding-top: 3px;
   padding-bottom: 3px;
   background-color: red;
 }
-.navbar #nav-notification.on > a .no-notifications {
+.navbar #nav-notification.new > a .no-notifications {
   display: none;
 }
-.navbar #nav-notification.on > a .notifications-count {
+.navbar #nav-notification.new > a .notifications-count {
   display: block;
 }
-.navbar #nav-notification.on.more a {
+.navbar #nav-notification.new.more a {
   width: auto;
   padding-left: 6px;
   padding-right: 6px;

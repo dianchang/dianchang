@@ -21,10 +21,16 @@
     // 切换通知面板
     $('.noti-tabs li').click(function () {
         var targetClass = $(this).data('toggle');
+        var $currentActiveNotiTab = $('.noti-tabs li.active').not(this);
+        var $currentActiveNotiPanel = $('.noti-panel.active').not('.noti-panel-' + targetClass);
 
         // 标记当前 active 的通知为已读
-        $('.noti-tabs li.active').not(this).removeClass('active').removeClass('new');
-        $('.noti-panel.active').not('.noti-panel-' + targetClass).removeClass('active').find('.noti-in-nav').removeClass('unread');
+        $currentActiveNotiTab.removeClass('active').removeClass('new');
+        $currentActiveNotiPanel.removeClass('active').find('.noti-in-nav').removeClass('unread');
+
+        // 调整通知数目
+        reduceNotificationsCount($currentActiveNotiTab.data('new-count'));
+        $currentActiveNotiTab.data('new-count', 0);
 
         // 设置被点击的通知为 active
         $(this).addClass('active');
@@ -145,6 +151,33 @@
             }
         }, 50);
     });
+
+    /**
+     * 减少通知数目
+     * @param count
+     */
+    function reduceNotificationsCount(count) {
+        var $notiNav = $('#nav-notification');
+        var $notiCount = $('.notifications-count-wap .notifications-count');
+        var currentCount = parseInt($.trim($notiCount.text()));
+        var resultCount = currentCount - count;
+
+        if (!$.isNumeric(resultCount)) {
+            return;
+        }
+
+        if (resultCount < 0) {
+            resultCount = 0;
+        }
+
+        if (resultCount === 0) {
+            $notiNav.removeClass('new').removeClass('more');
+        } else if (resultCount < 10) {
+            $notiNav.removeClass('mode');
+        }
+
+        $notiCount.text(resultCount);
+    }
 
     // 提问
     var timerForTopicTypeahead = null;
