@@ -12,6 +12,10 @@ h3 {
   padding-top: 25px;
   border-top: 1px solid #eaeaea;
 }
+.noti:hover {
+  cursor: pointer;
+  background-color: #f5f6f5;
+}
 .noti:last-child {
   border-bottom: 1px solid #eaeaea;
 }
