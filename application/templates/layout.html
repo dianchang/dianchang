@@ -23,8 +23,6 @@
     <link rel="stylesheet" href="/static/css/macros/_topic.css"/>
     <link rel="stylesheet" href="/static/css/macros/_user.css"/>
     <link rel="stylesheet" href="/static/css/layout.css"/>
-    {# CSS page #}
-    {% block page_css %}{% endblock %}
     {# JS global vars #}
     <script type="text/javascript">
         var g = {
@@ -53,12 +51,12 @@
     <script src="/static/js/libs/jquery.form.js"></script>
     <script src="/static/js/libs/Sortable.min.js"></script>
     <script src="/static/js/libs/jquery.animate-colors-min.js"></script>
-    {% if not config.DEBUG and not config.TESTING %}
-        <script src="/static/js/libs/turbolinks.js"></script>
-    {% endif %}
+    <script src="/static/js/libs/turbolinks.js"></script>
     <script src="/static/js/init.js"></script>
 </head>
 <body>
+{# CSS page #}
+{% block page_css %}{% endblock %}
 
 {# Flash message #}
 {% with message = get_flashed_messages()[0] %}
