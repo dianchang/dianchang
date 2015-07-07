@@ -53,6 +53,9 @@
     <script src="/static/js/libs/jquery.form.js"></script>
     <script src="/static/js/libs/Sortable.min.js"></script>
     <script src="/static/js/libs/jquery.animate-colors-min.js"></script>
+    {% if not config.DEBUG and not config.TESTING %}
+        <script src="/static/js/libs/turbolinks.js"></script>
+    {% endif %}
     <script src="/static/js/init.js"></script>
 </head>
 <body>
@@ -268,7 +271,11 @@
 <script src="/static/js/layout.js?__inline"></script>
 
 {# JS page #}
-{% block page_js %}{% endblock %}
+
+{% block page_js %}
+    {% raw %}{% endraw %}
+{% endblock %}
+
 
 {# Access analysis #}
 {# TODO #}

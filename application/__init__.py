@@ -15,6 +15,7 @@ from flask.ext.uploads import configure_uploads
 from flask_debugtoolbar import DebugToolbarExtension
 from werkzeug.wsgi import SharedDataMiddleware
 from werkzeug.contrib.fixers import ProxyFix
+from flask_turbolinks import turbolinks
 from six import iteritems
 from .utils.account import get_current_user
 from config import load_config
@@ -53,6 +54,7 @@ def create_app():
     if app.production:
         app.logger.addHandler(logging.StreamHandler())
         app.logger.setLevel(logging.ERROR)
+        turbolinks(app)
 
         # Enable Sentry
         if app.config.get('SENTRY_DSN'):
