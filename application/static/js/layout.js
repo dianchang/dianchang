@@ -347,7 +347,7 @@
         var _this = $(this);
 
         // 隐藏其他的用户卡片
-        $('.dc-show-user-card').popover('destroy');
+        $('.dc-show-user-card').popover('hide').popover('destroy');
 
         //if (typeof html === 'undefined') {
         $.ajax({
@@ -444,7 +444,7 @@
         }, 500);
 
         $(document).onOnce("mouseleave", ".user-popover", function () {
-            $element.popover('destory');
+            $element.popover('destroy');
         });
     }
 
