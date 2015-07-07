@@ -422,6 +422,7 @@
 
             // 打开关注弹窗
             $userHeader.on('click', '.btn-show-followings', function () {
+                disableScroll();
                 $userHeader.find('.followings-bg').fadeIn('fast');
                 $userHeader.find('.selector-show-followed-users').click()
             });
@@ -477,6 +478,7 @@
                 var userId = {{ user.id }};
                 var $followersWap = $userHeader.find('.followers-wap');
 
+                disableScroll();
                 $('.followers-bg').fadeIn('fast');
 
                 if ($followersWap.hasClass('empty')) {
@@ -495,6 +497,7 @@
             // 关闭弹出框
             $('.btn-close-bg').click(function () {
                 $(this).parents('.follow-bg').fadeOut('fast');
+                enableScroll();
             });
         })();
     </script>
