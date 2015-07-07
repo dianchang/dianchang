@@ -205,6 +205,9 @@
         e.returnValue = false;
     }
 
+    /**
+     * 禁止窗口滚动
+     */
     function disableScroll() {
         if (window.addEventListener) // older FF
             window.addEventListener('DOMMouseScroll', preventDefault, false);
@@ -213,6 +216,9 @@
         window.ontouchmove = preventDefault; // mobile
     }
 
+    /**
+     * 使能窗口滚动
+     */
     function enableScroll() {
         if (window.removeEventListener)
             window.removeEventListener('DOMMouseScroll', preventDefault, false);
@@ -220,6 +226,16 @@
         window.onwheel = null;
         window.ontouchmove = null;
         document.onkeydown = null;
+    }
+
+    function getJsonFromUrl() {
+        var query = location.search.substr(1);
+        var result = {};
+        query.split("&").forEach(function (part) {
+            var item = part.split("=");
+            result[item[0]] = decodeURIComponent(item[1]);
+        });
+        return result;
     }
 
     window.showTip = showTip;
@@ -230,4 +246,5 @@
     window.endsWith = endsWith;
     window.disableScroll = disableScroll;
     window.enableScroll = enableScroll;
+    window.getJsonFromUrl = getJsonFromUrl;
 })();

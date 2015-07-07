@@ -8,6 +8,45 @@ var $topicInput = $("input[name='topic']");
 var timerForAnswer = null;
 var $draftTip = $('.tip-save-draft');
 
+var params = getJsonFromUrl();
+// 跳转并高亮评论
+if (typeof params.answer_id !== 'undefined' && typeof params.comment_id !== 'undefined') {
+    var answerId = params.answer_id;
+    var $answer = $(".answer[data-id='" + answerId + "']");
+    var $commentsOuterWap = $answer.find('.comments-outer-wap');
+
+    if ($commentsOuterWap.hasClass('empty')) {
+        $.ajax({
+            url: urlFor('answer.load_comments_wap', {uid: answerId}),
+            dataType: 'json',
+            method: 'post'
+        }).done(function (response) {
+            if (response.result) {
+                var $comment = null;
+
+                $commentsOuterWap.removeClass('empty').removeClass('hide').html(response.html);
+                $comment = $(".answer-comment[data-id='" + params.comment_id + "']");
+                $comment.css('backgroundColor', '#E6F9F2');
+                $(window).scrollTo($comment, {
+                    offset: {
+                        'top': -100
+                    }
+                });
+                setTimeout(function () {
+                    $comment.animate({'backgroundColor': '#F5F6F5'});
+                }, 2000);
+            }
+        });
+    }
+} else if (typeof params.answer_id !== 'undefined') {
+    // 跳转回答
+    $(window).scrollTo($(".answer[data-id='" + params.answer_id + "']"), {
+        'offset': {
+            'top': -100
+        }
+    });
+}
+
 // 编辑标题
 $('.btn-edit-title').click(function () {
     if (!g.signin) {

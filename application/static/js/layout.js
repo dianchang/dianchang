@@ -2,7 +2,7 @@
     // Flash message
     setTimeout(showFlash, 200);
     setTimeout(hideFlash, 2000);
-
+    
     // 搜索框
     $('.navbar-form input').focus(function () {
         $('.navbar-form .help-text').show();
