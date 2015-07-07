@@ -167,40 +167,44 @@ def pinyin():
 @manager.command
 def uniform():
     from flask import json
-    from application.models import db, User, Answer, Question, AnswerComment, Notification
+    from application.models import db, User, Answer, Question, AnswerComment, Notification, Topic
 
-    # for user in User.query:
-    #     user.followers_count = user.followers.count()
-    #     user.followings_count = user.followings.count()
-    #     user.questions_count = user.questions.count()
-    #     user.answers_count = user.answers.count()
-    #     user.drafts_count = user.drafts.count()
-    #     db.session.add(user)
-    #
-    # for answer in Answer.query:
-    #     answer.comments_count = answer.comments.count()
-    #     answer.upvotes_count = answer.upvotes.count()
-    #     answer.downvotes_count = answer.downvotes.count()
-    #     answer.thanks_count = answer.thanks.count()
-    #     answer.nohelps_count = answer.nohelps.count()
-    #     db.session.add(answer)
-    #
-    # for question in Question.query:
-    #     question.answers_count = question.answers.count()
-    #     question.followers_count = question.followers.count()
-    #     db.session.add(question)
-    #
-    # for comment in AnswerComment.query:
-    #     comment.likes_count = comment.likes.count()
-    #     db.session.add(comment)
+    for user in User.query:
+        user.followers_count = user.followers.count()
+        user.followings_count = user.followings.count()
+        user.questions_count = user.questions.count()
+        user.answers_count = user.answers.count()
+        user.drafts_count = user.drafts.count()
+        db.session.add(user)
 
-    for answer_comment in AnswerComment.query:
-        answer_comment.question_id = answer_comment.answer.question_id
-        db.session.add(answer_comment)
+    for answer in Answer.query:
+        answer.comments_count = answer.comments.count()
+        answer.upvotes_count = answer.upvotes.count()
+        answer.downvotes_count = answer.downvotes.count()
+        answer.thanks_count = answer.thanks.count()
+        answer.nohelps_count = answer.nohelps.count()
+        db.session.add(answer)
 
-    for noti in Notification.query:
-        noti.senders_list = json.dumps([noti.sender_id])
-        db.session.add(noti)
+    for topic in Topic.query:
+        topic.followers_count = topic.followers.count()
+        db.session.add(topic)
+
+    for question in Question.query:
+        question.answers_count = question.answers.count()
+        question.followers_count = question.followers.count()
+        db.session.add(question)
+
+    for comment in AnswerComment.query:
+        comment.likes_count = comment.likes.count()
+        db.session.add(comment)
+
+    # for answer_comment in AnswerComment.query:
+    #     answer_comment.question_id = answer_comment.answer.question_id
+    #     db.session.add(answer_comment)
+    #
+    # for noti in Notification.query:
+    #     noti.senders_list = json.dumps([noti.sender_id])
+    #     db.session.add(noti)
 
     db.session.commit()
 
