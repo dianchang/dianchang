@@ -17,8 +17,10 @@
         <a href="{{ url_for('site.index') }}" class="logo link-no-underline">电</a>
 
         <div class="container">
-            <a href="{{ url_for('question.view', uid=answer.question_id) }}" class="title">
-                {{ answer.question.title }}</a>
+            <div class="title">
+                <a href="{{ url_for('question.view', uid=answer.question_id) }}">
+                    {{ answer.question.title }}</a>
+            </div>
 
             {% if answer.question.desc %}
                 <div class="desc">{{ answer.question.desc|safe }}</div>

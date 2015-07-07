@@ -178,8 +178,30 @@
         }
     }
 
+    /**
+     * Check whether str starts with prefix.
+     * @param str
+     * @param prefix
+     * @returns {boolean}
+     */
+    function startsWith(str, prefix) {
+        return str.slice(0, prefix.length) === prefix;
+    }
+
+    /**
+     * Check whether str ends with suffix.
+     * @param str
+     * @param suffix
+     * @returns {boolean}
+     */
+    function endsWith(str, suffix) {
+        return str.slice(-suffix.length) === suffix;
+    }
+
     window.showTip = showTip;
     window.hideTip = hideTip;
     window.urlFor = urlFor;
     window.registerContext = registerContext;
+    window.startsWith = startsWith;
+    window.endsWith = endsWith;
 })();

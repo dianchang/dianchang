@@ -28,13 +28,14 @@ body #main-wap .container {
   color: #c5cfdc;
 }
 .question .title {
-  display: block;
   font-size: 28px;
-  font-weight: bold;
-  color: #333;
   margin-bottom: 20px;
 }
-.question .title:hover {
+.question .title a {
+  font-weight: bold;
+  color: #333;
+}
+.question .title a:hover {
   color: #333;
 }
 .question .desc {

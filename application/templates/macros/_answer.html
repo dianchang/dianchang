@@ -1,6 +1,6 @@
 {# 评论 #}
 {% macro render_answer_comment(comment) %}
-    <div class="answer-comment media">
+    <div class="answer-comment media" data-id="{{ comment.id }}">
         <div class="media-left">
             <a href="{{ comment.user.profile_url }}">
                 <img src="{{ comment.user.avatar_url }}" class="img-circle dc-show-user-card" alt=""
