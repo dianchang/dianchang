@@ -566,10 +566,15 @@
   position: absolute;
   visibility: hidden;
   right: 15px;
-  top: 20px;
+  top: 18px;
 }
 .noti-in-nav.noti-user:hover .dc-user-follow-wap {
   visibility: visible;
+}
+.noti-in-nav.noti-thanks:hover,
+.noti-in-nav.noti-message:hover {
+  cursor: pointer;
+  background-color: #f5f6f5;
 }
 .noti-in-nav .question-title {
   font-weight: bold;

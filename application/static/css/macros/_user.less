@@ -734,13 +734,21 @@
       position: absolute;
       visibility: hidden;
       right: 15px;
-      top: 20px;
+      top: 18px;
     }
 
     &:hover {
       .dc-user-follow-wap {
         visibility: visible;
       }
+    }
+  }
+
+  &.noti-thanks,
+  &.noti-message {
+    &:hover {
+      cursor: pointer;
+      background-color: @background-gray;
     }
   }
 

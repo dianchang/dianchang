@@ -2,7 +2,7 @@
     // Flash message
     setTimeout(showFlash, 200);
     setTimeout(hideFlash, 2000);
-    
+
     // 搜索框
     $('.navbar-form input').focus(function () {
         $('.navbar-form .help-text').show();
@@ -10,7 +10,7 @@
         $('.navbar-form .help-text').hide();
     });
 
-    // 消息通知
+    // 通知
     $('.dropdown-menu-noti').on('click', function (e) {
         e.stopPropagation();
     });
@@ -23,7 +23,6 @@
         $('.noti-tabs li').not(this).removeClass('active');
 
         $('.noti-panel').removeClass('active');
-        console.log('.noti-panel-' + targetClass);
         $('.noti-panel-' + targetClass).addClass('active');
     });
 
@@ -104,6 +103,21 @@
                 _this.removeClass('new');
             }
         });
+    });
+
+    // 通知跳转
+    $('.noti-panel').on('click', '.noti-in-nav', function (e) {
+        var href = $(this).data('href');
+
+        if (typeof href === 'undefined') {
+            return false;
+        }
+
+        if (e.target.tagName == 'A' || $(e.target).parents('a').length !== 0) {
+            return;
+        }
+
+        window.location = href;
     });
 
     // 调整modal高度
