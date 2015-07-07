@@ -54,7 +54,7 @@ def create_app():
     if app.production:
         app.logger.addHandler(logging.StreamHandler())
         app.logger.setLevel(logging.ERROR)
-        turbolinks(app)
+        # turbolinks(app)
 
         # Enable Sentry
         if app.config.get('SENTRY_DSN'):

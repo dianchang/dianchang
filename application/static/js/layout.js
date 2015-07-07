@@ -15,6 +15,9 @@
         e.stopPropagation();
     });
 
+    // 弹出通知面板时，禁止 body 滚动
+    // TODO
+
     // 切换通知面板
     $('.noti-tabs li').click(function () {
         var targetClass = $(this).data('toggle');
@@ -355,7 +358,7 @@
     });
 
     // 弹出用户卡片
-    $(document).on('mouseenter', '.dc-show-user-card', function () {
+    $(document).onOnce('mouseenter', '.dc-show-user-card', function () {
         var id = $(this).data('id');
         var html = $(this).data('user');
         var _this = $(this);
@@ -380,7 +383,7 @@
     });
 
     // 隐藏用户卡片
-    $(document).on('mouseleave', '.dc-show-user-card', function () {
+    $(document).onOnce('mouseleave', '.dc-show-user-card', function () {
         var _this = $(this);
 
         setTimeout(function () {
@@ -391,7 +394,7 @@
     });
 
     // 弹出话题卡片
-    $(document).on('mouseenter', '.dc-show-topic-card', function () {
+    $(document).onOnce('mouseenter', '.dc-show-topic-card', function () {
         var id = $(this).data('id');
         var html = $(this).data('topic');
         var _this = $(this);
@@ -416,7 +419,7 @@
     });
 
     // 隐藏话题卡片
-    $(document).on('mouseleave', '.dc-show-topic-card', function () {
+    $(document).onOnce('mouseleave', '.dc-show-topic-card', function () {
         var _this = $(this);
 
         setTimeout(function () {
