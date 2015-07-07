@@ -178,12 +178,12 @@ def followers(uid):
 @bp.route('/notifications')
 @UserPermission()
 def notifications():
-    """用户消息"""
+    """用户消息
+
+    不显示关注类消息
+    """
     last_read_message_notifications_at = g.user.last_read_message_notifications_at
     g.user.last_read_notifications_at = datetime.now()
-
-    last_read_user_notifications_at = g.user.last_read_user_notifications_at
-    g.user.last_read_user_notifications_at = datetime.now()
 
     last_read_thanks_notifications_at = g.user.last_read_thanks_notifications_at
     g.user.last_read_thanks_notifications_at = datetime.now()
@@ -193,10 +193,9 @@ def notifications():
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
-    notifications = g.user.notifications.limit(20)
+    notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(20)
     return render_template('user/notifications.html',
                            last_read_message_notifications_at=last_read_message_notifications_at,
-                           last_read_user_notifications_at=last_read_user_notifications_at,
                            last_read_thanks_notifications_at=last_read_thanks_notifications_at,
                            notifications=notifications)
 
