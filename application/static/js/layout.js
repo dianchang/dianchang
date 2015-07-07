@@ -22,10 +22,12 @@
     $('.noti-tabs li').click(function () {
         var targetClass = $(this).data('toggle');
 
-        $(this).addClass('active');
-        $('.noti-tabs li').not(this).removeClass('active');
+        // 标记当前 active 的通知为已读
+        $('.noti-tabs li.active').not(this).removeClass('active').removeClass('new');
+        $('.noti-panel.active').not('.noti-panel-' + targetClass).removeClass('active').find('.noti-in-nav').removeClass('unread');
 
-        $('.noti-panel').removeClass('active');
+        // 设置被点击的通知为 active
+        $(this).addClass('active');
         $('.noti-panel-' + targetClass).addClass('active');
     });
 
@@ -52,9 +54,9 @@
         });
     });
 
-    $('.noti-tab-message').click(function () {
-        $(this).removeClass('new');
-    });
+    //$('.noti-tab-message').click(function () {
+    //    //$(this).removeClass('new');
+    //});
 
     // 显示用户类通知
     $('.noti-tab-user').click(function () {
@@ -77,7 +79,7 @@
                     $userNotiWap.addClass('empty');
                 }
 
-                _this.removeClass('new');
+                //_this.removeClass('new');
             }
         });
     });
@@ -102,10 +104,14 @@
                 } else {
                     $thanksNotiWap.addClass('empty');
                 }
-
-                _this.removeClass('new');
             }
         });
+    });
+
+    // 隐藏通知面板时，标记当前 active 的通知为已读
+    $('#nav-notification').on('hidden.bs.dropdown', function () {
+        $(this).find('.noti-tabs li.active').removeClass('new');
+        $(this).find('.noti-panel.active').find('.noti-in-nav').removeClass('unread');
     });
 
     // 通知跳转

@@ -402,6 +402,9 @@ def get_message_notifications():
     """获取消息类通知"""
     notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.MESSAGE))
 
+    macro = get_template_attribute('macros/_user.html', 'render_message_notifications')
+    html = macro(notifications.limit(20))
+
     g.user.last_read_message_notifications_at = datetime.now()
     db.session.add(g.user)
 
@@ -411,10 +414,9 @@ def get_message_notifications():
 
     db.session.commit()
 
-    macro = get_template_attribute('macros/_user.html', 'render_message_notifications')
     return json.dumps({
         'result': True,
-        'html': macro(notifications.limit(20))
+        'html': html
     })
 
 
@@ -422,7 +424,12 @@ def get_message_notifications():
 @UserPermission()
 def get_user_notifications():
     """获取用户类通知"""
-    for noti in g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER)):
+    notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.USER))
+
+    macro = get_template_attribute('macros/_user.html', 'render_user_notifications')
+    html = macro(notifications.limit(20))
+
+    for noti in notifications:
         noti.unread = False
         db.session.add(noti)
 
@@ -431,10 +438,9 @@ def get_user_notifications():
 
     db.session.commit()
 
-    macro = get_template_attribute('macros/_user.html', 'render_user_notifications')
     return json.dumps({
         'result': True,
-        'html': macro(g.user.followers.limit(20))
+        'html': html
     })
 
 
@@ -443,6 +449,9 @@ def get_user_notifications():
 def get_thanks_notifications():
     """获取感谢类通知"""
     notifications = g.user.notifications.filter(Notification.kind.in_(NOTIFICATION_KIND_TYPE.THANKS))
+
+    macro = get_template_attribute('macros/_user.html', 'render_thanks_notifications')
+    html = macro(notifications.limit(20))
 
     g.user.last_read_thanks_notifications_at = datetime.now()
     db.session.add(g.user)
@@ -453,10 +462,9 @@ def get_thanks_notifications():
 
     db.session.commit()
 
-    macro = get_template_attribute('macros/_user.html', 'render_thanks_notifications')
     return json.dumps({
         'result': True,
-        'html': macro(notifications.limit(20))
+        'html': html
     })
 
 

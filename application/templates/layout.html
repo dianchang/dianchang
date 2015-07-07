@@ -133,13 +133,13 @@
 
                         <div class="noti-content">
                             <div class="noti-panel active noti-panel-message empty">
-                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                                {#                                <span class="fa fa-spin fa-spinner loading-flag"></span>#}
                             </div>
                             <div class="noti-panel noti-panel-thanks empty">
-                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                                {#                                <span class="fa fa-spin fa-spinner loading-flag"></span>#}
                             </div>
                             <div class="noti-panel noti-panel-user empty">
-                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                                {#                                <span class="fa fa-spin fa-spinner loading-flag"></span>#}
                             </div>
                         </div>
 
@@ -268,11 +268,7 @@
 <script src="/static/js/layout.js?__inline"></script>
 
 {# JS page #}
-
-{% block page_js %}
-    {% raw %}{% endraw %}
-{% endblock %}
-
+{% block page_js %}{% endblock %}
 
 {# Access analysis #}
 {# TODO #}
