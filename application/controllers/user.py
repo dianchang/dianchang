@@ -182,22 +182,24 @@ def notifications():
 
     不显示关注类消息
     """
-    last_read_message_notifications_at = g.user.last_read_message_notifications_at
-    g.user.last_read_notifications_at = datetime.now()
+    # last_read_message_notifications_at = g.user.last_read_message_notifications_at
+    # g.user.last_read_notifications_at = datetime.now()
+    #
+    # last_read_thanks_notifications_at = g.user.last_read_thanks_notifications_at
+    # g.user.last_read_thanks_notifications_at = datetime.now()
+    notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(20)
 
-    last_read_thanks_notifications_at = g.user.last_read_thanks_notifications_at
-    g.user.last_read_thanks_notifications_at = datetime.now()
-
-    db.session.add(g.user)
+    template_html = render_template('user/notifications.html',
+                                    # last_read_message_notifications_at=last_read_message_notifications_at,
+                                    # last_read_thanks_notifications_at=last_read_thanks_notifications_at,
+                                    notifications=notifications)
+    # db.session.add(g.user)
     for noti in g.user.notifications.filter(Notification.unread):
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
-    notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(20)
-    return render_template('user/notifications.html',
-                           last_read_message_notifications_at=last_read_message_notifications_at,
-                           last_read_thanks_notifications_at=last_read_thanks_notifications_at,
-                           notifications=notifications)
+
+    return template_html
 
 
 @bp.route('/compose')

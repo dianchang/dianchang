@@ -32,7 +32,7 @@
                             {#                        {{ render_answer_commands(noti.answer) }}#}
                         </div>
 
-                        {% if noti.created_at > last_read_message_notifications_at %}
+                        {% if noti.unread %}
                             <div class="new-flag"></div>
                         {% endif %}
                     </div>
@@ -68,7 +68,7 @@
                             {#                        {{ render_answer_commands(noti.answer) }}#}
                         </div>
 
-                        {% if noti.created_at > last_read_thanks_notifications_at %}
+                        {% if noti.unread %}
                             <div class="new-flag"></div>
                         {% endif %}
                     </div>
@@ -93,7 +93,7 @@
                             {#                        {{ render_answer_commands(noti.answer) }}#}
                         </div>
 
-                        {% if noti.created_at > last_read_thanks_notifications_at %}
+                        {% if noti.unread %}
                             <div class="new-flag"></div>
                         {% endif %}
                     </div>
@@ -116,7 +116,7 @@
                             </div>
                         </div>
 
-                        {% if noti.created_at > last_read_message_notifications_at %}
+                        {% if noti.unread %}
                             <div class="new-flag"></div>
                         {% endif %}
                     </div>
@@ -139,7 +139,7 @@
                             </div>
                         </div>
 
-                        {% if noti.created_at > last_read_message_notifications_at %}
+                        {% if noti.unread %}
                             <div class="new-flag"></div>
                         {% endif %}
                     </div>
@@ -157,7 +157,7 @@
                             </div>
                         </div>
 
-                        {% if noti.created_at > last_read_thanks_notifications_at %}
+                        {% if noti.unread %}
                             <div class="new-flag"></div>
                         {% endif %}
                     </div>
