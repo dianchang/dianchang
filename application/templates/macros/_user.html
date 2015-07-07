@@ -422,26 +422,13 @@
 
             // 打开关注弹窗
             $userHeader.on('click', '.btn-show-followings', function () {
-                var $followedUsersWap = $userHeader.find('.followed-users-wap');
-
                 $userHeader.find('.followings-bg').fadeIn('fast');
-                $userHeader.find('.selector-show-followed-users').click();
-
-                if ($followedUsersWap.hasClass('empty')) {
-                    $.ajax({
-                        url: urlFor('user.get_followed_users_html'),
-                        method: 'post',
-                        dataType: 'json'
-                    }).done(function (response) {
-                        if (response.result) {
-                            $followedUsersWap.removeClass('empty').html(response.html);
-                        }
-                    });
-                }
+                $userHeader.find('.selector-show-followed-users').click()
             });
 
             // 切换到关注的人
             $userHeader.on('click', '.selector-show-followed-users', function () {
+                var userId = {{ user.id }};
                 var $followedUsersWap = $userHeader.find('.followed-users-wap');
                 var $followedTopicsWap = $userHeader.find('.followed-topics-wap');
 
@@ -451,7 +438,7 @@
 
                 if ($followedUsersWap.hasClass('empty')) {
                     $.ajax({
-                        url: urlFor('user.get_followed_users_html'),
+                        url: urlFor('user.get_followed_users_html', {uid: userId}),
                         method: 'post',
                         dataType: 'json'
                     }).done(function (response) {
@@ -464,6 +451,7 @@
 
             // 切换到关注的话题
             $userHeader.on('click', '.selector-show-followed-topics', function () {
+                var userId = {{ user.id }};
                 var $followedTopicsWap = $userHeader.find('.followed-topics-wap');
                 var $followedUsersWap = $userHeader.find('.followed-users-wap');
 
@@ -473,7 +461,7 @@
 
                 if ($followedTopicsWap.hasClass('empty')) {
                     $.ajax({
-                        url: urlFor('user.get_followed_topics_html'),
+                        url: urlFor('user.get_followed_topics_html', {uid: userId}),
                         method: 'post',
                         dataType: 'json'
                     }).done(function (response) {
@@ -486,13 +474,14 @@
 
             // 打开关注者弹窗
             $userHeader.on('click', '.btn-show-followers', function () {
+                var userId = {{ user.id }};
                 var $followersWap = $userHeader.find('.followers-wap');
 
                 $('.followers-bg').fadeIn('fast');
 
                 if ($followersWap.hasClass('empty')) {
                     $.ajax({
-                        url: urlFor('user.get_followers_html'),
+                        url: urlFor('user.get_followers_html', {uid: userId}),
                         method: 'post',
                         dataType: 'json'
                     }).done(function (response) {

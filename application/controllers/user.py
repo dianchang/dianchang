@@ -490,34 +490,37 @@ def update_background():
     })
 
 
-@bp.route('/user/get_followed_users_html', methods=['POST'])
+@bp.route('/user/<int:uid>/get_followed_users_html', methods=['POST'])
 @UserPermission()
-def get_followed_users_html():
+def get_followed_users_html(uid):
     """获取关注的用户HTML"""
+    user = User.query.get_or_404(uid)
     macro = get_template_attribute('macros/_user.html', 'render_followed_users')
     return json.dumps({
         'result': True,
-        'html': macro(g.user.followings.limit(15))
+        'html': macro(user.followings.limit(15))
     })
 
 
-@bp.route('/user/get_followed_topics_html', methods=['POST'])
+@bp.route('/user/<int:uid>/get_followed_topics_html', methods=['POST'])
 @UserPermission()
-def get_followed_topics_html():
+def get_followed_topics_html(uid):
     """获取关注的话题HTML"""
+    user = User.query.get_or_404(uid)
     macro = get_template_attribute('macros/_user.html', 'render_followed_topics')
     return json.dumps({
         'result': True,
-        'html': macro(g.user.followed_topics.limit(15))
+        'html': macro(user.followed_topics.limit(15))
     })
 
 
-@bp.route('/user/get_followers_html', methods=['POST'])
+@bp.route('/user/<int:uid>/get_followers_html', methods=['POST'])
 @UserPermission()
-def get_followers_html():
+def get_followers_html(uid):
     """获取关注者HTML"""
+    user = User.query.get_or_404(uid)
     macro = get_template_attribute('macros/_user.html', 'render_followers')
     return json.dumps({
         'result': True,
-        'html': macro(g.user.followers.limit(15))
+        'html': macro(user.followers.limit(15))
     })
