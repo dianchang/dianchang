@@ -63,7 +63,7 @@ h3 {
 }
 .tt-dropdown-menu .tt-suggestion.tt-cursor,
 .tt-dropdown-menu .tt-suggestion:hover {
-  background-color: #eff6fa;
+  background-color: #f3fdfa;
 }
 .tt-dropdown-menu .tt-suggestion:first-child {
   border-top-left-radius: 4px;

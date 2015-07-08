@@ -1,12 +1,36 @@
 {% extends "layout.html" %}
+{% from "macros/_account.html" import render_product_worked_on %}
 
-{% block page_title %}Select_Products_Worked_On{% endblock %}
+{% block page_title %}你为哪些产品工作过？{% endblock %}
 {% block page_js %}
     <script src="/static/js/account/select_products_worked_on.js"></script>{% endblock %}
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/account/select_products_worked_on.css"/>{% endblock %}
 {% block page_content %}
-    <div class="container">
-        <h1>Select_Products_Worked_On</h1>
+    <div class="text-logo">电场</div>
+
+    <div class="outer-wap">
+        <div class="header">
+            <div class="title">你为哪些产品工作过？</div>
+
+            <div class="input-wap">
+                <input type="text" name="topic" class="form-control" placeholder="搜索产品，如：微信"/>
+                <span class="fa fa-search"></span>
+            </div>
+        </div>
+
+        <div class="products-wap {% if not g.user.products_worked_on.count() %}empty{% endif %}">
+            <img src="/static/image/product.png" alt="" class="placeholder-img"/>
+
+            <div class="inner-wap">
+                {% for product in g.user.products_worked_on %}
+                    {{ render_product_worked_on(product) }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="pull-right btn-wap">
+            <a href="{{ url_for('account.follow_users') }}" class="btn-next btn btn-primary btn-lg not-finish">最后一步</a>
+        </div>
     </div>
 {% endblock %}

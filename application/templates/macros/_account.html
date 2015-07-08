@@ -558,3 +558,30 @@
         </script>
     {% endif %}
 {% endmacro %}
+
+
+{# 工作过的产品 #}
+{% macro render_product_worked_on(product) %}
+    {% set topic = product.topic %}
+
+    <div class="product-worked-on {% if product.current %}current{% endif %}">
+        <img src="{{ topic.avatar_url }}" class="img-rounded" alt=""/>
+
+        <div class="name">{{ topic.name }}</div>
+
+        <div class="current-working-on-wap ">
+            <span class="for-current text-light">当前在职</span>
+
+            <div class="commands">
+                <div class="btn btn-xs btn-white btn-set-current-working-on"
+                     data-id="{{ product.id }}">设为当前在职
+                </div>
+                <div class="btn btn-xs btn-white btn-cancel-current-working-on"
+                     data-id="{{ product.id }}">取消设定
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-remove-product" data-id="{{ product.id }}">×</div>
+    </div>
+{% endmacro %}

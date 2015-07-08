@@ -1,11 +1,12 @@
 # coding: utf-8
-from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json, session
+from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json, session, \
+    get_template_attribute
 from ..forms import SigninForm, SignupForm, SettingsForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email
 from ..utils.uploadsets import process_user_avatar, avatars, images, process_user_background
-from ..models import db, User, InvitationCode, Topic, FollowTopic
+from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct
 
 bp = Blueprint('account', __name__)
 
@@ -371,6 +372,79 @@ def submit_interesting_topics():
 def select_products_worked_on():
     """选择工作过的产品"""
     return render_template('account/select_products_worked_on.html')
+
+
+@bp.route('/account/submit_product_worked_on', methods=['POST'])
+@UserPermission()
+def submit_product_worked_on():
+    """添加话题"""
+    name = request.form.get('name')
+    topic_id = request.form.get('topic_id')
+
+    topic = None
+    if name:
+        topic = Topic.get_by_name(name, user_id=g.user.id, create_if_not_exist=True)
+    elif topic_id:
+        topic = Topic.query.get_or_404(topic_id)
+
+    # 添加产品
+    product = WorkOnProduct.query.filter(
+        WorkOnProduct.topic_id == topic.id,
+        WorkOnProduct.user_id == g.user.id).first()
+    if product:
+        return json.dumps({
+            'result': False
+        })
+    else:
+        product = WorkOnProduct(topic_id=topic.id, user_id=g.user.id)
+        db.session.add(product)
+        db.session.commit()
+
+        macro = get_template_attribute('macros/_account.html', 'render_product_worked_on')
+        return json.dumps({'result': True,
+                           'html': macro(product)})
+
+
+@bp.route('/account/product_worked_on/<int:uid>/set_current_working_on', methods=['POST'])
+@UserPermission()
+def set_product_current_working_on(uid):
+    """设置为当前就职的产品"""
+    product = WorkOnProduct.query.get_or_404(uid)
+    for p in g.user.products_worked_on:
+        if p.id != uid:
+            p.current = False
+            db.session.add(p)
+    product.current = True
+    db.session.add(product)
+    db.session.commit()
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/account/product_worked_on/<int:uid>/cancel_set_current_working_on', methods=['POST'])
+@UserPermission()
+def cancel_set_product_current_working_on(uid):
+    """取消设置为当前就职的产品"""
+    product = WorkOnProduct.query.get_or_404(uid)
+    product.current = False
+    db.session.add(product)
+    db.session.commit()
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/account/product_worked_on/<int:uid>/remove', methods=['POST'])
+@UserPermission()
+def remove_product(uid):
+    """移除产品"""
+    product = WorkOnProduct.query.get_or_404(uid)
+    db.session.delete(product)
+    db.session.commit()
+    return json.dumps({
+        'result': True
+    })
 
 
 @bp.route('/account/follow_users')

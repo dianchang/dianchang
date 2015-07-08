@@ -45,6 +45,7 @@ def query():
                 topics = topics.filter(Topic.id.notin_(excluded_list))
         return json.dumps([{'name': topic.name,
                             'id': topic.id,
+                            'avatar_url': topic.avatar_url,
                             'followers_count': topic.followers_count}
                            for topic in topics])
     else:
