@@ -561,11 +561,20 @@
 
 
 {# 工作过的产品 #}
-{% macro render_product_worked_on(product) %}
+{% macro render_product_worked_on(product, new_topic, upload_token) %}
     {% set topic = product.topic %}
 
-    <div class="product-worked-on {% if product.current %}current{% endif %}">
-        <img src="{{ topic.avatar_url }}" class="img-rounded" alt=""/>
+    <div class="product-worked-on {% if product.current %}current{% endif %}" data-id="{{ topic.id }}">
+        <img src="{{ topic.avatar_url }}" class="img-rounded topic-avatar" alt=""/>
+
+        {% if new_topic %}
+            <div class="btn-upload-topic-avatar" data-id="{{ topic.id }}">
+                <span class="fa fa-plus"></span>
+                <br/>
+                <span>上传图标</span>
+                <input type="file" name="avatar" data-token="{{ upload_token }}"/>
+            </div>
+        {% endif %}
 
         <div class="name">{{ topic.name }}</div>
 

@@ -81,17 +81,39 @@ body {
   display: inline-block;
   position: relative;
   margin: 0 30px 30px 0;
+  vertical-align: top;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on img {
+.outer-wap .products-wap .inner-wap .product-worked-on .topic-avatar {
   width: 80px;
   height: 80px;
   display: inline-block;
   margin-bottom: 12px;
 }
+.outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar {
+  border: 3px dashed #c9c9c9;
+  background-color: #f5f6f5;
+  text-align: center;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 18px;
+  color: #aeaeae;
+  border-radius: 4px;
+}
+.outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar .fa {
+  font-size: 20px;
+}
+.outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar:hover {
+  cursor: pointer;
+  color: #666;
+}
 .outer-wap .products-wap .inner-wap .product-worked-on .name {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
+  width: 80px;
 }
 .outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap {
   position: relative;
@@ -131,6 +153,7 @@ body {
   top: -10px;
   display: none;
   color: #666;
+  z-index: 10000;
 }
 .outer-wap .products-wap .inner-wap .product-worked-on .btn-remove-product:hover {
   background-color: #bbb;

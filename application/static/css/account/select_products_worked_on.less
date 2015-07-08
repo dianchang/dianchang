@@ -97,18 +97,43 @@ body {
         display: inline-block;
         position: relative;
         margin: 0 30px 30px 0;
+        vertical-align: top;
 
-        img {
+        .topic-avatar {
           width: 80px;
           height: 80px;
           display: inline-block;
           margin-bottom: 12px;
         }
 
+        .btn-upload-topic-avatar {
+          border: 3px dashed #c9c9c9;
+          background-color: @background-gray;
+          text-align: center;
+          width: 80px;
+          height: 80px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding-top: 18px;
+          color: #aeaeae;
+          border-radius: 4px;
+
+          .fa {
+            font-size: 20px;
+          }
+
+          &:hover {
+            cursor: pointer;
+            color: #666;
+          }
+        }
+
         .name {
           font-size: 16px;
           font-weight: bold;
           margin-bottom: 10px;
+          width: 80px;
         }
 
         .current-working-on-wap {
@@ -153,6 +178,7 @@ body {
           top: -10px;
           display: none;
           color: #666;
+          z-index: 10000;
 
           &:hover {
             background-color: #bbb;

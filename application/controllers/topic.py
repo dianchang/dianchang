@@ -514,5 +514,6 @@ def update_avatar():
     db.session.commit()
     return json.dumps({
         'result': True,
-        'url': topic.avatar_url
+        'url': topic.avatar_url,
+        'id': topic.id
     })

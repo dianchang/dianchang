@@ -4,8 +4,9 @@ from flask import render_template, Blueprint, redirect, request, url_for, flash,
 from ..forms import SigninForm, SignupForm, SettingsForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
-from ..utils.helpers import get_domain_from_email
+from ..utils.helpers import get_domain_from_email, absolute_url_for
 from ..utils.uploadsets import process_user_avatar, avatars, images, process_user_background
+from ..utils._qiniu import qiniu
 from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct
 
 bp = Blueprint('account', __name__)
@@ -400,9 +401,19 @@ def submit_product_worked_on():
         db.session.add(product)
         db.session.commit()
 
+        new_topic = name is not None and name != ""
+
+        if new_topic:
+            upload_token = qiniu.generate_token(policy={
+                'callbackUrl': absolute_url_for('.update_avatar'),
+                'callbackBody': "id=%d&key=$(key)" % topic.id
+            })
+        else:
+            upload_token = ""
+
         macro = get_template_attribute('macros/_account.html', 'render_product_worked_on')
         return json.dumps({'result': True,
-                           'html': macro(product)})
+                           'html': macro(product, new_topic, upload_token)})
 
 
 @bp.route('/account/product_worked_on/<int:uid>/set_current_working_on', methods=['POST'])

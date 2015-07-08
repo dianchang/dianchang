@@ -38,6 +38,8 @@ $topicInput.typeahead({
     }
 });
 
+$('.twitter-typeahead').css('display', 'block');
+
 // 通过选择autocomplete菜单项添加句集
 $topicInput.on('typeahead:selected', function (e, topic) {
     var data = null;
@@ -112,4 +114,30 @@ $mainWap.on('click', '.btn-remove-product', function () {
     });
 });
 
-$('.twitter-typeahead').css('display', 'block');
+var uploader = simple.uploader({
+    url: 'http://upload.qiniu.com',
+    fileKey: 'file',
+    connectionCount: 1,
+});
+
+// 上传话题图标
+$mainWap.on('click', '.btn-upload-topic-avatar', function () {
+    $(this).find('input').click();
+});
+
+$mainWap.on('change', "input[name='avatar']", function (e) {
+    uploader.upload(this.files, {
+        params: {
+            token: $(this).data('token')
+        }
+    });
+});
+
+uploader.on('uploadsuccess', function (e, file, response) {
+    if (response.result) {
+        var $product = $(".product-worked-on[data-id='" + response.id + "']");
+
+        $product.find('.btn-upload-topic-avatar').detach()
+            .find('img.topic-avatar').attr('src', response.url);
+    }
+});
