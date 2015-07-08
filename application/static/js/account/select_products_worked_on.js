@@ -137,7 +137,8 @@ uploader.on('uploadsuccess', function (e, file, response) {
     if (response.result) {
         var $product = $(".product-worked-on[data-id='" + response.id + "']");
 
-        $product.find('.btn-upload-topic-avatar').detach()
-            .find('img.topic-avatar').attr('src', response.url);
+        $product.find('img.topic-avatar').attr('src', response.url);
+        $product.find('.btn-upload-topic-avatar').detach();
+        $product.find('input').detach();
     }
 });
