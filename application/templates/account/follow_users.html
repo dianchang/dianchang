@@ -39,8 +39,8 @@
                             {% if user.organization %}{{ user.organization }}{% endif %}
                             {% if user.organization and user.position %}<span class="divider">·</span>{% endif %}
                             {% if user.position %}{{ user.position }}{% endif %}
-                            {% if user.organization or user.position %}，{% endif %}
-                            在 {{ recommend_user.topic.name }} 话题下有 {{ recommend_user.answers_count }} 个回答
+                            {% if user.organization or user.position %}，{% endif %}在 {{ recommend_user.topic.name }}
+                            话题下有 {{ recommend_user.answers_count }} 个回答
                         </div>
                     </div>
 

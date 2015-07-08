@@ -85,11 +85,23 @@ body {
 
       &:hover {
         cursor: pointer;
+
+        .selected-flag {
+          display: block;
+          background-color: transparent;
+          border: 1px solid #00cc99;
+          padding-top: 5px;
+          color: #00cc99;
+        }
       }
 
       &.active {
         .selected-flag {
           display: block;
+          background-color: #00cc99 !important;
+          border: none !important;
+          padding-top: 6px !important;
+          color: white !important;
         }
       }
 
@@ -115,15 +127,12 @@ body {
       }
 
       .selected-flag {
-        background-color: #00cc99;
         display: none;
         width: 30px;
         height: 30px;
         border-radius: 30px;
         text-align: center;
-        color: white;
         position: absolute;
-        padding-top: 6px;
         right: 10px;
         top: 10px;
 
