@@ -122,7 +122,7 @@ var uploader = simple.uploader({
 
 // 上传话题图标
 $mainWap.on('click', '.btn-upload-topic-avatar', function () {
-    $(this).find('input').click();
+    $(this).parents('.product-worked-on').find('input').click();
 });
 
 $mainWap.on('change', "input[name='avatar']", function (e) {
