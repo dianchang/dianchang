@@ -240,7 +240,7 @@
             //    }
             //});
 
-            // 测试邀请码
+            // 验证邀请码
             $signupCode.find('input').on('keyup', function (e) {
                 var code = getCodeValue();
 
@@ -310,19 +310,20 @@
                     }
                 }).done(function (response) {
                     if (response.result) {
-                        var messageHtml = "<p>账户激活邮件已发送到你的邮箱</p>";
-
-                        // 显示邮件已发送的提示
-                        $('.signup-wap').hide();
-                        $('.signup-success-wap').show();
-
-                        if (response.domain !== null) {
-                            messageHtml += "<p>请 <a href='" + response.domain + "' target='_blank'>登录</a> 激活</p>";
-                        } else {
-                            messageHtml += "<p>请登录激活</p>";
-                        }
-
-                        $('.signup-success-wap .message').html(messageHtml);
+                        window.location = urlFor('account.select_interesting_topics');
+                        {#                        var messageHtml = "<p>账户激活邮件已发送到你的邮箱</p>";#}
+                        {##}
+                        {#                        // 显示邮件已发送的提示#}
+                        {#                        $('.signup-wap').hide();#}
+                        {#                        $('.signup-success-wap').show();#}
+                        {##}
+                        {#                        if (response.domain !== null) {#}
+                        {#                            messageHtml += "<p>请 <a href='" + response.domain + "' target='_blank'>登录</a> 激活</p>";#}
+                        {#                        } else {#}
+                        {#                            messageHtml += "<p>请登录激活</p>";#}
+                        {#                        }#}
+                        {##}
+                        {#                        $('.signup-success-wap .message').html(messageHtml);#}
                     } else {
                         if (response.name !== "") {
                             showTip($signupName, response.name);

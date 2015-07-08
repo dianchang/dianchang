@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block page_title %}选择感兴趣的话题{% endblock %}
+{% block page_js %}
+    <script src="/static/js/account/select_interesting_topics.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/account/select_interesting_topics.css"/>{% endblock %}
+
+{% macro render_topics(topics) %}
+    {% for topic in topics %}
+        <div class="topic" data-id="{{ topic.id }}">
+            <img src="{{ topic.avatar_url }}" alt=""/>
+
+            <div class="name">{{ topic.name }}</div>
+            <div class="selected-flag">
+                <span class="fa fa-check"></span>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% block page_content %}
+    <div class="text-logo">电场</div>
+
+    <div class="outer-wap">
+        <div class="header">
+            <div class="title">选择10个你感兴趣的话题</div>
+
+            <div class="selector-wap">
+                <span class="selector active" data-target="hot-topics">热门</span>
+                <span class="selector" data-target="product-topics">产品</span>
+                <span class="selector" data-target="organization-topics">组织</span>
+                <span class="selector" data-target="position-topics">职业</span>
+                <span class="selector" data-target="skill-topics">技能</span>
+            </div>
+        </div>
+
+        <form action="" method="post" class="form-select-topics">
+            <div class="topics-wap hot-topics clearfix active">
+                {{ render_topics(hot_topics) }}
+            </div>
+
+            <div class="topics-wap product-topics clearfix">
+                {{ render_topics(product_topics) }}
+            </div>
+
+            <div class="topics-wap organization-topics clearfix">
+                {{ render_topics(organization_topics) }}
+            </div>
+
+            <div class="topics-wap position-topics clearfix">
+                {{ render_topics(position_topics) }}
+            </div>
+
+            <div class="topics-wap skill-topics clearfix">
+                {{ render_topics(skill_topics) }}
+            </div>
+        </form>
+
+        <div class="pull-right btn-wap">
+            <a href="javascript: void(0)"
+               class="btn-next btn btn-primary btn-lg not-finish">
+                <span class="for-not-finish">再选 <span class="left-topics-count">10</span> 个话题</span>继续
+            </a>
+        </div>
+    </div>
+{% endblock %}

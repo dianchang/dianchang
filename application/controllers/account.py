@@ -5,7 +5,7 @@ from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email
 from ..utils.uploadsets import process_user_avatar, avatars, images, process_user_background
-from ..models import db, User, InvitationCode
+from ..models import db, User, InvitationCode, Topic, FollowTopic
 
 bp = Blueprint('account', __name__)
 
@@ -328,3 +328,60 @@ def update_password():
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/account/select_interesting_topics')
+@UserPermission()
+def select_interesting_topics():
+    """选择感兴趣的话题"""
+    hot_topics = Topic.query.order_by(Topic.questions_count.desc()).limit(20)
+    product_topics = Topic.query.filter(Topic.name == '产品').first().descendant_topics.limit(20)
+    organization_topics = Topic.query.filter(Topic.name == '组织').first().descendant_topics.limit(20)
+    position_topics = Topic.query.filter(Topic.name == '职业').first().descendant_topics.limit(20)
+    skill_topics = Topic.query.filter(Topic.name == '技能').first().descendant_topics.limit(20)
+    return render_template('account/select_interesting_topics.html', hot_topics=hot_topics,
+                           product_topics=product_topics, organization_topics=organization_topics,
+                           position_topics=position_topics, skill_topics=skill_topics)
+
+
+@bp.route('/account/submit_interesting_topics', methods=['POST'])
+@UserPermission()
+def submit_interesting_topics():
+    """提交感兴趣的话题"""
+    topics_id_list = request.form.getlist('topic_id', type=int)
+    topics_id_list = _remove_repeats(topics_id_list)
+
+    for topic_id in topics_id_list:
+        follow_topic = g.user.followed_topics.filter(FollowTopic.topic_id == topic_id).first()
+        if not follow_topic:
+            follow_topic = FollowTopic(user_id=g.user.id, topic_id=topic_id)
+            db.session.add(follow_topic)
+
+    g.user.has_selected_interesting_topics = True
+    db.session.add(g.user)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/account/select_products_worked_on')
+@UserPermission()
+def select_products_worked_on():
+    """选择工作过的产品"""
+    return render_template('account/select_products_worked_on.html')
+
+
+@bp.route('/account/follow_users')
+@UserPermission()
+def follow_users():
+    """关注感兴趣的人"""
+    return render_template('account/follow_users.html')
+
+
+def _remove_repeats(seq):
+    """去除列表中的重复元素"""
+    seen = set()
+    seen_add = seen.add
+    return [x for x in seq if not (x in seen or seen_add(x))]
