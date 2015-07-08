@@ -9,7 +9,7 @@ if project_path not in sys.path:
 
 import time
 import logging
-from flask import Flask, request, url_for, g, render_template
+from flask import Flask, request, url_for, g, render_template, redirect
 from flask_wtf.csrf import CsrfProtect
 from flask.ext.uploads import configure_uploads
 from flask_debugtoolbar import DebugToolbarExtension
@@ -182,6 +182,11 @@ def register_hooks(app):
         if g.user and g.user.is_admin:
             g._before_request_time = time.time()
 
+        if g.user and not g.user.has_selected_interesting_topics \
+                and request.endpoint != 'account.select_interesting_topics' \
+                and '/static/' not in request.path:
+            return redirect(url_for('account.select_interesting_topics'))
+
         # 是否有新的撰写消息
         if not g.user:
             g.has_new_compose_feeds = False
@@ -191,8 +196,6 @@ def register_hooks(app):
                 g.has_new_compose_feeds = False
             else:
                 g.has_new_compose_feeds = g.user.last_read_compose_feeds_at < latest_compose_feed.created_at
-
-
 
         # 新消息条数
         if not g.user:

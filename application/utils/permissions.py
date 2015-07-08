@@ -8,6 +8,10 @@ class VisitorPermission(Permission):
 
 
 class UserPermission(Permission):
+    def __init__(self, active=False, selected_interesting_topics=True):
+        self.active = active
+        super(UserPermission, self).__init__()
+
     def rule(self):
         return UserRule()
 

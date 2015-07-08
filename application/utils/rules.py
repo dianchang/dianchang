@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import session, abort, flash, redirect, url_for
+from flask import session, abort, flash, redirect, url_for, g
 from permission import Rule
 from ..models import User
 
