@@ -13,6 +13,9 @@ h3 {
   font-weight: bold;
   margin-bottom: 25px;
 }
+input[type='file'] {
+  display: none;
+}
 .link-no-underline:hover,
 .link-no-underline:focus {
   text-decoration: none;
