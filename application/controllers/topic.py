@@ -23,6 +23,7 @@ def square():
 def query():
     """查询话题"""
     q = request.form.get('q')
+    with_create = request.form.get('create')  # 当找不到完全匹配的topic时，是否返回创建选项
     question_id = request.form.get('question_id')  # 不包括此问题的话题（用于给问题添加话题）
     ancestor_topic_id = request.form.get('ancestor_topic_id')  # 不为此话题的子孙话题的话题（用于给话题添加子话题）
     descendant_topic_id = request.form.get('descendant_topic_id')  # 不为此话题的祖先话题的话题（用于给话题添加父话题）
@@ -43,11 +44,19 @@ def query():
                 excluded_list = descendant_topic.ancestor_topics_id_list
                 excluded_list.append(descendant_topic_id)
                 topics = topics.filter(Topic.id.notin_(excluded_list))
-        return json.dumps([{'name': topic.name,
-                            'id': topic.id,
-                            'avatar_url': topic.avatar_url,
-                            'followers_count': topic.followers_count}
-                           for topic in topics])
+        topics_data = [{'name': topic.name,
+                        'id': topic.id,
+                        'avatar_url': topic.avatar_url,
+                        'followers_count': topic.followers_count}
+                       for topic in topics]
+        if with_create:
+            exact_topic = Topic.query.filter(Topic.name == q).first() is not None
+            if not exact_topic:
+                topics_data.insert(0, {
+                    'name': q,
+                    'create': True
+                })
+        return json.dumps(topics_data)
     else:
         return json.dumps({})
 

@@ -19,32 +19,21 @@ $topicInput.typeahead({
                 method: 'post',
                 dataType: 'json',
                 data: {
-                    q: q
+                    q: q,
+                    create: true
                 }
             }).done(function (matchs) {
-                var currentValue = $.trim($topicInput.val());
-
                 cb(matchs);
-
-                if ($(".typeahead-suggestion[data-name='" + currentValue + "']").length === 0) {
-                    var $suggestion = $("<div class='tt-suggestion create'><p class='btn-create-topic' data-name='" + currentValue + "'><span class='color'>+ 添加：</span>" + currentValue + "</p></div>");
-
-                    $(".tt-suggestions").before($suggestion);
-                    $suggestion
-                        .data('ttDatum', {
-                            'name': currentValue,
-                            'create': true
-                        })
-                        .data('ttValue', currentValue);
-                } else {
-                    $(".tt-suggestions").find('.btn-create-topic').detach();
-                }
             });
         }, 300);
     },
     templates: {
         'suggestion': function (data) {
-            return "<p class='typeahead-suggestion' data-name='" + data.name + "'><img src='" + data.avatar_url + "' class='topic-avatar img-rounded'>" + data.name + "</p>";
+            if (typeof data.create === 'undefined') {
+                return "<p class='typeahead-suggestion' data-name='" + data.name + "'><img src='" + data.avatar_url + "' class='topic-avatar img-rounded'>" + data.name + "</p>";
+            } else {
+                return "<p class='typeahead-suggestion' data-name='" + data.name + "'><span class='color'>+ 添加：</span>" + data.name + "</p>";
+            }
         }
     }
 });
