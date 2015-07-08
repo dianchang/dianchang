@@ -7,7 +7,7 @@ from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email, absolute_url_for
 from ..utils.uploadsets import process_user_avatar, avatars, images, process_user_background
 from ..utils._qiniu import qiniu
-from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct
+from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic
 
 bp = Blueprint('account', __name__)
 
@@ -470,7 +470,14 @@ def remove_product(uid):
 @UserPermission()
 def follow_users():
     """关注感兴趣的人"""
-    return render_template('account/follow_users.html')
+    topics_id_list = [followed_topic.topic_id for followed_topic in g.user.followed_topics]
+    recommend_users = UserTopicStatistic.query. \
+        filter(UserTopicStatistic.topic_id.in_(topics_id_list)). \
+        filter(UserTopicStatistic.user_id != g.user.id). \
+        filter(UserTopicStatistic.answers_count != 0). \
+        group_by(UserTopicStatistic.user_id). \
+        order_by(UserTopicStatistic.score.desc()).limit(24)
+    return render_template('account/follow_users.html', recommend_users=recommend_users)
 
 
 def _remove_repeats(seq):

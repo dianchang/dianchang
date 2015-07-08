@@ -21,12 +21,56 @@ body {
 }
 .outer-wap .header {
   padding: 25px 0 25px 0;
+  position: relative;
   border-bottom: 1px solid #d2d2d2;
 }
 .outer-wap .header .title {
   text-align: center;
   font-weight: bold;
   font-size: 20px;
+}
+.outer-wap .header .btn-refresh {
+  position: absolute;
+  right: 25px;
+  top: 28px;
+  color: #999;
+  font-size: 16px;
+}
+.outer-wap .header .btn-refresh:hover {
+  cursor: pointer;
+  color: #333;
+}
+.outer-wap .users-wap {
+  max-height: 500px;
+  overflow: auto;
+}
+.outer-wap .recommend-user-wap {
+  position: relative;
+  padding: 25px 25px;
+  border-bottom: 1px solid #e4e4e4;
+  font-size: 16px;
+}
+.outer-wap .recommend-user-wap .media-left {
+  padding-right: 15px;
+}
+.outer-wap .recommend-user-wap .media-left img {
+  width: 55px;
+  height: 55px;
+}
+.outer-wap .recommend-user-wap .user-info {
+  margin-bottom: 6px;
+}
+.outer-wap .recommend-user-wap .user-info .name {
+  font-weight: bold;
+  color: #333;
+}
+.outer-wap .recommend-user-wap .dc-user-follow-wap {
+  position: absolute;
+  top: 35px;
+  right: 25px;
+}
+.outer-wap .recommend-user-wap:last-child {
+  border-bottom: none;
 }
 .outer-wap .btn-wap {
   margin-top: 20px;
