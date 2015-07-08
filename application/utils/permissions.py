@@ -1,5 +1,5 @@
 from permission import Permission
-from .rules import VisitorRule, UserRule, AdminRule
+from .rules import VisitorRule, UserRule, AdminRule, UserActiveRule
 
 
 class VisitorPermission(Permission):
@@ -8,12 +8,15 @@ class VisitorPermission(Permission):
 
 
 class UserPermission(Permission):
-    def __init__(self, active=False, selected_interesting_topics=True):
+    def __init__(self, active=False):
         self.active = active
         super(UserPermission, self).__init__()
 
     def rule(self):
-        return UserRule()
+        if self.active:
+            return UserActiveRule()
+        else:
+            return UserRule()
 
 
 class AdminPermission(Permission):

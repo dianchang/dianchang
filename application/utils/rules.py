@@ -17,8 +17,18 @@ class UserRule(Rule):
         return 'user_id' in session
 
     def deny(self):
-        # flash('请先登录账号')
         return redirect(url_for('account.signin'))
+
+
+class UserActiveRule(Rule):
+    def base(self):
+        return UserRule()
+
+    def check(self):
+        return g.user.is_active
+
+    def deny(self):
+        return redirect(url_for('account.settings'))
 
 
 class AdminRule(Rule):
