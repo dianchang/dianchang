@@ -1,0 +1,36 @@
+nav,
+#footer {
+  display: none;
+}
+body {
+  background-color: #252e3c;
+  padding: 30px 0 100px 0;
+}
+.text-logo {
+  color: #f5f6f5;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.outer-wap {
+  width: 680px;
+  margin: 0 auto;
+  background-color: #f5f6f5;
+  border-radius: 2px;
+}
+.outer-wap .header {
+  padding: 25px 0 25px 0;
+  border-bottom: 1px solid #d2d2d2;
+}
+.outer-wap .header .title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+.outer-wap .btn-wap {
+  margin-top: 20px;
+}
+.outer-wap .btn-wap .btn-next {
+  font-weight: bold;
+}
