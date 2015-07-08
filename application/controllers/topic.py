@@ -360,11 +360,11 @@ def update_experience(uid):
         statistic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, experience=experience)
     db.session.add(statistic)
 
-    if not g.user.has_seleted_expert_topics:
+    if not g.user.has_selected_expert_topics:
         for expert in g.user.expert_topics:
             expert.selected = True
             db.session.add(expert)
-        g.user.has_seleted_expert_topics = True
+        g.user.has_selected_expert_topics = True
         db.session.add(g.user)
 
     db.session.commit()
@@ -392,11 +392,11 @@ def apply_for_deletion(uid):
 def remove_expert(uid):
     """移除擅长话题"""
     expert_topic = UserTopicStatistic.query.get_or_404(uid)
-    if not g.user.has_seleted_expert_topics:
+    if not g.user.has_selected_expert_topics:
         for expert in g.user.expert_topics:
             expert.selected = True
             db.session.add(expert)
-        g.user.has_seleted_expert_topics = True
+        g.user.has_selected_expert_topics = True
         db.session.add(g.user)
         db.session.commit()
     expert_topic.selected = False
@@ -432,8 +432,8 @@ def add_expert(uid):
         else:
             expert_topic.selected = True
 
-    if not g.user.has_seleted_expert_topics:
-        g.user.has_seleted_expert_topics = True
+    if not g.user.has_selected_expert_topics:
+        g.user.has_selected_expert_topics = True
         db.session.add(g.user)
         max_show_order_topic = 0
         for index, expert_topic in enumerate(g.user.expert_topics):
@@ -468,8 +468,8 @@ def update_show_order():
         })
 
     # 若从未编辑过擅长话题，则首先赋予 show_order
-    if not g.user.has_seleted_expert_topics:
-        g.user.has_seleted_expert_topics = True
+    if not g.user.has_selected_expert_topics:
+        g.user.has_selected_expert_topics = True
         db.session.add(g.user)
 
         for index, expert_topic in enumerate(g.user.expert_topics):

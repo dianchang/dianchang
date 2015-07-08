@@ -392,6 +392,7 @@ def submit_product_worked_on():
     product = WorkOnProduct.query.filter(
         WorkOnProduct.topic_id == topic.id,
         WorkOnProduct.user_id == g.user.id).first()
+
     if product:
         return json.dumps({
             'result': False
@@ -399,10 +400,17 @@ def submit_product_worked_on():
     else:
         product = WorkOnProduct(topic_id=topic.id, user_id=g.user.id)
         db.session.add(product)
+
+        # 自动关注话题
+        follow_topic = FollowTopic.query.filter(FollowTopic.topic_id == topic.id,
+                                                FollowTopic.user_id == g.user.id).first()
+        if not follow_topic:
+            follow_topic = FollowTopic(topic_id=topic.id, user_id=g.user.id)
+            db.session.add(follow_topic)
+
         db.session.commit()
 
         new_topic = name is not None and name != ""
-
         if new_topic:
             upload_token = qiniu.generate_token(policy={
                 'callbackUrl': absolute_url_for('topic.update_avatar'),
