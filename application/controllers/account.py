@@ -405,7 +405,7 @@ def submit_product_worked_on():
 
         if new_topic:
             upload_token = qiniu.generate_token(policy={
-                'callbackUrl': absolute_url_for('.update_avatar'),
+                'callbackUrl': absolute_url_for('topic.update_avatar'),
                 'callbackBody': "id=%d&key=$(key)" % topic.id
             })
         else:
