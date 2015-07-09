@@ -8,7 +8,7 @@ from ..utils.helpers import get_domain_from_email, absolute_url_for
 from ..utils.uploadsets import process_user_avatar, avatars, images, process_user_background
 from ..utils._qiniu import qiniu
 from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
-    HomeFeedBackup, HomeFeed
+    HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
 
 bp = Blueprint('account', __name__)
 
@@ -357,10 +357,15 @@ def submit_interesting_topics():
     topics_id_list = _remove_repeats(topics_id_list)
 
     for topic_id in topics_id_list:
+        # 关注话题
         follow_topic = g.user.followed_topics.filter(FollowTopic.topic_id == topic_id).first()
         if not follow_topic:
             follow_topic = FollowTopic(user_id=g.user.id, topic_id=topic_id)
             db.session.add(follow_topic)
+
+        # USER FEED: 插入到用户 feed 中
+        user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic_id)
+        db.session.add(user_feed)
 
     g.user.has_selected_interesting_topics = True
     db.session.add(g.user)
@@ -410,6 +415,10 @@ def submit_product_worked_on():
         if not follow_topic:
             follow_topic = FollowTopic(topic_id=topic.id, user_id=g.user.id)
             db.session.add(follow_topic)
+
+            # USER FEED: 插入到用户 feed 中
+            user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic_id)
+            db.session.add(user_feed)
 
         # 在 UserTopicStatistic 中标记该话题
         topic_statistic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic.id,
