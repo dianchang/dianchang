@@ -18,18 +18,20 @@ def signin():
     """登录"""
     form = SigninForm()
     if request.method == 'POST':
+        referer = session.get('referer') or url_for('site.index')
+        session.pop('referer', None)
         if form.validate():
             signin_user(form.user, form.remember.data)
             return json.dumps({
                 'result': True,
-                'referer': session.get('referer') or url_for('site.index')
+                'referer': referer
             })
         else:
             return json.dumps({
                 'result': False,
                 'email': form.email.errors[0] if len(form.email.errors) else "",
                 'password': form.password.errors[0] if len(form.password.errors) else "",
-                'referer': session.get('referer') or url_for('site.index')
+                'referer': referer
             })
     else:
         session['referer'] = request.referrer or url_for('site.index')
@@ -103,7 +105,7 @@ def signup():
 def signout():
     """登出"""
     signout_user()
-    return redirect(request.referrer or url_for('site.index'))
+    return redirect(url_for('site.index'))
 
 
 @bp.route('/send_reset_password_mail', methods=['POST'])
