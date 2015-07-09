@@ -124,12 +124,12 @@
     $('.noti-panel').on('click', '.noti-in-nav', function (e) {
         var href = $(this).data('href');
 
-        if (typeof href === 'undefined') {
-            return false;
+        if (e.target.tagName === 'A' || $(e.target).parents('a').length !== 0) {
+            return true;
         }
 
-        if (e.target.tagName == 'A' || $(e.target).parents('a').length !== 0) {
-            return;
+        if (typeof href === 'undefined') {
+            return false;
         }
 
         window.location = href;
