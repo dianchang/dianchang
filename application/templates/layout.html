@@ -53,10 +53,17 @@
     <script src="/static/js/libs/jquery.form.js"></script>
     <script src="/static/js/libs/Sortable.min.js"></script>
     <script src="/static/js/libs/jquery.animate-colors-min.js"></script>
+    <script src="/static/js/libs/raven.min.js"></script>
+    {% if not config.DEBUG and not config.TESTING %}
+        <script>
+            Raven.config('http://130d24bbaa494dc799165ec12cc6b288@119.254.101.73:9000/2').install();
+        </script>
+    {% endif %}
     {#    <script src="/static/js/libs/turbolinks.js"></script>#}
     <script src="/static/js/init.js"></script>
 </head>
 <body>
+
 {# Flash message #}
 {% with message = get_flashed_messages()[0] %}
     {% if message %}
