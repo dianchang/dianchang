@@ -87,12 +87,25 @@
 
 
 {# 问题 #}
-{% macro render_question(question, user, action='提出了') %}
+{% macro render_question(question, user, action='提出了', relevant_topic_id=None) %}
     <div class="dc-question">
         <div class="action text-light">
             <a href="{{ user.profile_url }}" class="dc-show-user-card dc-img-text-link-wap" data-id="{{ user.id }}">
                 <img src="{{ user.avatar_url }}" alt="" class="img-circle"/>
-                <span class="name">{{ user.name }}</span></a> {{ action }}问题
+                <span class="user-name">{{ user.name }}</span></a> {{ action }}问题
+
+            {% if relevant_topic_id %}
+                {% set most_relevant_topic = question.most_relevant_topic(relevant_topic_id) %}
+
+                {% if most_relevant_topic.id != relevant_topic_id %}
+                    <span class="divider">·</span>
+                    <span class="from-child-topic">
+                        来自子话题 <a href="{{ url_for('topic.view', uid=most_relevant_topic.id) }}"
+                                 class="dc-show-topic-card dc-topic" data-id="{{ most_relevant_topic.id }}">
+                        {{ most_relevant_topic.name }}</a>
+                    </span>
+                {% endif %}
+            {% endif %}
         </div>
 
         <div class="title">

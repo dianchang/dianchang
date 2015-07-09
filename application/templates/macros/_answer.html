@@ -514,7 +514,7 @@
 
 
 {# 单个回答 #}
-{% macro render_answer(answer, with_topics=True) %}
+{% macro render_answer(answer, with_topics=True, relevant_topic_id=None) %}
     <div class="dc-answer">
         {% if with_topics %}
             <div class="topics">
@@ -525,6 +525,18 @@
                         {{ topic.name }}</a>
                 {% endfor %}
             </div>
+        {% endif %}
+
+        {% if relevant_topic_id %}
+            {% set most_relevant_topic = answer.question.most_relevant_topic(relevant_topic_id) %}
+
+            {% if most_relevant_topic.id != relevant_topic_id %}
+                <div class="from-child-topic">
+                    来自子话题 <a href="{{ url_for('topic.view', uid=most_relevant_topic.id) }}"
+                             class="dc-show-topic-card dc-topic" data-id="{{ most_relevant_topic.id }}">
+                    {{ most_relevant_topic.name }}</a>
+                </div>
+            {% endif %}
         {% endif %}
 
         <div class="title">

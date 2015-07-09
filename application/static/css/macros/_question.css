@@ -42,9 +42,12 @@
   width: 20px;
   height: 20px;
 }
-.dc-question .action .name {
+.dc-question .action .user-name {
   color: #999;
   margin-left: 5px;
+}
+.dc-question .action .divider {
+  margin: 0 5px;
 }
 .dc-question .title {
   margin-bottom: 10px;

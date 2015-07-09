@@ -144,6 +144,10 @@
 .dc-answer .topics {
   margin-bottom: 18px;
 }
+.dc-answer .from-child-topic {
+  color: #999;
+  margin-bottom: 10px;
+}
 .dc-answer .title {
   display: block;
   margin-bottom: 8px;
