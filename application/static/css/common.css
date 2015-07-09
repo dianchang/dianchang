@@ -147,8 +147,11 @@ del {
   color: white;
   z-index: 2;
 }
-.btn-group-switch .btn {
-  border-radius: 0;
+.btn-group-switch.equal .btn-off {
+  background-color: #17CA8A;
+  color: #FFFFFF;
+  border-color: #17CA8A;
+  z-index: 2;
 }
 .btn-group-switch .btn:hover {
   z-index: 1;
@@ -156,7 +159,7 @@ del {
 .btn-group-switch.on .btn-on {
   background-color: #17CA8A;
   color: #FFFFFF;
-  border-color: #009299;
+  border-color: #17CA8A;
   z-index: 2;
 }
 .btn-group-switch.on .btn-off {
@@ -166,6 +169,15 @@ del {
   z-index: 1;
 }
 .btn-group-switch.on .btn-off:hover {
+  color: #333;
+}
+.btn-group-switch.on.equal .btn-off {
+  background-color: white;
+  border-color: #e4e4e4;
+  color: #666;
+  z-index: 1;
+}
+.btn-group-switch.on.equal .btn-off:hover {
   color: #333;
 }
 .no-margin-top {
