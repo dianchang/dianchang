@@ -233,6 +233,10 @@
           }
         }
 
+        .for-empty-meta {
+          display: none;
+        }
+
         .btn-edit-meta {
           cursor: pointer;
           color: #999;
@@ -248,9 +252,17 @@
         }
       }
 
-      &:hover {
-        .meta-inner-wap .btn-edit-meta {
-          display: inline-block;
+      &.myself {
+        &:hover {
+          .meta-inner-wap .btn-edit-meta {
+            display: inline-block;
+          }
+        }
+
+        &.empty {
+          .meta-inner-wap .for-empty-meta {
+            display: inline-block;
+          }
         }
       }
     }

@@ -179,6 +179,9 @@
 .dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .user-meta .divider:last-child {
   display: none;
 }
+.dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .for-empty-meta {
+  display: none;
+}
 .dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .btn-edit-meta {
   cursor: pointer;
   color: #999;
@@ -191,7 +194,10 @@
 .dc-user-page-header .user-meta-wap .meta-outer-wap .meta-inner-wap .btn-edit-meta:hover {
   color: #666;
 }
-.dc-user-page-header .user-meta-wap .meta-outer-wap:hover .meta-inner-wap .btn-edit-meta {
+.dc-user-page-header .user-meta-wap .meta-outer-wap.myself:hover .meta-inner-wap .btn-edit-meta {
+  display: inline-block;
+}
+.dc-user-page-header .user-meta-wap .meta-outer-wap.myself.empty .meta-inner-wap .for-empty-meta {
   display: inline-block;
 }
 .dc-user-page-header .user-meta-wap .meta-edit-wap {

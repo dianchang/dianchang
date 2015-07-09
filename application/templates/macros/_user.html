@@ -142,9 +142,9 @@
             </div>
 
             <div class="user-meta-wap">
-                <div class="meta-outer-wap">
-                    <span class="meta-inner-wap {% if g.user and g.user.id == user.id %}myself{% endif %}
-                        {% if not user.location and not user.organization and not user.position %}empty{% endif %}">
+                <div class="meta-outer-wap {% if g.user and g.user.id == user.id %}myself{% endif %}
+                    {% if not user.location and not user.organization and not user.position %}empty{% endif %}">
+                    <span class="meta-inner-wap">
                         <span class="user-meta">
                             {% for attr in ['location', 'organization', 'position'] %}
                                 {% if user[attr] %}
@@ -248,11 +248,11 @@
                 }
             });
 
-            $('.btn-upload-background').click(function () {
-                $("input[name='background']").click();
+            $userHeader.find('.btn-upload-background').click(function () {
+                $userHeader.find("input[name='background']").click();
             });
 
-            $("input[name='background']").on('change', function (e) {
+            $userHeader.find("input[name='background']").on('change', function (e) {
                 bgUploader.upload(this.files);
             });
 
@@ -276,10 +276,10 @@
             });
 
             $('.btn-upload-avatar').click(function () {
-                $("input[name='avatar']").click();
+                $userHeader.find("input[name='avatar']").click();
             });
 
-            $("input[name='avatar']").on('change', function (e) {
+            $userHeader.find("input[name='avatar']").on('change', function (e) {
                 avatarUploader.upload(this.files);
             });
 
@@ -290,7 +290,7 @@
             });
 
             // 显示desc编辑框
-            $('.btn-edit-desc').click(function () {
+            $userHeader.find('.btn-edit-desc').click(function () {
                 var desc = $.trim($userHeader.find('.desc').text());
 
                 $(this).parents('.desc-wap').addClass('edit');
@@ -299,7 +299,7 @@
             });
 
             // 更新desc
-            $('.btn-submit-desc').click(function () {
+            $userHeader.find('.btn-submit-desc').click(function () {
                 var $input = $(this).prev();
                 var desc = $.trim($input.val());
 
@@ -328,19 +328,19 @@
             $('.btn-edit-meta').click(function () {
                 var location, organization, position;
 
-                if ($('.location').length !== 0) {
+                if ($userHeader.find('.location').length !== 0) {
                     location = $.trim($('.location').text());
                 } else {
                     location = "";
                 }
 
-                if ($('.organization').length !== 0) {
+                if ($userHeader.find('.organization').length !== 0) {
                     organization = $.trim($('.organization').text());
                 } else {
                     organization = "";
                 }
 
-                if ($('.position').length !== 0) {
+                if ($userHeader.find('.position').length !== 0) {
                     position = $.trim($('.position').text());
                 } else {
                     position = "";
@@ -348,16 +348,16 @@
 
                 $(this).parents('.user-meta-wap').addClass('edit');
 
-                $('.input-location').val(location).focus();
-                $('.input-organization').val(organization);
-                $('.input-position').val(position);
+                $userHeader.find('.input-location').val(location).focus();
+                $userHeader.find('.input-organization').val(organization);
+                $userHeader.find('.input-position').val(position);
             });
 
             // 更新位置、组织、职位
-            $('.btn-submit-meta').click(function () {
-                var location = $.trim($('.input-location').val());
-                var organization = $.trim($('.input-organization').val());
-                var position = $.trim($('.input-position').val());
+            $userHeader.find('.btn-submit-meta').click(function () {
+                var location = $.trim($userHeader.find('.input-location').val());
+                var organization = $.trim($userHeader.find('.input-organization').val());
+                var position = $.trim($userHeader.find('.input-position').val());
 
                 $.ajax({
                     url: urlFor('user.update_meta_info'),
@@ -382,14 +382,20 @@
                             html += " <span class='position'>" + position + "</span> <span class='divider'>·</span>";
                         }
 
-                        $('.user-meta').html(html);
-                        $('.user-meta-wap').removeClass('edit');
+                        $userHeader.find('.user-meta').html(html);
+                        $userHeader.find('.user-meta-wap').removeClass('edit');
+
+                        if (location === '' && organization === '' && position === '') {
+                            $userHeader.find('.meta-outer-wap').addClass('empty');
+                        } else {
+                            $userHeader.find('.meta-outer-wap').removeClass('empty');
+                        }
                     }
                 });
             });
 
             // 举报用户
-            $('.btn-report-user').click(function () {
+            $userHeader.find('.btn-report-user').click(function () {
                 var id = parseInt($(this).data('id'));
                 var _this = $(this);
 
@@ -405,7 +411,7 @@
             });
 
             // 屏蔽用户
-            $('.btn-block-user').click(function () {
+            $userHeader.find('.btn-block-user').click(function () {
                 var id = $(this).data('id');
                 var _this = $(this);
 
