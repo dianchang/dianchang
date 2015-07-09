@@ -9,6 +9,30 @@
   color: #999;
   margin-left: 2px;
 }
+.right-wap .hot-topics-wap {
+  display: block;
+}
+.right-wap.need-guide .hot-topics-wap {
+  display: none;
+}
+.right-wap.at-guide-step-1 .guide-step-1 {
+  display: block;
+}
+.right-wap.at-guide-step-2 .guide-step-2 {
+  display: block;
+}
+.right-wap.at-guide-step-3 .guide-step-3 {
+  display: block;
+}
+.right-wap.at-guide-step-4 .guide-step-4 {
+  display: block;
+}
+.right-wap.at-guide-step-5 .guide-step-5 {
+  display: block;
+}
+.right-wap.at-guide-step-6 .guide-step-6 {
+  display: block;
+}
 .hot-topic {
   margin-bottom: 15px;
 }
@@ -20,4 +44,61 @@
 .hot-topic .name {
   color: #009999;
   margin-left: 5px;
+}
+.guide-step {
+  display: none;
+  border: 2px solid #51B800;
+  padding: 15px 20px 20px 20px;
+  border-radius: 3px;
+  position: relative;
+}
+.guide-step .title {
+  padding-bottom: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  border-bottom: 1px solid #e3e3e3;
+}
+.guide-step .content {
+  padding: 20px 0;
+}
+.guide-step .content p {
+  margin-bottom: 15px;
+}
+.guide-step .btn-next-step {
+  color: #51B800;
+  background-color: #e3f4d6;
+  border-color: #e3f4d6;
+  font-weight: bold;
+}
+.guide-step .btn-next-step:hover,
+.guide-step .btn-next-step:focus {
+  color: #51B800;
+  background-color: #d5efc2;
+  border-color: #d5efc2;
+}
+.guide-step.with-arrow:after,
+.guide-step.with-arrow:before {
+  right: 100%;
+  top: 50px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.guide-step.with-arrow:after {
+  border-color: rgba(51, 51, 51, 0);
+  border-right-color: #fff;
+  border-width: 15px;
+  margin-top: -15px;
+}
+.guide-step.with-arrow:before {
+  border-color: rgba(81, 184, 0, 0);
+  border-right-color: #51B800;
+  border-width: 18px;
+  margin-top: -18px;
+}
+.upvote-wap {
+  position: relative;
 }

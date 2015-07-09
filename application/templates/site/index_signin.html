@@ -43,16 +43,95 @@
                 {% endfor %}
             </div>
             <div class="col-md-4">
-                <h3 class="no-margin-top">正在热议</h3>
+                <div class="right-wap {% if not g.user.has_finish_guide_steps %}need-guide at-guide-step-{{ g.user.current_guide_step or 1 }}{% endif %}">
+                    {# 热议话题 #}
+                    <div class="hot-topics-wap">
+                        <h3 class="no-margin-top">正在热议</h3>
 
-                {% for topic in hot_topics %}
-                    <div class="hot-topic">
-                        <a href="{{ url_for('topic.view', uid=topic.id) }}" data-id="{{ topic.id }}"
-                           class="avatar-wap dc-show-topic-card dc-img-text-link-wap">
-                            <img src="{{ topic.avatar_url }}" alt=""/>
-                            <span class="name">{{ topic.name }}</span></a>
+                        {% for topic in hot_topics %}
+                            <div class="hot-topic">
+                                <a href="{{ url_for('topic.view', uid=topic.id) }}" data-id="{{ topic.id }}"
+                                   class="avatar-wap dc-show-topic-card dc-img-text-link-wap">
+                                    <img src="{{ topic.avatar_url }}" alt=""/>
+                                    <span class="name">{{ topic.name }}</span></a>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+
+                    {# 引导第一步 #}
+                    <div class="guide-step guide-step-1">
+                        <div class="title">欢迎来到电场</div>
+                        <div class="content">
+                            <p>电场是互联网职业领域的问答社区。</p>
+
+                            <p>如你所见，互联网人在这里讨论行业知识、分享产品见解，启发他人亦或受到启发。</p>
+                        </div>
+                        <button class="btn btn-light btn-next-step"
+                                data-step="1">Next: 了解内容
+                        </button>
+                    </div>
+
+                    {# 引导第二步 #}
+                    <div class="guide-step guide-step-2 with-arrow">
+                        <div class="title">这是你的内容流</div>
+                        <div class="content">
+                            <p>你可以通过关注喜欢的人和话题来让内容流更适合你。</p>
+                        </div>
+                        <button class="btn btn-light btn-next-step"
+                                data-step="2">Next: 赞同答案
+                        </button>
+                    </div>
+
+                    {# 引导第三步 #}
+                    <div class="guide-step guide-step-3 with-arrow">
+                        <div class="title">赞同精彩的回答</div>
+                        <div class="content">
+                            <p>你的赞同会给回答者以激励，激励他们创作出更好的内容。</p>
+
+                            <p>他们也会这么对你做。</p>
+
+                            <p>试试：赞同几个你认为不错的答案。</p>
+                        </div>
+                        <button class="btn btn-light btn-next-step"
+                                data-step="3">Next: 关注
+                        </button>
+                    </div>
+
+                    {# 引导第四步 #}
+                    <div class="guide-step guide-step-4 with-arrow">
+                        <div class="title">关注：带来优质内容</div>
+                        <div class="content">
+                            <p>关注你喜欢的人和话题，你会在内容流里看到关于它们的精彩讨论。</p>
+
+                            <p>你可以随时取消关注。</p>
+                        </div>
+                        <button class="btn btn-light btn-next-step"
+                                data-step="4">Next: 回答问题
+                        </button>
+                    </div>
+
+                    {# 引导第五步 #}
+                    <div class="guide-step guide-step-5 with-arrow">
+                        <div class="title">回答：展示你的职业见解</div>
+                        <div class="content">
+                            <p>回答你所擅长的问题，给他人带来启发，让大家认识你。</p>
+                        </div>
+                        <button class="btn btn-light btn-next-step" data-step="5">
+                            Last: 提问题
+                        </button>
+                    </div>
+
+                    {# 引导第六步 #}
+                    <div class="guide-step guide-step-6">
+                        <div class="title">提出问题</div>
+                        <div class="content">
+                            <p>有什么想讨论的职业问题吗？</p>
+                        </div>
+                        <button class="btn btn-light btn-next-step" data-step="6">
+                            好的，等下再提
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

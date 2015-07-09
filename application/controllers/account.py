@@ -515,3 +515,24 @@ def generate_home_feeds():
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/account/finish_guide', methods=['POST'])
+@UserPermission()
+def finish_guide():
+    """完成引导步骤"""
+    current_step = request.form.get('step', type=int)
+    if current_step < 1 or current_step > 6:
+        return json.dumps({
+            'result': False
+        })
+    if current_step < 6:
+        g.user.current_guide_step = current_step + 1
+    else:
+        g.user.current_guide_step = 6
+        g.user.has_finish_guide_steps = True
+    db.session.add(g.user)
+    db.session.commit()
+    return json.dumps({
+        'result': True
+    })

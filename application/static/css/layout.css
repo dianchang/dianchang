@@ -168,6 +168,7 @@ html {
   margin-top: 7px;
   margin-bottom: 7px;
   margin-right: 20px;
+  position: relative;
 }
 .navbar .btn-ask-question:hover,
 .navbar .btn-ask-question:focus {
