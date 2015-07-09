@@ -9,3 +9,4 @@ uploads/*
 uploads/avatars/*
 !uploads/avatars/default.png
 output/
+bower_components/
