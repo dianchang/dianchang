@@ -23,8 +23,12 @@
 .dc-user-page-header.forbid-edit .btn-upload-avatar,
 .dc-user-page-header.preview .btn-edit-desc,
 .dc-user-page-header.forbid-edit .btn-edit-desc,
+.dc-user-page-header.preview .for-empty-desc,
+.dc-user-page-header.forbid-edit .for-empty-desc,
 .dc-user-page-header.preview .btn-edit-meta,
-.dc-user-page-header.forbid-edit .btn-edit-meta {
+.dc-user-page-header.forbid-edit .btn-edit-meta,
+.dc-user-page-header.preview .for-empty-meta,
+.dc-user-page-header.forbid-edit .for-empty-meta {
   display: none !important;
 }
 .dc-user-page-header .text-logo {
@@ -122,6 +126,9 @@
 .dc-user-page-header .desc-wap .desc-outer-wap .desc-inner-wap {
   position: relative;
 }
+.dc-user-page-header .desc-wap .desc-outer-wap .desc-inner-wap .for-empty-desc {
+  display: none;
+}
 .dc-user-page-header .desc-wap .desc-outer-wap .desc-inner-wap .btn-edit-desc {
   cursor: pointer;
   color: #999;
@@ -134,7 +141,10 @@
 .dc-user-page-header .desc-wap .desc-outer-wap .desc-inner-wap .btn-edit-desc:hover {
   color: #666;
 }
-.dc-user-page-header .desc-wap .desc-outer-wap:hover .desc-inner-wap .btn-edit-desc {
+.dc-user-page-header .desc-wap .desc-outer-wap.myself.empty .desc-inner-wap .for-empty-desc {
+  display: inline-block;
+}
+.dc-user-page-header .desc-wap .desc-outer-wap.myself:hover .desc-inner-wap .btn-edit-desc {
   display: inline-block;
 }
 .dc-user-page-header .desc-wap .desc-edit-wap {

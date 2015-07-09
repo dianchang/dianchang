@@ -35,7 +35,9 @@
   &.forbid-edit {
     .btn-upload-avatar,
     .btn-edit-desc,
-    .btn-edit-meta {
+    .for-empty-desc,
+    .btn-edit-meta,
+    .for-empty-meta {
       display: none !important;
     }
   }
@@ -156,6 +158,10 @@
       .desc-inner-wap {
         position: relative;
 
+        .for-empty-desc {
+          display: none;
+        }
+
         .btn-edit-desc {
           cursor: pointer;
           color: #999;
@@ -171,9 +177,17 @@
         }
       }
 
-      &:hover {
-        .desc-inner-wap .btn-edit-desc {
-          display: inline-block;
+      &.myself {
+        &.empty {
+          .desc-inner-wap .for-empty-desc {
+            display: inline-block;
+          }
+        }
+
+        &:hover {
+          .desc-inner-wap .btn-edit-desc {
+            display: inline-block;
+          }
         }
       }
     }

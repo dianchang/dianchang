@@ -122,15 +122,13 @@
             <div class="name">{{ user.name }}</div>
 
             <div class="desc-wap">
-                <div class="desc-outer-wap">
+                <div class="desc-outer-wap {% if g.user and g.user.id == user.id %}myself{% endif %}
+                    {% if not user.desc %}empty{% endif %}">
                     <span class="desc-inner-wap">
                         <span class="desc">
-                            {% if user.desc %}
-                                {{ user.desc }}
-                            {% elif g.user.id == user.id %}
-                                <span class="text-light">尚无描述</span>
-                            {% endif %}
+                            {% if user.desc %}{{ user.desc }}{% endif %}
                         </span>
+                        <span class="text-light for-empty-desc">尚无描述</span>
                         <span class="btn-edit-desc">
                             <span class="fa fa-pencil"></span> 编辑
                         </span>
@@ -145,7 +143,8 @@
 
             <div class="user-meta-wap">
                 <div class="meta-outer-wap">
-                    <span class="meta-inner-wap">
+                    <span class="meta-inner-wap {% if g.user and g.user.id == user.id %}myself{% endif %}
+                        {% if not user.location and not user.organization and not user.position %}empty{% endif %}">
                         <span class="user-meta">
                             {% for attr in ['location', 'organization', 'position'] %}
                                 {% if user[attr] %}
@@ -153,11 +152,10 @@
                                     <span class="divider">·</span>
                                 {% endif %}
                             {% endfor %}
-
-                            {% if not user.location and not user.organization and not user.position %}
-                                <span class="text-light">尚未填写相关资料</span>
-                            {% endif %}
                         </span>
+
+                        <span class="text-light for-empty-meta">尚未填写相关资料</span>
+
                         <span class="btn-edit-meta">
                             <span class="fa fa-pencil"></span> 编辑
                         </span>
@@ -293,7 +291,7 @@
 
             // 显示desc编辑框
             $('.btn-edit-desc').click(function () {
-                var desc = $.trim($('.dc-user-page-header .desc').text());
+                var desc = $.trim($userHeader.find('.desc').text());
 
                 $(this).parents('.desc-wap').addClass('edit');
                 $('.input-desc').val(desc).focus();
@@ -314,8 +312,14 @@
                     }
                 }).done(function (response) {
                     if (response.result) {
-                        $('.dc-user-page-header .desc').text(desc);
-                        $('.dc-user-page-header .desc-wap').removeClass('edit');
+                        $userHeader.find('.desc').text(desc);
+                        $userHeader.find('.desc-wap').removeClass('edit');
+
+                        if (desc === '') {
+                            $userHeader.find('.desc-outer-wap').addClass('empty');
+                        } else {
+                            $userHeader.find('.desc-outer-wap').removeClass('empty');
+                        }
                     }
                 });
             });
