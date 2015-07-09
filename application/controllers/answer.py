@@ -3,7 +3,7 @@ from datetime import date
 from flask import Blueprint, render_template, json, g, request, redirect, url_for, get_template_attribute
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistic, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
     AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
-    NOTIFICATION_KIND, UserUpvoteStatistic
+    NOTIFICATION_KIND, UserUpvoteStatistic, HomeFeedBackup
 from ..utils.permissions import UserPermission
 
 bp = Blueprint('answer', __name__)
@@ -68,11 +68,17 @@ def upvote(uid):
         db.session.add(g.user)
 
         # HOME FEED: 插入到 followers 的首页 FEED
+        # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
             home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER, sender_id=g.user.id,
                                  answer_id=uid)
             follower.follower.home_feeds.append(home_feed)
             db.session.add(follower.follower)
+
+        # HOME FEED: 备份
+        home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER,
+                                          sender_id=g.user.id, answer_id=uid)
+        db.session.add(home_feed_backup)
 
         # NOTI: 插入到被赞回答者的 NOTI（需合并）
         if g.user.id != answer.user_id:

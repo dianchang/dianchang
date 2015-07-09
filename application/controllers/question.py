@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, g, abo
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
     UserTopicStatistic, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
-    NOTIFICATION_KIND, InviteAnswer, User, ComposeFeed, COMPOSE_FEED_KIND
+    NOTIFICATION_KIND, InviteAnswer, User, ComposeFeed, COMPOSE_FEED_KIND, HomeFeedBackup
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html
 
@@ -130,18 +130,23 @@ def add():
     db.session.add(question)
 
     if not anonymous:
-        # USER FEED: 插入本人的用户FEED
+        # USER FEED: 插入本人的用户 FEED
         feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
         g.user.feeds.append(feed)
         db.session.add(g.user)
 
-        # HOME FEED: 插入followers的首页FEED
-        # TODO: 采用消息队列进行插入操作
+        # HOME FEED: 插入 followers 的首页 FEED
+        # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
             home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
                                  question_id=question.id)
             follower.follower.home_feeds.append(home_feed)
             db.session.add(follower.follower)
+
+        # HOME FEED: 备份
+        home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION,
+                                          sender_id=g.user.id, question_id=question.id)
+        db.session.add(home_feed_backup)
 
     db.session.commit()
 
@@ -257,12 +262,18 @@ def follow(uid):
         g.user.feeds.append(user_feed)
         db.session.add(g.user)
 
-        # HOME FEED: 插入到followers的首页FEED中
+        # HOME FEED: 插入到 followers 的首页 FEED
+        # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
             feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION, sender_id=g.user.id,
                             question_id=uid)
             follower.follower.home_feeds.append(feed)
             db.session.add(follower.follower)
+
+        # HOME FEED: 备份
+        home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION,
+                                          sender_id=g.user.id, question_id=uid)
+        db.session.add(home_feed_backup)
 
         db.session.commit()
         return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers_count})
@@ -416,13 +427,18 @@ def answer(uid):
         g.user.feeds.append(user_feed)
         db.session.add(g.user)
 
-        # HOME FEED: 插入followers的HOME FEED
-        # TODO: 使用消息队列
+        # HOME FEED: 插入 followers 的首页 FEED
+        # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
             home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,
                                  answer_id=answer.id)
             follower.follower.home_feeds.append(home_feed)
             db.session.add(home_feed)
+
+        # HOME FEED: 备份
+        home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION,
+                                          sender_id=g.user.id, answer_id=answer.id)
+        db.session.add(home_feed_backup)
 
     question.answers_count += 1
     g.user.answers_count += 1
