@@ -9,6 +9,7 @@ from ..utils.uploadsets import process_user_avatar, avatars, images, process_use
 from ..utils._qiniu import qiniu
 from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
     HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
+from ..models._helpers import pinyin
 
 bp = Blueprint('account', __name__)
 
@@ -78,6 +79,18 @@ def signup():
         params.pop('code')
         user = User(**params)
         db.session.add(user)
+
+        # 设置默认的 url token
+        url_token = pinyin(user.name)
+        non_repeat_url_token = url_token
+        suffix_number = 1
+        while True:
+            if User.query.filter(User.url_token == non_repeat_url_token).count() == 0:
+                break
+            non_repeat_url_token = "%s-%d" % (url_token, suffix_number)
+            suffix_number += 1
+        user.url_token = non_repeat_url_token
+
         db.session.commit()
 
         invitation_code = form.invitation_code
