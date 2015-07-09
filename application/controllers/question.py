@@ -430,10 +430,12 @@ def answer(uid):
         # HOME FEED: 插入 followers 的首页 FEED
         # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
-            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,
-                                 answer_id=answer.id)
-            follower.follower.home_feeds.append(home_feed)
-            db.session.add(home_feed)
+            # 若该问题为 follower 提出，则不插入此条 feed
+            if follower.follower_id != question.user_id:
+                home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,
+                                     answer_id=answer.id)
+                follower.follower.home_feeds.append(home_feed)
+                db.session.add(home_feed)
 
         # HOME FEED: 备份
         home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION,
