@@ -50,6 +50,7 @@ def view(uid):
             filter(UserTopicStatistic.user_id.notin_(invited_users_id_list)). \
             filter(UserTopicStatistic.user_id.notin_(answerers_id_list)). \
             filter(UserTopicStatistic.user_id != g.user.id). \
+            filter(UserTopicStatistic.answers_count != 0). \
             group_by(UserTopicStatistic.user_id). \
             order_by(UserTopicStatistic.score.desc()).limit(16)
 

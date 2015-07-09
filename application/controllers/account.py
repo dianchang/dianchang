@@ -410,6 +410,15 @@ def submit_product_worked_on():
             follow_topic = FollowTopic(topic_id=topic.id, user_id=g.user.id)
             db.session.add(follow_topic)
 
+        # 在 UserTopicStatistic 中标记该话题
+        topic_statistic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic.id,
+                                                          UserTopicStatistic.user_id == g.user.id).first()
+        if topic_statistic:
+            topic_statistic.worked_on = True
+        else:
+            topic_statistic = UserTopicStatistic(topic_id=topic.id, user_id=g.user.id, worked_on=True)
+            db.session.add(topic_statistic)
+
         db.session.commit()
 
         new_topic = name is not None and name != ""

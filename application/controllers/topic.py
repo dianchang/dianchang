@@ -419,41 +419,41 @@ def add_expert(uid):
         })
 
     topic = Topic.query.get_or_404(uid)
-    expert_topic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
-                                                   UserTopicStatistic.user_id == g.user.id).first()
-    if not expert_topic:
-        expert_topic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, selected=True)
-        db.session.add(expert_topic)
+    new_expert_topic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
+                                                       UserTopicStatistic.user_id == g.user.id).first()
+    if not new_expert_topic:
+        new_expert_topic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, selected=True)
+        db.session.add(new_expert_topic)
     else:
-        if expert_topic.selected:
+        if new_expert_topic.selected:
             return json.dumps({
                 'result': False
             })
         else:
-            expert_topic.selected = True
+            new_expert_topic.selected = True
 
     if not g.user.has_selected_expert_topics:
-        g.user.has_selected_expert_topics = True
-        db.session.add(g.user)
         max_show_order_topic = 0
         for index, expert_topic in enumerate(g.user.expert_topics):
             expert_topic.show_order = index
             expert_topic.selected = True
             db.session.add(expert_topic)
             max_show_order_topic = index
-        expert_topic.show_order = max_show_order_topic + 1
-        db.session.add(expert_topic)
+        new_expert_topic.show_order = max_show_order_topic + 1
+        g.user.has_selected_expert_topics = True
+        db.session.add(g.user)
+        db.session.add(new_expert_topic)
     else:
         max_show_order_topic = g.user.expert_topics.from_self().order_by(UserTopicStatistic.show_order.desc()).first()
         if max_show_order_topic:
-            expert_topic.show_order = max_show_order_topic.show_order + 1
+            new_expert_topic.show_order = max_show_order_topic.show_order + 1
 
     db.session.commit()
 
     macro = get_template_attribute("macros/_topic.html", "render_expert_topic_in_compose_page")
     return json.dumps({
         'result': True,
-        'html': macro(expert_topic),
+        'html': macro(new_expert_topic),
         'full': g.user.expert_topics.count() == 8
     })
 
@@ -469,13 +469,13 @@ def update_show_order():
 
     # 若从未编辑过擅长话题，则首先赋予 show_order
     if not g.user.has_selected_expert_topics:
-        g.user.has_selected_expert_topics = True
-        db.session.add(g.user)
-
         for index, expert_topic in enumerate(g.user.expert_topics):
             expert_topic.show_order = index
             expert_topic.selected = True
             db.session.add(expert_topic)
+            
+        g.user.has_selected_expert_topics = True
+        db.session.add(g.user)
 
     show_orders = json.loads(show_orders)
     for item in show_orders:
