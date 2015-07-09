@@ -57,6 +57,9 @@
     {% if not config.DEBUG and not config.TESTING %}
         <script>
             Raven.config('http://130d24bbaa494dc799165ec12cc6b288@119.254.101.73:9000/2').install();
+            if (a) {
+                b();
+            }
         </script>
     {% endif %}
     {#    <script src="/static/js/libs/turbolinks.js"></script>#}
