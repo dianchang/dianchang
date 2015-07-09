@@ -251,11 +251,12 @@
         {% set downvoted = g.user and answer.downvoted_by_user(g.user.id) %}
         {% set thanked = g.user and answer.thanked_by_user(g.user.id) %}
         {% set nohelped = g.user and answer.nohelped_by_user(g.user.id) %}
+        {% set myself = g.user and g.user.id == answer.user_id %}
 
         <div class="inner-wap">
             {# 赞同 & 反对 #}
             <span class="vote-wap">
-                <span class="upvote-wap {% if dark %}dark{% endif %} btn
+                <span class="upvote-wap {% if myself %}disabled{% endif %} {% if dark %}dark{% endif %} btn
                     {% if upvoted %}
                         btn-default
                     {% else %}
@@ -269,8 +270,8 @@
                     <span class="upvotes-count">{{ answer.upvotes_count }}</span>
                 </span>
 
-                <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}"
-                   data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
+                <a href="javascript: void(0)" class="btn-downvote-answer {% if downvoted %}downvoted{% endif %}
+                    {% if myself %}disabled{% endif %}" data-id="{{ answer.id }}" data-user-id="{{ answer.user_id }}">
                     <span class="for-downvoted">已反对</span>
                     <span class="for-un-downvoted">反对</span>
                 </a>
@@ -298,17 +299,19 @@
                 更多
 
                 <span class="hide-commands dc-hide-commands">
-                    {# 感谢 #}
-                    <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
-                       data-user-id="{{ answer.user_id }}" href="javascript: void(0)">
-                        <span class="for-thanked">已感谢</span>
-                        <span class="for-un-thanked">感谢作者</span></a>
+                    {% if not myself %}
+                        {# 感谢 #}
+                        <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
+                           data-user-id="{{ answer.user_id }}" href="javascript: void(0)">
+                            <span class="for-thanked">已感谢</span>
+                            <span class="for-un-thanked">感谢作者</span></a>
 
-                    {# 没有帮助 #}
-                    <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
-                       data-user-id="{{ answer.user.id }}" href="javascript: void(0)">
-                        <span class="for-nohelped">已标记为没有帮助</span>
-                        <span class="for-un-nohelped">没有帮助</span></a>
+                        {# 没有帮助 #}
+                        <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
+                           data-user-id="{{ answer.user.id }}" href="javascript: void(0)">
+                            <span class="for-nohelped">已标记为没有帮助</span>
+                            <span class="for-un-nohelped">没有帮助</span></a>
+                    {% endif %}
 
                     {% if with_full_screen %}
                         <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"

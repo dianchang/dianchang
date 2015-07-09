@@ -53,6 +53,12 @@
 .dc-answer-commands .vote-wap .btn-downvote-answer.downvoted .for-downvoted {
   display: inline-block;
 }
+.dc-answer-commands .vote-wap .btn-downvote-answer.disabled {
+  cursor: default;
+}
+.dc-answer-commands .vote-wap .btn-downvote-answer.disabled:hover {
+  color: #999;
+}
 .dc-answer-commands .right-commands {
   margin-top: 6px;
 }
