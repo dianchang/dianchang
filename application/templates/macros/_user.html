@@ -818,7 +818,9 @@
                 </div>
 
                 <div class="answer-content text-light">
-                    {{ noti.answer.content_preview|truncate(40, true) }}
+                    {% if noti.answer.content_preview %}
+                        {{ noti.answer.content_preview|truncate(40, true) }}
+                    {% endif %}
                 </div>
 
                 <span class="new-flag"></span>
@@ -834,7 +836,9 @@
                 </div>
 
                 <div class="answer-content text-light">
-                    {{ noti.answer.content_preview|truncate(40, true) }}
+                    {% if noti.answer.content_preview %}
+                        {{ noti.answer.content_preview|truncate(40, true) }}
+                    {% endif %}
                 </div>
 
                 <span class="new-flag"></span>
@@ -845,7 +849,9 @@
                 {{ render_notification_senders(noti.senders, action='赞了你的评论') }}
 
                 <div class="answer-comment text-light">
-                    {{ noti.answer_comment.content|truncate(40, true) }}
+                    {% if noti.answer_comment.content %}
+                        {{ noti.answer_comment.content|truncate(40, true) }}
+                    {% endif %}
                 </div>
 
                 <span class="new-flag"></span>
