@@ -40,7 +40,7 @@ $topicInput.typeahead({
 
 $('.twitter-typeahead').css('display', 'block');
 
-// 通过选择autocomplete菜单项添加句集
+// 通过选择autocomplete菜单项添加产品
 $topicInput.on('typeahead:selected', function (e, topic) {
     var data = null;
 
@@ -62,6 +62,8 @@ $topicInput.on('typeahead:selected', function (e, topic) {
                 $mainWap.find('.products-wap .inner-wap').append(response.html);
             }
         }
+
+        $topicInput.typeahead('val', '');
     });
 });
 
