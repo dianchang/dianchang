@@ -20,7 +20,8 @@
 
             <div class="item clearfix">
                 <div class="from">
-                    {{ btn_group_switch('invite_message_from_all', equal=True, on_text='任何人', off_text='我关注的人', with_script=True) }}
+                    {{ btn_group_switch('invite_message_from_all', equal=True, on_text='任何人', off_text='我关注的人',
+                        with_script=True, disabled=not g.user.invite_message_via_notification and not g.user.invite_message_via_mail) }}
                 </div>
                 <div class="action text"><strong>邀请我回答时</strong></div>
                 <div class="notification">
@@ -33,7 +34,8 @@
 
             <div class="item clearfix">
                 <div class="from">
-                    {{ btn_group_switch('upvote_answer_message_from_all', equal=True, on_text='任何人', off_text='我关注的人') }}
+                    {{ btn_group_switch('upvote_answer_message_from_all', equal=True, on_text='任何人',
+                        off_text='我关注的人', disabled=not g.user.upvote_answer_message_via_notification and not g.user.upvote_answer_message_via_mail) }}
                 </div>
                 <div class="action text"><strong>赞同/感谢了我的回答时</strong></div>
                 <div class="notification">
@@ -46,7 +48,8 @@
 
             <div class="item clearfix">
                 <div class="from">
-                    {{ btn_group_switch('like_comment_message_from_all', equal=True, on_text='任何人', off_text='我关注的人') }}
+                    {{ btn_group_switch('like_comment_message_from_all', equal=True, on_text='任何人',
+                        off_text='我关注的人', disabled=not g.user.like_comment_message_via_notification and not g.user.like_comment_message_via_mail) }}
                 </div>
                 <div class="action text"><strong>赞了我的评论时</strong></div>
                 <div class="notification">
@@ -59,7 +62,8 @@
 
             <div class="item clearfix">
                 <div class="from">
-                    {{ btn_group_switch('follow_message_from_all', equal=True, on_text='任何人', off_text='我关注的人') }}
+                    {{ btn_group_switch('follow_message_from_all', equal=True, on_text='任何人', off_text='我关注的人',
+                        disabled=not g.user.follow_message_via_notification and not g.user.follow_message_via_mail) }}
                 </div>
                 <div class="action text"><strong>关注了我时</strong></div>
                 <div class="notification">
@@ -72,7 +76,8 @@
 
             <div class="item clearfix">
                 <div class="from">
-                    {{ btn_group_switch('reply_comment_message_from_all', equal=True, on_text='任何人', off_text='我关注的人') }}
+                    {{ btn_group_switch('reply_comment_message_from_all', equal=True, on_text='任何人',
+                        off_text='我关注的人', disabled=not g.user.reply_comment_message_via_notification and not g.user.reply_comment_message_via_mail) }}
                 </div>
                 <div class="action text"><strong>评论了我时</strong></div>
                 <div class="notification">
@@ -85,7 +90,8 @@
 
             <div class="item clearfix">
                 <div class="from">
-                    {{ btn_group_switch('answer_question_message_from_all', equal=True, on_text='任何人', off_text='我关注的人') }}
+                    {{ btn_group_switch('answer_question_message_from_all', equal=True, on_text='任何人',
+                        off_text='我关注的人', disabled=not g.user.answer_question_message_via_notification and not g.user.answer_question_message_via_mail) }}
                 </div>
                 <div class="action text"><strong>回答了我关注的问题</strong></div>
                 <div class="notification">

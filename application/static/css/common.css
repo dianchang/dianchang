@@ -180,6 +180,14 @@ del {
 .btn-group-switch.on.equal .btn-off:hover {
   color: #333;
 }
+.btn-group-switch.disabled .btn {
+  opacity: .5;
+  pointer-events: none;
+  cursor: not-allowed;
+  filter: alpha(opacity=50);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 .no-margin-top {
   margin-top: 0;
 }

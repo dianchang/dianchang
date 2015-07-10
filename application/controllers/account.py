@@ -376,6 +376,10 @@ def submit_interesting_topics():
             follow_topic = FollowTopic(user_id=g.user.id, topic_id=topic_id)
             db.session.add(follow_topic)
 
+            topic = Topic.query.get_or_404(topic_id)
+            topic.followers_count += 1
+            db.session.add(topic)
+
         # USER FEED: 插入到用户 feed 中
         user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic_id)
         db.session.add(user_feed)
@@ -428,6 +432,9 @@ def submit_product_worked_on():
         if not follow_topic:
             follow_topic = FollowTopic(topic_id=topic.id, user_id=g.user.id)
             db.session.add(follow_topic)
+
+            topic.followers_count += 1
+            db.session.add(topic)
 
             # USER FEED: 插入到用户 feed 中
             user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic_id)

@@ -521,11 +521,11 @@
 
 
 {# 开关组件 #}
-{% macro btn_group_switch(key, on_text='开', off_text='关', equal=False, with_script=False) %}
+{% macro btn_group_switch(key, on_text='开', off_text='关', equal=False, with_script=False, disabled=False) %}
     {% set on = g.user[key] %}
 
-    <div class="btn-group btn-group-switch {% if on %}on{% endif %} {% if equal %}equal{% endif %}"
-         data-key="{{ key }}">
+    <div class="btn-group btn-group-switch {% if on %}on{% endif %} {% if equal %}equal{% endif %}
+        {% if disabled %}disabled{% endif %}" data-key="{{ key }}">
         <label class="btn btn-white btn-on">{{ on_text }}</label>
         <label class="btn btn-white btn-off">{{ off_text }}</label>
     </div>
@@ -536,6 +536,11 @@
                 $(document).on('click', '.btn-group-switch', function () {
                     var on = $(this).hasClass('on');
                     var key = $(this).data('key');
+                    var disabled = $(this).hasClass('disabled');
+
+                    if (disabled) {
+                        return false;
+                    }
 
                     if (on) {
                         $(this).removeClass('on');
