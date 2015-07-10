@@ -1,6 +1,6 @@
 # coding: utf-8
 from datetime import datetime
-from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
+from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for, abort
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
     PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion
 from ..utils.permissions import UserPermission, AdminPermission
@@ -133,6 +133,12 @@ def logs(uid):
 def add_parent_topic(uid, parent_topic_id):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
+
+    if topic.parent_topics_locked:
+        return json.dumps({
+            'result': False
+        })
+
     parent_topic = Topic.query.get_or_404(parent_topic_id)
     topic.add_parent_topic(parent_topic_id)
 
@@ -154,6 +160,12 @@ def add_parent_topic(uid, parent_topic_id):
 def remove_parent_topic(uid, parent_topic_id):
     """删除直接父话题"""
     topic = Topic.query.get_or_404(uid)
+
+    if topic.parent_topics_locked:
+        return json.dumps({
+            'result': False
+        })
+
     parent_topic = Topic.query.get_or_404(parent_topic_id)
     topic.remove_parent_topic(parent_topic_id)
 
@@ -171,6 +183,12 @@ def remove_parent_topic(uid, parent_topic_id):
 def add_child_topic(uid, child_topic_id):
     """添加直接子话题"""
     topic = Topic.query.get_or_404(uid)
+
+    if topic.child_topics_locked:
+        return json.dumps({
+            'result': False
+        })
+
     child_topic = Topic.query.get_or_404(child_topic_id)
     topic.add_child_topic(child_topic_id)
 
@@ -192,6 +210,12 @@ def add_child_topic(uid, child_topic_id):
 def remove_child_topic(uid, child_topic_id):
     """删除直接子话题"""
     topic = Topic.query.get_or_404(uid)
+
+    if topic.child_topics_locked:
+        return json.dumps({
+            'result': False
+        })
+
     child_topic = Topic.query.get_or_404(child_topic_id)
     topic.remove_child_topic(child_topic_id)
 
@@ -478,6 +502,12 @@ def update_avatar():
     """更新话题头像"""
     id = request.form.get('id', type=int)
     topic = Topic.query.get_or_404(id)
+
+    if topic.avatar_locked:
+        return json.dumps({
+            'result': False
+        })
+
     avatar = request.form.get('key')
     topic.avatar = avatar
     db.session.add(topic)
@@ -493,6 +523,10 @@ def update_avatar():
 def edit_wiki(uid):
     """编辑话题百科"""
     topic = Topic.query.get_or_404(uid)
+
+    if topic.wiki_locked:
+        abort(403)
+
     form = AdminTopicForm()
     if form.validate_on_submit():
         # Update wiki log
@@ -525,7 +559,14 @@ def edit_wiki(uid):
 def update_name(uid):
     """更新话题名称"""
     topic = Topic.query.get_or_404(uid)
+
+    if topic.name_locked:
+        return json.dumps({
+            'result': False
+        })
+
     name = request.form.get('name')
+
     if name is not None:
         name = name.strip()
     else:
@@ -615,14 +656,24 @@ def lock(uid):
 def update_kind(uid):
     """更新话题类型"""
     topic = Topic.query.get_or_404(uid)
+
+    if topic.topic_kind_locked:
+        return json.dumps({
+            'result': False
+        })
+
     kind = request.form.get('kind', type=int)
     if not kind:
         return json.dumps({
             'result': False
         })
     topic.kind = kind
+
+    # TODO: log
+
     db.session.add(topic)
     db.session.commit()
+
     return json.dumps({
         'result': True
     })
