@@ -192,7 +192,11 @@ var uploader = simple.uploader({
 });
 
 $('.btn-upload-topic-avatar').click(function () {
-    $("input[name='avatar']").click();
+    var locked = $(this).hasClass('locked');
+
+    if (!locked) {
+        $("input[name='avatar']").click();
+    }
 });
 
 $("input[name='avatar']").on('change', function () {

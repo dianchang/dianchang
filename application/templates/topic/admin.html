@@ -24,9 +24,13 @@
                     <div class="media-left">
                         <div class="avatar-wap">
                             <img src="{{ topic.avatar_url }}" alt="" class="topic-avatar"/>
-                        <span class="btn-upload-topic-avatar">
-                            更换图片
-                        </span>
+                            <span class="btn-upload-topic-avatar {% if topic.avatar_locked %}locked{% endif %}">
+                                {% if topic.avatar_locked %}
+                                    <span class="fa fa-lock"></span>
+                                {% else %}
+                                    更换图片
+                                {% endif %}
+                            </span>
                             <input type="file" name="avatar"/>
                         </div>
                     </div>

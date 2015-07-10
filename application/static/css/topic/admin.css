@@ -32,6 +32,12 @@
 .topic-meta-wap .avatar-wap .btn-upload-topic-avatar:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
+.topic-meta-wap .avatar-wap .btn-upload-topic-avatar.locked {
+  cursor: default;
+}
+.topic-meta-wap .avatar-wap .btn-upload-topic-avatar.locked:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
 .topic-meta-wap .name-wap {
   margin-bottom: 15px;
 }
