@@ -83,6 +83,9 @@
 .topic-meta-wap .wiki {
   margin-bottom: 25px;
 }
+.topic-meta-wap .wiki .locked-flag {
+  margin-left: 10px;
+}
 .form-group {
   border-top: 1px solid #eaeaea;
   padding-top: 30px;

@@ -62,8 +62,12 @@
 
                         <div class="wiki">
                             {{ topic.wiki_preview or "" }}
-                            <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}"
-                               class="text-light">编辑话题百科</a>
+                            {% if topic.wiki_locked %}
+                                <span class="fa fa-lock text-light locked-flag"></span>
+                            {% else %}
+                                <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}"
+                                   class="text-light">编辑话题百科</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
