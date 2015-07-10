@@ -1,8 +1,37 @@
 var timerForParentTopicTypeahead = null;
+var $nameWap = $('.name-wap');
 var $parentTopicInput = $("input[name='parent-topic']");
 var timerForTopicTypeahead = null;
 var $childTopicInput = $("input[name='child-topic']");
 var $synonymInput = $("input[name='synonym']");
+
+// 进入名称编辑模式
+$('.btn-edit-name').click(function () {
+    var name = $.trim($nameWap.find('.name').text());
+
+    $nameWap.addClass('edit').find('input').val(name).focus();
+});
+
+// 保存名称
+$('.btn-save-name').click(function () {
+    var id = $(this).data('id');
+    var name = $.trim($(this).parents('.name-wap').find('input').val());
+
+    $.ajax({
+        url: urlFor('topic.update_name', {uid: id}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            name: name
+        }
+    }).done(function (response) {
+        if (response.result) {
+            $nameWap.find('.name').text(name);
+        }
+
+        $nameWap.removeClass('edit');
+    });
+});
 
 // parentTopicInput启用Typeahead自动完成
 $parentTopicInput.typeahead({

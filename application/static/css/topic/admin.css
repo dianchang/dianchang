@@ -1,21 +1,24 @@
 .navbar {
   margin-bottom: 0;
 }
-.avatar-wap {
+.topic-meta-wap .media-left {
+  padding-right: 30px;
+}
+.topic-meta-wap .avatar-wap {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   margin-bottom: 30px;
 }
-.avatar-wap input[type='file'] {
+.topic-meta-wap .avatar-wap input[type='file'] {
   display: none;
 }
-.avatar-wap img {
-  width: 100px;
-  height: 100px;
+.topic-meta-wap .avatar-wap img {
+  width: 90px;
+  height: 90px;
 }
-.avatar-wap .btn-upload-topic-avatar {
-  width: 100px;
+.topic-meta-wap .avatar-wap .btn-upload-topic-avatar {
+  width: 90px;
   display: block;
   position: absolute;
   left: 0;
@@ -26,31 +29,51 @@
   color: white;
   cursor: pointer;
 }
-.avatar-wap .btn-upload-topic-avatar:hover {
+.topic-meta-wap .avatar-wap .btn-upload-topic-avatar:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
-textarea[name="wiki"] {
+.topic-meta-wap .name-wap {
+  margin-bottom: 15px;
+}
+.topic-meta-wap .name-wap .name-inner-wap .name {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+}
+.topic-meta-wap .name-wap .name-inner-wap .btn-edit-name {
+  margin-left: 10px;
   display: none;
 }
-.form-group.form-group-input {
-  margin-bottom: 25px;
-}
-.form-group.form-group-input input {
-  font-size: 24px;
+.topic-meta-wap .name-wap .name-inner-wap:hover .btn-edit-name {
   display: inline-block;
+}
+.topic-meta-wap .name-wap .form-elements {
+  display: none;
+}
+.topic-meta-wap .name-wap .form-elements input {
+  font-size: 24px;
+  display: block;
   height: auto;
   color: #333;
   font-weight: bold;
-  width: 380px;
-  margin-bottom: 0;
+  margin-bottom: 10px;
   padding: 6px 12px;
 }
-.form-group.form-group-input .locked-flag {
-  margin-left: 10px;
+.topic-meta-wap .name-wap .form-elements .commands {
+  text-align: right;
+}
+.topic-meta-wap .name-wap.edit .name-inner-wap {
+  display: none;
+}
+.topic-meta-wap .name-wap.edit .form-elements {
+  display: block;
+}
+.topic-meta-wap .wiki {
+  margin-bottom: 25px;
 }
 .form-group {
   border-top: 1px solid #eaeaea;
-  padding-top: 20px;
+  padding-top: 30px;
   margin-bottom: 40px;
 }
 .form-group.no-border {
@@ -61,25 +84,27 @@ textarea[name="wiki"] {
   width: 120px;
 }
 .form-group .col-sm-10 {
-  width: 530px;
+  width: 560px;
+  padding: 0;
 }
 .form-group label {
   padding: 0;
   font-size: 16px;
 }
-.form-group .help-block {
-  color: #999;
-  margin-top: 0;
-  margin-bottom: 25px;
-}
 .form-group .input-wap {
+  background: #f5f6f5;
+  border-radius: 2px;
+  padding: 15px 20px;
   margin-bottom: 18px;
 }
-.form-group input {
+.form-group .input-wap .help-block {
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+.form-group .input-wap input {
   width: 300px;
-  height: auto;
-  padding: 8px 12px;
-  font-size: 16px;
+  display: block;
 }
 .form-group .col-sm-10 ul {
   padding-left: 20px;
@@ -120,22 +145,14 @@ textarea[name="wiki"] {
   display: block;
 }
 .btn-apply-for-deletion {
-  border-color: #999;
-  padding: 8px 16px;
-  font-size: 16px;
-  color: #999;
-}
-.btn-apply-for-deletion.warning {
-  color: #FD9A9B;
-}
-.btn-apply-for-deletion.warning:hover {
-  color: #fc6869;
+  color: #e49176;
+  border-color: #e49176;
 }
 .btn-apply-for-deletion:focus,
 .btn-apply-for-deletion:hover,
 .btn-apply-for-deletion:active,
 .btn-apply-for-deletion:active:focus {
   background-color: #fff;
-  border-color: #999;
-  color: #999;
+  border-color: #e49176;
+  color: #dc6f4b;
 }

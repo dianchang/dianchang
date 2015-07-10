@@ -4,65 +4,103 @@
   margin-bottom: 0;
 }
 
-.avatar-wap {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  margin-bottom: 30px;
-
-  input[type='file'] {
-    display: none;
+.topic-meta-wap {
+  .media-left {
+    padding-right: 30px;
   }
 
-  img {
-    width: 100px;
-    height: 100px;
-  }
+  .avatar-wap {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin-bottom: 30px;
 
-  .btn-upload-topic-avatar {
-    width: 100px;
-    display: block;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    text-align: center;
-    padding: 3px 0;
-    background-color: rgba(0, 0, 0, .6);
-    color: white;
-    cursor: pointer;
+    input[type='file'] {
+      display: none;
+    }
 
-    &:hover {
-      background-color: rgba(0, 0, 0, .7);
+    img {
+      width: 90px;
+      height: 90px;
+    }
+
+    .btn-upload-topic-avatar {
+      width: 90px;
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      text-align: center;
+      padding: 3px 0;
+      background-color: rgba(0, 0, 0, .6);
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, .7);
+      }
     }
   }
-}
 
-textarea[name="wiki"] {
-  display: none;
-}
+  .name-wap {
+    margin-bottom: 15px;
 
-.form-group.form-group-input {
-  margin-bottom: 25px;
+    .name-inner-wap {
+      .name {
+        font-size: 24px;
+        color: #333;
+        font-weight: bold;
+      }
 
-  input {
-    font-size: 24px;
-    display: inline-block;
-    height: auto;
-    color: #333;
-    font-weight: bold;
-    width: 380px;
-    margin-bottom: 0;
-    padding: 6px 12px;
+      .btn-edit-name {
+        margin-left: 10px;
+        display: none;
+      }
+
+      &:hover .btn-edit-name {
+        display: inline-block;
+      }
+    }
+
+    .form-elements {
+      display: none;
+
+      input {
+        font-size: 24px;
+        display: block;
+        height: auto;
+        color: #333;
+        font-weight: bold;
+        //width: 380px;
+        margin-bottom: 10px;
+        padding: 6px 12px;
+
+      }
+
+      .commands {
+        text-align: right;
+      }
+    }
+
+    &.edit {
+      .name-inner-wap {
+        display: none;
+      }
+
+      .form-elements {
+        display: block;
+      }
+    }
   }
 
-  .locked-flag {
-    margin-left: 10px;
+  .wiki {
+    margin-bottom: 25px;
   }
 }
 
 .form-group {
   border-top: 1px solid @border-color;
-  padding-top: 20px;
+  padding-top: 30px;
   margin-bottom: 40px;
 
   &.no-border {
@@ -74,7 +112,8 @@ textarea[name="wiki"] {
     width: 120px;
   }
   .col-sm-10 {
-    width: 530px;
+    width: 560px;
+    padding: 0;
   }
 
   label {
@@ -82,21 +121,22 @@ textarea[name="wiki"] {
     font-size: 16px;
   }
 
-  .help-block {
-    color: #999;
-    margin-top: 0;
-    margin-bottom: 25px;
-  }
-
   .input-wap {
+    background: @background-gray;
+    border-radius: 2px;
+    padding: 15px 20px;
     margin-bottom: 18px;
-  }
 
-  input {
-    width: 300px;
-    height: auto;
-    padding: 8px 12px;
-    font-size: 16px;
+    .help-block {
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 300px;
+      display: block;
+    }
   }
 
   .col-sm-10 {
@@ -152,25 +192,15 @@ textarea[name="wiki"] {
 }
 
 .btn-apply-for-deletion {
-  border-color: #999;
-  padding: 8px 16px;
-  font-size: 16px;
-  color: #999;
-
-  &.warning {
-    color: #FD9A9B;
-
-    &:hover {
-      color: darken(#FD9A9B, 10%);
-    }
-  }
+  color: #e49176;
+  border-color: #e49176;
 
   &:focus,
   &:hover,
   &:active,
   &:active:focus {
     background-color: #fff;
-    border-color: #999;
-    color: #999;
+    border-color: #e49176;
+    color: darken(#e49176, 10%);
   }
 }

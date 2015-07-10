@@ -20,40 +20,60 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <div class="avatar-wap">
-                    <img src="{{ topic.avatar_url }}" alt="" class="topic-avatar"/>
-                    <span class="btn-upload-topic-avatar">
-                        更换头像
-                    </span>
-                    <input type="file" name="avatar"/>
-                </div>
-
-                <form action="" method="post">
-                    <div class="form-group form-group-input no-border clearfix">
-                        <div class="inner-wap">
-                            <input type="text" class="form-control" name="name" placeholder="话题名称"
-                                   value="{{ topic.name }}"/>
-
-                            {% if topic.locked %}
-                                <span class="locked-flag text-light">
-                                    <span class="fa fa-lock"></span> 已锁定
-                                </span>
-                            {% endif %}
+                <div class="media topic-meta-wap">
+                    <div class="media-left">
+                        <div class="avatar-wap">
+                            <img src="{{ topic.avatar_url }}" alt="" class="topic-avatar"/>
+                        <span class="btn-upload-topic-avatar">
+                            更换图片
+                        </span>
+                            <input type="file" name="avatar"/>
                         </div>
                     </div>
 
+                    <div class="media-body">
+                        <div class="name-wap">
+                            <div class="name-inner-wap">
+                                <span class="name">{{ topic.name }}</span>
 
+                                {% if topic.locked %}
+                                    <span class="locked-flag text-light">
+                                        <span class="fa fa-lock"></span> 已锁定
+                                    </span>
+                                {% else %}
+                                    <a href="javascript: void(0)" class="btn-edit-name text-light">编辑</a>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-elements">
+                                <input type="text" name="name" class="form-control input-title" autocomplete="off"/>
+
+                                <div class="commands">
+                                    {# <a href="javascript:void(0)" class="text-light btn-cancel-edit-title">取消</a> #}
+                                    <a href="javascript: void(0)" class="btn-save-name btn btn-default"
+                                       data-id="{{ topic.id }}">保存</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wiki">
+                            {{ topic.wiki_preview or "" }}
+                            <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}"
+                               class="text-light">编辑话题百科</a>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="" method="post">
                     <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">所属话题</label>
 
                         <div class="col-sm-10">
-                            <p class="help-block">
-                                完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题。
-                            </p>
-
                             <div class="input-wap">
+                                <p class="help-block">完全包括本话题范畴的更大的话题</p>
+
                                 <input type="text" class="form-control" id="" name="parent-topic"
-                                       placeholder="搜索话题，回车添加" autocomplete="off">
+                                       placeholder="添加所属话题" autocomplete="off">
                             </div>
 
                             <ul class="parent-topics">
@@ -68,13 +88,11 @@
                         <label for="" class="col-sm-2 control-label">下属话题</label>
 
                         <div class="col-sm-10">
-                            <p class="help-block">
-                                完全属于本话题范畴内的细分话题
-                            </p>
-
                             <div class="input-wap">
+                                <p class="help-block">完全属于本话题范畴内的细分话题</p>
+
                                 <input type="text" class="form-control" id="" name="child-topic"
-                                       placeholder="搜索话题，回车添加" autocomplete="off">
+                                       placeholder="添加本话题的下属话题" autocomplete="off">
                             </div>
 
                             <ul class="child-topics">
@@ -86,13 +104,27 @@
                     </div>
 
                     <div class="form-group clearfix">
+                        <label for="" class="col-sm-2 control-label">合并话题</label>
+
+                        <div class="col-sm-10">
+                            <div class="input-wap">
+                                <p class="help-block">合并本话题到其它话题之中。合并之后本话题下的全部问题将会迁移到新的话题之中。
+                                    请将不常用话题合并到常用话题之中。</p>
+
+                                <input type="text" class="form-control" id="" placeholder="合并本话题至..."
+                                       name="" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">话题同义词</label>
 
                         <div class="col-sm-10">
-                            <p class="help-block">同义词越多，越方便话题被检索到</p>
-
                             <div class="input-wap">
-                                <input type="text" class="form-control" id="" placeholder="输入同义词，回车添加"
+                                <p class="help-block">同义词越多，越方便话题被检索到</p>
+
+                                <input type="text" class="form-control" id="" placeholder="添加同义词"
                                        name="synonym" autocomplete="off">
                             </div>
 
@@ -108,11 +140,13 @@
                         <label for="" class="col-sm-2 control-label">删除话题</label>
 
                         <div class="col-sm-10">
-                            <p class="help-block">若该话题与互联网领域无关，或不适合出现在电场中，可以申请删除话题</p>
+                            <div class="input-wap">
+                                <p class="help-block">若本话题不属于互联网领域，或不适合出现在电场中，请申请删除本话题。</p>
 
-                            <button type="button" class="btn-apply-for-deletion btn btn-white warning"
-                                    data-id="{{ topic.id }}">申请删除
-                            </button>
+                                <button type="button" class="btn-apply-for-deletion btn btn-white"
+                                        data-id="{{ topic.id }}">申请删除
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -202,58 +236,60 @@
                     </div>
                 </div>
 
-                <div class="lock-wap">
-                    <div class="sub-title">锁定</div>
+                {% if permissions.AdminPermission().check() %}
+                    <div class="lock-wap">
+                        <div class="sub-title">锁定</div>
 
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="all" checked>
-                            全部
-                        </label>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="all" checked>
+                                全部
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="avatar">
+                                话题图片
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="name">
+                                名称
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="wiki">
+                                百科
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="parent-topic">
+                                所属话题
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="child-topic">
+                                下属话题
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="merge-topic">
+                                合并话题
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="checkbox" name="lock" id="" value="topic-kind">
+                                话题属性
+                            </label>
+                        </div>
                     </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="avatar">
-                            话题图片
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="name">
-                            名称
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="wiki">
-                            百科
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="parent-topic">
-                            所属话题
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="child-topic">
-                            下属话题
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="merge-topic">
-                            合并话题
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="lock" id="" value="topic-kind">
-                            话题属性
-                        </label>
-                    </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>

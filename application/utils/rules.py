@@ -36,9 +36,7 @@ class AdminRule(Rule):
         return UserRule()
 
     def check(self):
-        user_id = int(session['user_id'])
-        user = User.query.filter(User.id == user_id).first()
-        return user and user.is_admin
+        return g.user.is_admin
 
     def deny(self):
         abort(403)

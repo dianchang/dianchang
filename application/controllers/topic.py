@@ -98,12 +98,6 @@ def admin(uid):
         'callbackUrl': absolute_url_for('.update_avatar'),
         'callbackBody': "id=%d&key=$(key)" % uid
     })
-
-    # Update name log
-    # if topic.name != form.name.data:
-    #     log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_NAME, user_id=g.user.id, topic_id=uid, before=topic.name,
-    #                         after=form.name.data)
-    #     db.session.add(log)
     return render_template('topic/admin.html', topic=topic, uptoken=uptoken)
 
 
@@ -524,3 +518,36 @@ def edit_wiki(uid):
         topic.save_to_es()
         return redirect(url_for('.view', uid=uid))
     return render_template('topic/edit_wiki.html', topic=topic)
+
+
+@bp.route('/topic/<int:uid>/update_name', methods=['POST'])
+@UserPermission()
+def update_name(uid):
+    """更新话题名称"""
+    topic = Topic.query.get_or_404(uid)
+    name = request.form.get('name')
+    if name is not None:
+        name = name.strip()
+    else:
+        return json.dumps({
+            'result': False
+        })
+
+    if name == '':
+        return json.dumps({
+            'result': False
+        })
+
+    # Update name log
+    if topic.name != name:
+        log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_NAME, user_id=g.user.id, topic_id=uid, before=topic.name,
+                            after=name)
+        db.session.add(log)
+
+    topic.name = name
+    db.session.add(topic)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })

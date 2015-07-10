@@ -17,7 +17,7 @@
         <div class="new-flag"></div>
         <div class="question">
             {% if is_invited %}
-                {% set inviter = feed.invitation.user %}
+                {% set inviter = feed.invitation.inviter %}
 
                 <div class="action text-light">
                     <a href="{{ inviter.profile_url }}" class="dc-show-user-card dc-img-text-link-wap"
