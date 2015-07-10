@@ -202,37 +202,37 @@
 
                     <div class="radio">
                         <label>
-                            <input type="radio" name="topic-kind" id="" value="product" checked>
+                            <input type="radio" name="topic-kind" id="" value="1">
                             一款产品
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="topic-kind" id="" value="organization">
+                            <input type="radio" name="topic-kind" id="" value="2">
                             一个公司、团队或组织
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="topic-kind" id="" value="position">
+                            <input type="radio" name="topic-kind" id="" value="3">
                             一种职业类别
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="topic-kind" id="" value="skill">
+                            <input type="radio" name="topic-kind" id="" value="4">
                             一种编程语言、职业技能或工具
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="topic-kind" id="" value="people">
+                            <input type="radio" name="topic-kind" id="" value="5">
                             人名
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="topic-kind" id="" value="other">
+                            <input type="radio" name="topic-kind" id="" value="6">
                             其他
                         </label>
                     </div>
@@ -244,50 +244,58 @@
 
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="all" checked>
+                                <input type="checkbox" name="lock" id="" value="all"
+                                       {% if topic.all_locked %}checked{% endif %}>
                                 全部
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="avatar">
+                                <input type="checkbox" name="lock" id="" value="avatar"
+                                       {% if topic.avatar_locked %}checked{% endif %}>
                                 话题图片
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="name">
+                                <input type="checkbox" name="lock" id="" value="name"
+                                       {% if topic.name_locked %}checked{% endif %}>
                                 名称
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="wiki">
+                                <input type="checkbox" name="lock" id="" value="wiki"
+                                       {% if topic.wiki_locked %}checked{% endif %}>
                                 百科
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="parent-topic">
+                                <input type="checkbox" name="lock" id="" value="parent_topics"
+                                       {% if topic.parent_topics_locked %}checked{% endif %}>
                                 所属话题
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="child-topic">
+                                <input type="checkbox" name="lock" id="" value="child_topics"
+                                       {% if topic.child_topics_locked %}checked{% endif %}>
                                 下属话题
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="merge-topic">
+                                <input type="checkbox" name="lock" id="" value="merge_topic"
+                                       {% if topic.merge_topic_locked %}checked{% endif %}>
                                 合并话题
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="lock" id="" value="topic-kind">
-                                话题属性
+                                <input type="checkbox" name="lock" id="" value="topic_kind"
+                                       {% if topic.topic_kind_locked %}checked{% endif %}>
+                                话题类型
                             </label>
                         </div>
                     </div>

@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
     PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion
-from ..utils.permissions import UserPermission
+from ..utils.permissions import UserPermission, AdminPermission
 from ..utils.helpers import generate_lcs_html, absolute_url_for
 from ..utils.uploadsets import process_topic_avatar, topic_avatars
 from ..utils._qiniu import qiniu
@@ -545,6 +545,35 @@ def update_name(uid):
         db.session.add(log)
 
     topic.name = name
+    db.session.add(topic)
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/topic/<int:uid>/lock', methods=['POST'])
+@AdminPermission()
+def lock(uid):
+    """锁定话题"""
+    topic = Topic.query.get_or_404(uid)
+    target = request.form.get('target')
+
+    if not target:
+        return json.dumps({
+            'result': False
+        })
+
+    attr = '%s_locked' % target
+
+    if not hasattr(topic, attr):
+        return json.dumps({
+            'result': False
+        })
+
+    locked = bool(getattr(topic, attr))
+    setattr(topic, attr, not locked)
     db.session.add(topic)
     db.session.commit()
 

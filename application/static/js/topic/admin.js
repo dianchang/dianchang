@@ -181,6 +181,7 @@ $(document).on('click', '.btn-remove-topic-synonym', function () {
     });
 });
 
+// 上传话题图片
 var uploader = simple.uploader({
     url: 'http://upload.qiniu.com',
     fileKey: 'file',
@@ -190,12 +191,11 @@ var uploader = simple.uploader({
     }
 });
 
-// 上传头像
 $('.btn-upload-topic-avatar').click(function () {
     $("input[name='avatar']").click();
 });
 
-$("input[name='avatar']").on('change', function (e) {
+$("input[name='avatar']").on('change', function () {
     uploader.upload(this.files);
 });
 
@@ -222,6 +222,22 @@ $('.btn-apply-for-deletion').click(function () {
     }).done(function (response) {
         if (response.result) {
             _this.addClass('applied').text('申请已提交');
+        }
+    });
+});
+
+
+// 锁定话题
+$('.lock-wap input').change(function () {
+    var lockTarget = $(this).val();
+    var id = g.topicId;
+
+    $.ajax({
+        url: urlFor('topic.lock', {uid: id}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            target: lockTarget
         }
     });
 });
