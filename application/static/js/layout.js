@@ -211,15 +211,12 @@
 
     // 隐藏提问框
     $btnCloseBg.click(function () {
-        $askQuestionBg.hide().removeClass('open');
-        $askQuestionWap.addClass('first').removeClass('second');
-        $questionInput.val('');
-        $similarQuestions.empty().hide();
-        $secondForm.find('.topics').empty();
-        $questionHeader.removeClass('edit');
+        closeAskQuestionBg();
+    });
 
-        if (descEditor !== null) {
-            descEditor.destroy();
+    $(document).keyup(function (e) {
+        if (e.keyCode == 27) {
+            closeAskQuestionBg();
         }
     });
 
@@ -467,6 +464,22 @@
             }
         }, 200);
     });
+
+    /**
+     * 关闭提问框
+     */
+    function closeAskQuestionBg() {
+        $askQuestionBg.hide().removeClass('open');
+        $askQuestionWap.addClass('first').removeClass('second');
+        $questionInput.val('');
+        $similarQuestions.empty().hide();
+        $secondForm.find('.topics').empty();
+        $questionHeader.removeClass('edit');
+
+        if (descEditor !== null) {
+            descEditor.destroy();
+        }
+    }
 
     var timerForUserCard = null;
 

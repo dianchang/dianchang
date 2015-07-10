@@ -35,3 +35,9 @@ $mainWap.on('click', '.btn-preview', function () {
 $mainWap.on('click', '.btn-close-preview', function () {
     $('.preview-wap').fadeOut('fast');
 });
+
+$(document).keyup(function (e) {
+    if (e.keyCode == 27) {
+        $('.preview-wap').fadeOut('fast');
+    }
+});
