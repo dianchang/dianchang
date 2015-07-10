@@ -226,6 +226,22 @@ $('.btn-apply-for-deletion').click(function () {
     });
 });
 
+// 设置话题类型
+$('.topics-kind-wap input').click(function () {
+    var id = g.topicId;
+    var kind = $(this).val();
+
+    $.ajax({
+        url: urlFor('topic.update_kind', {uid: id}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            kind: kind
+        }
+    }).done(function (response) {
+
+    });
+});
 
 // 锁定话题
 $('.lock-wap input').change(function () {

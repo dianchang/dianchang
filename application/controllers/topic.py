@@ -599,10 +599,30 @@ def lock(uid):
     else:
         topic.all_locked = False
 
+    # TODO: 更新日志
+
     db.session.add(topic)
     db.session.commit()
 
     return json.dumps({
         'result': True,
         'locked': not locked
+    })
+
+
+@bp.route('/topic/<int:uid>/update_kind', methods=['POST'])
+@UserPermission()
+def update_kind(uid):
+    """更新话题类型"""
+    topic = Topic.query.get_or_404(uid)
+    kind = request.form.get('kind', type=int)
+    if not kind:
+        return json.dumps({
+            'result': False
+        })
+    topic.kind = kind
+    db.session.add(topic)
+    db.session.commit()
+    return json.dumps({
+        'result': True
     })
