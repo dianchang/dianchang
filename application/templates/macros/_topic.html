@@ -338,7 +338,7 @@
 {% macro topic_admin_page_header(topic, active="admin") %}
     <div class="dc-topic-admin-page-header">
         <div class="container">
-            <a href="{{ url_for('topic.view', uid=topic.id) }}" class="btn btn-default btn-back btn-sm">
+            <a href="{{ url_for('topic.view', uid=topic.id) }}" class="btn-back">
                 <span class="fa fa-angle-left"></span> 返回话题
             </a>
 

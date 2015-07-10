@@ -194,6 +194,12 @@
 }
 .dc-topic-admin-page-header .btn-back {
   position: absolute;
-  top: 6.5px;
+  top: 12px;
   left: 15px;
+  color: #999;
+}
+.dc-topic-admin-page-header .btn-back:hover,
+.dc-topic-admin-page-header .btn-back:focus {
+  text-decoration: none;
+  color: #666;
 }
