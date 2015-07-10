@@ -351,9 +351,11 @@
                 <li {% if active == 'logs' %}class="active"{% endif %}>
                     <a href="{{ url_for('topic.logs', uid=topic.id) }}">话题日志</a>
                 </li>
-                <li {% if active == 'edit_wiki' %}class="active"{% endif %}>
-                    <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}">编辑百科</a>
-                </li>
+                {% if not topic.wiki_locked %}
+                    <li {% if active == 'edit_wiki' %}class="active"{% endif %}>
+                        <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}">编辑百科</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
