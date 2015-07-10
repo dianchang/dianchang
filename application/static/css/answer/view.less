@@ -189,6 +189,7 @@ body {
 // 更多回答
 .more-answers-form-user {
   padding-bottom: 200px;
+  cursor: pointer;
 
   .title {
     text-align: center;
@@ -206,11 +207,13 @@ body {
     }
 
     .question-title {
-      font-size: 18px;
-      display: block;
-      font-weight: bold;
-      color: @main-color;
       margin-bottom: 5px;
+
+      a {
+        font-size: 18px;
+        font-weight: bold;
+        color: @main-color;
+      }
     }
 
     .answerer {

@@ -89,11 +89,12 @@
         </div>
 
         {% for random_answer in answer.user.random_answers %}
-            <div class="more-answer">
-                <a href="{{ url_for('question.view', uid=random_answer.question.id) }}"
-                   class="question-title link-color">
-                    {{ random_answer.question.title }}
-                </a>
+            <div class="more-answer" data-href="{{ url_for('answer.view', uid=random_answer.id) }}">
+                <div class="question-title">
+                    <a href="{{ url_for('question.view', uid=random_answer.question.id) }}">
+                        {{ random_answer.question.title }}
+                    </a>
+                </div>
 
                 <div class="answerer text-light">
                     <a href="{{ random_answer.user.profile_url }}" class="name dc-show-user-card"

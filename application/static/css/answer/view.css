@@ -150,6 +150,7 @@ body #main-wap .container {
 }
 .more-answers-form-user {
   padding-bottom: 200px;
+  cursor: pointer;
 }
 .more-answers-form-user .title {
   text-align: center;
@@ -165,11 +166,12 @@ body #main-wap .container {
   background-color: #F3FAFF;
 }
 .more-answers-form-user .more-answer .question-title {
+  margin-bottom: 5px;
+}
+.more-answers-form-user .more-answer .question-title a {
   font-size: 18px;
-  display: block;
   font-weight: bold;
   color: #009999;
-  margin-bottom: 5px;
 }
 .more-answers-form-user .more-answer .answerer {
   margin-bottom: 5px;
