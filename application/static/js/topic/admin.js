@@ -176,21 +176,6 @@ uploader.on('uploadsuccess', function (e, file, response) {
     }
 });
 
-// 初始化wiki富文本编辑框
-var wikiEditor = new Simditor({
-    textarea: $("textarea[name='wiki']"),
-    toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
-    upload: {
-        url: 'http://upload.qiniu.com',
-        fileKey: 'file',
-        connectionCount: 1,
-        leaveConfirm: '正在上传文件，如果离开上传会自动取消',
-        params: {
-            token: g.editorUptoken
-        }
-    }
-});
-
 // 申请删除话题
 $('.btn-apply-for-deletion').click(function () {
     var id = $(this).data('id');

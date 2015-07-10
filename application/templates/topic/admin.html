@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% from "macros/_form.html" import field_errors, form_submit %}
-{% from "macros/_topic.html" import parent_topic_edit_wap, child_topic_edit_wap, topic_synonym_edit_wap %}
+{% from "macros/_topic.html" import parent_topic_edit_wap, child_topic_edit_wap, topic_synonym_edit_wap,
+        topic_admin_page_header %}
 
 {% block page_title %}话题管理{% endblock %}
 {% block page_js %}
@@ -14,6 +15,8 @@
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/topic/admin.css?__inline"/>{% endblock %}
 {% block page_content %}
+    {{ topic_admin_page_header(topic) }}
+
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -26,8 +29,6 @@
                 </div>
 
                 <form action="" method="post">
-                    {{ form.csrf_token() }}
-
                     <div class="form-group form-group-input no-border clearfix">
                         <div class="inner-wap">
                             <input type="text" class="form-control" name="name" placeholder="话题名称"
@@ -39,14 +40,49 @@
                                 </span>
                             {% endif %}
                         </div>
-
-                        {{ field_errors(form.name) }}
                     </div>
 
-                    <div class="form-group no-border clearfix">
-                        <textarea name="wiki" id="" cols="30" rows="10" placeholder="话题百科"
-                                  class="form-control">{{ topic.wiki or "" }}</textarea>
-                        <button type="submit" class="btn btn-primary btn-submit">保存</button>
+
+                    <div class="form-group clearfix">
+                        <label for="" class="col-sm-2 control-label">所属话题</label>
+
+                        <div class="col-sm-10">
+                            <p class="help-block">
+                                完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题。
+                            </p>
+
+                            <div class="input-wap">
+                                <input type="text" class="form-control" id="" name="parent-topic"
+                                       placeholder="搜索话题，回车添加" autocomplete="off">
+                            </div>
+
+                            <ul class="parent-topics">
+                                {% for parent_topic in topic.parent_topics %}
+                                    {{ parent_topic_edit_wap(parent_topic) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label for="" class="col-sm-2 control-label">下属话题</label>
+
+                        <div class="col-sm-10">
+                            <p class="help-block">
+                                完全属于本话题范畴内的细分话题
+                            </p>
+
+                            <div class="input-wap">
+                                <input type="text" class="form-control" id="" name="child-topic"
+                                       placeholder="搜索话题，回车添加" autocomplete="off">
+                            </div>
+
+                            <ul class="child-topics">
+                                {% for child_topic in topic.child_topics %}
+                                    {{ child_topic_edit_wap(child_topic) }}
+                                {% endfor %}
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="form-group clearfix">
@@ -80,94 +116,144 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">父话题</label>
-
-                        <div class="col-sm-10">
-                            <p class="help-block">
-                                完全包括本话题的更大的话题。例如：「水果」可以是「香蕉」的父话题。
-                            </p>
-
-                            <div class="input-wap">
-                                <input type="text" class="form-control" id="" name="parent-topic"
-                                       placeholder="搜索话题，回车添加" autocomplete="off">
-                            </div>
-
-                            <ul class="parent-topics">
-                                {% for parent_topic in topic.parent_topics %}
-                                    {{ parent_topic_edit_wap(parent_topic) }}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">子话题</label>
-
-                        <div class="col-sm-10">
-                            <p class="help-block">
-                                完全隶属于本话题的细分话题。例如：「香蕉」可以是「水果」的子话题。
-                            </p>
-
-                            <div class="input-wap">
-                                <input type="text" class="form-control" id="" name="child-topic"
-                                       placeholder="搜索话题，回车添加" autocomplete="off">
-                            </div>
-
-                            <ul class="child-topics">
-                                {% for child_topic in topic.child_topics %}
-                                    {{ child_topic_edit_wap(child_topic) }}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">父级话题结构</label>
-
-                        <div class="col-sm-10">
-                            {% if topic.root %}
-                                <div class="root-topic-tip">根话题</div>
-                            {% else %}
-                                <ul class="topics-path">
-                                    {% for path in topic.ancestor_paths %}
-                                        <li>
-                                            {% for topic in path %}
-                                                <a href="{{ url_for('topic.view', uid=topic.id) }}"
-                                                   class="dc-show-topic-card" data-id="{{ topic.id }}">
-                                                    {{ topic.name }}</a>
-
-                                                {% if not loop.last %}
-                                                    <span class="fa fa-long-arrow-right"></span>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">子级话题结构</label>
-
-                        <div class="col-sm-10">
-                            <ul>
-                                {% for child_topic in topic.child_topics %}
-                                    <li>
-                                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}"
-                                           class="{{ child_topic.id }}" data-id="{{ child_topic.id }}">
-                                            {{ child_topic.name }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+                    {#                    <div class="form-group clearfix">#}
+                    {#                        <label for="" class="col-sm-2 control-label">父级话题结构</label>#}
+                    {##}
+                    {#                        <div class="col-sm-10">#}
+                    {#                            {% if topic.root %}#}
+                    {#                                <div class="root-topic-tip">根话题</div>#}
+                    {#                            {% else %}#}
+                    {#                                <ul class="topics-path">#}
+                    {#                                    {% for path in topic.ancestor_paths %}#}
+                    {#                                        <li>#}
+                    {#                                            {% for topic in path %}#}
+                    {#                                                <a href="{{ url_for('topic.view', uid=topic.id) }}"#}
+                    {#                                                   class="dc-show-topic-card" data-id="{{ topic.id }}">#}
+                    {#                                                    {{ topic.name }}</a>#}
+                    {##}
+                    {#                                                {% if not loop.last %}#}
+                    {#                                                    <span class="fa fa-long-arrow-right"></span>#}
+                    {#                                                {% endif %}#}
+                    {#                                            {% endfor %}#}
+                    {#                                        </li>#}
+                    {#                                    {% endfor %}#}
+                    {#                                </ul>#}
+                    {#                            {% endif %}#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    {##}
+                    {#                    <div class="form-group clearfix">#}
+                    {#                        <label for="" class="col-sm-2 control-label">子级话题结构</label>#}
+                    {##}
+                    {#                        <div class="col-sm-10">#}
+                    {#                            <ul>#}
+                    {#                                {% for child_topic in topic.child_topics %}#}
+                    {#                                    <li>#}
+                    {#                                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}"#}
+                    {#                                           class="{{ child_topic.id }}" data-id="{{ child_topic.id }}">#}
+                    {#                                            {{ child_topic.name }}</a>#}
+                    {#                                    </li>#}
+                    {#                                {% endfor %}#}
+                    {#                            </ul>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
                 </form>
             </div>
 
             <div class="col-md-4">
-                <div class="tip">组织，管理</div>
+                <div class="topics-kind-wap">
+                    <div class="sub-title">本话题是：</div>
+
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="topic-kind" id="" value="product" checked>
+                            一款产品
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="topic-kind" id="" value="organization">
+                            一个公司、团队或组织
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="topic-kind" id="" value="position">
+                            一种职业类别
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="topic-kind" id="" value="skill">
+                            一种编程语言、职业技能或工具
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="topic-kind" id="" value="people">
+                            人名
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="topic-kind" id="" value="other">
+                            其他
+                        </label>
+                    </div>
+                </div>
+
+                <div class="lock-wap">
+                    <div class="sub-title">锁定</div>
+
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="all" checked>
+                            全部
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="avatar">
+                            话题图片
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="name">
+                            名称
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="wiki">
+                            百科
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="parent-topic">
+                            所属话题
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="child-topic">
+                            下属话题
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="merge-topic">
+                            合并话题
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="lock" id="" value="topic-kind">
+                            话题属性
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

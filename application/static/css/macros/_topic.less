@@ -222,3 +222,41 @@
     border-top: 1px solid #d6d6d6;
   }
 }
+
+// 话题管理页页头
+.dc-topic-admin-page-header {
+  background-color: @background-gray;
+  text-align: center;
+  border-bottom: 1px solid @border-color;
+  margin-bottom: 40px;
+
+  .container {
+    position: relative;
+  }
+
+  ul {
+    margin-bottom: -1px;
+
+    li {
+      a {
+        text-decoration: none;
+        text-align: center;
+        padding: 12px 8px;
+        display: inline-block;
+        color: #999;
+        border-bottom: 1px solid @border-color;
+      }
+
+      &.active a {
+        color: #333;
+        border-bottom: 1px solid #333;
+      }
+    }
+  }
+
+  .btn-back {
+    position: absolute;
+    top: 6.5px;
+    left: 15px;
+  }
+}

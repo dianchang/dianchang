@@ -1,0 +1,66 @@
+.navbar {
+  margin-bottom: 0;
+}
+textarea[name='wiki'] {
+  display: none;
+}
+.title {
+  font-size: 24px;
+  color: #999;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+.btns-wap {
+  width: 270px;
+}
+.btns-wap .btn {
+  font-weight: bold;
+}
+.btns-wap .btn-preview {
+  margin-right: 10px;
+}
+.btns-wap .btn-submit {
+  padding: 8px 50px;
+}
+.btns-wap.stick {
+  position: fixed;
+  top: 30px;
+}
+.preview-wap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px;
+  z-index: 100000;
+  display: none;
+}
+.preview-wap .inner-wap {
+  width: 680px;
+  margin: 0 auto;
+  overflow: auto;
+}
+.preview-wap .inner-wap .topic-name {
+  font-size: 30px;
+  text-align: center;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  border-bottom: 1px solid #eaeaea;
+}
+.preview-wap .inner-wap .wiki {
+  font-size: 16px;
+}
+.preview-wap .btn-close-preview {
+  position: absolute;
+  right: 30px;
+  top: 10px;
+  font-size: 60px;
+  color: #999;
+}
+.preview-wap .btn-close-preview:hover {
+  cursor: pointer;
+  color: #666;
+}

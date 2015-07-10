@@ -228,8 +228,6 @@
                 </div>
             {% endfor %}
         </div>
-
-        <a href="{{ url_for('topic.logs', uid=topic.id) }}" class="text-light">话题日志</a>
     </div>
 {% endmacro %}
 
@@ -331,6 +329,30 @@
         </div>
         <div class="follow-wap">
             {{ topic_follow_wap(topic, dark=True, text='关注') }}
+        </div>
+    </div>
+{% endmacro %}
+
+
+{# 设置页页头 #}
+{% macro topic_admin_page_header(topic, active="admin") %}
+    <div class="dc-topic-admin-page-header">
+        <div class="container">
+            <a href="{{ url_for('topic.view', uid=topic.id) }}" class="btn btn-default btn-back btn-sm">
+                <span class="fa fa-angle-left"></span> 返回话题
+            </a>
+
+            <ul class="list-inline list-unstyled">
+                <li {% if active == 'admin' %}class='active'{% endif %}>
+                    <a href="{{ url_for('topic.admin', uid=topic.id) }}">话题设置</a>
+                </li>
+                <li {% if active == 'logs' %}class="active"{% endif %}>
+                    <a href="{{ url_for('topic.logs', uid=topic.id) }}">话题日志</a>
+                </li>
+                <li {% if active == 'edit_wiki' %}class="active"{% endif %}>
+                    <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}">编辑百科</a>
+                </li>
+            </ul>
         </div>
     </div>
 {% endmacro %}

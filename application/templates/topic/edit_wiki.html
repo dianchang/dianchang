@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% from "macros/_topic.html" import topic_admin_page_header %}
+
+{% block page_title %}编辑话题百科{% endblock %}
+{% block page_js %}
+    <script src="/static/js/topic/edit_wiki.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/topic/edit_wiki.css"/>{% endblock %}
+{% block page_content %}
+    {{ topic_admin_page_header(topic, active='edit_wiki') }}
+
+    <div class="container">
+        <div class="title">编辑话题百科：{{ topic.name }}</div>
+
+        <div class="row">
+            <form action="" method="post">
+                <div class="col-md-8">
+                    <div class="form-group no-border clearfix">
+                    <textarea name="wiki" id="" cols="30" rows="10" placeholder="话题百科"
+                              class="form-control">{{ topic.wiki or "" }}</textarea>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="btns-wap">
+                        <button type="button" class="btn btn-default btn-lg btn-preview">预览</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-submit">编辑完成</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="preview-wap">
+        <div class="inner-wap">
+            <div class="topic-name">{{ topic.name }}</div>
+
+            <div class="wiki">{{ topic.wiki|safe }}</div>
+        </div>
+
+        <span class="btn-close-preview">×</span>
+    </div>
+{% endblock %}

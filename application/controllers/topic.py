@@ -94,41 +94,17 @@ def wiki(uid):
 def admin(uid):
     """话题管理"""
     topic = Topic.query.get_or_404(uid)
-    form = AdminTopicForm()
     uptoken = qiniu.generate_token(policy={
         'callbackUrl': absolute_url_for('.update_avatar'),
         'callbackBody': "id=%d&key=$(key)" % uid
     })
-    if form.validate_on_submit():
-        # Update name log
-        if topic.name != form.name.data:
-            log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_NAME, user_id=g.user.id, topic_id=uid, before=topic.name,
-                                after=form.name.data)
-            db.session.add(log)
 
-        # Update wiki log
-        if (topic.wiki or "") != form.wiki.data:
-            log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_WIKI, user_id=g.user.id, topic_id=uid,
-                                before=topic.wiki, after=form.wiki.data,
-                                compare=generate_lcs_html(topic.wiki, form.wiki.data))
-            db.session.add(log)
-
-        # 记录wiki贡献者
-        contributor = topic.wiki_contributors.filter(TopicWikiContributor.user_id == g.user.id).first()
-        if contributor:
-            contributor.count += 1
-            contributor.last_contributed_at = datetime.now()
-            db.session.add(contributor)
-        else:
-            contributor = TopicWikiContributor(topic_id=uid, user_id=g.user.id, count=1)
-            db.session.add(contributor)
-
-        form.populate_obj(topic)
-        db.session.add(topic)
-        db.session.commit()
-        topic.save_to_es()
-        return redirect(url_for('.view', uid=uid))
-    return render_template('topic/admin.html', topic=topic, form=form, uptoken=uptoken)
+    # Update name log
+    # if topic.name != form.name.data:
+    #     log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_NAME, user_id=g.user.id, topic_id=uid, before=topic.name,
+    #                         after=form.name.data)
+    #     db.session.add(log)
+    return render_template('topic/admin.html', topic=topic, uptoken=uptoken)
 
 
 @bp.route('/topic/<int:uid>/questions')
@@ -473,7 +449,7 @@ def update_show_order():
             expert_topic.show_order = index
             expert_topic.selected = True
             db.session.add(expert_topic)
-            
+
         g.user.has_selected_expert_topics = True
         db.session.add(g.user)
 
@@ -517,3 +493,34 @@ def update_avatar():
         'url': topic.avatar_url,
         'id': topic.id
     })
+
+
+@bp.route('/topic/<int:uid>/edit_wiki', methods=['GET', 'POST'])
+def edit_wiki(uid):
+    """编辑话题百科"""
+    topic = Topic.query.get_or_404(uid)
+    form = AdminTopicForm()
+    if form.validate_on_submit():
+        # Update wiki log
+        if (topic.wiki or "") != form.wiki.data:
+            log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_WIKI, user_id=g.user.id, topic_id=uid,
+                                before=topic.wiki, after=form.wiki.data,
+                                compare=generate_lcs_html(topic.wiki, form.wiki.data))
+            db.session.add(log)
+
+        # 记录wiki贡献者
+        contributor = topic.wiki_contributors.filter(TopicWikiContributor.user_id == g.user.id).first()
+        if contributor:
+            contributor.count += 1
+            contributor.last_contributed_at = datetime.now()
+            db.session.add(contributor)
+        else:
+            contributor = TopicWikiContributor(topic_id=uid, user_id=g.user.id, count=1)
+            db.session.add(contributor)
+
+        form.populate_obj(topic)
+        db.session.add(topic)
+        db.session.commit()
+        topic.save_to_es()
+        return redirect(url_for('.view', uid=uid))
+    return render_template('topic/edit_wiki.html', topic=topic)
