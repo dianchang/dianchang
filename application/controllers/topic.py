@@ -585,13 +585,13 @@ def lock(uid):
             topic.merge_topic_locked = True
             topic.topic_kind_locked = True
         else:
-            topic.avatar_locked = True
-            topic.name_locked = True
-            topic.wiki_locked = True
-            topic.parent_topics_locked = True
-            topic.child_topics_locked = True
-            topic.merge_topic_locked = True
-            topic.topic_kind_locked = True
+            topic.avatar_locked = False
+            topic.name_locked = False
+            topic.wiki_locked = False
+            topic.parent_topics_locked = False
+            topic.child_topics_locked = False
+            topic.merge_topic_locked = False
+            topic.topic_kind_locked = False
 
     if topic.avatar_locked and topic.name_locked and topic.wiki_locked and topic.parent_topics_locked \
             and topic.child_topics_locked and topic.merge_topic_locked and topic.topic_kind_locked:
