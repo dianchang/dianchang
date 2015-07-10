@@ -40,9 +40,9 @@
                             <div class="name-inner-wap">
                                 <span class="name">{{ topic.name }}</span>
 
-                                {% if topic.locked %}
+                                {% if topic.name_locked %}
                                     <span class="locked-flag text-light">
-                                        <span class="fa fa-lock"></span> 已锁定
+                                        <span class="fa fa-lock"></span>
                                     </span>
                                 {% else %}
                                     <a href="javascript: void(0)" class="btn-edit-name text-light">编辑</a>
@@ -53,7 +53,7 @@
                                 <input type="text" name="name" class="form-control input-title" autocomplete="off"/>
 
                                 <div class="commands">
-                                    {# <a href="javascript:void(0)" class="text-light btn-cancel-edit-title">取消</a> #}
+                                    <a href="javascript:void(0)" class="text-light btn-cancel-edit-name">取消</a>
                                     <a href="javascript: void(0)" class="btn-save-name btn btn-default"
                                        data-id="{{ topic.id }}">保存</a>
                                 </div>

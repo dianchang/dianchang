@@ -33,6 +33,11 @@ $('.btn-save-name').click(function () {
     });
 });
 
+// 取消编辑名称
+$('.btn-cancel-edit-name').click(function () {
+    $nameWap.removeClass('edit');
+});
+
 // parentTopicInput启用Typeahead自动完成
 $parentTopicInput.typeahead({
     minLength: 1,

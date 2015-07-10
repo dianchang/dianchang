@@ -46,6 +46,9 @@
   color: #333;
   font-weight: bold;
 }
+.topic-meta-wap .name-wap .name-inner-wap .locked-flag {
+  margin-left: 10px;
+}
 .topic-meta-wap .name-wap .name-inner-wap .btn-edit-name {
   margin-left: 10px;
   display: none;
@@ -67,6 +70,9 @@
 }
 .topic-meta-wap .name-wap .form-elements .commands {
   text-align: right;
+}
+.topic-meta-wap .name-wap .form-elements .commands .btn-cancel-edit-name {
+  margin-right: 5px;
 }
 .topic-meta-wap .name-wap.edit .name-inner-wap {
   display: none;
