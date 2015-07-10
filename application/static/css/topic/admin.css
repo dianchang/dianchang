@@ -106,6 +106,14 @@
   width: 300px;
   display: block;
 }
+.form-group .synonyms {
+  padding-left: 16px;
+  font-size: 16px;
+}
+.form-group .synonyms .btn-remove-topic-synonym {
+  margin-left: 10px;
+  font-size: 14px;
+}
 .form-group .root-topic-tip {
   font-size: 16px;
   color: #999;
@@ -163,4 +171,28 @@
 .topic-edit-wap .btn-remove-child-topic:hover,
 .topic-edit-wap .btn-remove-parent-topic:hover {
   color: #333 !important;
+}
+.topics-kind-wap,
+.lock-wap {
+  background-color: #f5f6f5;
+  padding: 20px 20px;
+  margin-bottom: 40px;
+}
+.topics-kind-wap .sub-title,
+.lock-wap .sub-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.topics-kind-wap .radio {
+  margin-bottom: 14px;
+}
+.topics-kind-wap .radio:last-child {
+  margin-bottom: 0;
+}
+.lock-wap .checkbox {
+  margin-bottom: 14px;
+}
+.lock-wap .checkbox:last-child {
+  margin-bottom: 0;
 }
