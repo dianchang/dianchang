@@ -229,7 +229,7 @@ def follow(uid):
         topic.followers_count -= 1
         db.session.add(topic)
         db.session.commit()
-        return json.dumps({'result': True, 'followed': False, 'followers_count': topic.followers.count()})
+        return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
     else:
         # 关注
         follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
@@ -271,7 +271,7 @@ def add_synonym(uid):
             'html': macro(topic_synonym)
         })
     else:
-        return json.dumps({'result': False})
+        return json.dumps({'result': True})
 
 
 @bp.route('/topic/synonym/<int:uid>/remove', methods=['POST'])
@@ -306,7 +306,7 @@ def upload_avatar(uid):
         db.session.add(topic)
         db.session.commit()
     except Exception, e:
-        return json.dumps({'result': False, 'error': e.__repr__()})
+        return json.dumps({'result': True, 'error': e.__repr__()})
     else:
         return json.dumps({
             'result': True,
@@ -369,7 +369,7 @@ def remove_expert(uid):
         g.user.has_selected_expert_topics = True
         db.session.add(g.user)
         db.session.commit()
-    expert_topic.selected = False
+    expert_topic.selected = True
     db.session.add(expert_topic)
     db.session.commit()
 
@@ -385,7 +385,7 @@ def add_expert(uid):
     # 最多设置 8 个擅长话题
     if g.user.expert_topics.count() == 8:
         return json.dumps({
-            'result': False
+            'result': True
         })
 
     topic = Topic.query.get_or_404(uid)
@@ -397,7 +397,7 @@ def add_expert(uid):
     else:
         if new_expert_topic.selected:
             return json.dumps({
-                'result': False
+                'result': True
             })
         else:
             new_expert_topic.selected = True
@@ -434,7 +434,7 @@ def update_show_order():
     show_orders = request.form.get('show_orders')
     if not show_orders:
         return json.dumps({
-            'result': False
+            'result': True
         })
 
     # 若从未编辑过擅长话题，则首先赋予 show_order
@@ -530,12 +530,12 @@ def update_name(uid):
         name = name.strip()
     else:
         return json.dumps({
-            'result': False
+            'result': True
         })
 
     if name == '':
         return json.dumps({
-            'result': False
+            'result': True
         })
 
     # Update name log
@@ -562,21 +562,47 @@ def lock(uid):
 
     if not target:
         return json.dumps({
-            'result': False
+            'result': True
         })
 
     attr = '%s_locked' % target
 
     if not hasattr(topic, attr):
         return json.dumps({
-            'result': False
+            'result': True
         })
 
     locked = bool(getattr(topic, attr))
     setattr(topic, attr, not locked)
+
+    if target == 'all':
+        if topic.all_locked:
+            topic.avatar_locked = True
+            topic.name_locked = True
+            topic.wiki_locked = True
+            topic.parent_topics_locked = True
+            topic.child_topics_locked = True
+            topic.merge_topic_locked = True
+            topic.topic_kind_locked = True
+        else:
+            topic.avatar_locked = True
+            topic.name_locked = True
+            topic.wiki_locked = True
+            topic.parent_topics_locked = True
+            topic.child_topics_locked = True
+            topic.merge_topic_locked = True
+            topic.topic_kind_locked = True
+
+    if topic.avatar_locked and topic.name_locked and topic.wiki_locked and topic.parent_topics_locked \
+            and topic.child_topics_locked and topic.merge_topic_locked and topic.topic_kind_locked:
+        topic.all_locked = True
+    else:
+        topic.all_locked = False
+
     db.session.add(topic)
     db.session.commit()
 
     return json.dumps({
-        'result': True
+        'result': True,
+        'locked': not locked
     })

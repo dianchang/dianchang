@@ -239,6 +239,16 @@ $('.lock-wap input').change(function () {
         data: {
             target: lockTarget
         }
+    }).done(function (response) {
+        if (response.result) {
+            if (lockTarget === 'all') {
+                if (response.locked) {
+                    $('.lock-wap input').prop('checked', true);
+                } else {
+                    $('.lock-wap input').prop('checked', false);
+                }
+            }
+        }
     });
 });
 
