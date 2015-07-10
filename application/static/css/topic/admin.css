@@ -205,6 +205,10 @@
 .topics-kind-wap .radio:last-child {
   margin-bottom: 0;
 }
+.topics-kind-wap .locked-flag {
+  color: #999;
+  margin-left: 10px;
+}
 .lock-wap .checkbox {
   margin-bottom: 14px;
 }

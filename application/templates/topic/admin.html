@@ -26,7 +26,7 @@
                             <img src="{{ topic.avatar_url }}" alt="" class="topic-avatar"/>
                             <span class="btn-upload-topic-avatar {% if topic.avatar_locked %}locked{% endif %}">
                                 {% if topic.avatar_locked %}
-                                    <span class="fa fa-lock"></span>
+                                    <span class="fa fa-lock" title="已锁定"></span>
                                 {% else %}
                                     更换图片
                                 {% endif %}
@@ -41,7 +41,7 @@
                                 <span class="name">{{ topic.name }}</span>
 
                                 {% if topic.name_locked %}
-                                    <span class="locked-flag text-light">
+                                    <span class="locked-flag text-light" title="已锁定">
                                         <span class="fa fa-lock"></span>
                                     </span>
                                 {% else %}
@@ -63,7 +63,7 @@
                         <div class="wiki">
                             {{ topic.wiki_preview or "" }}
                             {% if topic.wiki_locked %}
-                                <span class="fa fa-lock text-light locked-flag"></span>
+                                <span class="fa fa-lock text-light locked-flag" title="已锁定"></span>
                             {% else %}
                                 <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}"
                                    class="text-light">编辑话题百科</a>
@@ -208,48 +208,66 @@
                 <div class="topics-kind-wap">
                     <div class="sub-title">本话题是：</div>
 
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="topic-kind" id="" value="1"
-                                   {% if topic.kind == 1 %}checked{% endif %}>
+                    {% if topic.topic_kind_locked %}
+                        {% if topic.kind == 1 %}
                             一款产品
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="topic-kind" id="" value="2"
-                                   {% if topic.kind == 2 %}checked{% endif %}>
+                        {% elif topic.kind == 2 %}
                             一个公司、团队或组织
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="topic-kind" id="" value="3"
-                                   {% if topic.kind == 3 %}checked{% endif %}>
+                        {% elif topic.kind == 3 %}
                             一种职业类别
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="topic-kind" id="" value="4"
-                                   {% if topic.kind == 4 %}checked{% endif %}>
+                        {% elif topic.kind == 4 %}
                             一种编程语言、职业技能或工具
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="topic-kind" id="" value="5"
-                                   {% if topic.kind == 5 %}checked{% endif %}>
+                        {% elif topic.kind == 5 %}
                             人名
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="topic-kind" id="" value="6"
-                                   {% if topic.kind == 6 %}checked{% endif %}>
-                            其他
-                        </label>
-                    </div>
+                        {% elif topic.kind == 6 %}
+                            {{ topic.other_kind or "其他" }}
+                        {% endif %}
+
+                        <span class="fa fa-lock locked-flag" title="已锁定"></span>
+                    {% else %}
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="topic-kind" id="" value="1"
+                                       {% if topic.kind == 1 %}checked{% endif %}>
+                                一款产品
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="topic-kind" id="" value="2"
+                                       {% if topic.kind == 2 %}checked{% endif %}>
+                                一个公司、团队或组织
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="topic-kind" id="" value="3"
+                                       {% if topic.kind == 3 %}checked{% endif %}>
+                                一种职业类别
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="topic-kind" id="" value="4"
+                                       {% if topic.kind == 4 %}checked{% endif %}>
+                                一种编程语言、职业技能或工具
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="topic-kind" id="" value="5"
+                                       {% if topic.kind == 5 %}checked{% endif %}>
+                                人名
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="topic-kind" id="" value="6"
+                                       {% if topic.kind == 6 %}checked{% endif %}>
+                                其他
+                            </label>
+                        </div>
+                    {% endif %}
                 </div>
 
                 {% if permissions.AdminPermission().check() %}
