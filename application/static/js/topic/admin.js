@@ -209,7 +209,7 @@ uploader.on('uploadsuccess', function (e, file, response) {
 $('.btn-apply-for-deletion').click(function () {
     var id = $(this).data('id');
     var _this = $(this);
-    var applied = !$(this).hasClass('warning');
+    var applied = $(this).hasClass('applied');
 
     if (applied) {
         return false;
@@ -221,7 +221,7 @@ $('.btn-apply-for-deletion').click(function () {
         method: 'post'
     }).done(function (response) {
         if (response.result) {
-            _this.removeClass('warning').text('申请已提交');
+            _this.addClass('applied').text('申请已提交');
         }
     });
 });

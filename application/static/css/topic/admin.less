@@ -125,7 +125,7 @@
     background: @background-gray;
     border-radius: 2px;
     padding: 15px 20px;
-    margin-bottom: 18px;
+    margin-bottom: 25px;
 
     .help-block {
       color: #333;
@@ -140,24 +140,6 @@
   }
 
   .col-sm-10 {
-    ul {
-      padding-left: 20px;
-      font-size: 16px;
-      margin-bottom: 0;
-
-      li {
-        margin-bottom: 8px;
-
-        a {
-          color: @main-color;
-        }
-
-        .btn-rm {
-          margin-left: 10px;
-          font-size: 14px;
-        }
-      }
-    }
   }
 
   .root-topic-tip {
@@ -185,12 +167,6 @@
   text-align: right;
 }
 
-.btn-submit {
-  float: right;
-  margin-top: 20px;
-  display: block;
-}
-
 .btn-apply-for-deletion {
   color: #e49176;
   border-color: #e49176;
@@ -202,5 +178,36 @@
     background-color: #fff;
     border-color: #e49176;
     color: darken(#e49176, 10%);
+  }
+}
+
+.topic-edit-wap {
+  position: relative;
+  display: inline-block;
+  margin: 0 15px 10px 0;
+
+  .dc-topic {
+    margin: 0;
+    padding-right: 22px;
+    display: inline-block;
+  }
+
+  .btn-remove-child-topic,
+  .btn-remove-parent-topic {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 4px;
+
+    &:hover {
+      color: #333 !important;
+    }
   }
 }

@@ -76,11 +76,11 @@
                                        placeholder="添加所属话题" autocomplete="off">
                             </div>
 
-                            <ul class="parent-topics">
+                            <div class="parent-topics">
                                 {% for parent_topic in topic.parent_topics %}
                                     {{ parent_topic_edit_wap(parent_topic) }}
                                 {% endfor %}
-                            </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -95,11 +95,11 @@
                                        placeholder="添加本话题的下属话题" autocomplete="off">
                             </div>
 
-                            <ul class="child-topics">
+                            <div class="child-topics">
                                 {% for child_topic in topic.child_topics %}
                                     {{ child_topic_edit_wap(child_topic) }}
                                 {% endfor %}
-                            </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -127,6 +127,8 @@
                                 <input type="text" class="form-control" id="" placeholder="添加同义词"
                                        name="synonym" autocomplete="off">
                             </div>
+
+                            <p>已添加的同义词：</p>
 
                             <ul class="synonyms">
                                 {% for synonym in topic.synonyms %}
