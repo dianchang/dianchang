@@ -18,6 +18,7 @@ $btnAskQuestion.click(function () {
     $(this).removeClass('bubble-notice').removeClass('bubble-notice-top');
 });
 
+// 跳转到下一条引导
 $mainWap.on('click', '.btn-next-step', function () {
     var currentStep = parseInt($(this).data('step'));
     var nextStep = currentStep + 1;
@@ -54,4 +55,14 @@ $mainWap.on('click', '.btn-next-step', function () {
             }
         }
     });
+});
+
+// 窗口往下滚时，设置 guide-step 为固定位置
+$(window).scroll(function () {
+    console.log($(window).scrollTop())
+    if ($(window).scrollTop() >= 50) {
+        $mainWap.find('.guide-step').addClass('stick');
+    } else {
+        $mainWap.find('.guide-step').removeClass('stick');
+    }
 });

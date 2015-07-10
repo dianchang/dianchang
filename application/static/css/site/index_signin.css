@@ -51,6 +51,11 @@
   padding: 15px 20px 20px 20px;
   border-radius: 3px;
   position: relative;
+  width: 270px;
+}
+.guide-step.stick {
+  position: fixed;
+  top: 40px;
 }
 .guide-step .title {
   padding-bottom: 10px;
