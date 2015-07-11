@@ -1,47 +1,8 @@
 var $mainWap = $('#main-wap');
 var $topicInput = $mainWap.find("input[name='topic']");
-var timerForTopicTypeahead = null;
 
-$topicInput.typeahead({
-    minLength: 1,
-    highlight: true,
-    hint: true
-}, {
-    displayKey: 'name',
-    source: function (q, cb) {
-        if (timerForTopicTypeahead) {
-            clearTimeout(timerForTopicTypeahead);
-        }
-
-        timerForTopicTypeahead = setTimeout(function () {
-            $.ajax({
-                url: urlFor('topic.query'),
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    q: q,
-                    create: true
-                }
-            }).done(function (matchs) {
-                cb(matchs);
-            });
-        }, 300);
-    },
-    templates: {
-        'suggestion': function (data) {
-            if (typeof data.create === 'undefined') {
-                return "<p class='typeahead-suggestion' data-name='" + data.name + "'><img src='" + data.avatar_url + "' class='topic-avatar img-rounded'>" + data.name + "</p>";
-            } else {
-                return "<p class='typeahead-suggestion' data-name='" + data.name + "'><span class='color'>+ 添加：</span>" + data.name + "</p>";
-            }
-        }
-    }
-});
-
-$('.twitter-typeahead').css('display', 'block');
-
-// 通过选择autocomplete菜单项添加产品
-$topicInput.on('typeahead:selected', function (e, topic) {
+// 话题自动完成
+initTopicTypeahead($topicInput, function (e, topic) {
     var data = null;
 
     if (typeof topic.create !== 'undefined') {

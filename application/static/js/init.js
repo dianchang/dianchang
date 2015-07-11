@@ -212,6 +212,10 @@
         $('body').removeClass('modal-open');
     }
 
+    /**
+     * 从url中以json的形式获取params
+     * @returns {}
+     */
     function getJsonFromUrl() {
         var query = location.search.substr(1);
         var result = {};
@@ -220,6 +224,64 @@
             result[item[0]] = decodeURIComponent(item[1]);
         });
         return result;
+    }
+
+    /**
+     * 初始化 topic 自动完成
+     * @param params
+     */
+    function initTopicTypeahead($topicInput, params, callback) {
+        var timerForTopicTypeahead = null;
+
+        $topicInput.typeahead({
+            minLength: 1,
+            highlight: true,
+            hint: true
+        }, {
+            displayKey: 'name',
+            source: function (q, cb) {
+                var data = {
+                    q: q,
+                    create: true
+                };
+
+                if (typeof params === 'object') {
+                    $.extend(data, params);
+                }
+
+                if (timerForTopicTypeahead) {
+                    clearTimeout(timerForTopicTypeahead);
+                }
+
+                timerForTopicTypeahead = setTimeout(function () {
+                    $.ajax({
+                        url: urlFor('topic.query'),
+                        method: 'post',
+                        dataType: 'json',
+                        data: data
+                    }).done(function (matchs) {
+                        cb(matchs);
+                    });
+                }, 300);
+            },
+            templates: {
+                'suggestion': function (data) {
+                    if (typeof data.create === 'undefined') {
+                        return "<p class='typeahead-suggestion typeahead-topic-suggestion' data-name='" + data.name + "'><img src='" + data.avatar_url + "' class='topic-avatar img-rounded'>" + data.name + "</p>";
+                    } else {
+                        return "<p class='typeahead-suggestion typeahead-topic-suggestion' data-name='" + data.name + "'><span class='color'>+ 添加：</span>" + data.name + "</p>";
+                    }
+                }
+            }
+        });
+
+        if (typeof params === 'function') {
+            callback = params;
+        }
+
+        $topicInput.on('typeahead:selected', callback);
+
+        $('.twitter-typeahead').css('display', 'block');
     }
 
     window.showTip = showTip;
@@ -231,4 +293,5 @@
     window.disableScroll = disableScroll;
     window.enableScroll = enableScroll;
     window.getJsonFromUrl = getJsonFromUrl;
+    window.initTopicTypeahead = initTopicTypeahead;
 })();

@@ -46,21 +46,6 @@ body {
   top: 16px;
   color: #a9a9a9;
 }
-.outer-wap .header .input-wap .tt-dropdown-menu {
-  font-size: 16px;
-}
-.outer-wap .header .input-wap .tt-dropdown-menu .tt-suggestion {
-  padding: 15px 15px;
-}
-.outer-wap .header .input-wap .tt-dropdown-menu .tt-suggestion img {
-  width: 35px;
-  height: 35px;
-  display: inline-block;
-  margin-right: 12px;
-}
-.outer-wap .header .input-wap .tt-dropdown-menu .color {
-  color: #00cc99;
-}
 .outer-wap .products-wap {
   min-height: 200px;
   background-color: white;
