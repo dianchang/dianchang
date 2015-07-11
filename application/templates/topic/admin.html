@@ -131,8 +131,14 @@
                                 <p class="help-block">合并本话题到其它话题之中。合并之后本话题下的全部问题将会迁移到新的话题之中。
                                     请将不常用话题合并到常用话题之中。</p>
 
-                                <input type="text" class="form-control" id="" placeholder="合并本话题至..."
-                                       name="merge-topic" autocomplete="off">
+                                {% if topic.merge_topic_locked %}
+                                    <div class="text-light">
+                                        <span class="fa fa-lock"></span> 合并话题已锁定
+                                    </div>
+                                {% else %}
+                                    <input type="text" class="form-control" id="" placeholder="合并本话题至..."
+                                           name="merge-topic" autocomplete="off">
+                                {% endif %}
                             </div>
                         </div>
                     </div>
