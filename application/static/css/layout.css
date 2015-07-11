@@ -323,7 +323,6 @@ html {
   margin-bottom: 40px;
 }
 .ask-question-bg .ask-question-wap {
-  overflow: hidden;
   width: 650px;
   border-radius: 2px;
   background-color: #f5f6f5;
@@ -448,4 +447,12 @@ html {
 }
 .ask-question-bg .btn-close-bg:hover {
   color: #999;
+}
+.ask-question-bg .tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion {
+  font-size: 14px;
+  padding: 10px 12px;
+}
+.ask-question-bg .tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion img {
+  width: 30px;
+  height: 30px;
 }

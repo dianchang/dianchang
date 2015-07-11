@@ -25,94 +25,103 @@
                     <span class="tip">话题编辑日志</span>
                 </div>
 
+                {% set admin = permissions.AdminPermission().check() %}
+
                 {% for log in topic.logs %}
-                    <div class="topic-log media">
-                        <div class="media-left">
-                            <img src="{{ log.user.avatar_url }}" alt="" class="img-circle"/>
-                        </div>
-                        <div class="media-body">
-                            <div class="title text-light">
-                                <a href="{{ log.user.profile_url }}" class="text-light dc-show-user-card"
-                                   data-id="{{ log.user_id }}">
-                                    {{ log.user.name }}</a>
-
-                                {% if log.kind == TOPIC_EDIT_KIND.CREATE %}
-                                    创建了话题
-                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_AVATAR %}
-                                    更新了话题图片
-                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
-                                    更新了话题名称
-                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_WIKI %}
-                                    更新了话题百科
-                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_PARENT_TOPIC %}
-                                    添加了父话题
-                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC %}
-                                    移除了父话题
-                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_CHILD_TOPIC %}
-                                    添加了子话题
-                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
-                                    移除了子话题
-                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_SYNONYM %}
-                                    添加了同义词
-                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_SYNONYM %}
-                                    移除了同义词
-                                {% endif %}
-
-                                <span class="time pull-right">{{ log.created_at|timesince }}</span>
+                    {# 只有管理员才可以看到锁定类日志 #}
+                    {% if not ((log.kind == TOPIC_EDIT_KIND.LOCK or log.kind == TOPIC_EDIT_KIND.UNLOCK) and not admin) %}
+                        <div class="topic-log media">
+                            <div class="media-left">
+                                <img src="{{ log.user.avatar_url }}" alt="" class="img-circle"/>
                             </div>
+                            <div class="media-body">
+                                <div class="title text-light">
+                                    <a href="{{ log.user.profile_url }}" class="text-light dc-show-user-card"
+                                       data-id="{{ log.user_id }}">
+                                        {{ log.user.name }}</a>
 
-                            <div class="content">
-                                {% if log.kind == TOPIC_EDIT_KIND.CREATE %}
-                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_AVATAR %}
-                                    <img src="{{ log.before }}" alt="" class="topic-avatar"/>
-                                    <span class="fa fa-long-arrow-right"></span>
-                                    <img src="{{ log.after }}" alt="" class="topic-avatar"/>
-                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
-                                    <del class="topic">
-                                        <a href="{{ url_for('topic.view', uid=topic.id) }}"
-                                           class="dc-topic dc-show-topic-card" data-id="{{ topic.id }}">
-                                            {{ log.before }}</a>
-                                    </del>
-                                    <span class="fa fa-long-arrow-right"></span>
-                                    <inc class="topic">
-                                        <a href="{{ url_for('topic.view', uid=topic.id) }}"
-                                           class="dc-topic dc-show-topic-card" data-id="{{ topic.id }}">
-                                            {{ log.after }}</a>
-                                    </inc>
-                                {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_WIKI %}
-                                    {# TODO #}
-                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_PARENT_TOPIC %}
-                                    <ins class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}"
-                                           class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
-                                            {{ log.after }}</a>
-                                    </ins>
-                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC %}
-                                    <del class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}"
-                                           class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
-                                            {{ log.before }}</a>
-                                    </del>
-                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_CHILD_TOPIC %}
-                                    <ins class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}"
-                                           class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
-                                            {{ log.after }}</a>
-                                    </ins>
-                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
-                                    <del class="topic">
-                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}"
-                                           class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
-                                            {{ log.before }}</a>
-                                    </del>
-                                {% elif log.kind == TOPIC_EDIT_KIND.ADD_SYNONYM %}
-                                    <ins>{{ log.after }}</ins>
-                                {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_SYNONYM %}
-                                    <del>{{ log.before }}</del>
-                                {% endif %}
+                                    {% if log.kind == TOPIC_EDIT_KIND.CREATE %}
+                                        创建了话题
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_AVATAR %}
+                                        更新了话题图片
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
+                                        更新了话题名称
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_WIKI %}
+                                        更新了话题百科
+                                    {% elif log.kind == TOPIC_EDIT_KIND.ADD_PARENT_TOPIC %}
+                                        添加了父话题
+                                    {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC %}
+                                        移除了父话题
+                                    {% elif log.kind == TOPIC_EDIT_KIND.ADD_CHILD_TOPIC %}
+                                        添加了子话题
+                                    {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
+                                        移除了子话题
+                                    {% elif log.kind == TOPIC_EDIT_KIND.ADD_SYNONYM %}
+                                        添加了同义词
+                                    {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_SYNONYM %}
+                                        移除了同义词
+                                    {% elif log.kind == TOPIC_EDIT_KIND.LOCK %}
+                                        {% if log.after == 'all_locked' %}
+                                            锁定了话题
+                                        {% endif %}
+                                    {% endif %}
+
+                                    <span class="time pull-right">{{ log.created_at|timesince }}</span>
+                                </div>
+
+                                <div class="content">
+                                    {% if log.kind == TOPIC_EDIT_KIND.CREATE %}
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_AVATAR %}
+                                        <img src="{{ log.before }}" alt="" class="topic-avatar"/>
+                                        <span class="fa fa-long-arrow-right"></span>
+                                        <img src="{{ log.after }}" alt="" class="topic-avatar"/>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
+                                        <del class="topic">
+                                            <a href="{{ url_for('topic.view', uid=topic.id) }}"
+                                               class="dc-topic dc-show-topic-card" data-id="{{ topic.id }}">
+                                                {{ log.before }}</a>
+                                        </del>
+                                        <span class="fa fa-long-arrow-right"></span>
+                                        <inc class="topic">
+                                            <a href="{{ url_for('topic.view', uid=topic.id) }}"
+                                               class="dc-topic dc-show-topic-card" data-id="{{ topic.id }}">
+                                                {{ log.after }}</a>
+                                        </inc>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_WIKI %}
+                                        {# TODO #}
+                                    {% elif log.kind == TOPIC_EDIT_KIND.ADD_PARENT_TOPIC %}
+                                        <ins class="topic">
+                                            <a href="{{ url_for('topic.view', uid=log.after_id) }}"
+                                               class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
+                                                {{ log.after }}</a>
+                                        </ins>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC %}
+                                        <del class="topic">
+                                            <a href="{{ url_for('topic.view', uid=log.before_id) }}"
+                                               class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
+                                                {{ log.before }}</a>
+                                        </del>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.ADD_CHILD_TOPIC %}
+                                        <ins class="topic">
+                                            <a href="{{ url_for('topic.view', uid=log.after_id) }}"
+                                               class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
+                                                {{ log.after }}</a>
+                                        </ins>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC %}
+                                        <del class="topic">
+                                            <a href="{{ url_for('topic.view', uid=log.before_id) }}"
+                                               class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
+                                                {{ log.before }}</a>
+                                        </del>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.ADD_SYNONYM %}
+                                        <ins>{{ log.after }}</ins>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_SYNONYM %}
+                                        <del>{{ log.before }}</del>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

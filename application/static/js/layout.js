@@ -288,40 +288,21 @@
     });
 
     // 启动Typeahead自动完成
-    $topicInput.typeahead({
-        minLength: 1,
-        highlight: true,
-        hint: false
-    }, {
-        displayKey: 'name',
-        source: function (q, cb) {
-            if (timerForTopicTypeahead) {
-                clearTimeout(timerForTopicTypeahead);
-            }
-
-            timerForTopicTypeahead = setTimeout(function () {
-                $.ajax({
-                    url: urlFor('topic.query'),
-                    method: 'post',
-                    dataType: 'json',
-                    data: {
-                        q: q
-                    }
-                }).done(function (matchs) {
-                    cb(matchs);
-                });
-            }, 300);
-        },
-        templates: {
-            'suggestion': function (data) {
-                return '<p>' + data.name + '</p>';
-            }
+    initTopicTypeahead($topicInput, {
+        limit: 6
+    }, function (e, topic) {
+        if (typeof topic.create === 'undefined') {
+            addTopic(topic);
+        } else {
+            $.ajax({
+                url: urlFor('topic.get_by_name', {name: topic.name}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (topic) {
+                    addTopic(topic);
+                }
+            );
         }
-    });
-
-    // 通过选择autocomplete菜单项添加话题
-    $topicInput.on('typeahead:selected', function (e, topic) {
-        addTopic(topic);
     });
 
     // 通过回车添加话题

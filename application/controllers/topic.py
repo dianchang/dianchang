@@ -23,7 +23,8 @@ def square():
 def query():
     """查询话题"""
     q = request.form.get('q')
-    with_create = request.form.get('create')  # 当找不到完全匹配的topic时，是否返回创建选项
+    limit = request.form.get('limit', type=int)  # 话题个数限制
+    with_create = request.form.get('create')  # 当找不到名称完全匹配的topic时，是否返回创建选项
     question_id = request.form.get('question_id')  # 不包括此问题的话题（用于给问题添加话题）
     ancestor_topic_id = request.form.get('ancestor_topic_id')  # 不为此话题的子孙话题的话题（用于给话题添加子话题）
     descendant_topic_id = request.form.get('descendant_topic_id')  # 不为此话题的祖先话题的话题（用于给话题添加父话题）
@@ -44,6 +45,8 @@ def query():
                 excluded_list = descendant_topic.ancestor_topics_id_list
                 excluded_list.append(descendant_topic_id)
                 topics = topics.filter(Topic.id.notin_(excluded_list))
+        if limit:
+            topics = topics.limit(limit)
         topics_data = [{'name': topic.name,
                         'id': topic.id,
                         'avatar_url': topic.avatar_url,
@@ -155,7 +158,7 @@ def add_parent_topic(uid):
 
     # Add parent topic log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
-                        after=parent_topic.name, after_id=parent_topic_id)
+                        after=parent_topic.name, after_id=parent_topic.id)
     db.session.add(log)
     db.session.commit()
 
@@ -216,7 +219,7 @@ def add_child_topic(uid):
 
     # Add child topic log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
-                        after=child_topic.name, after_id=child_topic_id)
+                        after=child_topic.name, after_id=child_topic.id)
     db.session.add(log)
     db.session.commit()
 
@@ -639,6 +642,16 @@ def lock(uid):
 
     locked = bool(getattr(topic, attr))
     setattr(topic, attr, not locked)
+
+    # log
+    log = PublicEditLog(user_id=g.user.id, topic_id=uid)
+    if locked:
+        log.kind = TOPIC_EDIT_KIND.UNLOCK
+        log.before = attr
+    else:
+        log.kind = TOPIC_EDIT_KIND.LOCK
+        log.after = attr
+    db.session.add(log)
 
     if target == 'all':
         if topic.all_locked:
