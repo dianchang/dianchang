@@ -173,6 +173,9 @@
   padding-right: 22px;
   display: inline-block;
 }
+.topic-edit-wap.locked .dc-topic {
+  padding-right: 10px;
+}
 .topic-edit-wap .btn-remove-child-topic,
 .topic-edit-wap .btn-remove-parent-topic {
   position: absolute;
