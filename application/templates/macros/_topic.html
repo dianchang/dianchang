@@ -140,14 +140,16 @@
 
 
 {# 直接父话题编辑框 #}
-{% macro parent_topic_edit_wap(parent_topic) %}
-    <span class="parent-topic-edit-wap topic-edit-wap">
+{% macro parent_topic_edit_wap(parent_topic, locked=False) %}
+    <span class="parent-topic-edit-wap topic-edit-wap {% if locked %}locked{% endif %}">
         <a href="{{ url_for('topic.view', uid=parent_topic.id) }}" class="dc-show-topic-card dc-topic"
            data-id="{{ parent_topic.id }}">
             {{ parent_topic.name }}
         </a>
-        <span class="btn-remove-parent-topic text-light btn-rm" title="删除所属话题"
-              data-parent-topic-id="{{ parent_topic.id }}">×</span>
+        {% if not locked %}
+            <span class="btn-remove-parent-topic text-light btn-rm" title="删除所属话题"
+                  data-parent-topic-id="{{ parent_topic.id }}">×</span>
+        {% endif %}
     </span>
 {% endmacro %}
 

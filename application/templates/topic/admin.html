@@ -80,13 +80,19 @@
                             <div class="input-wap">
                                 <p class="help-block">完全包括本话题范畴的更大的话题</p>
 
-                                <input type="text" class="form-control" id="" name="parent-topic"
-                                       placeholder="添加所属话题" autocomplete="off">
+                                {% if topic.parent_topics_locked %}
+                                    <div class="text-light">
+                                        <span class="fa fa-lock"></span> 所属话题已锁定
+                                    </div>
+                                {% else %}
+                                    <input type="text" class="form-control" id="" name="parent-topic"
+                                           placeholder="添加所属话题" autocomplete="off">
+                                {% endif %}
                             </div>
 
                             <div class="parent-topics">
                                 {% for parent_topic in topic.parent_topics %}
-                                    {{ parent_topic_edit_wap(parent_topic) }}
+                                    {{ parent_topic_edit_wap(parent_topic, locked=topic.parent_topics_locked) }}
                                 {% endfor %}
                             </div>
                         </div>
