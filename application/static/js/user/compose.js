@@ -52,7 +52,6 @@ $('.question-wap .btn-recover-feed').click(function () {
     });
 });
 
-var timerForTopicTypeahead = null;
 var $expertTopics = $('.expert-topics');
 var $topicInput = $("input[name='topic']");
 
@@ -136,7 +135,7 @@ $('.btn-add-expert-topic').tooltip().click(function () {
     $topicInput.focus();
 });
 
-// 取消添加擅长话题
+// 完成添加擅长话题
 $('.btn-finish-expert-topic').click(function () {
     var $wap = $(this).parents('.add-expert-topic-wap');
 
@@ -180,41 +179,8 @@ var sortable = new Sortable($expertTopics.first()[0], {
     }
 });
 
-// Topic input 启用 Typeahead 自动完成
-$topicInput.typeahead({
-    minLength: 1,
-    highlight: true,
-    hint: false
-}, {
-    displayKey: 'name',
-    source: function (q, cb) {
-        if (timerForTopicTypeahead) {
-            clearTimeout(timerForTopicTypeahead);
-        }
-
-        timerForTopicTypeahead = setTimeout(function () {
-            $.ajax({
-                url: urlFor('topic.query'),
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    q: q,
-                    ancestor_topic_id: g.topicId
-                }
-            }).done(function (matchs) {
-                cb(matchs);
-            });
-        }, 300);
-    },
-    templates: {
-        'suggestion': function (data) {
-            return '<p>' + data.name + '</p>';
-        }
-    }
-});
-
-// 通过选择 autocomplete 菜单项添加擅长话题
-$topicInput.on('typeahead:selected', function (e, topic) {
+// $topicInput 启用 Typeahead 自动完成
+initTopicTypeahead($topicInput, function (e, topic) {
     var _this = $(this);
     var $outerWap = $(this).parents('.expert-topics-outer-wap');
 

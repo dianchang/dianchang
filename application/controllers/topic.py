@@ -422,7 +422,7 @@ def remove_expert(uid):
         g.user.has_selected_expert_topics = True
         db.session.add(g.user)
         db.session.commit()
-    expert_topic.selected = True
+    expert_topic.selected = False
     db.session.add(expert_topic)
     db.session.commit()
 
