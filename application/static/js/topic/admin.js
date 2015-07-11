@@ -106,7 +106,7 @@ initTopicTypeahead($childTopicInput, {
     ancestor_topic_id: g.topicId
 }, function (e, childTopic) {
     if (typeof childTopic.create === 'undefined') {
-        addChildTopic(g.topicId, {child_topic_id: parentTopic.id});
+        addChildTopic(g.topicId, {child_topic_id: childTopic.id});
     } else {
         addChildTopic(g.topicId, {name: childTopic.name});
     }
