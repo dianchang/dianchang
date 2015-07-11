@@ -76,6 +76,15 @@ initTopicTypeahead($parentTopicInput, {
     }
 });
 
+// 通过点击按钮添加所属话题
+$('.btn-add-parent-topic').click(function () {
+    var name = $.trim($parentTopicInput.typeahead('val'));
+
+    if (name !== '') {
+        addParentTopic(g.topicId, {name: name});
+    }
+});
+
 // 删除直接父话题
 $(document).on('click', '.btn-remove-parent-topic', function () {
     var parentTopicId = parseInt($(this).data('parent-topic-id'));
@@ -100,6 +109,15 @@ initTopicTypeahead($childTopicInput, {
         addChildTopic(g.topicId, {child_topic_id: parentTopic.id});
     } else {
         addChildTopic(g.topicId, {name: childTopic.name});
+    }
+});
+
+// 通过点击按钮添加下属话题
+$('.btn-add-child-topic').click(function () {
+    var name = $.trim($childTopicInput.typeahead('val'));
+
+    if (name !== '') {
+        addChildTopic(g.topicId, {name: name});
     }
 });
 
@@ -220,6 +238,10 @@ $('.lock-wap input').change(function () {
  */
 function addSynonym() {
     var synonym = $.trim($synonymInput.val());
+
+    if (synonym === '') {
+        return;
+    }
 
     $.ajax({
         url: urlFor('topic.add_synonym', {uid: g.topicId}),

@@ -224,6 +224,8 @@
      */
     function initTopicTypeahead($topicInput, params, callback) {
         var timerForTopicTypeahead = null;
+        var inputWidth = $topicInput.outerWidth();
+        var inputMarginRight = parseInt($topicInput.css("margin-right"));
 
         $topicInput.typeahead({
             minLength: 1,
@@ -273,7 +275,8 @@
 
         $topicInput.on('typeahead:selected', callback);
 
-        $('.twitter-typeahead').css('display', 'block').outerWidth($topicInput.outerWidth());
+        $topicInput.css('verticalAlign', 'middle');
+        $('.twitter-typeahead').outerWidth(inputWidth).css('marginRight', inputMarginRight);
     }
 
     window.showTip = showTip;

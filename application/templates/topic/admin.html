@@ -87,6 +87,7 @@
                                 {% else %}
                                     <input type="text" class="form-control" id="" name="parent-topic"
                                            placeholder="添加所属话题" autocomplete="off">
+                                    <button type="button" class="btn btn-default btn-add-parent-topic">添加</button>
                                 {% endif %}
                             </div>
 
@@ -112,6 +113,7 @@
                                 {% else %}
                                     <input type="text" class="form-control" id="" name="child-topic"
                                            placeholder="添加本话题的下属话题" autocomplete="off">
+                                    <button type="button" class="btn btn-default btn-add-child-topic">添加</button>
                                 {% endif %}
                             </div>
 
@@ -138,6 +140,8 @@
                                 {% else %}
                                     <input type="text" class="form-control" id="" placeholder="合并本话题至..."
                                            name="merge-topic" autocomplete="off">
+
+                                    <button type="button" class="btn btn-default btn-merge-topic">合并</button>
                                 {% endif %}
                             </div>
                         </div>
