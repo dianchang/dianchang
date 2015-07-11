@@ -214,16 +214,6 @@ $('.btn-edit-topic').click(function () {
     $("input[name='topic']").focus();
 });
 
-// 完成话题编辑
-$('.btn-finish-add-topic').click(function () {
-    if (!g.signin) {
-        window.location = urlFor('account.signin');
-        return;
-    }
-
-    $('.topics-wap').removeClass('edit');
-});
-
 // 删除话题
 $(document).on('click', '.btn-delete-topic', function () {
     var topicId = parseInt($(this).data('id'));
@@ -260,6 +250,22 @@ initTopicTypeahead($topicInput, {
     } else {
         addToTopic(g.questionId, {name: topic.name});
     }
+});
+
+// 完成话题编辑
+$('.btn-finish-add-topic').click(function () {
+    if (!g.signin) {
+        window.location = urlFor('account.signin');
+        return;
+    }
+
+    var name = $.trim($topicInput.typeahead('val'));
+
+    if (name !== '') {
+        addToTopic(g.questionId, {name: name});
+    }
+
+    $('.topics-wap').removeClass('edit');
 });
 
 // 通过回车添加话题
