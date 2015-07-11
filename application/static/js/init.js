@@ -102,16 +102,6 @@
     }
 
     /**
-     * Check whether str ends with suffix.
-     * @param str
-     * @param suffix
-     * @returns {boolean}
-     */
-    function endsWith(str, suffix) {
-        return str.indexOf(suffix, str.length - suffix.length) !== -1;
-    }
-
-    /**
      * Register context into global variable g.
      * @param context
      */
@@ -191,7 +181,9 @@
     /**
      * Check whether str ends with suffix.
      * @param str
-     * @param suffix
+     * @param su
+     * 从url中以json的形式获取params
+     * @returns {}ffix
      * @returns {boolean}
      */
     function endsWith(str, suffix) {
@@ -213,8 +205,6 @@
     }
 
     /**
-     * 从url中以json的形式获取params
-     * @returns {}
      */
     function getJsonFromUrl() {
         var query = location.search.substr(1);
@@ -228,7 +218,9 @@
 
     /**
      * 初始化 topic 自动完成
+     * @param $topicInput
      * @param params
+     * @param callback
      */
     function initTopicTypeahead($topicInput, params, callback) {
         var timerForTopicTypeahead = null;
@@ -281,7 +273,7 @@
 
         $topicInput.on('typeahead:selected', callback);
 
-        $('.twitter-typeahead').css('display', 'block');
+        $('.twitter-typeahead').css('display', 'block').outerWidth($topicInput.outerWidth());
     }
 
     window.showTip = showTip;

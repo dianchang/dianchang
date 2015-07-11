@@ -1,9 +1,8 @@
-var timerForParentTopicTypeahead = null;
 var $nameWap = $('.name-wap');
 var $parentTopicInput = $("input[name='parent-topic']");
-var timerForTopicTypeahead = null;
 var $childTopicInput = $("input[name='child-topic']");
 var $synonymInput = $("input[name='synonym']");
+var $mergeTopic = $("input[name='merge-topic']");
 
 // 进入名称编辑模式
 $('.btn-edit-name').click(function () {
@@ -38,42 +37,15 @@ $('.btn-cancel-edit-name').click(function () {
     $nameWap.removeClass('edit');
 });
 
-// parentTopicInput启用Typeahead自动完成
-$parentTopicInput.typeahead({
-    minLength: 1,
-    highlight: true,
-    hint: false
-}, {
-    displayKey: 'name',
-    source: function (q, cb) {
-        if (timerForParentTopicTypeahead) {
-            clearTimeout(timerForParentTopicTypeahead);
-        }
-
-        timerForParentTopicTypeahead = setTimeout(function () {
-            $.ajax({
-                url: urlFor('topic.query'),
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    q: q,
-                    descendant_topic_id: g.topicId
-                }
-            }).done(function (matchs) {
-                cb(matchs);
-            });
-        }, 300);
-    },
-    templates: {
-        'suggestion': function (data) {
-            return '<p>' + data.name + '</p>';
-        }
+// 所属话题启用 Typeahead
+initTopicTypeahead($parentTopicInput, {
+    descendant_topic_id: g.topicId
+}, function (e, parentTopic) {
+    if (typeof parentTopic.create === 'undefined') {
+        addParentTopic(g.topicId, {parent_topic_id: parentTopic.id});
+    } else {
+        addParentTopic(g.topicId, {name: parentTopic.name});
     }
-});
-
-// 通过选择autocomplete菜单项添加句集
-$parentTopicInput.on('typeahead:selected', function (e, parentTopic) {
-    addParentTopic(g.topicId, parentTopic.id);
 });
 
 // 删除直接父话题
@@ -92,42 +64,15 @@ $(document).on('click', '.btn-remove-parent-topic', function () {
     });
 });
 
-// childTopicInput启用Typeahead自动完成
-$childTopicInput.typeahead({
-    minLength: 1,
-    highlight: true,
-    hint: false
-}, {
-    displayKey: 'name',
-    source: function (q, cb) {
-        if (timerForTopicTypeahead) {
-            clearTimeout(timerForTopicTypeahead);
-        }
-
-        timerForTopicTypeahead = setTimeout(function () {
-            $.ajax({
-                url: urlFor('topic.query'),
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    q: q,
-                    ancestor_topic_id: g.topicId
-                }
-            }).done(function (matchs) {
-                cb(matchs);
-            });
-        }, 300);
-    },
-    templates: {
-        'suggestion': function (data) {
-            return '<p>' + data.name + '</p>';
-        }
+// 下属话题启用 Typeahead
+initTopicTypeahead($childTopicInput, {
+    ancestor_topic_id: g.topicId
+}, function (e, childTopic) {
+    if (typeof childTopic.create === 'undefined') {
+        addChildTopic(g.topicId, {child_topic_id: parentTopic.id});
+    } else {
+        addChildTopic(g.topicId, {name: childTopic.name});
     }
-});
-
-// 通过选择autocomplete菜单项添加句集
-$childTopicInput.on('typeahead:selected', function (e, childTopic) {
-    addChildTopic(g.topicId, childTopic.id);
 });
 
 // 删除直接子话题
@@ -168,6 +113,11 @@ $synonymInput.on('keypress', function (e) {
             }
         });
     }
+});
+
+// 合并话题启用 Typeahead
+// TODO
+initTopicTypeahead($mergeTopic, {}, function (e, parentTopic) {
 });
 
 // 删除话题同义词
@@ -280,13 +230,14 @@ $('.lock-wap input').change(function () {
 /**
  * 添加直接父话题
  * @param {int} topicId - 问题id
- * @param {int} parentTopicId - 问题id
+ * @param {Object} data
  */
-function addParentTopic(topicId, parentTopicId) {
+function addParentTopic(topicId, data) {
     $.ajax({
-        url: urlFor('topic.add_parent_topic', {uid: topicId, parent_topic_id: parentTopicId}),
+        url: urlFor('topic.add_parent_topic', {uid: topicId}),
         method: 'post',
-        dataType: 'json'
+        dataType: 'json',
+        data: data
     }).done(function (response) {
         if (response.result) {
             if (!$(".parent-topic-wap[data-id='" + response.id + "']").length) {
@@ -300,13 +251,14 @@ function addParentTopic(topicId, parentTopicId) {
 /**
  * 添加直接子话题
  * @param {int} topicId - 话题id
- * @param {int} childTopicId - 子话题id
+ * @param {Object} data
  */
-function addChildTopic(topicId, childTopicId) {
+function addChildTopic(topicId, data) {
     $.ajax({
-        url: urlFor('topic.add_child_topic', {uid: topicId, child_topic_id: childTopicId}),
+        url: urlFor('topic.add_child_topic', {uid: topicId}),
         method: 'post',
-        dataType: 'json'
+        dataType: 'json',
+        data: data
     }).done(function (response) {
         if (response.result) {
             if (!$(".child-topic-wap[data-id='" + response.id + "']").length) {

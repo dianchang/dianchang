@@ -124,6 +124,10 @@
 .form-group .synonyms {
   padding-left: 16px;
   font-size: 16px;
+  margin-top: 15px;
+}
+.form-group .synonyms li {
+  margin-bottom: 5px;
 }
 .form-group .synonyms .btn-remove-topic-synonym {
   margin-left: 10px;
@@ -162,7 +166,7 @@
 .topic-edit-wap {
   position: relative;
   display: inline-block;
-  margin: 0 15px 10px 0;
+  margin: 0 15px 15px 0;
 }
 .topic-edit-wap .dc-topic {
   margin: 0;
@@ -214,4 +218,12 @@
 }
 .lock-wap .checkbox:last-child {
   margin-bottom: 0;
+}
+.tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion {
+  font-size: 14px;
+  padding: 10px 12px;
+}
+.tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion img {
+  width: 30px;
+  height: 30px;
 }

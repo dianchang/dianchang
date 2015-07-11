@@ -128,9 +128,9 @@ def logs(uid):
     return render_template('topic/logs.html', topic=topic)
 
 
-@bp.route('/topic/<int:uid>/add_parent_topic/<int:parent_topic_id>', methods=['POST'])
+@bp.route('/topic/<int:uid>/add_parent_topic', methods=['POST'])
 @UserPermission()
-def add_parent_topic(uid, parent_topic_id):
+def add_parent_topic(uid):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
 
@@ -139,8 +139,21 @@ def add_parent_topic(uid, parent_topic_id):
             'result': False
         })
 
-    parent_topic = Topic.query.get_or_404(parent_topic_id)
-    topic.add_parent_topic(parent_topic_id)
+    parent_topic_id = request.form.get('parent_topic_id', type=int)
+    name = request.form.get('name')
+    if name:
+        name = name.strip()
+
+    if parent_topic_id:
+        parent_topic = Topic.query.get_or_404(parent_topic_id)
+    elif name:
+        parent_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
+    else:
+        return json.dumps({
+            'result': False
+        })
+
+    topic.add_parent_topic(parent_topic.id)
 
     # Add parent topic log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
@@ -178,9 +191,9 @@ def remove_parent_topic(uid, parent_topic_id):
     return json.dumps({'result': True})
 
 
-@bp.route('/topic/<int:uid>/add_child_topic/<int:child_topic_id>', methods=['POST'])
+@bp.route('/topic/<int:uid>/add_child_topic', methods=['POST'])
 @UserPermission()
-def add_child_topic(uid, child_topic_id):
+def add_child_topic(uid):
     """添加直接子话题"""
     topic = Topic.query.get_or_404(uid)
 
@@ -188,9 +201,22 @@ def add_child_topic(uid, child_topic_id):
         return json.dumps({
             'result': False
         })
+    
+    child_topic_id = request.form.get('child_topic_id', type=int)
+    name = request.form.get('name')
+    if name:
+        name = name.strip()
 
-    child_topic = Topic.query.get_or_404(child_topic_id)
-    topic.add_child_topic(child_topic_id)
+    if child_topic_id:
+        child_topic = Topic.query.get_or_404(child_topic_id)
+    elif name:
+        child_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
+    else:
+        return json.dumps({
+            'result': False
+        })
+
+    topic.add_child_topic(child_topic.id)
 
     # Add child topic log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
