@@ -180,7 +180,6 @@
     }
 
     // 提问
-    var timerForTopicTypeahead = null;
     var timerForQuestion = null;
     var $askQuestionBg = $('.ask-question-bg');
     var $askQuestionWap = $askQuestionBg.find('.ask-question-wap');

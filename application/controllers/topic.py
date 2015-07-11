@@ -47,6 +47,8 @@ def query():
                 topics = topics.filter(Topic.id.notin_(excluded_list))
         if limit:
             topics = topics.limit(limit)
+        else:
+            topics = topics.limit(10)
         topics_data = [{'name': topic.name,
                         'id': topic.id,
                         'avatar_url': topic.avatar_url,

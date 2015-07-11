@@ -3,12 +3,11 @@ var $titleWap = $('.title-wap');
 var $titleInput = $titleWap.find('input');
 var $descInTitleTextarea = $titleWap.find('textarea');
 var $title = $('.title-wap .title');
-var timerForTopicTypeahead = null;
-var $topicInput = $("input[name='topic']");
+var $topicInput = $(".topics-wap input[name='topic']");
 var timerForAnswer = null;
 var $draftTip = $('.tip-save-draft');
-
 var params = getJsonFromUrl();
+
 // 跳转并高亮评论
 if (typeof params.answer_id !== 'undefined' && typeof params.comment_id !== 'undefined') {
     var answerId = params.answer_id;
@@ -253,41 +252,14 @@ $(document).on('click', '.btn-delete-topic', function () {
 });
 
 // 启动Typeahead自动完成
-$topicInput.typeahead({
-    minLength: 1,
-    highlight: true,
-    hint: false
-}, {
-    displayKey: 'name',
-    source: function (q, cb) {
-        if (timerForTopicTypeahead) {
-            clearTimeout(timerForTopicTypeahead);
-        }
-
-        timerForTopicTypeahead = setTimeout(function () {
-            $.ajax({
-                url: urlFor('topic.query'),
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    q: q,
-                    question_id: g.questionId
-                }
-            }).done(function (matchs) {
-                cb(matchs);
-            });
-        }, 300);
-    },
-    templates: {
-        'suggestion': function (data) {
-            return '<p>' + data.name + '</p>';
-        }
+initTopicTypeahead($topicInput, {
+    question_id: g.questionId
+}, function (e, topic) {
+    if (typeof topic.create === 'undefined') {
+        addToTopic(g.questionId, {topic_id: topic.id});
+    } else {
+        addToTopic(g.questionId, {name: topic.name});
     }
-});
-
-// 通过选择autocomplete菜单项添加话题
-$topicInput.on('typeahead:selected', function (e, topic) {
-    addToTopic(g.questionId, {topic_id: topic.id});
 });
 
 // 通过回车添加话题

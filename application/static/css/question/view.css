@@ -142,10 +142,18 @@
 }
 .question-header .topics-wap .form-wap .twitter-typeahead {
   vertical-align: middle;
+}
+.question-header .topics-wap .form-wap input {
+  width: 250px;
   margin-right: 5px;
 }
-.question-header .topics-wap .form-wap .twitter-typeahead input {
-  width: 250px;
+.question-header .topics-wap .form-wap .tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion {
+  font-size: 14px;
+  padding: 10px 12px;
+}
+.question-header .topics-wap .form-wap .tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion img {
+  width: 30px;
+  height: 30px;
 }
 .question-header .topics-wap .topics-inner-wap {
   display: inline-block;
