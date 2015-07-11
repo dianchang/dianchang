@@ -140,9 +140,7 @@ def add_parent_topic(uid):
         })
 
     parent_topic_id = request.form.get('parent_topic_id', type=int)
-    name = request.form.get('name')
-    if name:
-        name = name.strip()
+    name = request.form.get('name', '').strip()
 
     if parent_topic_id:
         parent_topic = Topic.query.get_or_404(parent_topic_id)
@@ -201,11 +199,9 @@ def add_child_topic(uid):
         return json.dumps({
             'result': False
         })
-    
+
     child_topic_id = request.form.get('child_topic_id', type=int)
-    name = request.form.get('name')
-    if name:
-        name = name.strip()
+    name = request.form.get('name', '').strip()
 
     if child_topic_id:
         child_topic = Topic.query.get_or_404(child_topic_id)
@@ -315,13 +311,15 @@ def add_synonym(uid):
             db.session.add(log)
             db.session.commit()
             topic.save_to_es()
-        macro = get_template_attribute('macros/_topic.html', 'topic_synonym_edit_wap')
-        return json.dumps({
-            'result': True,
-            'html': macro(topic_synonym)
-        })
+            macro = get_template_attribute('macros/_topic.html', 'topic_synonym_edit_wap')
+            return json.dumps({
+                'result': True,
+                'html': macro(topic_synonym)
+            })
+        else:
+            return json.dumps({'result': False})
     else:
-        return json.dumps({'result': True})
+        return json.dumps({'result': False})
 
 
 @bp.route('/topic/synonym/<int:uid>/remove', methods=['POST'])

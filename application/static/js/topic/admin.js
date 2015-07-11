@@ -4,6 +4,34 @@ var $childTopicInput = $("input[name='child-topic']");
 var $synonymInput = $("input[name='synonym']");
 var $mergeTopic = $("input[name='merge-topic']");
 
+// 上传话题图片
+var uploader = simple.uploader({
+    url: 'http://upload.qiniu.com',
+    fileKey: 'file',
+    connectionCount: 1,
+    'params': {
+        token: g.uptoken
+    }
+});
+
+$('.btn-upload-topic-avatar').click(function () {
+    var locked = $(this).hasClass('locked');
+
+    if (!locked) {
+        $("input[name='avatar']").click();
+    }
+});
+
+$("input[name='avatar']").on('change', function () {
+    uploader.upload(this.files);
+});
+
+uploader.on('uploadsuccess', function (e, file, response) {
+    if (response.result) {
+        $('img.topic-avatar').attr('src', response.url);
+    }
+});
+
 // 进入名称编辑模式
 $('.btn-edit-name').click(function () {
     var name = $.trim($nameWap.find('.name').text());
@@ -93,26 +121,14 @@ $(document).on('click', '.btn-remove-child-topic', function () {
 
 // 添加话题同义词
 $synonymInput.on('keypress', function (e) {
-    var name = $.trim($(this).val());
-    var _this = $(this);
-
     if (e.which === 13) {
         e.preventDefault();
-
-        $.ajax({
-            url: urlFor('topic.add_synonym', {uid: g.topicId}),
-            method: 'post',
-            dataType: 'json',
-            data: {
-                synonym: name
-            }
-        }).done(function (response) {
-            if (response.result) {
-                $('.synonyms').append(response.html);
-                _this.val('').focus();
-            }
-        });
+        addSynonym();
     }
+});
+
+$('.btn-add-synonym').click(function () {
+    addSynonym();
 });
 
 // 合并话题启用 Typeahead
@@ -134,34 +150,6 @@ $(document).on('click', '.btn-remove-topic-synonym', function () {
             _this.parent().detach();
         }
     });
-});
-
-// 上传话题图片
-var uploader = simple.uploader({
-    url: 'http://upload.qiniu.com',
-    fileKey: 'file',
-    connectionCount: 1,
-    'params': {
-        token: g.uptoken
-    }
-});
-
-$('.btn-upload-topic-avatar').click(function () {
-    var locked = $(this).hasClass('locked');
-
-    if (!locked) {
-        $("input[name='avatar']").click();
-    }
-});
-
-$("input[name='avatar']").on('change', function () {
-    uploader.upload(this.files);
-});
-
-uploader.on('uploadsuccess', function (e, file, response) {
-    if (response.result) {
-        $('img.topic-avatar').attr('src', response.url);
-    }
 });
 
 // 申请删除话题
@@ -226,6 +214,28 @@ $('.lock-wap input').change(function () {
         }
     });
 });
+
+/**
+ * 添加话题同义词
+ */
+function addSynonym() {
+    var synonym = $.trim($synonymInput.val());
+
+    $.ajax({
+        url: urlFor('topic.add_synonym', {uid: g.topicId}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            synonym: synonym
+        }
+    }).done(function (response) {
+        if (response.result) {
+            $('.synonyms').append(response.html);
+        }
+
+        $synonymInput.val('').focus();
+    });
+}
 
 /**
  * 添加直接父话题
