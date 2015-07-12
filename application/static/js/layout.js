@@ -287,20 +287,24 @@
     });
 
     // 启动Typeahead自动完成
-    initTopicTypeahead($topicInput, {
-        limit: 6
-    }, function (e, topic) {
-        if (typeof topic.create === 'undefined') {
-            addTopic(topic);
-        } else {
-            $.ajax({
-                url: urlFor('topic.get_by_name', {name: topic.name}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (topic) {
-                    addTopic(topic);
-                }
-            );
+    $topicInput.initTopicTypeahead({
+        params: {
+            limit: 6
+        },
+        small: true,
+        callback: function (e, topic) {
+            if (typeof topic.create === 'undefined') {
+                addTopic(topic);
+            } else {
+                $.ajax({
+                    url: urlFor('topic.get_by_name', {name: topic.name}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (topic) {
+                        addTopic(topic);
+                    }
+                );
+            }
         }
     });
 

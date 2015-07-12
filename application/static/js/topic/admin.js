@@ -66,13 +66,16 @@ $('.btn-cancel-edit-name').click(function () {
 });
 
 // 所属话题启用 Typeahead
-initTopicTypeahead($parentTopicInput, {
-    descendant_topic_id: g.topicId
-}, function (e, parentTopic) {
-    if (typeof parentTopic.create === 'undefined') {
-        addParentTopic(g.topicId, {parent_topic_id: parentTopic.id});
-    } else {
-        addParentTopic(g.topicId, {name: parentTopic.name});
+$parentTopicInput.initTopicTypeahead({
+    params: {
+        descendant_topic_id: g.topicId
+    },
+    callback: function (e, parentTopic) {
+        if (typeof parentTopic.create === 'undefined') {
+            addParentTopic(g.topicId, {parent_topic_id: parentTopic.id});
+        } else {
+            addParentTopic(g.topicId, {name: parentTopic.name});
+        }
     }
 });
 
@@ -102,13 +105,15 @@ $(document).on('click', '.btn-remove-parent-topic', function () {
 });
 
 // 下属话题启用 Typeahead
-initTopicTypeahead($childTopicInput, {
-    ancestor_topic_id: g.topicId
-}, function (e, childTopic) {
-    if (typeof childTopic.create === 'undefined') {
-        addChildTopic(g.topicId, {child_topic_id: childTopic.id});
-    } else {
-        addChildTopic(g.topicId, {name: childTopic.name});
+$childTopicInput.initTopicTypeahead({
+    params: {
+        ancestor_topic_id: g.topicId
+    }, callback: function (e, childTopic) {
+        if (typeof childTopic.create === 'undefined') {
+            addChildTopic(g.topicId, {child_topic_id: childTopic.id});
+        } else {
+            addChildTopic(g.topicId, {name: childTopic.name});
+        }
     }
 });
 
@@ -151,7 +156,9 @@ $('.btn-add-synonym').click(function () {
 
 // 合并话题启用 Typeahead
 // TODO
-initTopicTypeahead($mergeTopic, {}, function (e, parentTopic) {
+$mergeTopic.initTopicTypeahead({
+    callback: function (e, parentTopic) {
+    }
 });
 
 // 删除话题同义词

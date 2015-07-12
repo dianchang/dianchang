@@ -54,6 +54,7 @@ input[type='file'] {
   width: 100%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   background-color: #ffffff;
+  margin-bottom: 30px;
 }
 .tt-dropdown-menu .tt-suggestion {
   padding: 0;
@@ -88,6 +89,14 @@ input[type='file'] {
 }
 .tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion .color {
   color: #00cc99;
+}
+.tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion.sm {
+  font-size: 14px;
+  padding: 10px 12px;
+}
+.tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion.sm img {
+  width: 30px;
+  height: 30px;
 }
 ins {
   text-decoration: none;

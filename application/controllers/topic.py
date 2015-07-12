@@ -431,9 +431,9 @@ def remove_expert(uid):
     })
 
 
-@bp.route('/topic/<int:uid>/add_expert', methods=['POST'])
+@bp.route('/topic/add_expert', methods=['POST'])
 @UserPermission()
-def add_expert(uid):
+def add_expert():
     """添加擅长话题"""
     # 最多设置 8 个擅长话题
     if g.user.expert_topics.count() == 8:
@@ -441,11 +441,18 @@ def add_expert(uid):
             'result': True
         })
 
-    topic = Topic.query.get_or_404(uid)
-    new_expert_topic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == uid,
+    id = request.form.get('id', type=int)
+    name = request.form.get('name', '').strip()
+
+    if id:
+        topic = Topic.query.get_or_404(id)
+    else:
+        topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
+
+    new_expert_topic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic.id,
                                                        UserTopicStatistic.user_id == g.user.id).first()
     if not new_expert_topic:
-        new_expert_topic = UserTopicStatistic(topic_id=uid, user_id=g.user.id, selected=True)
+        new_expert_topic = UserTopicStatistic(topic_id=topic.id, user_id=g.user.id, selected=True)
         db.session.add(new_expert_topic)
     else:
         if new_expert_topic.selected:

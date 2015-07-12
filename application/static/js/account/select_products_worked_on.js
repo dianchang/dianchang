@@ -2,30 +2,33 @@ var $mainWap = $('#main-wap');
 var $topicInput = $mainWap.find("input[name='topic']");
 
 // 话题自动完成
-initTopicTypeahead($topicInput, function (e, topic) {
-    var data = null;
+$topicInput.initTopicTypeahead({
+    block: true,
+    callback: function (e, topic) {
+        var data = null;
 
-    if (typeof topic.create !== 'undefined') {
-        data = {name: topic.name};
-    } else {
-        data = {topic_id: topic.id}
-    }
-
-    $.ajax({
-        url: urlFor('account.submit_product_worked_on'),
-        method: 'post',
-        dataType: 'json',
-        data: data
-    }).done(function (response) {
-        if (response.result) {
-            if (response.html !== '') {
-                $mainWap.find('.products-wap').removeClass('empty');
-                $mainWap.find('.products-wap .inner-wap').append(response.html);
-            }
+        if (typeof topic.create !== 'undefined') {
+            data = {name: topic.name};
+        } else {
+            data = {topic_id: topic.id}
         }
 
-        $topicInput.typeahead('val', '');
-    });
+        $.ajax({
+            url: urlFor('account.submit_product_worked_on'),
+            method: 'post',
+            dataType: 'json',
+            data: data
+        }).done(function (response) {
+            if (response.result) {
+                if (response.html !== '') {
+                    $mainWap.find('.products-wap').removeClass('empty');
+                    $mainWap.find('.products-wap .inner-wap').append(response.html);
+                }
+            }
+
+            $topicInput.typeahead('val', '');
+        });
+    }
 });
 
 // 设为当前在职

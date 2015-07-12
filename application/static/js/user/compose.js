@@ -180,26 +180,41 @@ var sortable = new Sortable($expertTopics.first()[0], {
 });
 
 // $topicInput 启用 Typeahead 自动完成
-initTopicTypeahead($topicInput, function (e, topic) {
-    var _this = $(this);
-    var $outerWap = $(this).parents('.expert-topics-outer-wap');
+$topicInput.initTopicTypeahead({
+    block: true,
+    small: true,
+    params: {
+        limit: 6
+    },
+    callback: function (e, topic) {
+        var _this = $(this);
+        var $outerWap = $(this).parents('.expert-topics-outer-wap');
+        var data;
 
-    $.ajax({
-        url: urlFor('topic.add_expert', {uid: topic.id}),
-        method: 'post',
-        dataType: 'json'
-    }).done(function (response) {
-        if (response.result) {
-            $('.expert-topics').append(response.html);
-
-            if (response.full) {
-                $outerWap.addClass('full');
-                _this.parents('.add-expert-topic-wap').removeClass('edit');
-            } else {
-                $outerWap.removeClass('full');
-            }
+        if (typeof topic.create === 'undefined') {
+            data = {id: topic.id};
+        } else {
+            data = {name: topic.name};
         }
 
-        $topicInput.typeahead('val', '');
-    });
+        $.ajax({
+            url: urlFor('topic.add_expert'),
+            method: 'post',
+            dataType: 'json',
+            data: data
+        }).done(function (response) {
+            if (response.result) {
+                $('.expert-topics').append(response.html);
+
+                if (response.full) {
+                    $outerWap.addClass('full');
+                    _this.parents('.add-expert-topic-wap').removeClass('edit');
+                } else {
+                    $outerWap.removeClass('full');
+                }
+            }
+
+            $topicInput.typeahead('val', '');
+        });
+    }
 });

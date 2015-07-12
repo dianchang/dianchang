@@ -218,14 +218,17 @@
 
     /**
      * 初始化 topic 自动完成
-     * @param $topicInput
-     * @param params
-     * @param callback
+     * @param {Object} options
      */
-    function initTopicTypeahead($topicInput, params, callback) {
+    $.fn.initTopicTypeahead = function (options) {
+        var $topicInput = this;
+        var params = options.params;
+        var block = (typeof options.block === 'undefined') ? false : true;
+        var small = (typeof options.small === 'undefined') ? false : true;
+        var callback = options.callback;
         var timerForTopicTypeahead = null;
-        var inputWidth = $topicInput.outerWidth();
         var inputMarginRight = parseInt($topicInput.css("margin-right"));
+        var $twitterTypeahead = null;
 
         $topicInput.typeahead({
             minLength: 1,
@@ -261,23 +264,23 @@
             templates: {
                 'suggestion': function (data) {
                     if (typeof data.create === 'undefined') {
-                        return "<p class='typeahead-suggestion typeahead-topic-suggestion' data-name='" + data.name + "'><img src='" + data.avatar_url + "' class='topic-avatar img-rounded'>" + data.name + "</p>";
+                        return "<p class='typeahead-suggestion typeahead-topic-suggestion " + (small ? 'sm' : '') + "' data-name='" + data.name + "'><img src='" + data.avatar_url + "' class='topic-avatar img-rounded'>" + data.name + "</p>";
                     } else {
-                        return "<p class='typeahead-suggestion typeahead-topic-suggestion' data-name='" + data.name + "'><span class='color'>+ 添加：</span>" + data.name + "</p>";
+                        return "<p class='typeahead-suggestion typeahead-topic-suggestion " + (small ? 'sm' : '') + "' data-name='" + data.name + "'><span class='color'>+ 添加：</span>" + data.name + "</p>";
                     }
                 }
             }
         });
 
-        if (typeof params === 'function') {
-            callback = params;
-        }
-
         $topicInput.on('typeahead:selected', callback);
-
         $topicInput.css('verticalAlign', 'middle');
-        $('.twitter-typeahead').outerWidth(inputWidth).css('marginRight', inputMarginRight);
-    }
+        $twitterTypeahead = $topicInput.parents('.twitter-typeahead');
+        $topicInput.css('marginRight', 0);
+        $twitterTypeahead.css('marginRight', inputMarginRight);
+        if (block) {
+            $twitterTypeahead.css('display', 'block');
+        }
+    };
 
     window.showTip = showTip;
     window.hideTip = hideTip;
@@ -288,5 +291,5 @@
     window.disableScroll = disableScroll;
     window.enableScroll = enableScroll;
     window.getJsonFromUrl = getJsonFromUrl;
-    window.initTopicTypeahead = initTopicTypeahead;
+    //window.initTopicTypeahead = initTopicTypeahead;
 })();

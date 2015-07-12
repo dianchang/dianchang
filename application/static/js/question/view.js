@@ -242,13 +242,16 @@ $(document).on('click', '.btn-delete-topic', function () {
 });
 
 // 启动Typeahead自动完成
-initTopicTypeahead($topicInput, {
-    question_id: g.questionId
-}, function (e, topic) {
-    if (typeof topic.create === 'undefined') {
-        addToTopic(g.questionId, {topic_id: topic.id});
-    } else {
-        addToTopic(g.questionId, {name: topic.name});
+$topicInput.initTopicTypeahead({
+    small: true,
+    params: {
+        question_id: g.questionId
+    }, callback: function (e, topic) {
+        if (typeof topic.create === 'undefined') {
+            addToTopic(g.questionId, {topic_id: topic.id});
+        } else {
+            addToTopic(g.questionId, {name: topic.name});
+        }
     }
 });
 
