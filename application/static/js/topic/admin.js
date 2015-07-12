@@ -67,6 +67,7 @@ $('.btn-cancel-edit-name').click(function () {
 
 // 所属话题启用 Typeahead
 $parentTopicInput.initTopicTypeahead({
+    small: true,
     params: {
         descendant_topic_id: g.topicId
     },
@@ -106,6 +107,7 @@ $(document).on('click', '.btn-remove-parent-topic', function () {
 
 // 下属话题启用 Typeahead
 $childTopicInput.initTopicTypeahead({
+    small: true,
     params: {
         ancestor_topic_id: g.topicId
     }, callback: function (e, childTopic) {
@@ -157,6 +159,7 @@ $('.btn-add-synonym').click(function () {
 // 合并话题启用 Typeahead
 // TODO
 $mergeTopic.initTopicTypeahead({
+    small: true,
     callback: function (e, parentTopic) {
     }
 });

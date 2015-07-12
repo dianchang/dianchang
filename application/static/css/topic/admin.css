@@ -224,11 +224,3 @@
 .lock-wap .checkbox:last-child {
   margin-bottom: 0;
 }
-.tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion {
-  font-size: 14px;
-  padding: 10px 12px;
-}
-.tt-dropdown-menu .tt-suggestion .typeahead-topic-suggestion img {
-  width: 30px;
-  height: 30px;
-}
