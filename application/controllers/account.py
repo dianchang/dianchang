@@ -437,7 +437,7 @@ def submit_product_worked_on():
             db.session.add(topic)
 
             # USER FEED: 插入到用户 feed 中
-            user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic_id)
+            user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic.id)
             db.session.add(user_feed)
 
         # 在 UserTopicStatistic 中标记该话题
