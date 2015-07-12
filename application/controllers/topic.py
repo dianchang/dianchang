@@ -29,7 +29,9 @@ def query():
     ancestor_topic_id = request.form.get('ancestor_topic_id')  # 不为此话题的子孙话题的话题（用于给话题添加子话题）
     descendant_topic_id = request.form.get('descendant_topic_id')  # 不为此话题的祖先话题的话题（用于给话题添加父话题）
     if q:
-        topics = Topic.query.filter(Topic.name.like("%%%s%%" % q))
+        # topics = Topic.query.filter(Topic.name.like("%%%s%%" % q))
+        topics_id_list = Topic.query_from_es(q, page=1, per_page=10, only_id_list=True)
+        topics = Topic.query.filter(Topic.id.in_(topics_id_list))
         if question_id:  # 排除该问题的所有话题
             topics = topics.filter(
                 ~Topic.questions.any(QuestionTopic.question_id == question_id))
@@ -46,9 +48,9 @@ def query():
                 excluded_list.append(descendant_topic_id)
                 topics = topics.filter(Topic.id.notin_(excluded_list))
         if limit:
-            topics = topics.limit(limit)
-        else:
-            topics = topics.limit(10)
+            # topics = topics.limit(limit)
+            # else:
+            topics = topics[:5]
         topics_data = [{'name': topic.name,
                         'id': topic.id,
                         'avatar_url': topic.avatar_url,
