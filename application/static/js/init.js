@@ -257,7 +257,11 @@
                         dataType: 'json',
                         data: data
                     }).done(function (matchs) {
+                        var event = $.Event('keydown');
+
                         cb(matchs);
+                        event.which = event.keyCode = 40;
+                        $topicInput.trigger(event);
                     });
                 }, 300);
             },
