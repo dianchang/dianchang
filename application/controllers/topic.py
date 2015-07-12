@@ -138,7 +138,7 @@ def add_parent_topic(uid):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
 
-    if topic.parent_topics_locked:
+    if topic.parent_topics_locked or topic.root:
         return json.dumps({
             'result': False
         })
