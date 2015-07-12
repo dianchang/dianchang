@@ -218,6 +218,27 @@
   color: #999;
   margin-left: 10px;
 }
+.topics-kind-wap .other-kind-wap {
+  margin-top: -5px;
+}
+.topics-kind-wap .other-kind-wap.empty .inner-wap {
+  display: none;
+}
+.topics-kind-wap .other-kind-wap.on.edit .other-kind-edit-wap {
+  display: block;
+}
+.topics-kind-wap .other-kind-wap .divider {
+  margin: 0 2px;
+}
+.topics-kind-wap .other-kind-wap .other-kind-edit-wap {
+  display: none;
+}
+.topics-kind-wap .other-kind-wap .other-kind-edit-wap input {
+  display: inline-block;
+  width: 160px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
 .lock-wap .checkbox {
   margin-bottom: 14px;
 }

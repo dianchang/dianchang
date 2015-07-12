@@ -201,10 +201,20 @@ $('.btn-apply-for-deletion').click(function () {
     });
 });
 
+var $otherKindWap = $('.other-kind-wap');
+var $otherKindInput = $otherKindWap.find('input[type="text"]');
+var $btnSaveOtherTopic = $otherKindWap.find('.btn-save-other-kind');
+var $btnEditOtherKind = $otherKindWap.find('.btn-edit-other-kind');
+var $otherKind = $otherKindWap.find('.other-kind');
+
 // 设置话题类型
-$('.topics-kind-wap input').click(function () {
+$('.topics-kind-wap input[type="radio"]').click(function (e) {
     var id = g.topicId;
-    var kind = $(this).val();
+    var kind = parseInt($(this).val());
+
+    if ($(e.target).hasClass('btn-edit-other-kind')) {
+        return false;
+    }
 
     $.ajax({
         url: urlFor('topic.update_kind', {uid: id}),
@@ -214,7 +224,41 @@ $('.topics-kind-wap input').click(function () {
             kind: kind
         }
     }).done(function (response) {
+        if (kind === 6) {
+            $otherKindWap.addClass('on');
+        } else {
+            $otherKindWap.removeClass('on');
+        }
+    });
+});
 
+// 进入其他话题编辑模式
+$btnEditOtherKind.click(function () {
+    $otherKindWap.addClass('edit');
+    $otherKindInput.val($otherKind.text()).focus();
+});
+
+// 保存其他话题类型
+$btnSaveOtherTopic.click(function () {
+    var otherKind = $.trim($otherKindInput.val());
+
+    $.ajax({
+        url: urlFor('topic.update_other_kind', {uid: g.topicId}),
+        method: 'post',
+        dataType: 'json',
+        data: {
+            kind: otherKind
+        }
+    }).done(function (response) {
+        if (response.result) {
+            if (otherKind === '') {
+                $otherKindWap.addClass('empty');
+            } else {
+                $otherKindWap.removeClass('empty').removeClass('edit');
+            }
+
+            $otherKind.text(otherKind);
+        }
     });
 });
 
@@ -242,6 +286,7 @@ $('.lock-wap input').change(function () {
         }
     });
 });
+
 
 /**
  * 添加话题同义词

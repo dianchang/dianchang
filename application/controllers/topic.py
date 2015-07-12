@@ -722,3 +722,17 @@ def update_kind(uid):
     return json.dumps({
         'result': True
     })
+
+
+@bp.route('/topic/<int:uid>/update_other_kind', methods=['POST'])
+@UserPermission()
+def update_other_kind(uid):
+    """更新话题其他类型"""
+    topic = Topic.query.get_or_404(uid)
+    kind = request.form.get('kind', '').strip()
+    topic.other_kind = kind
+    db.session.add(topic)
+    db.session.commit()
+    return json.dumps({
+        'result': True
+    })

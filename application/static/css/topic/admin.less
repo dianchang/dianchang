@@ -274,6 +274,37 @@
     color: #999;
     margin-left: 10px;
   }
+
+  .other-kind-wap {
+    margin-top: -5px;
+
+    &.empty {
+      .inner-wap {
+        display: none
+      }
+    }
+
+    &.on.edit {
+      .other-kind-edit-wap {
+        display: block;
+      }
+    }
+
+    .divider {
+      margin: 0 2px;
+    }
+
+    .other-kind-edit-wap {
+      display: none;
+
+      input {
+        display: inline-block;
+        width: 160px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
+  }
 }
 
 .lock-wap {

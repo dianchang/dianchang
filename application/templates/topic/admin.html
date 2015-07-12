@@ -229,6 +229,7 @@
             </div>
 
             <div class="col-md-4">
+                {# 话题类型 #}
                 <div class="topics-kind-wap">
                     <div class="sub-title">本话题是：</div>
 
@@ -284,16 +285,30 @@
                                 人名
                             </label>
                         </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="topic-kind" id="" value="6"
-                                       {% if topic.kind == 6 %}checked{% endif %}>
-                                其他
-                            </label>
+                        <div class="other-kind-wap {% if topic.kind == 6 %}on{% endif %}
+                            {% if not topic.other_kind %}empty{% endif %}
+                            {% if topic.kind == 6 and not topic.other_kind %}edit{% endif %}">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="topic-kind" id="" value="6"
+                                           {% if topic.kind == 6 %}checked{% endif %}>
+                                    其他
+                                    <span class="inner-wap">
+                                        <span class="divider">-</span>
+                                        <span class="other-kind">{{ topic.other_kind or "" }}</span>
+                                        <a href="javascript:void(0)" class="btn-edit-other-kind text-light">编辑</a>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="other-kind-edit-wap">
+                                <input type="text" class="form-control" name="kind">
+                                <button class="btn btn-default btn-save-other-kind">保存</button>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
 
+                {# 锁定话题 #}
                 {% if permissions.AdminPermission().check() %}
                     <div class="lock-wap">
                         <div class="sub-title">锁定</div>
