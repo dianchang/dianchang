@@ -226,6 +226,10 @@ $('.topics-kind-wap input[type="radio"]').click(function (e) {
     }).done(function (response) {
         if (kind === 6) {
             $otherKindWap.addClass('on');
+
+            if ($otherKindWap.hasClass('empty')) {
+                $otherKindWap.addClass('edit');
+            }
         } else {
             $otherKindWap.removeClass('on');
         }

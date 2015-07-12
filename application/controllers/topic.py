@@ -708,14 +708,18 @@ def update_kind(uid):
         })
 
     kind = request.form.get('kind', type=int)
-    if not kind:
+    if not kind or kind < 1 or kind > 6:
         return json.dumps({
             'result': False
         })
+
+    # log
+    if topic.kind != kind:
+        log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_KIND, user_id=g.user.id, before=topic.kind,
+                            after=kind, topic_id=uid)
+        db.session.add(log)
+
     topic.kind = kind
-
-    # TODO: log
-
     db.session.add(topic)
     db.session.commit()
 

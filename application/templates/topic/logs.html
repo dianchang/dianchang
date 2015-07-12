@@ -98,6 +98,8 @@
                                             解锁了话题类型
                                         {% endif %}
                                         <span class="label label-primary admin-flag">admin</span>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_KIND %}
+                                        设置了话题类型
                                     {% endif %}
 
                                     <span class="time pull-right">{{ log.created_at|timesince }}</span>
@@ -151,6 +153,20 @@
                                         <ins>{{ log.after }}</ins>
                                     {% elif log.kind == TOPIC_EDIT_KIND.REMOVE_SYNONYM %}
                                         <del>{{ log.before }}</del>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_KIND %}
+                                        {% if log.after|int == 1 %}
+                                            一款产品
+                                        {% elif log.after|int == 2 %}
+                                            一个公司、团队或组织
+                                        {% elif log.after|int == 3 %}
+                                            一种职业类别
+                                        {% elif log.after|int == 4 %}
+                                            一种编程语言、职业技能或工具
+                                        {% elif log.after|int == 5 %}
+                                            人名
+                                        {% elif log.after|int == 6 %}
+                                            其他
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
