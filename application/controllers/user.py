@@ -367,13 +367,14 @@ def query():
     """查询用户"""
     q = request.form.get('q')
     exclude_id = request.form.get('exclude_id', type=int)
-    users, total, took = User.query_from_es(q)
+    users, total, took = User.query_from_es(q, page=1, per_page=10)
     results = []
     for user in users:
         if user.id != exclude_id:
             results.append({
                 'id': user.id,
-                'name': user.name
+                'name': user.name,
+                'avatar': user.avatar_url
             })
     return json.dumps(results)
 

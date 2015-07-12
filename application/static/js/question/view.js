@@ -327,8 +327,8 @@ $invitationInput.typeahead({
         }, 300);
     },
     templates: {
-        'suggestion': function (data) {
-            return '<p>' + data.name + '</p>';
+        'suggestion': function (user) {
+            return "<p><img class='img-circle user-avatar' src='" + user.avatar + "'>" + user.name + "</p>";
         }
     }
 });

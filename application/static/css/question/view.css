@@ -273,6 +273,16 @@
 .invitation-wap .header .form-control {
   padding: 18px 12px;
 }
+.invitation-wap .header .tt-suggestion {
+  font-size: 14px;
+  padding: 10px 15px;
+}
+.invitation-wap .header .tt-suggestion img {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  margin-right: 12px;
+}
 .invitation-wap .recommend-wap {
   padding: 0 15px;
 }
