@@ -215,3 +215,6 @@ input[type=text].form-control.dark {
 .media {
   margin-top: 0;
 }
+.label {
+  border-radius: 2px;
+}

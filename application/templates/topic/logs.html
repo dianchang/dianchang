@@ -63,7 +63,41 @@
                                     {% elif log.kind == TOPIC_EDIT_KIND.LOCK %}
                                         {% if log.after == 'all_locked' %}
                                             锁定了话题
+                                        {% elif log.after == 'avatar_locked' %}
+                                            锁定了话题图片
+                                        {% elif log.after == 'name_locked' %}
+                                            锁定了话题名称
+                                        {% elif log.after == 'wiki_locked' %}
+                                            锁定了话题百科
+                                        {% elif log.after == 'parent_topics_locked' %}
+                                            锁定了所属话题
+                                        {% elif log.after == 'child_topics_locked' %}
+                                            锁定了下属话题
+                                        {% elif log.after == 'merge_topic_locked' %}
+                                            锁定了话题合并
+                                        {% elif log.after == 'topic_kind_locked' %}
+                                            锁定了话题类型
                                         {% endif %}
+                                        <span class="label label-primary admin-flag">admin</span>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UNLOCK %}
+                                        {% if log.before == 'all_locked' %}
+                                            解锁了话题
+                                        {% elif log.before == 'avatar_locked' %}
+                                            解锁了话题图片
+                                        {% elif log.before == 'name_locked' %}
+                                            解锁了话题名称
+                                        {% elif log.before == 'wiki_locked' %}
+                                            解锁了话题百科
+                                        {% elif log.before == 'parent_topics_locked' %}
+                                            解锁了所属话题
+                                        {% elif log.before == 'child_topics_locked' %}
+                                            解锁了下属话题
+                                        {% elif log.before == 'merge_topic_locked' %}
+                                            解锁了话题合并
+                                        {% elif log.before == 'topic_kind_locked' %}
+                                            解锁了话题类型
+                                        {% endif %}
+                                        <span class="label label-primary admin-flag">admin</span>
                                     {% endif %}
 
                                     <span class="time pull-right">{{ log.created_at|timesince }}</span>

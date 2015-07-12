@@ -68,3 +68,6 @@
 .topic-log ins.topic a {
   margin: 0;
 }
+.topic-log .label {
+  margin-left: 5px;
+}
