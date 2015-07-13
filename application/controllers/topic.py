@@ -793,7 +793,7 @@ def merge_to(uid, merge_to_topic_id):
     for follow_topic in topic.followers:
         _topic_follower = merge_to_topic.followers.filter(FollowTopic.user_id == follow_topic.user_id).first()
         if not _topic_follower:
-            _topic_follower = FollowTopic(topid_id=merge_to_topic.id, user_id=follow_topic.user_id,
+            _topic_follower = FollowTopic(topic_id=merge_to_topic.id, user_id=follow_topic.user_id,
                                           from_merge=True)
             db.session.add(_topic_follower)
 
