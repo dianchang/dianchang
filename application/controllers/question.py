@@ -460,12 +460,13 @@ def answer(uid):
 @UserPermission()
 def invite(uid, user_id):
     """邀请回答"""
-    if user_id == g.user.id:
+    question = Question.query.get_or_404(uid)
+
+    if user_id == g.user.id or user_id == question.user_id:
         return json.dumps({
             'result': False
         })
 
-    question = Question.query.get_or_404(uid)
     user = User.query.get_or_404(user_id)
 
     # 取消邀请
