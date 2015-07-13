@@ -306,9 +306,9 @@ def follow(uid):
         db.session.add(topic)
 
         # MERGE: 若该话题合并到其他话题，则也同时取消关注
-        follow_merge_to_topic = topic.merge_to_topic.followers.filter(FollowTopic.user_id == g.user.id,
-                                                                      FollowTopic.from_merge).first()
-        if follow_merge_to_topic:
+        if topic.merge_to_topic_id:
+            follow_merge_to_topic = topic.merge_to_topic.followers.filter(FollowTopic.user_id == g.user.id,
+                                                                          FollowTopic.from_merge).first()
             db.session.delete(follow_merge_to_topic)
             topic.merge_to_topic.followers_count -= 1
             db.session.add(topic.merge_to_topic)
