@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% from "macros/_topic.html" import render_expert_topics %}
-{% from "macros/_user.html" import user_page_header, user_follow_wap, render_home_feeds %}
+{#{% from "macros/_topic.html" import render_expert_topics %}#}
+{% from "macros/_user.html" import user_page_header, user_follow_wap, render_home_feeds, render_user_expert_topics %}
 
 {% block page_title %}{{ user.name }}{% endblock %}
 {% block page_js %}
@@ -19,7 +19,7 @@
             <div class="col-md-4">
                 <h3>擅长话题</h3>
 
-                {{ render_expert_topics(user.expert_topics) }}
+                {{ render_user_expert_topics(user) }}
             </div>
         </div>
     </div>

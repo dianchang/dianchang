@@ -239,36 +239,7 @@
 
 
 {# 擅长话题 #}
-{% macro render_expert_topics(expert_topics) %}
-    {% for expert_topic in expert_topics %}
-        {% set topic = expert_topic.topic %}
-        <div class="media dc-expert-topic">
-            <div class="media-left">
-                <a href="{{ url_for('topic.view', uid=topic.id) }}">
-                    <img src="{{ topic.avatar_url }}" alt="" class="dc-show-topic-card" data-id="{{ topic.id }}"/>
-                </a>
-            </div>
-            <div class="media-body">
-                <div>
-                    <a href="{{ url_for('topic.view', uid=topic.id) }}"
-                       class="topic-name dc-show-topic-card"
-                       data-id="{{ topic.id }}">{{ topic.name }}</a>
-                </div>
-                <div class="experience text-light">
-                    {% if expert_topic.experience %}
-                        {{ expert_topic.experience }}
-                    {% else %}
-                        <span class="empty">暂无话题经验</span>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-{% endmacro %}
-
-
-{# 在 compose 页中呈现 expert topic #}
-{% macro render_expert_topic_in_compose_page(expert_topic) %}
+{% macro render_expert_topic(expert_topic, myself) %}
     {% set topic = expert_topic.topic %}
 
     <div class="media expert-topic {% if not expert_topic.experience %}empty{% endif %}"
@@ -285,32 +256,44 @@
             </div>
 
             <div class="experience-wap text-light">
-                <span class="experience">{{ expert_topic.experience or "" }}</span>
-                <a href="javascript: void(0)" class="btn-edit-experience" title="编辑话题经验">
-                    <span class="fa fa-pencil"></span></a>
-                <a class="btn-add-experience" href="javascript: void(0)">
-                    + 添加话题经验</a>
+                {% if not myself %}
+                    {% if not expert_topic.experience %}
+                        <span class="no-experience">暂无话题经验</span>
+                    {% else %}
+                        <span class="experience">{{ expert_topic.experience or "" }}</span>
+                    {% endif %}
+                {% else %}
+                    <span class="experience">{{ expert_topic.experience or "" }}</span>
+                    <a href="javascript: void(0)" class="btn-edit-experience" title="编辑话题经验">
+                        <span class="fa fa-pencil"></span></a>
+                    <a class="btn-add-experience" href="javascript: void(0)">
+                        + 添加话题经验</a>
+                {% endif %}
             </div>
 
-            <form action="" class="form-experience">
-                <textarea name="experience" class="form-control" id="" rows=2></textarea>
+            {% if myself %}
+                <form action="" class="form-experience">
+                    <textarea name="experience" class="form-control" id="" rows=2></textarea>
 
-                <div class="buttons text-right">
-                    <a href="javascript: void(0)"
-                       class="text-light btn-cancel-edit-experience">取消</a>
-                    <a href="javascript: void(0)"
-                       class="btn btn-default btn-submit-experience btn-sm"
-                       data-topic-id="{{ topic.id }}">更新</a>
-                </div>
-            </form>
+                    <div class="buttons text-right">
+                        <a href="javascript: void(0)"
+                           class="text-light btn-cancel-edit-experience">取消</a>
+                        <a href="javascript: void(0)"
+                           class="btn btn-default btn-submit-experience btn-sm"
+                           data-topic-id="{{ topic.id }}">更新</a>
+                    </div>
+                </form>
+            {% endif %}
         </div>
 
-        <div class="commands">
-            <a href="javascript: void(0)" class="btn-remove-topic" title="移除此话题"
-               data-id="{{ expert_topic.id }}">
-                <span class="fa fa-trash-o"></span>
-            </a>
-        </div>
+        {% if myself %}
+            <div class="commands">
+                <a href="javascript: void(0)" class="btn-remove-topic" title="移除此话题"
+                   data-id="{{ expert_topic.id }}">
+                    <span class="fa fa-trash-o"></span>
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endmacro %}
 

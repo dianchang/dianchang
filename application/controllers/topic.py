@@ -479,7 +479,7 @@ def add_expert():
 
     db.session.commit()
 
-    macro = get_template_attribute("macros/_topic.html", "render_expert_topic_in_compose_page")
+    macro = get_template_attribute("macros/_topic.html", "render_expert_topic")
     return json.dumps({
         'result': True,
         'html': macro(new_expert_topic),

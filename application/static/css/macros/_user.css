@@ -622,3 +622,135 @@
 .noti-in-nav.noti-message .question-title a {
   color: #009999;
 }
+.dc-expert-topics .add-expert-topic-wap {
+  display: block;
+}
+.dc-expert-topics .full-tip {
+  display: none;
+}
+.dc-expert-topics.full .add-expert-topic-wap {
+  display: none;
+}
+.dc-expert-topics.full .full-tip {
+  display: block;
+}
+.dc-expert-topics.myself .expert-topic {
+  cursor: move;
+}
+.dc-expert-topics .expert-topic {
+  margin-bottom: 18px;
+  position: relative;
+}
+.dc-expert-topics .expert-topic .media-left {
+  padding-right: 12px;
+}
+.dc-expert-topics .expert-topic .media-left img {
+  width: 40px;
+  height: 40px;
+}
+.dc-expert-topics .expert-topic .name-wap {
+  margin-bottom: 3px;
+}
+.dc-expert-topics .expert-topic .name-wap .topic-name {
+  margin-bottom: 2px;
+  font-weight: bold;
+  color: #333;
+}
+.dc-expert-topics .expert-topic .experience-wap .btn-add-experience {
+  display: none;
+  color: #bbb;
+}
+.dc-expert-topics .expert-topic .experience-wap .btn-add-experience:hover {
+  color: #999;
+}
+.dc-expert-topics .expert-topic .experience-wap .experience {
+  display: inline-block;
+}
+.dc-expert-topics .expert-topic .experience-wap .btn-edit-experience {
+  margin-left: 10px;
+  color: #999;
+  visibility: hidden;
+  display: inline-block;
+}
+.dc-expert-topics .expert-topic .experience-wap .btn-edit-experience:hover {
+  color: #666;
+}
+.dc-expert-topics .expert-topic .experience-wap:hover .btn-edit-experience {
+  visibility: visible;
+}
+.dc-expert-topics .expert-topic .experience-wap .no-experience {
+  color: #bbb;
+}
+.dc-expert-topics .expert-topic .commands {
+  visibility: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.dc-expert-topics .expert-topic .commands a {
+  color: #999;
+  display: inline-block;
+}
+.dc-expert-topics .expert-topic .commands a:hover {
+  color: #666;
+}
+.dc-expert-topics .expert-topic .form-experience {
+  margin-top: 10px;
+  display: none;
+}
+.dc-expert-topics .expert-topic .form-experience textarea {
+  resize: none;
+}
+.dc-expert-topics .expert-topic .form-experience .buttons {
+  margin-top: 10px;
+}
+.dc-expert-topics .expert-topic .form-experience .buttons .btn-submit-experience {
+  margin-left: 5px;
+}
+.dc-expert-topics .expert-topic:hover .commands {
+  visibility: visible;
+}
+.dc-expert-topics .expert-topic.edit .form-experience {
+  display: block;
+}
+.dc-expert-topics .expert-topic.edit .experience-wap {
+  display: none;
+}
+.dc-expert-topics .expert-topic.empty .experience-wap .btn-add-experience {
+  display: inline-block;
+}
+.dc-expert-topics .expert-topic.empty .experience-wap .experience {
+  display: none;
+}
+.dc-expert-topics .expert-topic.empty .experience-wap .btn-edit-experience {
+  display: none;
+}
+.dc-expert-topics .add-expert-topic-wap .btn-add-expert-topic {
+  border: 1px solid #eaeaea;
+  width: 40px;
+  height: 40px;
+  display: block;
+  text-align: center;
+  color: #999;
+  padding-top: 9px;
+}
+.dc-expert-topics .add-expert-topic-wap .btn-add-expert-topic:hover {
+  color: #666;
+  border-color: #d1d1d1;
+}
+.dc-expert-topics .add-expert-topic-wap .form-wap {
+  display: none;
+}
+.dc-expert-topics .add-expert-topic-wap .form-wap .commands {
+  text-align: right;
+  margin-top: 10px;
+}
+.dc-expert-topics .add-expert-topic-wap .form-wap .commands .btn-submit-expert-topic {
+  margin-left: 5px;
+}
+.dc-expert-topics .add-expert-topic-wap.edit .btn-add-expert-topic {
+  display: none;
+}
+.dc-expert-topics .add-expert-topic-wap.edit .form-wap {
+  display: block;
+}
