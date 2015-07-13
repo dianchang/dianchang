@@ -606,12 +606,18 @@ def update_name(uid):
         name = name.strip()
     else:
         return json.dumps({
-            'result': True
+            'result': False
         })
 
     if name == '':
         return json.dumps({
-            'result': True
+            'result': False
+        })
+
+    # 话题名称不可重复
+    if Topic.query.filter(Topic.name == name, Topic.id != uid).first():
+        return json.dumps({
+            'result': False
         })
 
     # Update name log
