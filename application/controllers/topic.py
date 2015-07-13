@@ -279,7 +279,7 @@ def follow(uid):
         topic.followers_count -= 1
         db.session.add(topic)
         db.session.commit()
-        return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
+        return json.dumps({'result': True, 'followed': False, 'followers_count': topic.followers.count()})
     else:
         # 关注
         follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
