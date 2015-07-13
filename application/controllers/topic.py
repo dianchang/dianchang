@@ -279,8 +279,21 @@ def follow(uid):
         db.session.delete(follow_topic)
         topic.followers_count -= 1
         db.session.add(topic)
+
+        # MERGE: 若该话题合并到其他话题，则也同时取消关注
+        follow_merge_to_topic = topic.merge_to_topic.followers.filter(FollowTopic.user_id == g.user.id,
+                                                                      FollowTopic.from_merge).first()
+        if follow_merge_to_topic:
+            db.session.delete(follow_merge_to_topic)
+            topic.merge_to_topic.followers_count -= 1
+            db.session.add(topic.merge_to_topic)
+
         db.session.commit()
-        return json.dumps({'result': True, 'followed': False, 'followers_count': topic.followers.count()})
+        return json.dumps({
+            'result': True,
+            'followed': False,
+            'followers_count': topic.followers.count()
+        })
     else:
         # 关注
         follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
@@ -289,13 +302,27 @@ def follow(uid):
         topic.followers_count += 1
         db.session.add(topic)
 
+        # MERGE: 若该话题合并到其他话题，则也同时关注
+        if topic.merge_to_topic_id:
+            follow_merge_to_topic = topic.merge_to_topic.followers.filter(FollowTopic.user_id == g.user.id).first()
+            if not follow_merge_to_topic:
+                follow_merge_to_topic = FollowTopic(topic_id=topic.merge_to_topic_id, user_id=g.user.id,
+                                                    from_merge=True)
+                db.session.add(follow_merge_to_topic)
+                topic.merge_to_topic.followers_count += 1
+                db.session.add(topic.merge_to_topic)
+
         # USER FEED: 插入本人的用户FEED
         feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, topic_id=uid)
         g.user.feeds.append(feed)
         db.session.add(g.user)
 
         db.session.commit()
-        return json.dumps({'result': True, 'followed': True, 'followers_count': topic.followers.count()})
+        return json.dumps({
+            'result': True,
+            'followed': True,
+            'followers_count': topic.followers.count()
+        })
 
 
 @bp.route('/topic/<int:uid>/add_synonym', methods=['POST'])
