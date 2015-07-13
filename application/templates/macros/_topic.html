@@ -243,6 +243,7 @@
 
         <div class="related-topics">
             {% for relevant_topic in topic.relevant_topics.limit(8) %}
+                {% set relevant_topic = relevant_topic.relevant_topic %}
                 <div class="related-topic media">
                     <div class="media-left">
                         <a href="{{ url_for('topic.view', uid=relevant_topic.id) }}">

@@ -209,5 +209,29 @@ def uniform():
     db.session.commit()
 
 
+@manager.command
+def relevant_topics():
+    import operator
+    from application.models import db, Topic, QuestionTopic, RelevantTopic
+
+    for topic in Topic.query.filter(Topic.id == 13):
+        map(db.session.delete, topic.relevant_topics)
+
+        relevant_topics = {}
+        for question in topic.questions:
+            for _topic in question.question.topics.filter(QuestionTopic.topic_id != topic.id):
+                if _topic.topic_id in relevant_topics:
+                    relevant_topics[_topic.topic_id] += 1
+                else:
+                    relevant_topics[_topic.topic_id] = 0
+
+        relevant_topics = sorted(relevant_topics.items(), key=operator.itemgetter(1))
+        relevant_topics.reverse()
+        for relevant_topic_id, score in relevant_topics:
+            relevant_topic = RelevantTopic(topic_id=topic.id, relevant_topic_id=relevant_topic_id, score=score)
+            db.session.add(relevant_topic)
+        db.session.commit()
+
+
 if __name__ == "__main__":
     manager.run()
