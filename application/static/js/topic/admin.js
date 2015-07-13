@@ -2,7 +2,7 @@ var $nameWap = $('.name-wap');
 var $parentTopicInput = $("input[name='parent-topic']");
 var $childTopicInput = $("input[name='child-topic']");
 var $synonymInput = $("input[name='synonym']");
-var $mergeTopic = $("input[name='merge-topic']");
+var $mergeTopicInput = $("input[name='merge-topic']");
 
 // 上传话题图片
 var uploader = simple.uploader({
@@ -158,6 +158,7 @@ $('.btn-add-synonym').click(function () {
 
 var $mergeTopicWap = $('.merge-topic-wap');
 var $mergeToTopicWap = $mergeTopicWap.find('.merge-to-topic-wap');
+var $mergeTopicInputWap = $mergeTopicWap.find('.merge-topic-input-wap');
 var $btnUnmergeCurrentTopic = $mergeTopicWap.find('.btn-unmerge-current-topic');
 var $mergeToTopic = $mergeTopicWap.find('.merge-to-topic');
 
@@ -177,7 +178,7 @@ $btnUnmergeCurrentTopic.click(function () {
 });
 
 // 合并话题启用 Typeahead
-$mergeTopic.initTopicTypeahead({
+$mergeTopicInput.initTopicTypeahead({
     small: true,
     params: {
         create: false
@@ -187,21 +188,22 @@ $mergeTopic.initTopicTypeahead({
             return false;
         }
 
-        $.ajax({
-            url: urlFor('topic.merge_to', {uid: g.topicId, merge_to_topic_id: topic.id}),
-            method: 'post',
-            dataType: 'json'
-        }).done(function (response) {
-            if (response.result) {
-                $mergeToTopic.text(response.name).attr('href', urlFor('topic.view', {uid: topic.id}));
-                $btnUnmergeCurrentTopic.data('unmerge-from-id', topic.id);
-                $mergeTopicWap.addClass('merged');
-            }
-        });
+        mergeTopic(g.topicId, {merge_to_topic_id: topic.id});
     }
 });
 
-// 取消合并话题
+// 通过点击按钮
+$mergeTopicInputWap.find('.btn-merge-topic').click(function () {
+    var name = $.trim($mergeTopicInput.typeahead('val'));
+
+    if (name === '') {
+        return false;
+    }
+
+    mergeTopic(g.topicId, {name: name});
+});
+
+// 取消合并到该话题的话题
 $('.btn-unmerge-topic').click(function () {
     var id = $(this).data('id');
     var _this = $(this);
@@ -409,6 +411,26 @@ function addChildTopic(topicId, data) {
                 $(".child-topics").append(response.html);
             }
             $childTopicInput.typeahead('val', '');
+        }
+    });
+}
+
+/**
+ * 将当前话题合并到其他话题
+ * @param topicId
+ * @param data
+ */
+function mergeTopic(topicId, data) {
+    $.ajax({
+        url: urlFor('topic.merge_to', {uid: topicId}),
+        method: 'post',
+        dataType: 'json',
+        data: data
+    }).done(function (response) {
+        if (response.result) {
+            $mergeToTopic.text(response.name).attr('href', urlFor('topic.view', {uid: response.id}));
+            $btnUnmergeCurrentTopic.data('unmerge-from-id', response.id);
+            $mergeTopicWap.addClass('merged');
         }
     });
 }

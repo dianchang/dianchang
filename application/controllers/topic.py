@@ -800,17 +800,32 @@ def update_other_kind(uid):
     })
 
 
-@bp.route('/topic/<int:uid>/merge_to/<int:merge_to_topic_id>', methods=['POST'])
+@bp.route('/topic/<int:uid>/merge_to', methods=['POST'])
 @UserPermission()
-def merge_to(uid, merge_to_topic_id):
+def merge_to(uid):
     """将本话题合并至另一话题"""
     topic = Topic.query.get_or_404(uid)
-    merge_to_topic = Topic.query.get_or_404(merge_to_topic_id)
 
-    if topic.merge_topic_locked or topic.merge_to_topic_id or uid == merge_to_topic_id:
+    if topic.merge_topic_locked or topic.merge_to_topic_id:
         return json.dumps({
             'result': False
         })
+
+    merge_to_topic_id = request.form.get('merge_to_topic_id', type=int)
+    name = request.form.get('name', '').strip()
+
+    if merge_to_topic_id:
+        if uid == merge_to_topic_id:
+            return json.dumps({
+                'result': False
+            })
+        merge_to_topic = Topic.query.get_or_404(merge_to_topic_id)
+    else:
+        merge_to_topic = Topic.get_by_name(name)
+        if not merge_to_topic:
+            return json.dumps({
+                'result': False
+            })
 
     topic.merge_to_topic_id = merge_to_topic.id
 
@@ -853,6 +868,7 @@ def merge_to(uid, merge_to_topic_id):
     db.session.commit()
 
     return json.dumps({
+        'id': merge_to_topic.id,
         'name': merge_to_topic.name,
         'result': True
     })
