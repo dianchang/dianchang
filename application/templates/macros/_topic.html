@@ -238,38 +238,26 @@
 
 {# 话题讨论页sidebar #}
 {% macro topic_discuss_page_sidebar(topic) %}
-    {#    <h3>父话题</h3>#}
-    {##}
-    {#    {% if topic.root %}#}
-    {#        <span class="label label-primary">根话题</span>#}
-    {#    {% else %}#}
-    {#        {% for parent_topic in topic.parent_topics %}#}
-    {#            <a href="{{ url_for('topic.view', uid=parent_topic.id) }}">#}
-    {#                {{ parent_topic.name }}#}
-    {#            </a>#}
-    {#        {% endfor %}#}
-    {#    {% endif %}#}
-
     <div class="dc-topic-discuss-page-sidebar">
         <h3>相关话题</h3>
 
         <div class="related-topics">
-            {% for child_topic in topic.child_topics %}
+            {% for relevant_topic in topic.relevant_topics.limit(8) %}
                 <div class="related-topic media">
                     <div class="media-left">
-                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}">
-                            <img src="{{ child_topic.avatar_url }}" alt="" class="dc-show-topic-card"
-                                 data-id="{{ child_topic.id }}"/></a>
+                        <a href="{{ url_for('topic.view', uid=relevant_topic.id) }}">
+                            <img src="{{ relevant_topic.avatar_url }}" alt="" class="dc-show-topic-card"
+                                 data-id="{{ relevant_topic.id }}"/></a>
                     </div>
                     <div class="media-body">
                         <div>
-                            <a href="{{ url_for('topic.view', uid=child_topic.id) }}" class="name dc-show-topic-card"
-                               data-id="{{ child_topic.id }}">
-                                {{ child_topic.name }}</a>
+                            <a href="{{ url_for('topic.view', uid=relevant_topic.id) }}" class="name dc-show-topic-card"
+                               data-id="{{ relevant_topic.id }}">
+                                {{ relevant_topic.name }}</a>
                         </div>
 
                         <div class="text-light">
-                            <strong>{{ child_topic.followers_count }}</strong> 人关注
+                            <strong>{{ relevant_topic.followers_count }}</strong> 人关注
                         </div>
                     </div>
                 </div>
