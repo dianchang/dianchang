@@ -755,6 +755,7 @@ def merge_to(uid, merge_to_topic_id):
     """将本话题合并至另一话题"""
     topic = Topic.query.get_or_404(uid)
     merge_to_topic = Topic.query.get_or_404(merge_to_topic_id)
+
     if topic.merge_topic_locked or topic.merge_to_topic_id:
         return json.dumps({
             'result': False
@@ -807,6 +808,11 @@ def unmerge_from(uid, unmerge_from_topic_id):
     """取消话题合并"""
     topic = Topic.query.get_or_404(uid)
     unmerge_from_topic = Topic.query.get_or_404(unmerge_from_topic_id)
+
+    if topic.merge_topic_locked or topic.merge_to_topic_id != unmerge_from_topic_id:
+        return json.dumps({
+            'result': False
+        })
 
     topic.merge_to_topic_id = None
 
