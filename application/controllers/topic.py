@@ -2,7 +2,7 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for, abort
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
-    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion
+    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion, TopicClosure
 from ..utils.permissions import UserPermission, AdminPermission
 from ..utils.helpers import generate_lcs_html, absolute_url_for
 from ..utils.uploadsets import process_topic_avatar, topic_avatars
@@ -627,6 +627,7 @@ def update_name(uid):
         db.session.add(log)
 
     topic.name = name
+    topic.save_to_es()
     db.session.add(topic)
     db.session.commit()
 
@@ -743,6 +744,98 @@ def update_other_kind(uid):
     topic.other_kind = kind
     db.session.add(topic)
     db.session.commit()
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/topic/<int:uid>/merge_to/<int:merge_to_topic_id>', methods=['POST'])
+@UserPermission()
+def merge_to(uid, merge_to_topic_id):
+    """将本话题合并至另一话题"""
+    topic = Topic.query.get_or_404(uid)
+    merge_to_topic = Topic.query.get_or_404(merge_to_topic_id)
+    if topic.merge_topic_locked or topic.merge_to_topic_id:
+        return json.dumps({
+            'result': False
+        })
+
+    topic.merge_to_topic_id = merge_to_topic.id
+
+    # 话题类型统一为与 merge_to_topic 一致，并锁定
+    topic.kind = merge_to_topic.kind
+    topic.other_kind = merge_to_topic.other_kind
+    topic.topic_kind_locked = True
+    db.session.add(topic)
+
+    # 将该话题的名称设为 merge_to_topic 的同义词
+    topic_synonym = merge_to_topic.synonyms.filter(TopicSynonym.synonym == topic.name).first()
+    if not topic_synonym:
+        topic_synonym = TopicSynonym(synonym=topic.name, topic_id=merge_to_topic.id, from_merge=True)
+        db.session.add(topic_synonym)
+
+    # 迁移问题
+    for question_topic in topic.questions:
+        _question_topic = merge_to_topic.questions.filter(QuestionTopic.question == question_topic.question_id).first()
+        if not _question_topic:
+            _question_topic = QuestionTopic(question_id=question_topic.question_id, topic_id=merge_to_topic.id,
+                                            from_merge=True)
+            db.session.add(_question_topic)
+
+    # 迁移子话题
+    for child_topic_id in topic.child_topics_id_list:
+        merge_to_topic.add_child_topic(child_topic_id, from_merge=True)
+
+    # 迁移关注者
+    for follow_topic in topic.followers:
+        _topic_follower = merge_to_topic.followers.filter(FollowTopic.user_id == follow_topic.user_id).first()
+        if not _topic_follower:
+            _topic_follower = FollowTopic(topid_id=merge_to_topic.id, user_id=follow_topic.user_id,
+                                          from_merge=True)
+            db.session.add(_topic_follower)
+
+    db.session.commit()
+
+    return json.dumps({
+        'result': True
+    })
+
+
+@bp.route('/topic/<int:uid>/unmerge_from/<int:unmerge_from_topic_id>', methods=['POST'])
+@UserPermission()
+def unmerge_from(uid, unmerge_from_topic_id):
+    """取消话题合并"""
+    topic = Topic.query.get_or_404(uid)
+    unmerge_from_topic = Topic.query.get_or_404(unmerge_from_topic_id)
+
+    topic.merge_to_topic_id = None
+
+    # 解锁话题类型
+    topic.topic_kind_locked = False
+
+    # 移除同义词
+    topic_synonym = unmerge_from_topic.synonyms.filter(TopicSynonym.synonym == topic.name,
+                                                       TopicSynonym.from_merge).first()
+    db.session.delete(topic_synonym)
+
+    # 迁回问题
+    for question_topic in topic.questions:
+        _question_topic = unmerge_from_topic.questions.filter(QuestionTopic.question == question_topic.question_id,
+                                                              QuestionTopic.from_merge).first()
+        db.session.delete(_question_topic)
+
+    # 迁回子话题
+    for child_topic_id in topic.child_topics_id_list:
+        unmerge_from_topic.remove_child_topic(child_topic_id, from_merge=True)
+
+    # 迁回关注者
+    for follow_topic in topic.followers:
+        _topic_follower = unmerge_from_topic.followers.filter(FollowTopic.user_id == follow_topic.user_id,
+                                                              FollowTopic.from_merge).first()
+        db.session.delete(_topic_follower)
+
+    db.session.commit()
+
     return json.dumps({
         'result': True
     })

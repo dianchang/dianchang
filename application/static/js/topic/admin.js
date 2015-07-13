@@ -157,10 +157,25 @@ $('.btn-add-synonym').click(function () {
 });
 
 // 合并话题启用 Typeahead
-// TODO
 $mergeTopic.initTopicTypeahead({
     small: true,
-    callback: function (e, parentTopic) {
+    params: {
+        create: false
+    },
+    callback: function (e, topic) {
+        if (g.topicId === topic.id) {
+            return false;
+        }
+
+        $.ajax({
+            url: urlFor('topic.merge_to', {uid: g.topicId, merge_to_topic_id: topic.id}),
+            method: 'post',
+            dataType: 'json'
+        }).done(function (response) {
+            if (response.result) {
+
+            }
+        });
     }
 });
 
