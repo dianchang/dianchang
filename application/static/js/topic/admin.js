@@ -163,9 +163,11 @@ $mergeTopic.initTopicTypeahead({
         create: false
     },
     callback: function (e, topic) {
-        if (g.topicId === topic.id) {
-            return false;
-        }
+        //if (g.topicId === topic.id) {
+        //    return false;
+        //}
+
+        console.log(1);
 
         $.ajax({
             url: urlFor('topic.merge_to', {uid: g.topicId, merge_to_topic_id: topic.id}),

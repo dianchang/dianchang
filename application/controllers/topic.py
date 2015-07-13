@@ -757,7 +757,7 @@ def merge_to(uid, merge_to_topic_id):
     topic = Topic.query.get_or_404(uid)
     merge_to_topic = Topic.query.get_or_404(merge_to_topic_id)
 
-    if topic.merge_topic_locked or topic.merge_to_topic_id:
+    if topic.merge_topic_locked or topic.merge_to_topic_id or uid == merge_to_topic_id:
         return json.dumps({
             'result': False
         })
@@ -796,6 +796,8 @@ def merge_to(uid, merge_to_topic_id):
             _topic_follower = FollowTopic(topic_id=merge_to_topic.id, user_id=follow_topic.user_id,
                                           from_merge=True)
             db.session.add(_topic_follower)
+            merge_to_topic.followers_count += 1
+    db.session.add(merge_to_topic)
 
     db.session.commit()
 
@@ -840,7 +842,10 @@ def unmerge_from(uid, unmerge_from_topic_id):
     for follow_topic in topic.followers:
         _topic_follower = unmerge_from_topic.followers.filter(FollowTopic.user_id == follow_topic.user_id,
                                                               FollowTopic.from_merge).first()
-        db.session.delete(_topic_follower)
+        if _topic_follower:
+            db.session.delete(_topic_follower)
+            unmerge_from_topic.followers_count -= 1
+    db.session.add(unmerge_from_topic)
 
     db.session.commit()
 

@@ -280,6 +280,7 @@
             callback(e, topic);
             $topicInput.typeahead('val', '');
         });
+
         $topicInput.css('verticalAlign', 'middle');
         $twitterTypeahead = $topicInput.parents('.twitter-typeahead');
         $topicInput.css('marginRight', 0);
