@@ -54,13 +54,13 @@ def query():
                         'avatar_url': topic.avatar_url,
                         'followers_count': topic.followers_count}
                        for topic in topics]
-        # if with_create == 'true':
-        #     exact_topic = Topic.query.filter(Topic.name == q).first() is not None
-        #     if not exact_topic:
-        #         topics_data.insert(0, {
-        #             'name': q,
-        #             'create': True
-        #         })
+        if with_create == 'true':
+            exact_topic = Topic.query.filter(Topic.name == q).first() is not None
+            if not exact_topic:
+                topics_data.insert(0, {
+                    'name': q,
+                    'create': True
+                })
         return json.dumps(topics_data)
     else:
         return json.dumps({})
@@ -853,6 +853,7 @@ def merge_to(uid, merge_to_topic_id):
     db.session.commit()
 
     return json.dumps({
+        'name': merge_to_topic.name,
         'result': True
     })
 

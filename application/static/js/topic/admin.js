@@ -156,6 +156,26 @@ $('.btn-add-synonym').click(function () {
     addSynonym();
 });
 
+var $mergeTopicWap = $('.merge-topic-wap');
+var $mergeToTopicWap = $mergeTopicWap.find('.merge-to-topic-wap');
+var $btnUnmergeCurrentTopic = $mergeTopicWap.find('.btn-unmerge-current-topic');
+var $mergeToTopic = $mergeTopicWap.find('.merge-to-topic');
+
+// 取消合并当前话题
+$btnUnmergeCurrentTopic.click(function () {
+    var unmergeFromId = $(this).data('unmerge-from-id');
+
+    $.ajax({
+        url: urlFor('topic.unmerge_from', {uid: g.topicId, unmerge_from_topic_id: unmergeFromId}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            $mergeTopicWap.removeClass('merged');
+        }
+    });
+});
+
 // 合并话题启用 Typeahead
 $mergeTopic.initTopicTypeahead({
     small: true,
@@ -163,11 +183,9 @@ $mergeTopic.initTopicTypeahead({
         create: false
     },
     callback: function (e, topic) {
-        //if (g.topicId === topic.id) {
-        //    return false;
-        //}
-
-        console.log(1);
+        if (g.topicId === topic.id) {
+            return false;
+        }
 
         $.ajax({
             url: urlFor('topic.merge_to', {uid: g.topicId, merge_to_topic_id: topic.id}),
@@ -175,9 +193,9 @@ $mergeTopic.initTopicTypeahead({
             dataType: 'json'
         }).done(function (response) {
             if (response.result) {
-                alert(1)
-            } else {
-                alert(0)
+                $mergeToTopic.text(response.name).attr('href', urlFor('topic.view', {uid: topic.id}));
+                $btnUnmergeCurrentTopic.data('unmerge-from-id', topic.id);
+                $mergeTopicWap.addClass('merged');
             }
         });
     }

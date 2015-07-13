@@ -195,6 +195,21 @@
 .topic-edit-wap .btn-remove-parent-topic:hover {
   color: #333 !important;
 }
+.merge-topic-wap .merge-to-topic-wap {
+  display: none;
+}
+.merge-topic-wap .merge-to-topic-wap a {
+  color: #009999;
+}
+.merge-topic-wap .merge-to-topic-wap .btn-unmerge-current-topic {
+  margin-left: 10px;
+}
+.merge-topic-wap.merged .merge-to-topic-wap {
+  display: block;
+}
+.merge-topic-wap.merged .merge-topic-input-wap {
+  display: none;
+}
 .merged-topics {
   margin-top: 20px;
   padding-left: 20px;
