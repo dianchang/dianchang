@@ -53,7 +53,7 @@ def query():
                         'avatar_url': topic.avatar_url,
                         'followers_count': topic.followers_count}
                        for topic in topics]
-        if with_create:
+        if with_create == 'true':
             exact_topic = Topic.query.filter(Topic.name == q).first() is not None
             if not exact_topic:
                 topics_data.insert(0, {
@@ -777,7 +777,8 @@ def merge_to(uid, merge_to_topic_id):
 
     # 迁移问题
     for question_topic in topic.questions:
-        _question_topic = merge_to_topic.questions.filter(QuestionTopic.question == question_topic.question_id).first()
+        _question_topic = merge_to_topic.questions.filter(
+            QuestionTopic.question_id == question_topic.question_id).first()
         if not _question_topic:
             _question_topic = QuestionTopic(question_id=question_topic.question_id, topic_id=merge_to_topic.id,
                                             from_merge=True)
@@ -826,7 +827,7 @@ def unmerge_from(uid, unmerge_from_topic_id):
 
     # 迁回问题
     for question_topic in topic.questions:
-        _question_topic = unmerge_from_topic.questions.filter(QuestionTopic.question == question_topic.question_id,
+        _question_topic = unmerge_from_topic.questions.filter(QuestionTopic.question_id == question_topic.question_id,
                                                               QuestionTopic.from_merge).first()
         db.session.delete(_question_topic)
 

@@ -173,7 +173,9 @@ $mergeTopic.initTopicTypeahead({
             dataType: 'json'
         }).done(function (response) {
             if (response.result) {
-
+                alert(1)
+            } else {
+                alert(0)
             }
         });
     }
