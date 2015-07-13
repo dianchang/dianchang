@@ -1,6 +1,5 @@
-nav,
-#footer {
-  display: none;
+.navbar {
+  margin-bottom: 0;
 }
 .achievements-wap {
   width: 750px;

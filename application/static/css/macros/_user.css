@@ -47,8 +47,8 @@
 }
 .dc-user-page-header .commands {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 20px;
+  top: 15px;
 }
 .dc-user-page-header .commands .dc-hide-commands-trigger {
   padding: 6px 10px;

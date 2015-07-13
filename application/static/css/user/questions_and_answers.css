@@ -1,6 +1,5 @@
-nav,
-#footer {
-  display: none;
+.navbar {
+  margin-bottom: 0;
 }
 .dc-home-feeds {
   margin-top: 30px;
