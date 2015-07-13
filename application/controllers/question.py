@@ -40,7 +40,7 @@ def view(uid):
         invited_users_id_list = [invited_user.user_id for invited_user in invited_users]
         invited_users_count = len(invited_users_id_list)
 
-    # 推荐邀请回答候选人
+    # 推荐邀请回答的候选人
     invite_candidates = []
     invite_candidates_count = 0
     topics_id_list = [topic.topic_id for topic in question.topics]
@@ -50,6 +50,7 @@ def view(uid):
             filter(UserTopicStatistic.user_id.notin_(invited_users_id_list)). \
             filter(UserTopicStatistic.user_id.notin_(answerers_id_list)). \
             filter(UserTopicStatistic.user_id != g.user.id). \
+            filter(UserTopicStatistic.user_id != question.user_id). \
             filter(UserTopicStatistic.answers_count != 0). \
             group_by(UserTopicStatistic.user_id). \
             order_by(UserTopicStatistic.score.desc()).limit(16)
