@@ -88,14 +88,16 @@
             {% if from_topic %}
                 <div class="from-topic-wap">
                     <a href="{{ url_for('topic.view', uid=from_topic.id, redirect=0) }}"
-                       class="link-color">{{ from_topic.name }}</a> 已合并至本话题
+                       class="link-color dc-show-topic-card"
+                       data-id="{{ from_topic.id }}">{{ from_topic.name }}</a> 已合并至本话题
                 </div>
             {% endif %}
 
             {% if topic.merge_to_topic_id %}
                 <div class="merge-to-topic-wap">
                     本话题已合并至 <a href="{{ url_for('topic.view', uid=topic.merge_to_topic_id) }}"
-                               class="link-color">{{ topic.merge_to_topic.name }}</a>
+                               class="link-color dc-show-topic-card"
+                               data-id="{{ topic.merge_to_topic_id }}">{{ topic.merge_to_topic.name }}</a>
                     <a href="javascript: void(0)" class="text-light btn-unmerge-topic"
                        data-id="{{ topic.id }}" data-unmerge-from-id="{{ topic.merge_to_topic_id }}">取消合并</a>
                 </div>
