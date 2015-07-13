@@ -31,6 +31,7 @@ def query():
     if q:
         topics_id_list = Topic.query_from_es(q, page=1, per_page=10, only_id_list=True)
         topics = Topic.query.filter(Topic.id.in_(topics_id_list))
+        topics = topics.filter(Topic.merge_to_topic_id == None)  # 不显示被合并的话题
         if question_id:  # 排除该问题的所有话题
             topics = topics.filter(
                 ~Topic.questions.any(QuestionTopic.question_id == question_id))
@@ -736,8 +737,6 @@ def lock(uid):
     else:
         topic.all_locked = False
 
-    # TODO: 更新日志
-
     db.session.add(topic)
     db.session.commit()
 
@@ -818,6 +817,7 @@ def merge_to(uid, merge_to_topic_id):
     if not topic_synonym:
         topic_synonym = TopicSynonym(synonym=topic.name, topic_id=merge_to_topic.id, from_merge=True)
         db.session.add(topic_synonym)
+        merge_to_topic.save_to_es()
 
     # 迁移问题
     for question_topic in topic.questions:
@@ -869,6 +869,8 @@ def unmerge_from(uid, unmerge_from_topic_id):
     # 移除同义词
     topic_synonym = unmerge_from_topic.synonyms.filter(TopicSynonym.synonym == topic.name,
                                                        TopicSynonym.from_merge).first()
+    unmerge_from_topic.save_to_es()
+
     db.session.delete(topic_synonym)
 
     # 迁回问题
@@ -890,6 +892,7 @@ def unmerge_from(uid, unmerge_from_topic_id):
             unmerge_from_topic.followers_count -= 1
     db.session.add(unmerge_from_topic)
 
+    db.session.add(topic)
     db.session.commit()
 
     return json.dumps({
