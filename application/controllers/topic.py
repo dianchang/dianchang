@@ -70,9 +70,17 @@ def query():
 def view(uid):
     """话题详情页"""
     topic = Topic.query.get_or_404(uid)
+    need_redirect = request.args.get('redirect', type=int)
+    from_id = request.args.get('from_id', type=int)
+    if from_id:
+        from_topic = Topic.query.get_or_404(from_id)
+    else:
+        from_topic = None
+    if topic.merge_to_topic_id and need_redirect != 0:
+        return redirect(url_for('.view', uid=topic.merge_to_topic_id, from_id=topic.id))
     page = request.args.get('page', 1, int)
     answers = topic.all_answers.order_by(Answer.score.desc()).paginate(page, 15)
-    return render_template('topic/view.html', topic=topic, answers=answers)
+    return render_template('topic/view.html', topic=topic, answers=answers, from_topic=from_topic)
 
 
 @bp.route('/topic/<int:uid>/rank')

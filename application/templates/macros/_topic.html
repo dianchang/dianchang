@@ -82,9 +82,25 @@
 
 
 {# 话题页header #}
-{% macro topic_page_header(topic, active='view') %}
+{% macro topic_page_header(topic, active='view', from_topic=None) %}
     <div class="dc-topic-page-header">
         <div class="container">
+            {% if from_topic %}
+                <div class="from-topic-wap">
+                    <a href="{{ url_for('topic.view', uid=from_topic.id, redirect=0) }}"
+                       class="link-color">{{ from_topic.name }}</a> 已合并至本话题
+                </div>
+            {% endif %}
+
+            {% if topic.merge_to_topic_id %}
+                <div class="merge-to-topic-wap">
+                    本话题已合并至 <a href="{{ url_for('topic.view', uid=topic.merge_to_topic_id) }}"
+                               class="link-color">{{ topic.merge_to_topic.name }}</a>
+                    <a href="javascript: void(0)" class="text-light btn-unmerge-topic"
+                       data-id="{{ topic.id }}" data-unmerge-from-id="{{ topic.merge_to_topic_id }}">取消合并</a>
+                </div>
+            {% endif %}
+
             <div class="commands">
                 {{ topic_follow_wap(topic, dark=True) }}
 
@@ -128,11 +144,36 @@
 
     <script>
         (function () {
-            $('.btn-admin-topic').click(function () {
+            var $topicPageHeader = $('.dc-topic-page-header');
+
+            // 跳转到管理页
+            $topicPageHeader.find('.btn-admin-topic').click(function () {
                 if (!g.signin) {
                     window.location = urlFor('account.signin');
                     return false;
                 }
+            });
+
+            // 取消合并
+            $topicPageHeader.find('.btn-unmerge-topic').click(function () {
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return false;
+                }
+
+                var topicId = $(this).data('id');
+                var unmergeFromId = $(this).data('unmerge-from-id');
+                var _this = $(this);
+
+                $.ajax({
+                    url: urlFor('topic.unmerge_from', {uid: topicId, unmerge_from_topic_id: unmergeFromId}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        _this.parents('.merge-to-topic-wap').detach();
+                    }
+                });
             });
         })();
     </script>

@@ -10,7 +10,7 @@
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/topic/view.css?__inline"/>{% endblock %}
 {% block page_content %}
-    {{ topic_page_header(topic, active='view') }}
+    {{ topic_page_header(topic, active='view', from_topic=from_topic) }}
 
     <div class="container">
         <div class="row">
