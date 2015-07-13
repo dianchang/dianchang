@@ -221,7 +221,6 @@
   .dc-topic {
     margin: 0;
     padding-right: 22px;
-    display: inline-block;
   }
 
   &.locked .dc-topic {
@@ -231,8 +230,8 @@
   .btn-remove-child-topic,
   .btn-remove-parent-topic {
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
     cursor: pointer;
     width: 24px;
     height: 24px;
@@ -240,11 +239,20 @@
     line-height: 1;
     text-align: center;
     box-sizing: border-box;
-    padding-top: 4px;
+    padding-top: 1px;
 
     &:hover {
       color: #333 !important;
     }
+  }
+}
+
+.merged-topics {
+  margin-top: 20px;
+  padding-left: 20px;
+
+  li {
+    margin-bottom: 8px;
   }
 }
 

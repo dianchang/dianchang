@@ -98,11 +98,12 @@ def wiki(uid):
 def admin(uid):
     """话题管理"""
     topic = Topic.query.get_or_404(uid)
+    merged_topics = Topic.query.filter(Topic.merge_to_topic_id == uid)
     uptoken = qiniu.generate_token(policy={
         'callbackUrl': absolute_url_for('.update_avatar'),
         'callbackBody': "id=%d&key=$(key)" % uid
     })
-    return render_template('topic/admin.html', topic=topic, uptoken=uptoken)
+    return render_template('topic/admin.html', topic=topic, uptoken=uptoken, merged_topics=merged_topics)
 
 
 @bp.route('/topic/<int:uid>/questions')

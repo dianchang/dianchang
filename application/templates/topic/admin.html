@@ -148,6 +148,23 @@
                                     <button type="button" class="btn btn-default btn-merge-topic">合并</button>
                                 {% endif %}
                             </div>
+
+                            <p>以下话题已被合并至本话题：</p>
+
+                            <ul class="merged-topics">
+                                {% for merged_topic in merged_topics %}
+                                    <li class="merged-topic">
+                                        <a href="{{ url_for('topic.view', uid=merged_topic.id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ merged_topic.id }}">
+                                            {{ merged_topic.name }}
+                                        </a>
+
+                                        <a href="javascript: void(0)" class="btn-unmerge-topic text-light"
+                                           data-id="{{ merged_topic.id }}">取消合并</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
                         </div>
                     </div>
 

@@ -276,7 +276,10 @@
             }
         });
 
-        $topicInput.on('typeahead:selected', callback);
+        $topicInput.on('typeahead:selected', function (e, topic) {
+            callback(e, topic);
+            $topicInput.typeahead('val', '');
+        });
         $topicInput.css('verticalAlign', 'middle');
         $twitterTypeahead = $topicInput.parents('.twitter-typeahead');
         $topicInput.css('marginRight', 0);
@@ -295,5 +298,4 @@
     window.disableScroll = disableScroll;
     window.enableScroll = enableScroll;
     window.getJsonFromUrl = getJsonFromUrl;
-    //window.initTopicTypeahead = initTopicTypeahead;
 })();

@@ -181,6 +181,22 @@ $mergeTopic.initTopicTypeahead({
     }
 });
 
+// 取消合并话题
+$('.btn-unmerge-topic').click(function () {
+    var id = $(this).data('id');
+    var _this = $(this);
+
+    $.ajax({
+        url: urlFor('topic.unmerge_from', {uid: id, unmerge_from_topic_id: g.topicId}),
+        method: 'post',
+        dataType: 'json'
+    }).done(function (response) {
+        if (response.result) {
+            _this.parents('.merged-topic').detach();
+        }
+    });
+});
+
 // 删除话题同义词
 $(document).on('click', '.btn-remove-topic-synonym', function () {
     var id = $(this).data('id');
