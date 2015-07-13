@@ -244,7 +244,7 @@ html {
   display: block;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-content {
-  max-height: 300px;
+  height: 300px;
   overflow: auto;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-content .noti-panel {
