@@ -95,7 +95,7 @@ def add():
     question = Question(title=title, desc=desc, user_id=g.user.id, anonymous=anonymous)
 
     if not question.anonymous:
-        # Create question log
+        # Log
         create_log = PublicEditLog(kind=QUESTION_EDIT_KIND.CREATE, user_id=g.user.id,
                                    original_title=question.title, original_desc=question.desc)
         question.logs.append(create_log)
@@ -116,6 +116,12 @@ def add():
             add_topic_log = PublicEditLog(kind=QUESTION_EDIT_KIND.ADD_TOPIC, after=topic.name,
                                           after_id=topic_id, user_id=g.user.id)
             question.logs.append(add_topic_log)
+
+            # MERGE: 若该话题被合并到其他话题，则也对此问题添加 merge_to_topic
+            if topic.merge_to_topic_id:
+                question_merge_to_topic = QuestionTopic(topic_id=topic.merge_to_topic_id, from_merge=True)
+                question.topics.append(question_merge_to_topic)
+                db.session.add(question_merge_to_topic)
 
     g.user.questions_count += 1
     db.session.add(g.user)
@@ -180,11 +186,20 @@ def add_topic(uid):
         QuestionTopic.question_id == uid).first()
     if not question_topic:
         question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
-        # Add topic log
+        # Log
         log = PublicEditLog(question_id=uid, user_id=g.user.id, after=topic.name, after_id=topic.id,
                             kind=QUESTION_EDIT_KIND.ADD_TOPIC)
         db.session.add(log)
         db.session.add(question_topic)
+
+        # MERGE: 若该话题被合并到其他话题，则也对此问题添加 merge_to_topic
+        if topic.merge_to_topic_id:
+            question_merge_to_topic = topic.merge_to_topic.questions.filter(QuestionTopic.question_id == uid).first()
+            if not question_merge_to_topic:
+                question_merge_to_topic = QuestionTopic(topic_id=topic.merge_to_topic_id, question_id=uid,
+                                                        from_merge=True)
+                db.session.add(question_merge_to_topic)
+
         db.session.commit()
 
     # 更新话题统计数据
@@ -216,7 +231,14 @@ def remove_topic(uid, topic_id):
     for topic_question in topic_questions:
         db.session.delete(topic_question)
 
-    # Remove topic log
+    # MERGE: 若该话题被合并到其他话题，则也将这个话题从问题中移除
+    if topic.merge_to_topic_id:
+        question_merge_to_topic = topic.merge_to_topic.questions.filter(QuestionTopic.question_id == uid,
+                                                                        QuestionTopic.from_merge).first()
+        if question_merge_to_topic:
+            db.session.delete(question_merge_to_topic)
+
+    # Log
     log = PublicEditLog(question_id=uid, user_id=g.user.id, before=topic.name, before_id=topic_id,
                         kind=QUESTION_EDIT_KIND.REMOVE_TOPIC)
     db.session.add(log)

@@ -158,7 +158,11 @@ def add_parent_topic(uid):
 
     topic.add_parent_topic(parent_topic.id)
 
-    # Add parent topic log
+    # MERGE: 若父话题被合并到其他话题，则也将此话题作为子话题添加
+    if parent_topic.merge_to_topic_id:
+        parent_topic.merge_to_topic.add_child_topic(topic.id, from_merge=True)
+
+    # log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
                         after=parent_topic.name, after_id=parent_topic.id)
     db.session.add(log)
@@ -184,6 +188,10 @@ def remove_parent_topic(uid, parent_topic_id):
 
     parent_topic = Topic.query.get_or_404(parent_topic_id)
     topic.remove_parent_topic(parent_topic_id)
+
+    # MERGE: 若父话题被合并到其他话题，则也将此话题作为子话题添加
+    if parent_topic.merge_to_topic_id:
+        parent_topic.merge_to_topic.remove_child_topic(topic.id, from_merge=True)
 
     # Remove parent topic log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
@@ -219,6 +227,10 @@ def add_child_topic(uid):
 
     topic.add_child_topic(child_topic.id)
 
+    # MERGE: 若该话题被合并到其他话题，则也进行子话题添加
+    if topic.merge_to_topic_id:
+        topic.merge_to_topic.add_child_topic(child_topic.id, from_merge=True)
+
     # Add child topic log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
                         after=child_topic.name, after_id=child_topic.id)
@@ -246,7 +258,11 @@ def remove_child_topic(uid, child_topic_id):
     child_topic = Topic.query.get_or_404(child_topic_id)
     topic.remove_child_topic(child_topic_id)
 
-    # Remove child topic log
+    # MERGE: 若该话题被合并到其他话题，则也进行子话题添加
+    if topic.merge_to_topic_id:
+        topic.merge_to_topic.remove_child_topic(child_topic.id, from_merge=True)
+
+    # log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
                         before=child_topic.name, before_id=child_topic_id)
     db.session.add(log)
