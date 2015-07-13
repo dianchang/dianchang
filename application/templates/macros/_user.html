@@ -7,17 +7,24 @@
 {% macro user_follow_wap(user, dark=False, sm=False, with_count=True) %}
     {% set followed = g.user and user.followed_by_user(g.user.id) %}
 
-    <div class="dc-user-follow-wap btn {% if sm %}btn-sm{% endif %} {% if dark %}dark{% endif %}
+    <div class="dc-user-follow-wap btn
+        {% if sm %}btn-sm{% endif %} {% if dark %}dark{% endif %}
         {% if followed %}
             btn-default
         {% else %}
             {% if dark %}btn-dark{% else %}btn-light{% endif %}
         {% endif %}
+        {% if g.user and g.user.id == user.id %}myself{% endif %}
         {% if followed %}followed{% endif %}" data-id="{{ user.id }}">
-        <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span>
-        {% if with_count %}
-            <span class="divider">|</span>
-            <span class="followers-count">{{ user.followers.count() }}</span>
+
+        {% if g.user and g.user.id == user.id %}
+            我自己
+        {% else %}
+            <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span>
+            {% if with_count %}
+                <span class="divider">|</span>
+                <span class="followers-count">{{ user.followers.count() }}</span>
+            {% endif %}
         {% endif %}
     </div>
 
@@ -25,12 +32,17 @@
         $('.dc-user-follow-wap').onOnce('click', function () {
             var userId = $(this).data('id');
             var followed = $(this).hasClass('followed');
+            var myself = $(this).hasClass('myself');
             var _this = $(this);
             var $count = _this.find('.followers-count');
             var url = urlFor('user.follow', {uid: userId});
 
             if (!g.signin) {
                 window.location = urlFor('account.signin');
+                return;
+            }
+
+            if (myself) {
                 return;
             }
 
@@ -71,7 +83,6 @@
         {% if user.background %}has-background{% endif %}
         {% if preview %}preview{% endif %}
         {% if not g.user or g.user.id != user.id %}forbid-edit{% endif %}">
-{#        <a class="text-logo link-no-underline" href="{{ url_for('site.index') }}">电</a>#}
 
         <div class="commands">
             {% if not g.user or g.user.id != user.id or preview %}
