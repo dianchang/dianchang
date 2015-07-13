@@ -228,7 +228,7 @@
         var callback = options.callback;
         var timerForTopicTypeahead = null;
         var inputMarginRight = parseInt($topicInput.css("margin-right"));
-        var $twitterTypeahead = null;
+        var $twitterTypeahead;
 
         $topicInput.typeahead({
             minLength: 1,
@@ -259,9 +259,11 @@
                     }).done(function (matchs) {
                         var event = $.Event('keydown');
 
-                        cb(matchs);
-                        event.which = event.keyCode = 40;
-                        $topicInput.trigger(event);
+                        if (matchs.length !== 0) {
+                            cb(matchs);
+                            event.which = event.keyCode = 40;
+                            $topicInput.trigger(event);
+                        }
                     });
                 }, 300);
             },
