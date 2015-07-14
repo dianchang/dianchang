@@ -112,16 +112,11 @@ def follow(uid):
             db.session.add(g.user)
             db.session.add(user)
 
-            # NOTI: 插入被关注者的 NOTI（需合并）
+            # NOTI: 插入被关注者的 NOTI（无需合并）
             noti = user.notifications.filter(
                 Notification.kind == NOTIFICATION_KIND.FOLLOW_ME,
-                Notification.unread,
-                Notification.created_at_date == date.today()).first()
-            if noti:
-                # 若当天已经有人关注他，且该条消息未读，则进行消息合并
-                noti.add_sender(g.user.id)
-                db.session.add(noti)
-            else:
+                Notification.senders_list == json.dumps([g.user.id])).first()
+            if not noti:
                 noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, senders_list=json.dumps([g.user.id]))
                 user.notifications.append(noti)
                 db.session.add(user)
