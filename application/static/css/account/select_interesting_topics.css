@@ -98,7 +98,7 @@ body {
   width: 100%;
   text-align: center;
   color: white;
-  padding: 5px 0;
+  padding: 5px 5px;
   font-weight: bold;
   font-size: 16px;
   background-color: rgba(0, 0, 0, 0.75);
@@ -118,6 +118,10 @@ body {
 .outer-wap .topics-wap .topic .selected-flag .fa {
   font-size: 16px;
   font-weight: normal;
+}
+.outer-wap .topics-wap .dc-loading-flag {
+  margin-right: 25px;
+  margin-top: 10px;
 }
 .outer-wap .btn-wap {
   margin-top: 20px;

@@ -348,18 +348,78 @@ def update_password():
     })
 
 
+INTERESTING_TOPICS_PER = 20
+
+
 @bp.route('/account/select_interesting_topics')
 @UserPermission()
 def select_interesting_topics():
     """选择感兴趣的话题"""
-    hot_topics = Topic.query.order_by(Topic.questions_count.desc()).limit(20)
-    product_topics = Topic.query.filter(Topic.name == '产品').first().descendant_topics.limit(20)
-    organization_topics = Topic.query.filter(Topic.name == '组织').first().descendant_topics.limit(20)
-    position_topics = Topic.query.filter(Topic.name == '职业').first().descendant_topics.limit(20)
-    skill_topics = Topic.query.filter(Topic.name == '技能').first().descendant_topics.limit(20)
-    return render_template('account/select_interesting_topics.html', hot_topics=hot_topics,
-                           product_topics=product_topics, organization_topics=organization_topics,
-                           position_topics=position_topics, skill_topics=skill_topics)
+    hot_topics = Topic.query.order_by(Topic.questions_count.desc())
+    hot_topics_total = hot_topics.count()
+
+    product_topics = Topic.query.filter(Topic.name == '产品').first().descendant_topics
+    product_topics_total = product_topics.count()
+
+    organization_topics = Topic.query.filter(Topic.name == '组织').first().descendant_topics
+    organization_topics_total = organization_topics.count()
+
+    position_topics = Topic.query.filter(Topic.name == '职业').first().descendant_topics
+    position_topics_total = position_topics.count()
+
+    skill_topics = Topic.query.filter(Topic.name == '技能').first().descendant_topics
+    skill_topics_total = skill_topics.count()
+
+    return render_template('account/select_interesting_topics.html',
+                           hot_topics=hot_topics.limit(INTERESTING_TOPICS_PER),
+                           hot_topics_total=hot_topics_total,
+
+                           product_topics=product_topics.limit(INTERESTING_TOPICS_PER),
+                           product_topics_total=product_topics_total,
+
+                           organization_topics=organization_topics.limit(INTERESTING_TOPICS_PER),
+                           organization_topics_total=organization_topics_total,
+
+                           position_topics=position_topics.limit(INTERESTING_TOPICS_PER),
+                           position_topics_total=position_topics_total,
+
+                           skill_topics=skill_topics.limit(INTERESTING_TOPICS_PER),
+                           skill_topics_total=skill_topics_total,
+
+                           per=INTERESTING_TOPICS_PER)
+
+
+@bp.route('/account/loading_interesting_topics', methods=['POST'])
+@UserPermission()
+def loading_interesting_topics():
+    """加载感兴趣的话题"""
+    _type = request.args.get('type')
+    offset = request.args.get('offset', type=int)
+    if not offset or not _type:
+        return json.dumps({
+            'result': False
+        })
+
+    if _type == 'hot':
+        topics = Topic.query.order_by(Topic.questions_count.desc())
+    elif _type == 'product':
+        topics = Topic.query.filter(Topic.name == '产品').first().descendant_topics
+    elif _type == 'organization':
+        topics = Topic.query.filter(Topic.name == '组织').first().descendant_topics
+    elif _type == 'position':
+        topics = Topic.query.filter(Topic.name == '职业').first().descendant_topics
+    else:
+        topics = Topic.query.filter(Topic.name == '技能').first().descendant_topics
+
+    topics = topics.limit(INTERESTING_TOPICS_PER).offset(offset)
+    topics_count = topics.count()
+    macro = get_template_attribute("macros/_account.html", "render_interesting_topics")
+
+    return json.dumps({
+        'result': True,
+        'html': macro(topics),
+        'count': topics_count
+    })
 
 
 @bp.route('/account/submit_interesting_topics', methods=['POST'])

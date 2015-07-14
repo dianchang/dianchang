@@ -602,3 +602,18 @@
         <div class="btn-remove-product" data-id="{{ product.id }}">×</div>
     </div>
 {% endmacro %}
+
+
+{# 感兴趣的话题 #}
+{% macro render_interesting_topics(topics) %}
+    {% for topic in topics %}
+        <div class="topic" data-id="{{ topic.id }}">
+            <img src="{{ topic.avatar_url }}" alt=""/>
+
+            <div class="name">{{ topic.name }}</div>
+            <div class="selected-flag">
+                <span class="fa fa-check"></span>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}

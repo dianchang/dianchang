@@ -1,4 +1,6 @@
 {% extends "layout.html" %}
+{% from "macros/_utils.html" import loading %}
+{% from "macros/_account.html" import render_interesting_topics %}
 
 {% block page_title %}选择感兴趣的话题{% endblock %}
 {% block page_js %}
@@ -6,18 +8,7 @@
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/account/select_interesting_topics.css"/>{% endblock %}
 
-{% macro render_topics(topics) %}
-    {% for topic in topics %}
-        <div class="topic" data-id="{{ topic.id }}">
-            <img src="{{ topic.avatar_url }}" alt=""/>
 
-            <div class="name">{{ topic.name }}</div>
-            <div class="selected-flag">
-                <span class="fa fa-check"></span>
-            </div>
-        </div>
-    {% endfor %}
-{% endmacro %}
 
 {% block page_content %}
     <div class="text-logo">电场</div>
@@ -36,24 +27,50 @@
         </div>
 
         <form action="" method="post" class="form-select-topics">
-            <div class="topics-wap hot-topics clearfix active">
-                {{ render_topics(hot_topics) }}
+            <div class="topics-wap hot-topics active">
+                <div class="hot-topics-inner-wap clearfix">
+                    {{ render_interesting_topics(hot_topics) }}
+                </div>
+
+                {{ loading(hot_topics_total, per, '.hot-topics-inner-wap',
+                    url_for('account.loading_interesting_topics', type='hot')|safe) }}
             </div>
 
-            <div class="topics-wap product-topics clearfix">
-                {{ render_topics(product_topics) }}
+
+            <div class="topics-wap product-topics">
+                <div class="product-toppics-inner-wap clearfix">
+                    {{ render_interesting_topics(product_topics) }}
+                </div>
+
+                {{ loading(product_topics_total, per, '.product-topics-inner-wap',
+                    url_for('account.loading_interesting_topics', type='product')|safe) }}
             </div>
 
-            <div class="topics-wap organization-topics clearfix">
-                {{ render_topics(organization_topics) }}
+            <div class="topics-wap organization-topics">
+                <div class="organization-topics-inner-wap clearfix">
+                    {{ render_interesting_topics(organization_topics) }}
+                </div>
+
+                {{ loading(organization_topics_total, per, '.organization-topics-inner-wap',
+                    url_for('account.loading_interesting_topics', type='organization')|safe) }}
             </div>
 
-            <div class="topics-wap position-topics clearfix">
-                {{ render_topics(position_topics) }}
+            <div class="topics-wap position-topics">
+                <div class="position-topics-inner-wap clearfix">
+                    {{ render_interesting_topics(position_topics) }}
+                </div>
+
+                {{ loading(position_topics_total, per, '.position-topics-inner-wap',
+                    url_for('account.loading_interesting_topics', type='position')|safe) }}
             </div>
 
-            <div class="topics-wap skill-topics clearfix">
-                {{ render_topics(skill_topics) }}
+            <div class="topics-wap skill-topics">
+                <div class="skill-topics-inner-wap clearfix">
+                    {{ render_interesting_topics(skill_topics) }}
+                </div>
+
+                {{ loading(skill_topics_total, per, '.skill-topics-inner-wap',
+                    url_for('account.loading_interesting_topics', type='skill')|safe) }}
             </div>
         </form>
 
