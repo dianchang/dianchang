@@ -72,7 +72,7 @@ def loading_user_feeds(uid):
         return json.dumps({
             'result': False
         })
-    feeds = g.user.feeds.limit(USER_FEEDS_PER).offset(offset)
+    feeds = user.feeds.limit(USER_FEEDS_PER).offset(offset)
     feeds_count = feeds.count()
     macro = get_template_attribute("macros/_user.html", "render_user_feeds")
     return json.dumps({
@@ -169,8 +169,31 @@ def questions_and_answers(uid):
         background_uptoken = ""
     user = User.query.get_or_404(uid)
     feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION]))
-    return render_template('user/questions_and_answers.html', user=user, feeds=feeds,
-                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken)
+    feeds_count = feeds.count()
+    return render_template('user/questions_and_answers.html', user=user, feeds=feeds.limit(USER_FEEDS_PER),
+                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken,
+                           total=feeds_count, per=USER_FEEDS_PER)
+
+
+@bp.route('/user/<int:uid>/loading_user_questions_and_answers', methods=['POST'])
+@UserPermission()
+def loading_user_questions_and_answers(uid):
+    """加载用户问答"""
+    user = User.query.get_or_404(uid)
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+    feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION])).limit(
+        USER_FEEDS_PER).offset(offset)
+    feeds_count = feeds.count()
+    macro = get_template_attribute("macros/_user.html", "render_user_feeds")
+    return json.dumps({
+        'result': True,
+        'html': macro(feeds),
+        'count': feeds_count
+    })
 
 
 @bp.route('/people/<int:uid>/collects')
@@ -206,20 +229,11 @@ def followers(uid):
 def notifications():
     """用户消息
 
-    不显示关注类消息
+    不显示关注类消息。
     """
-    # last_read_message_notifications_at = g.user.last_read_message_notifications_at
-    # g.user.last_read_notifications_at = datetime.now()
-    #
-    # last_read_thanks_notifications_at = g.user.last_read_thanks_notifications_at
-    # g.user.last_read_thanks_notifications_at = datetime.now()
     notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(20)
+    template_html = render_template('user/notifications.html', notifications=notifications)
 
-    template_html = render_template('user/notifications.html',
-                                    # last_read_message_notifications_at=last_read_message_notifications_at,
-                                    # last_read_thanks_notifications_at=last_read_thanks_notifications_at,
-                                    notifications=notifications)
-    # db.session.add(g.user)
     for noti in g.user.notifications.filter(Notification.unread):
         noti.unread = False
         db.session.add(noti)
