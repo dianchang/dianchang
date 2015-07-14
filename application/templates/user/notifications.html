@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% from "macros/_user.html" import render_user_notifications %}
+{% from "macros/_user.html" import render_all_notifications %}
 {% from "macros/_utils.html" import loading %}
 
 {% block page_title %}全部消息{% endblock %}
@@ -12,7 +12,7 @@
         <h3>全部消息</h3>
 
         <div class="notifications-wap">
-            {{ render_user_notifications(notifications) }}
+            {{ render_all_notifications(notifications) }}
         </div>
 
         {{ loading(total, per, '.notifications-wap', url_for('user.loading_notifications')) }}

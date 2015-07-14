@@ -253,7 +253,7 @@ def loading_notifications():
     notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(
         NOTIFICATIONS_PER).offset(offset)
     count = notifications.count()
-    macro = get_template_attribute("macros/_user.html", "render_user_notifications")
+    macro = get_template_attribute("macros/_user.html", "render_all_notifications")
     return json.dumps({
         'result': True,
         'html': macro(notifications),
@@ -261,16 +261,21 @@ def loading_notifications():
     })
 
 
+COMPOSE_FEEDS_PER = 10
+
+
 @bp.route('/compose')
 @UserPermission()
 def compose():
     """撰写"""
     feeds = g.user.compose_feeds.filter(~ComposeFeed.ignore)
-    last_read_compose_feeds_at = g.user.last_read_compose_feeds_at
-    g.user.last_read_compose_feeds_at = datetime.now()
-    db.session.add(g.user)
+    html = render_template('user/compose.html', feeds=feeds.limit(COMPOSE_FEEDS_PER))
+
+    for feed in feeds.filter(~ComposeFeed.unread):
+        feed.unread = False
+        db.session.add(feed)
     db.session.commit()
-    return render_template('user/compose.html', feeds=feeds, last_read_compose_feeds_at=last_read_compose_feeds_at)
+    return html
 
 
 @bp.route('/compose_feed/<int:uid>/ignore', methods=['POST'])

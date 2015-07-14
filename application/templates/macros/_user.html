@@ -1254,7 +1254,7 @@
 
 
 {# 用户通知 #}
-{% macro render_user_notifications(notifications) %}
+{% macro render_all_notifications(notifications) %}
     {% for noti in notifications %}
         <div class="noti">
             {% if noti.kind == NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION %}

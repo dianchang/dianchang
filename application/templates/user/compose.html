@@ -2,7 +2,7 @@
 {% from "macros/_topic.html" import render_expert_topic %}
 {% from "macros/_user.html" import compose_drafts_page_header, render_user_expert_topics %}
 
-{% macro render_compose_feed(feed, last_read_compose_feeds_at) %}
+{% macro render_compose_feed(feed) %}
     {% set question = feed.question %}
 
     {% if feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER %}
@@ -13,7 +13,7 @@
         {% set is_invited = False %}
     {% endif %}
 
-    <div class="question-wap {% if is_invited %}invited{% endif %} {% if feed.created_at > last_read_compose_feeds_at %}new{% endif %}">
+    <div class="question-wap {% if is_invited %}invited{% endif %} {% if feed.unread %}new{% endif %}">
         <div class="new-flag"></div>
         <div class="question">
             {% if is_invited %}
@@ -101,7 +101,7 @@
                 {{ compose_drafts_page_header() }}
 
                 {% for feed in feeds %}
-                    {{ render_compose_feed(feed, last_read_compose_feeds_at) }}
+                    {{ render_compose_feed(feed) }}
                 {% endfor %}
             </div>
 
