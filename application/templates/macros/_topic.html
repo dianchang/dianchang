@@ -399,3 +399,13 @@
         {{ render_question(question, question.user, relevant_topic_id=topic.id) }}
     {% endfor %}
 {% endmacro %}
+
+
+{# 话题下的所有问题 #}
+{% macro render_all_questions(questions, topic) %}
+    {% from "macros/_question.html" import render_question %}
+
+    {% for question in questions %}
+        {{ render_question(question, question.user, relevant_topic_id=topic.id) }}
+    {% endfor %}
+{% endmacro %}

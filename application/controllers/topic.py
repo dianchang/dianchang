@@ -140,13 +140,38 @@ def admin(uid):
     return render_template('topic/admin.html', topic=topic, uptoken=uptoken, merged_topics=merged_topics)
 
 
+ALL_QUESTIONS_PER = 15
+
+
 @bp.route('/topic/<int:uid>/questions')
 def questions(uid):
     """话题下的全部问题"""
     topic = Topic.query.get_or_404(uid)
-    page = request.args.get('page', 1, int)
-    questions = topic.all_questions.paginate(page, 15)
-    return render_template('topic/questions.html', topic=topic, questions=questions)
+    questions = topic.all_questions
+    total = questions.count()
+    return render_template('topic/questions.html', topic=topic, questions=questions.limit(ALL_QUESTIONS_PER),
+                           total=total, per=ALL_QUESTIONS_PER)
+
+
+@bp.route('/topic/<int:uid>/loading_all_questions', methods=['POST'])
+@UserPermission()
+def loading_all_questions(uid):
+    """加载话题下的全部问题"""
+    topic = Topic.query.get_or_404(uid)
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    questions = topic.all_questions.limit(ALL_QUESTIONS_PER).offset(offset)
+    count = questions.count()
+    macro = get_template_attribute("macros/_topic.html", "render_all_questions")
+    return json.dumps({
+        'result': True,
+        'html': macro(questions, topic),
+        'count': count
+    })
 
 
 WAITING_FOR_ANSWER_QUESTIONS_PER = 15

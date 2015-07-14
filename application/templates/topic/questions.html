@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
-{% from "macros/_utils.html" import pagination %}
+{% from "macros/_utils.html" import loading %}
 {% from "macros/_topic.html" import topic_page_header, topic_discuss_page_header,
-    topic_discuss_page_sidebar %}
+    topic_discuss_page_sidebar, render_all_questions %}
 {% from "macros/_question.html" import render_question %}
 
 {% block page_title %}全部问题 - 话题「{{ topic.name }}」{% endblock %}
@@ -17,11 +17,12 @@
             <div class="col-md-8">
                 {{ topic_discuss_page_header(topic, active='questions') }}
 
-                {% for question in questions.items %}
-                    {{ render_question(question, question.user, relevant_topic_id=topic.id) }}
-                {% endfor %}
+                <div class="questions-wap">
+                    {{ render_all_questions(questions, topic) }}
+                </div>
 
-                {{ pagination(questions) }}
+                {{ loading(total, per, '.questions-wap',
+                    url_for('topic.loading_all_questions', uid=topic.id)) }}
             </div>
 
             <div class="col-md-4">
