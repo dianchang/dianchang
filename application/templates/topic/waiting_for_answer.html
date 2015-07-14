@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
-{% from "macros/_utils.html" import pagination %}
+{% from "macros/_utils.html" import loading %}
 {% from "macros/_topic.html" import topic_page_header, topic_discuss_page_header,
-    topic_discuss_page_sidebar %}
-{% from "macros/_question.html" import render_question %}
+    topic_discuss_page_sidebar, render_topic_waiting_for_answer_questions %}
 
 {% block page_title %}等待回答 - 话题「{{ topic.name }}」{% endblock %}
 {% block page_js %}
@@ -17,11 +16,12 @@
             <div class="col-md-8">
                 {{ topic_discuss_page_header(topic, active='waiting_for_answer') }}
 
-                {% for question in waiting_for_answer_questions.items %}
-                    {{ render_question(question, question.user, relevant_topic_id=topic.id) }}
-                {% endfor %}
+                <div class="questions-wap">
+                    {{ render_topic_waiting_for_answer_questions(questions, topic) }}
+                </div>
 
-                {{ pagination(waiting_for_answer_questions) }}
+                {{ loading(total, per, '.questions-wap',
+                    url_for('topic.loading_waiting_for_answer_questions', uid=topic.id)) }}
             </div>
 
             <div class="col-md-4">

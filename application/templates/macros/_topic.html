@@ -389,3 +389,13 @@
         {{ render_answer(answer, with_topics=False, relevant_topic_id=topic.id) }}
     {% endfor %}
 {% endmacro %}
+
+
+{# 话题下的等待回答的问题 #}
+{% macro render_topic_waiting_for_answer_questions(questions, topic) %}
+    {% from "macros/_question.html" import render_question %}
+
+    {% for question in questions %}
+        {{ render_question(question, question.user, relevant_topic_id=topic.id) }}
+    {% endfor %}
+{% endmacro %}

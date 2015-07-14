@@ -149,15 +149,41 @@ def questions(uid):
     return render_template('topic/questions.html', topic=topic, questions=questions)
 
 
+WAITING_FOR_ANSWER_QUESTIONS_PER = 15
+
+
 @bp.route('/topic/<int:uid>/waiting')
 def waiting_for_answer(uid):
     """话题下等待回答的问题"""
     topic = Topic.query.get_or_404(uid)
-    page = request.args.get('page', 1, int)
-    waiting_for_answer_questions = topic.all_questions.filter(Question.answers_count == 0). \
-        paginate(page, 15)
+    questions = topic.all_questions.filter(Question.answers_count == 0)
+    total = questions.count()
+
     return render_template('topic/waiting_for_answer.html', topic=topic,
-                           waiting_for_answer_questions=waiting_for_answer_questions)
+                           questions=questions.limit(WAITING_FOR_ANSWER_QUESTIONS_PER),
+                           total=total, per=WAITING_FOR_ANSWER_QUESTIONS_PER)
+
+
+@bp.route('/topic/<int:uid>/loading_waiting_for_answer_questions', methods=['POST'])
+@UserPermission()
+def loading_waiting_for_answer_questions(uid):
+    """加载话题下的待回答问题"""
+    topic = Topic.query.get_or_404(uid)
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    questions = topic.all_questions.filter(Question.answers_count == 0). \
+        limit(WAITING_FOR_ANSWER_QUESTIONS_PER).offset(offset)
+    count = questions.count()
+    macro = get_template_attribute("macros/_topic.html", "render_topic_waiting_for_answer_questions")
+    return json.dumps({
+        'result': True,
+        'html': macro(questions, topic),
+        'count': count
+    })
 
 
 @bp.route('/topic/<int:uid>/logs')
