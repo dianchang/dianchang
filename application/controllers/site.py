@@ -50,7 +50,7 @@ def about():
     return render_template('site/about.html')
 
 
-SEARCH_RESULTS_PER = 2
+SEARCH_RESULTS_PER = 15
 
 
 @bp.route('/search')
