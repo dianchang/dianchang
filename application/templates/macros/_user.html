@@ -1550,9 +1550,11 @@
 {% macro render_drafts(drafts) %}
     {% for draft in drafts %}
         <div class="draft">
-            <a href="{{ url_for('question.view', uid=draft.question.id) }}" class="title">
-                {{ draft.question.title }}
-            </a>
+            <div class="title">
+                <a href="{{ url_for('question.view', uid=draft.question.id) }}">
+                    {{ draft.question.title }}
+                </a>
+            </div>
 
             <div class="content">
                 <div class="preview">
