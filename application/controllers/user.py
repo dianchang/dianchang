@@ -219,7 +219,7 @@ def followers(uid):
     return render_template('user/followers.html', user=user, followers=followers)
 
 
-NOTIFICATIONS_PER = 2
+NOTIFICATIONS_PER = 15
 
 
 @bp.route('/notifications')
