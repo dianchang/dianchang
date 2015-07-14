@@ -17,6 +17,7 @@ class Config(object):
     # Site domain
     SITE_TITLE = "dianchang"
     SITE_DOMAIN = "http://localhost:5000"
+    DC_DOMAIN = SITE_DOMAIN
 
     # SQLAlchemy config
     # See:
