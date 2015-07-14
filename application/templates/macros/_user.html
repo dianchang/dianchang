@@ -1544,3 +1544,33 @@
         </div>
     {% endfor %}
 {% endmacro %}
+
+
+{# 用户草稿 #}
+{% macro render_drafts(drafts) %}
+    {% for draft in drafts %}
+        <div class="draft">
+            <a href="{{ url_for('question.view', uid=draft.question.id) }}" class="title">
+                {{ draft.question.title }}
+            </a>
+
+            <div class="content">
+                <div class="preview">
+                    {{ draft.content|safe }}
+                </div>
+            </div>
+
+            <div class="time text-light" title="{{ draft.created_at }}">
+                保存于 {{ draft.created_at|timesince }}
+            </div>
+
+            <div class="commands">
+                <a href="{{ url_for('question.view', uid=draft.question_id) }}#draft"
+                   class="btn btn-light">编辑</a>
+                <a href="javascript: void(0)" class="btn-remove-draft text-light"
+                   data-id="{{ draft.id }}">
+                    删除</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}

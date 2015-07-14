@@ -334,12 +334,37 @@ def recover_compose_feed(uid):
     })
 
 
+DRAFTS_PER = 10
+
+
 @bp.route('/drafts')
 @UserPermission()
 def drafts():
     """我的草稿"""
     drafts = g.user.drafts
-    return render_template('user/drafts.html', drafts=drafts)
+    total = drafts.count()
+    return render_template('user/drafts.html', drafts=drafts.limit(DRAFTS_PER),
+                           total=total, per=DRAFTS_PER)
+
+
+@bp.route('/user/loading_drafts', methods=['POST'])
+@UserPermission()
+def loading_drafts():
+    """加载草稿"""
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    drafts = g.user.drafts.limit(DRAFTS_PER).offset(offset)
+    drafts_count = drafts.count()
+    macro = get_template_attribute("macros/_user.html", "render_drafts")
+    return json.dumps({
+        'result': True,
+        'html': macro(drafts),
+        'count': drafts_count
+    })
 
 
 @bp.route('/people/<int:uid>/achievements')

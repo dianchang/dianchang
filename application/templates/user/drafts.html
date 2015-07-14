@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
-{% from "macros/_user.html" import compose_drafts_page_header %}
+{% from "macros/_user.html" import compose_drafts_page_header, render_drafts %}
+{% from "macros/_utils.html" import loading %}
 
 {% block page_title %}草稿{% endblock %}
 {% block page_js %}
@@ -13,32 +14,10 @@
                 {{ compose_drafts_page_header(active='drafts') }}
 
                 <div class="drafts">
-                    {% for draft in drafts %}
-                        <div class="draft">
-                            <a href="{{ url_for('question.view', uid=draft.question.id) }}" class="title">
-                                {{ draft.question.title }}
-                            </a>
-
-                            <div class="content">
-                                <div class="preview">
-                                    {{ draft.content|safe }}
-                                </div>
-                            </div>
-
-                            <div class="time text-light" title="{{ draft.created_at }}">
-                                保存于 {{ draft.created_at|timesince }}
-                            </div>
-
-                            <div class="commands">
-                                <a href="{{ url_for('question.view', uid=draft.question_id) }}#draft"
-                                   class="btn btn-light">编辑</a>
-                                <a href="javascript: void(0)" class="btn-remove-draft text-light"
-                                   data-id="{{ draft.id }}">
-                                    删除</a>
-                            </div>
-                        </div>
-                    {% endfor %}
+                    {{ render_drafts(drafts) }}
                 </div>
+
+                {{ loading(total, per, '.drafts', url_for('user.loading_drafts')) }}
             </div>
         </div>
     </div>
