@@ -50,26 +50,18 @@ def about():
     return render_template('site/about.html')
 
 
+SEARCH_RESULTS_PER = 10
+
+
 @bp.route('/search')
 def search():
     """搜索页"""
-    q = request.args.get('q', '')
-    q = q.strip()
-    page = request.args.get('page', 1, int)
-    per_page = 10
+    q = request.args.get('q', '').strip()
     _type = request.args.get('type', 'question')
     if not q:
         return redirect(request.referrer)
-    if _type == "topic":
-        results, total, took = Topic.query_from_es(q, page=page, per_page=per_page)
-    elif _type == 'answer':
-        results, total, took = Answer.query_from_es(q, page=page, per_page=per_page)
-    elif _type == 'user':
-        results, total, took = User.query_from_es(q, page=page, per_page=per_page)
-    else:
-        # 默认为问题
-        _type = 'question'
-        results, total, took = Question.query_from_es(q, page=page, per_page=per_page)
+
+    results, total, took = _get_search_results(q, _type=_type, page=1, per_page=SEARCH_RESULTS_PER)
 
     # 在问题页、回答页中，若存在精准匹配的人、话题，则显示在右侧
     if _type in ['question', 'answer']:
@@ -78,14 +70,37 @@ def search():
     else:
         exact_user = None
         exact_topic = None
-
-    pages = int(math.ceil(float(total) / per_page))
-    pre_page = None if page <= 1 else page - 1
-    next_page = None if page >= pages else page + 1
     return render_template('site/search.html', q=q, results=results, _type=_type,
-                           page=page, pre_page=pre_page, next_page=next_page,
-                           total=total, took=took, exact_user=exact_user,
+                           total=total, per=SEARCH_RESULTS_PER, took=took, exact_user=exact_user,
                            exact_topic=exact_topic)
+
+
+@bp.route('/site/loading_search_results', methods=['POST'])
+def loading_search_results():
+    """加载搜索结果"""
+    offset = request.args.get('offset', type=int)
+    _type = request.args.get('type')
+    q = request.args.get('q')
+
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    if not q:
+        return json.dumps({
+            'result': False
+        })
+
+    page = (offset / SEARCH_RESULTS_PER) + 1
+    results, total, took = _get_search_results(q, page=page, per_page=SEARCH_RESULTS_PER, _type=_type)
+    count = len(results)
+    macro = get_template_attribute("macros/_site.html", "render_search_results")
+    return json.dumps({
+        'result': True,
+        'html': macro(results, _type),
+        'count': count
+    })
 
 
 @bp.route('/upload_image', methods=['POST'])
@@ -112,3 +127,17 @@ def qiniu_upload_callback_for_simditor():
         'success': True,
         'file_path': "%s/%s" % (cdn_host, key)
     })
+
+
+def _get_search_results(q, _type='question', page=1, per_page=10):
+    """获取搜索内容"""
+    if _type == "topic":
+        results, total, took = Topic.query_from_es(q, page=page, per_page=per_page)
+    elif _type == 'answer':
+        results, total, took = Answer.query_from_es(q, page=page, per_page=per_page)
+    elif _type == 'user':
+        results, total, took = User.query_from_es(q, page=page, per_page=per_page)
+    else:
+        results, total, took = Question.query_from_es(q, page=page, per_page=per_page)
+
+    return results, total, took

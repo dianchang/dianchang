@@ -1,0 +1,107 @@
+{% from "macros/_question.html" import question_follow_wap %}
+{% from "macros/_topic.html" import topic_follow_wap %}
+{% from "macros/_user.html" import user_follow_wap %}
+{% from "macros/_answer.html" import render_answer %}
+
+{# 搜索结果 #}
+{% macro render_search_results(results, _type='question') %}
+    {% for result in results %}
+        {% if _type == "question" %}
+            {% for question in results %}
+                <div class="search-result question">
+                    <div class="title">
+                        <a href="{{ url_for('question.view', uid=question.id) }}" target="_blank">
+                            {{ (question.highlight_title or question.title)|safe }}</a>
+                    </div>
+                    {% if question.highlight_desc or question.desc %}
+                        <div class="desc">
+                            {{ (question.highlight_desc or question.desc or "")|safe }}
+                        </div>
+                    {% endif %}
+                    <div class="meta">
+                        {{ question_follow_wap(question) }}
+                        <span class="text-light">提问于 {{ question.created_at|timesince }}</span>
+                    </div>
+                    <div class="answers-count-wap">
+                        <span class="count">{{ question.answers_count }}</span>
+                        回答
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-light">没有找到相关的问题</div>
+            {% endfor %}
+        {% elif _type == "answer" %}
+            {% for answer in results %}
+                {{ render_answer(answer, with_topics=False) }}
+            {% else %}
+                <div class="text-light">没有找到相关的回答</div>
+            {% endfor %}
+        {% elif _type == "topic" %}
+            {% for topic in results %}
+                <div class="search-result topic">
+                    <div class="media">
+                        <div class="media-left">
+                            <img src="{{ topic.avatar_url }}" alt=""/>
+                        </div>
+                        <div class="media-body">
+                            <div class="name">
+                                <a href="{{ url_for('topic.view', uid=topic.id) }}" target="_blank"
+                                   class="dc-show-topic-card" data-id="{{ topic.id }}">
+                                    {{ (topic.highlight_name or topic.name)|safe }}</a>
+                            </div>
+                            <div class="questions-count text-light">
+                                {{ topic.questions_count }} 个相关问题
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ topic_follow_wap(topic) }}
+                </div>
+            {% else %}
+                <div class="text-light">没有找到相关的话题</div>
+            {% endfor %}
+        {% elif _type == "user" %}
+            {% for user in results %}
+                <div class="search-result user">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{{ user.profile_url }}">
+                                <img src="{{ user.avatar_url }}" class="img-circle dc-show-user-card" alt=""
+                                     data-id="{{ user.id }}"/>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <div class="meta">
+                                <a href="{{ user.profile_url }}" class="name dc-show-user-card"
+                                   data-id="{{ user.id }}">
+                                    {{ (user.highlight_name or user.name)|safe }}</a>
+                                {% if user.highlight_desc or user.desc %}
+                                    ，{{ (user.highlight_desc or user.desc or "")|safe }}
+                                {% endif %}
+                            </div>
+
+                            <div class="answers-count text-light">
+                                {% if user.answers_count %}
+                                    在
+                                    {% for topic in user.answered_topics() %}
+                                        <a href="{{ url_for('topic.view', uid=topic.topic_id) }}"
+                                           class="dc-show-topic-card text-light"
+                                           data-id="{{ topic.topic_id }}">
+                                            {{ topic.topic.name }}</a>{% if not loop.last %}、{% endif %}
+                                    {% endfor %}
+                                    等话题下有 {{ user.answers_count }} 个回答
+                                {% else %}
+                                    还没有回答
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ user_follow_wap(user) }}
+                </div>
+            {% else %}
+                <div class="text-light">没有找到相关的人</div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

@@ -150,7 +150,8 @@ em {
   width: 40px;
   height: 40px;
 }
-.more {
+.more-users,
+.more-topics {
   text-align: right;
   margin-bottom: 20px;
 }
