@@ -262,3 +262,33 @@ a.dc-img-text-link-wap:focus span {
   top: inherit;
   bottom: -5px;
 }
+.dc-loading-flag {
+  padding: 10px 0;
+  border: 1px solid #eaeaea;
+  border-radius: 2px;
+  text-align: center;
+  color: #999;
+  cursor: pointer;
+  display: none;
+}
+.dc-loading-flag:hover {
+  background-color: #f6f6f6;
+}
+.dc-loading-flag.more {
+  display: block;
+}
+.dc-loading-flag.more .for-more {
+  display: inline-block;
+}
+.dc-loading-flag.more .for-loading {
+  display: none;
+}
+.dc-loading-flag.loading {
+  display: block;
+}
+.dc-loading-flag.loading .for-more {
+  display: none;
+}
+.dc-loading-flag.loading .for-loading {
+  display: inline-block;
+}

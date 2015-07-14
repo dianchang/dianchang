@@ -1,25 +1,94 @@
 {% macro pagination(paginator) %}
-   {% if paginator.pages > 1 %}
-      <ul class='pagination pagination-sm'>
-         {% if paginator.has_prev %}
-            <li><a href="{{ url_for_other_page(paginator.prev_num) }}">上一页</a></li>
-         {% endif %}
-
-         {% for page in paginator.iter_pages() %}
-            {% if page %}
-               {% if page != paginator.page %}
-                  <li><a href="{{ url_for_other_page(page) }}">{{ page }}</a></li>
-               {% else %}
-                  <li class="active"><span>{{ page }}</span></li>
-               {% endif %}
-            {% else %}
-               <li class="ellipsis"><span>...</span></li>
+    {% if paginator.pages > 1 %}
+        <ul class='pagination pagination-sm'>
+            {% if paginator.has_prev %}
+                <li><a href="{{ url_for_other_page(paginator.prev_num) }}">上一页</a></li>
             {% endif %}
-         {% endfor %}
 
-         {% if paginator.has_next %}
-            <li><a href="{{ url_for_other_page(paginator.next_num) }}">下一页</a></li>
-         {% endif %}
-      </ul>
-   {% endif %}
+            {% for page in paginator.iter_pages() %}
+                {% if page %}
+                    {% if page != paginator.page %}
+                        <li><a href="{{ url_for_other_page(page) }}">{{ page }}</a></li>
+                    {% else %}
+                        <li class="active"><span>{{ page }}</span></li>
+                    {% endif %}
+                {% else %}
+                    <li class="ellipsis"><span>...</span></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if paginator.has_next %}
+                <li><a href="{{ url_for_other_page(paginator.next_num) }}">下一页</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro loading(total, per_page, content_wap_selector, loading_endpoint, delay=500) %}
+    <div class="dc-loading-flag">
+        <span class="for-loading">加载中 <span class="fa fa-spin fa-spinner"></span></span>
+        <span class="for-more">更多</span>
+    </div>
+
+    <script>
+        (function () {
+            var total = {{ total }};
+            var perPage = {{ per_page }};
+            var offset = (perPage < total) ? perPage : total;
+            var loading = false;
+            var $loadingFlag = $('.dc-loading-flag');
+            var contentWapSelector = "{{ content_wap_selector }}";
+            var loading_endpoint = "{{ loading_endpoint }}";
+            var $contentWap = $(contentWapSelector);
+            var delay = {{ delay }};
+
+            if (total > perPage) {
+                $loadingFlag.addClass('more');
+            }
+
+            $loadingFlag.click(function () {
+                loadingContent();
+            });
+
+            $(window).scroll(function () {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    loadingContent();
+                }
+            });
+
+            /**
+             * 加载内容
+             */
+            function loadingContent() {
+                if (offset >= total || loading) {
+                    return false;
+                }
+
+                loading = true;
+                $loadingFlag.removeClass('more').addClass('loading');
+
+                setTimeout(function () {
+                    $.ajax({
+                        url: urlFor(loading_endpoint, {offset: offset}),
+                        method: 'post',
+                        dataType: 'json'
+                    }).done(function (response) {
+                        if (response.result) {
+                            $contentWap.append(response.html);
+                            offset += response.count;
+                            $loadingFlag.removeClass('loading');
+
+                            if (offset < total) {
+                                $loadingFlag.addClass('more');
+                            } else {
+                                $loadingFlag.removeClass('more');
+                            }
+
+                            loading = false;
+                        }
+                    });
+                }, delay);
+            }
+        })();
+    </script>
 {% endmacro %}

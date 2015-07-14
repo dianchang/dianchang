@@ -341,3 +341,39 @@ a.dc-img-text-link-wap {
   top: inherit;
   bottom: -5px;
 }
+
+.dc-loading-flag {
+  padding: 10px 0;
+  border: 1px solid @border-color;
+  border-radius: 2px;
+  text-align: center;
+  color: #999;
+  cursor: pointer;
+  display: none;
+
+  &:hover {
+    background-color: #f6f6f6;
+  }
+
+  &.more {
+    display: block;
+
+    .for-more {
+      display: inline-block;
+    }
+    .for-loading {
+      display: none;
+    }
+  }
+
+  &.loading {
+    display: block;
+
+    .for-more {
+      display: none;
+    }
+    .for-loading {
+      display: inline-block;
+    }
+  }
+}

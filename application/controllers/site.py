@@ -1,11 +1,13 @@
 # coding: utf-8
 import math
-from flask import render_template, Blueprint, request, redirect, g, json, current_app
+from flask import render_template, Blueprint, request, redirect, g, json, current_app, get_template_attribute
 from ..models import db, Question, Answer, Topic, User
 from ..utils.permissions import UserPermission
 from ..utils.uploadsets import process_site_image, images
 
 bp = Blueprint('site', __name__)
+
+HOME_FEEDS_PER_PAGE = 10
 
 
 @bp.route('/')
@@ -15,9 +17,31 @@ def index():
         answers = Answer.query.order_by(Answer.created_at.desc()).limit(5)
         return render_template('site/index.html', answers=answers)
     else:
-        feeds = g.user.home_feeds.limit(20)
+        feeds = g.user.home_feeds.limit(HOME_FEEDS_PER_PAGE)
+        total = g.user.home_feeds.count()
         hot_topics = Topic.query.limit(8)
-        return render_template('site/index_signin.html', hot_topics=hot_topics, feeds=feeds)
+        return render_template('site/index_signin.html', hot_topics=hot_topics, feeds=feeds,
+                               total=total, per_page=HOME_FEEDS_PER_PAGE)
+
+
+@bp.route('/site/loading_home_feeds', methods=['POST'])
+@UserPermission()
+def loading_home_feeds():
+    """加载首页 feeds"""
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    feeds = g.user.home_feeds.limit(HOME_FEEDS_PER_PAGE).offset(offset)
+    feeds_count = feeds.count()
+    macro = get_template_attribute("macros/_user.html", "render_user_home_feeds")
+    return json.dumps({
+        'result': True,
+        'html': macro(feeds),
+        'count': feeds_count
+    })
 
 
 @bp.route('/about')

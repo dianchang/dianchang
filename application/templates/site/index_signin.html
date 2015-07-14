@@ -1,9 +1,15 @@
 {% extends "layout.html" %}
-{% from "macros/_answer.html" import render_answer_commands, render_answer %}
-{% from "macros/_question.html" import render_question %}
+{% from "macros/_user.html" import render_user_home_feeds %}
+{% from "macros/_utils.html" import loading %}
 
 {% block page_title %}电场{% endblock %}
 {% block page_js %}
+    <script>
+        registerContext({
+            total: {{ total }},
+            perPage: {{ per_page }}
+        });
+    </script>
     <script src="/static/js/site/index_signin.js?__inline"></script>{% endblock %}
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/site/index_signin.css?__inline"/>{% endblock %}
@@ -11,36 +17,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {% for feed in feeds %}
-                    {% if feed.kind == HOME_FEED_KIND.FOLLOWING_ASK_QUESTION %}
-                        {{ render_question(feed.question, user=feed.question.user) }}
-                    {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION %}
-                        {{ render_question(feed.question, user=feed.sender, action='关注了') }}
-                    {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION %}
-                        <div class="action text-light">
-                            <a href="{{ feed.sender.profile_url }}" class="dc-show-user-card dc-img-text-link-wap"
-                               data-id="{{ feed.sender_id }}">
-                                <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle"/>
-                                <span class="name">{{ feed.sender.name }}</span></a> 回答了问题
-                        </div>
-                        {{ render_answer(feed.answer, with_topics=False) }}
-                    {% elif feed.kind == HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER %}
-                        <div class="action text-light">
-                            <a href="{{ feed.sender.profile_url }}" class="dc-show-user-card dc-img-text-link-wap"
-                               data-id="{{ feed.sender_id }}">
-                                <img src="{{ feed.sender.avatar_url }}" alt="" class="img-circle"/>
-                                <span class="name">{{ feed.sender.name }}</span></a>
-                            赞同了回答
-                        </div>
-                        {{ render_answer(feed.answer, with_topics=False) }}
-                    {% elif feed.kind == HOME_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}
-                        {# TODO #}
-                    {% elif feed.kind == HOME_FEED_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC %}
-                        {# TODO #}
-                    {% elif feed.kind == HOME_FEED_KIND.NEW_ANSWER_FROM_FOLLOWED_TOPIC %}
-                        {# TODO #}
-                    {% endif %}
-                {% endfor %}
+                <div class="feeds-wap">
+                    {{ render_user_home_feeds(feeds) }}
+                </div>
+
+                {{ loading(total, per_page, '.feeds-wap', 'site.loading_home_feeds') }}
             </div>
             <div class="col-md-4">
                 <div class="right-wap {% if not g.user.has_finish_guide_steps %}need-guide at-guide-step-{{ g.user.current_guide_step or 1 }}{% endif %}">

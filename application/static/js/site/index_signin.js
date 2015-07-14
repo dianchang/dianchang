@@ -59,7 +59,6 @@ $mainWap.on('click', '.btn-next-step', function () {
 
 // 窗口往下滚时，设置 guide-step 为固定位置
 $(window).scroll(function () {
-    console.log($(window).scrollTop())
     if ($(window).scrollTop() >= 50) {
         $mainWap.find('.guide-step').addClass('stick');
     } else {
