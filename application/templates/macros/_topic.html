@@ -379,3 +379,13 @@
         </div>
     </div>
 {% endmacro %}
+
+
+{# 话题下的精彩回答 #}
+{% macro render_topic_fantastic_answers(answers, topic) %}
+    {% from "macros/_answer.html" import render_answer %}
+
+    {% for answer in answers %}
+        {{ render_answer(answer, with_topics=False, relevant_topic_id=topic.id) }}
+    {% endfor %}
+{% endmacro %}

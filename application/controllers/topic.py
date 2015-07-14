@@ -66,6 +66,9 @@ def query():
         return json.dumps({})
 
 
+TOPIC_FANTASTIC_ANSWERS_PER = 15
+
+
 @bp.route('/topic/<int:uid>')
 def view(uid):
     """话题详情页"""
@@ -78,9 +81,31 @@ def view(uid):
         from_topic = None
     if topic.merge_to_topic_id and need_redirect != 0:
         return redirect(url_for('.view', uid=topic.merge_to_topic_id, from_id=topic.id))
-    page = request.args.get('page', 1, int)
-    answers = topic.all_answers.order_by(Answer.score.desc()).paginate(page, 15)
-    return render_template('topic/view.html', topic=topic, answers=answers, from_topic=from_topic)
+    answers = topic.all_answers.order_by(Answer.score.desc())
+    total = answers.count()
+    return render_template('topic/view.html', topic=topic, answers=answers.limit(TOPIC_FANTASTIC_ANSWERS_PER),
+                           from_topic=from_topic, total=total, per=TOPIC_FANTASTIC_ANSWERS_PER)
+
+
+@bp.route('/topic/<int:uid>/loading_fantastic_answers', methods=['POST'])
+@UserPermission()
+def loading_fantastic_answers(uid):
+    """加载话题下的精彩回答"""
+    topic = Topic.query.get_or_404(uid)
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    answers = topic.all_answers.order_by(Answer.score.desc()).limit(TOPIC_FANTASTIC_ANSWERS_PER).offset(offset)
+    count = answers.count()
+    macro = get_template_attribute("macros/_topic.html", "render_topic_fantastic_answers")
+    return json.dumps({
+        'result': True,
+        'html': macro(answers, topic),
+        'count': count
+    })
 
 
 @bp.route('/topic/<int:uid>/rank')

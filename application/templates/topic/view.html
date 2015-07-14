@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
-{% from "macros/_utils.html" import pagination %}
 {% from "macros/_topic.html" import topic_page_header, topic_discuss_page_header,
-    topic_discuss_page_sidebar %}
-{% from "macros/_answer.html" import render_answer %}
+    topic_discuss_page_sidebar, render_topic_fantastic_answers %}
+{% from "macros/_utils.html" import loading %}
+
 
 {% block page_title %}话题「{{ topic.name }}」{% endblock %}
 {% block page_js %}
@@ -17,11 +17,12 @@
             <div class="col-md-8">
                 {{ topic_discuss_page_header(topic) }}
 
-                {% for answer in answers.items %}
-                    {{ render_answer(answer, with_topics=False, relevant_topic_id=topic.id) }}
-                {% endfor %}
+                <div class="fantastic-answers-wap">
+                    {{ render_topic_fantastic_answers(answers, topic) }}
+                </div>
 
-                {{ pagination(answers) }}
+                {{ loading(total, per, '.fantastic-answers-wap',
+                    url_for('topic.loading_fantastic_answers', uid=topic.id)) }}
             </div>
 
             <div class="col-md-4">
