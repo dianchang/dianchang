@@ -535,10 +535,12 @@
 {# 问题FEED #}
 {% macro render_question_feed(question) %}
     <div class="content">
-        <a href="{{ url_for('question.view', uid=question.id) }}"
-           class="question-title">
-            {{ question.title }}
-        </a>
+        <div class="question-title">
+            <a href="{{ url_for('question.view', uid=question.id) }}"
+               class="question-title">
+                {{ question.title }}
+            </a>
+        </div>
 
         <div class="other text-light">
             {% set answers_count = question.answers_count %}
