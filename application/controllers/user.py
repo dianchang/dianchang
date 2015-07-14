@@ -261,7 +261,7 @@ def loading_notifications():
     })
 
 
-COMPOSE_FEEDS_PER = 1
+COMPOSE_FEEDS_PER = 10
 
 
 @bp.route('/compose')
