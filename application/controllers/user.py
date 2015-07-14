@@ -224,6 +224,9 @@ def followers(uid):
     return render_template('user/followers.html', user=user, followers=followers)
 
 
+NOTIFICATIONS_PER = 2
+
+
 @bp.route('/notifications')
 @UserPermission()
 def notifications():
@@ -231,15 +234,36 @@ def notifications():
 
     不显示关注类消息。
     """
-    notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(20)
-    template_html = render_template('user/notifications.html', notifications=notifications)
-
+    notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER)
+    total = notifications.count()
+    template_html = render_template('user/notifications.html', notifications=notifications.limit(NOTIFICATIONS_PER),
+                                    total=total, per=NOTIFICATIONS_PER)
     for noti in g.user.notifications.filter(Notification.unread):
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
-
     return template_html
+
+
+@bp.route('/user/loading_notifications', methods=['POST'])
+@UserPermission()
+def loading_notifications():
+    """加载通知"""
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(
+        NOTIFICATIONS_PER).offset(offset)
+    count = notifications.count()
+    macro = get_template_attribute("macros/_user.html", "render_user_notifications")
+    return json.dumps({
+        'result': True,
+        'html': macro(notifications),
+        'count': count
+    })
 
 
 @bp.route('/compose')

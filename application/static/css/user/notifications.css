@@ -18,6 +18,7 @@ h3 {
 }
 .noti:last-child {
   border-bottom: 1px solid #eaeaea;
+  margin-bottom: 25px;
 }
 .noti .content {
   margin-top: 8px;
