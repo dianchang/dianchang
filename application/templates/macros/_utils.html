@@ -24,7 +24,9 @@
     {% endif %}
 {% endmacro %}
 
-{% macro loading(total, per_page, content_wap_selector, loading_endpoint, delay=500) %}
+
+{# 下拉加载内容 #}
+{% macro loading(total, per, content_wap_selector, loading_url, delay=500) %}
     <div class="dc-loading-flag">
         <span class="for-loading">加载中 <span class="fa fa-spin fa-spinner"></span></span>
         <span class="for-more">更多</span>
@@ -33,16 +35,16 @@
     <script>
         (function () {
             var total = {{ total }};
-            var perPage = {{ per_page }};
-            var offset = (perPage < total) ? perPage : total;
+            var per = {{ per }};
+            var offset = (per < total) ? per : total;
             var loading = false;
             var $loadingFlag = $('.dc-loading-flag');
             var contentWapSelector = "{{ content_wap_selector }}";
-            var loading_endpoint = "{{ loading_endpoint }}";
+            var loading_url = "{{ loading_url }}";
             var $contentWap = $(contentWapSelector);
             var delay = {{ delay }};
 
-            if (total > perPage) {
+            if (total > per) {
                 $loadingFlag.addClass('more');
             }
 
@@ -68,8 +70,16 @@
                 $loadingFlag.removeClass('more').addClass('loading');
 
                 setTimeout(function () {
+                    var url;
+
+                    if (loading_url.indexOf('?') === -1) {
+                        url = loading_url + "?offset=" + offset;
+                    } else {
+                        url = loading_url + "&offset=" + offset;
+                    }
+
                     $.ajax({
-                        url: urlFor(loading_endpoint, {offset: offset}),
+                        url: url,
                         method: 'post',
                         dataType: 'json'
                     }).done(function (response) {

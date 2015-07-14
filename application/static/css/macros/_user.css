@@ -459,15 +459,15 @@
 .dc-home-feed.feed-follow-question .btn-answer {
   margin-left: 7px;
 }
-.dc-home-feed.feed-upvote-answer,
-.dc-home-feed.feed-answer-question {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: 0;
-}
 .dc-home-feed.feed-upvote-answer .dc-answer .title,
 .dc-home-feed.feed-answer-question .dc-answer .title {
   margin-top: -2px;
+}
+.dc-home-feed.feed-upvote-answer .dc-answer,
+.dc-home-feed.feed-answer-question .dc-answer {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 .dc-compose-drafts-page-header {
   border-bottom: 1px solid #eaeaea;

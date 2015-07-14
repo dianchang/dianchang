@@ -9,12 +9,15 @@ from ..utils.helpers import absolute_url_for
 
 bp = Blueprint('user', __name__)
 
+USER_FEEDS_PER = 15
+
 
 @bp.route('/people/<int:uid>')
 def profile(uid):
     """用户主页"""
     user = User.query.get_or_404(uid)
-    feeds = user.feeds.limit(15)
+    feeds = user.feeds.limit(USER_FEEDS_PER)
+    total = user.feeds.count()
     preview = request.args.get('preview', type=int)
     preview = True if preview == 1 else False
     if g.user and g.user.id == uid:
@@ -30,14 +33,16 @@ def profile(uid):
         avatar_uptoken = ""
         background_uptoken = ""
     return render_template('user/profile.html', user=user, preview=preview, feeds=feeds,
-                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken)
+                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken,
+                           total=total, per=USER_FEEDS_PER)
 
 
 @bp.route('/people/<string:url_token>')
 def profile_with_url_token(url_token):
     """用户主页（使用url_token）"""
     user = User.query.filter(User.url_token == url_token).first_or_404()
-    feeds = user.feeds.limit(15)
+    feeds = user.feeds.limit(USER_FEEDS_PER)
+    total = user.feeds.count()
     preview = request.args.get('preview', type=int)
     preview = True if preview == 1 else False
     if g.user and g.user.id == user.id:
@@ -53,7 +58,28 @@ def profile_with_url_token(url_token):
         avatar_uptoken = ""
         background_uptoken = ""
     return render_template('user/profile.html', user=user, preview=preview, feeds=feeds,
-                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken)
+                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken,
+                           total=total, per=USER_FEEDS_PER)
+
+
+@bp.route('/user/<int:uid>/loading_user_feeds', methods=['POST'])
+@UserPermission()
+def loading_user_feeds(uid):
+    """动态加载用户 feeds"""
+    user = User.query.get_or_404(uid)
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+    feeds = g.user.feeds.limit(USER_FEEDS_PER).offset(offset)
+    feeds_count = feeds.count()
+    macro = get_template_attribute("macros/_user.html", "render_user_feeds")
+    return json.dumps({
+        'result': True,
+        'html': macro(feeds),
+        'count': feeds_count
+    })
 
 
 @bp.route('/people/<int:uid>/follow', methods=['POST'])

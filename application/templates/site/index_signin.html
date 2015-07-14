@@ -21,7 +21,7 @@
                     {{ render_user_home_feeds(feeds) }}
                 </div>
 
-                {{ loading(total, per_page, '.feeds-wap', 'site.loading_home_feeds') }}
+                {{ loading(total, per_page, '.feeds-wap', url_for('site.loading_home_feeds')) }}
             </div>
             <div class="col-md-4">
                 <div class="right-wap {% if not g.user.has_finish_guide_steps %}need-guide at-guide-step-{{ g.user.current_guide_step or 1 }}{% endif %}">

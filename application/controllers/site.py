@@ -7,7 +7,7 @@ from ..utils.uploadsets import process_site_image, images
 
 bp = Blueprint('site', __name__)
 
-HOME_FEEDS_PER_PAGE = 10
+HOME_FEEDS_PER_PAGE = 15
 
 
 @bp.route('/')

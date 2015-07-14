@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{#{% from "macros/_topic.html" import render_expert_topics %}#}
-{% from "macros/_user.html" import user_page_header, user_follow_wap, render_home_feeds, render_user_expert_topics %}
+{% from "macros/_user.html" import user_page_header, user_follow_wap, render_user_feeds, render_user_expert_topics %}
+{% from "macros/_utils.html" import loading %}
 
 {% block page_title %}{{ user.name }}{% endblock %}
 {% block page_js %}
@@ -14,7 +14,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                {{ render_home_feeds(feeds) }}
+                <div class="user-feeds-wap">
+                    {{ render_user_feeds(feeds) }}
+                </div>
+
+                {{ loading(total, per, '.user-feeds-wap', url_for('user.loading_user_feeds', uid=user.id)) }}
             </div>
             <div class="col-md-4">
                 <h3>擅长话题</h3>
