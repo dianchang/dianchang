@@ -465,13 +465,37 @@ def query():
     return json.dumps(results)
 
 
+FOLLOWED_QUESTIONS_PER = 15
+
+
 @bp.route('/user/followed_questions')
 @UserPermission()
 def followed_questions():
     """我关注的问题"""
-    page = request.args.get('page', type=int, default=1)
-    questions = g.user.followed_questions.paginate(page, 15)
-    return render_template('user/followed_questions.html', questions=questions)
+    questions = g.user.followed_questions
+    total = questions.count()
+    return render_template('user/followed_questions.html', questions=questions.limit(FOLLOWED_QUESTIONS_PER),
+                           total=total, per=FOLLOWED_QUESTIONS_PER)
+
+
+@bp.route('/user/loading_followed_questions', methods=['POST'])
+@UserPermission()
+def loading_followed_questions():
+    """加载关注的问题"""
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    questions = g.user.followed_questions.limit(FOLLOWED_QUESTIONS_PER).offset(offset)
+    count = questions.count()
+    macro = get_template_attribute("macros/_user.html", "render_followed_questions")
+    return json.dumps({
+        'result': True,
+        'html': macro(questions),
+        'count': count
+    })
 
 
 @bp.route('/user/<int:uid>/get_card', methods=['POST'])

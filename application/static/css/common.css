@@ -270,6 +270,7 @@ a.dc-img-text-link-wap:focus span {
   color: #999;
   cursor: pointer;
   display: none;
+  margin-top: 20px;
 }
 .dc-loading-flag:hover {
   background-color: #f6f6f6;

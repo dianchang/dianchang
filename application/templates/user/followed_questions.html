@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
-{% from "macros/_question.html" import question_follow_wap %}
-{% from "macros/_utils.html" import pagination %}
+{% from "macros/_user.html" import render_followed_questions %}
+{% from "macros/_utils.html" import loading %}
 
 {% block page_title %}我关注的问题{% endblock %}
 {% block page_js %}
@@ -11,35 +11,10 @@
     <div class="container">
         <h3>关注的问题</h3>
 
-        {% for item in questions.items %}
-            {% set question = item.question %}
-            <div class="question">
-                <div class="title">
-                    <a href="{{ url_for('question.view', uid=question.id) }}">
-                        {{ question.title }}</a>
-                </div>
+        <div class="followed-questions-wap">
+            {{ render_followed_questions(questions) }}
+        </div>
 
-                <div class="answers-count text-light">
-                    {{ question.answers_count }} 个回答
-                </div>
-
-                <div class="commands">
-                    {{ question_follow_wap(question) }}
-
-                    {% if not g.user or not question.answered_by_user(g.user.id) %}
-                        <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="text-light">写答案</a>
-                    {% endif %}
-                </div>
-
-                {% if item.last_followed_in_that_day(g.user.id) %}
-                    <div class="date-wap">
-                        <div class="day">{{ item.created_at.date()|day }}</div>
-                        <div class="month">{{ item.created_at.date()|cn_month }}</div>
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-
-        {{ pagination(questions) }}
+        {{ loading(total, per, '.followed-questions-wap', url_for('user.loading_followed_questions')) }}
     </div>
 {% endblock %}
