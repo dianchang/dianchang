@@ -261,7 +261,7 @@ def loading_notifications():
     })
 
 
-COMPOSE_FEEDS_PER = 10
+COMPOSE_FEEDS_PER = 1
 
 
 @bp.route('/compose')
@@ -269,13 +269,35 @@ COMPOSE_FEEDS_PER = 10
 def compose():
     """撰写"""
     feeds = g.user.compose_feeds.filter(~ComposeFeed.ignore)
-    html = render_template('user/compose.html', feeds=feeds.limit(COMPOSE_FEEDS_PER))
+    total = feeds.count()
+    html = render_template('user/compose.html', feeds=feeds.limit(COMPOSE_FEEDS_PER),
+                           total=total, per=COMPOSE_FEEDS_PER)
 
     for feed in feeds.filter(~ComposeFeed.unread):
         feed.unread = False
         db.session.add(feed)
     db.session.commit()
     return html
+
+
+@bp.route('/user/loading_compose_feeds', methods=['POST'])
+@UserPermission()
+def loading_compose_feeds():
+    """加载撰写feed"""
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+
+    feeds = g.user.compose_feeds.filter(~ComposeFeed.ignore).limit(COMPOSE_FEEDS_PER).offset(offset)
+    feeds_count = feeds.count()
+    macro = get_template_attribute("macros/_user.html", "render_compose_feeds")
+    return json.dumps({
+        'result': True,
+        'html': macro(feeds),
+        'count': feeds_count
+    })
 
 
 @bp.route('/compose_feed/<int:uid>/ignore', methods=['POST'])

@@ -1,93 +1,6 @@
 {% extends "layout.html" %}
-{% from "macros/_topic.html" import render_expert_topic %}
-{% from "macros/_user.html" import compose_drafts_page_header, render_user_expert_topics %}
-
-{% macro render_compose_feed(feed) %}
-    {% set question = feed.question %}
-
-    {% if feed.kind == COMPOSE_FEED_KIND.INVITE_TO_ANSWER %}
-        {% set is_invited = True %}
-    {% elif feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC
-            or feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ALL
-            or feed.kind == COMPOSE_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_ANSWERD_TOPIC %}
-        {% set is_invited = False %}
-    {% endif %}
-
-    <div class="question-wap {% if is_invited %}invited{% endif %} {% if feed.unread %}new{% endif %}">
-        <div class="new-flag"></div>
-        <div class="question">
-            {% if is_invited %}
-                {% set inviter = feed.invitation.inviter %}
-
-                <div class="action text-light">
-                    <a href="{{ inviter.profile_url }}" class="dc-show-user-card dc-img-text-link-wap"
-                       data-id="{{ inviter.id }}">
-                        <img src="{{ inviter.avatar_url }}" alt="" class="img-circle"/>
-                        <span class="name text-light">{{ inviter.name }}</span></a> 邀请你回答问题
-                    <span class="divider">·</span>
-                    <span class="time">{{ feed.created_at|timesince }}</span>
-                </div>
-            {% else %}
-                <div class="topics">
-                    {% for topic in question.topics %}
-                        {% set topic = topic.topic %}
-                        <a href="{{ url_for('topic.view', uid=topic.id) }}" class="dc-topic dc-show-topic-card"
-                           data-id="{{ topic.id }}">
-                            {{ topic.name }}</a>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <div class="title">
-                <a href="{{ url_for('question.view', uid=question.id) }}">{{ question.title }}</a>
-            </div>
-
-            <div class="desc">
-                {{ question.desc|safe }}
-            </div>
-
-            <div class="meta text-light">
-                {% if question.answers_count %}
-                    {{ question.answers_count }} 个回答
-                {% else %}
-                    还没有回答
-                {% endif %}
-
-                <span class="divider">·</span>
-
-                <span class="time">提问于 {{ question.created_at|timesince }}</span>
-            </div>
-
-            <div class="commands">
-                {#                {% if not question.answered_by_user() %}#}
-                <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-light">
-                    写答案</a>
-
-                <a href="javascript: void(0)" class="btn btn-white btn-ignore-feed" data-id="{{ feed.id }}">忽略</a>
-                {#                {% endif %}#}
-
-                <a href="javascript: void(0)"
-                   class="{% if g.user and question.followed_by_user(g.user.id) %}followed{% endif %}
-                        text-light btn-follow-question" data-id="{{ question.id }}">
-                    <span class="for-non-followed">+ 关注问题</span>
-                    <span class="for-followed">已关注</span>
-                    <span class="followers-count">{{ question.followers_count }}</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="ignore-tip text-light">
-            {% if is_invited %}
-                已忽略 {{ inviter.name }} 的邀请
-            {% else %}
-                已忽略该问题
-            {% endif %}
-
-            <span class="divider">·</span>
-            <a href="javascript: void(0)" data-id="{{ feed.id }}" class="btn-recover-feed text-light">撤销</a>
-        </div>
-    </div>
-{% endmacro %}
+{% from "macros/_user.html" import compose_drafts_page_header, render_user_expert_topics, render_compose_feeds %}
+{% from "macros/_utils.html" import loading %}
 
 {% block page_title %}撰写{% endblock %}
 {% block page_js %}
@@ -100,9 +13,11 @@
             <div class="col-md-8">
                 {{ compose_drafts_page_header() }}
 
-                {% for feed in feeds %}
-                    {{ render_compose_feed(feed) }}
-                {% endfor %}
+                <div class="compose-feeds-wap">
+                    {{ render_compose_feeds(feeds) }}
+                </div>
+
+                {{ loading(total, per, '.compose-feeds-wap', url_for('user.loading_compose_feeds')) }}
             </div>
 
             <div class="col-md-4">
