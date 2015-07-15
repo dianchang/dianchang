@@ -247,10 +247,16 @@ def add_parent_topic(uid):
     if parent_topic.merge_to_topic_id:
         parent_topic.merge_to_topic.add_child_topic(topic.id, from_merge=True)
 
-    # log
+    # 子话题 log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
                         after=parent_topic.name, after_id=parent_topic.id)
     db.session.add(log)
+
+    # 父话题 log
+    parent_topic_log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_CHILD_TOPIC, topic_id=parent_topic.id,
+                                     user_id=g.user.id, after=topic.name, after_id=uid)
+    db.session.add(parent_topic_log)
+
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'parent_topic_edit_wap')
@@ -278,10 +284,16 @@ def remove_parent_topic(uid, parent_topic_id):
     if parent_topic.merge_to_topic_id:
         parent_topic.merge_to_topic.remove_child_topic(topic.id, from_merge=True)
 
-    # Remove parent topic log
+    # 子话题 log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC, topic_id=uid, user_id=g.user.id,
                         before=parent_topic.name, before_id=parent_topic_id)
     db.session.add(log)
+
+    # 父话题 log
+    parent_topic_log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC, topic_id=parent_topic.id,
+                                     user_id=g.user.id, before=topic.name, before_id=uid)
+    db.session.add(parent_topic_log)
+
     db.session.commit()
 
     return json.dumps({'result': True})
@@ -316,10 +328,16 @@ def add_child_topic(uid):
     if topic.merge_to_topic_id:
         topic.merge_to_topic.add_child_topic(child_topic.id, from_merge=True)
 
-    # Add child topic log
+    # 父话题 log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
                         after=child_topic.name, after_id=child_topic.id)
     db.session.add(log)
+
+    # 子话题 log
+    child_topic_log = PublicEditLog(kind=TOPIC_EDIT_KIND.ADD_PARENT_TOPIC, topic_id=child_topic.id, user_id=g.user.id,
+                                    after=topic.name, after_id=uid)
+    db.session.add(child_topic_log)
+
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'child_topic_edit_wap')
@@ -347,10 +365,16 @@ def remove_child_topic(uid, child_topic_id):
     if topic.merge_to_topic_id:
         topic.merge_to_topic.remove_child_topic(child_topic.id, from_merge=True)
 
-    # log
+    # 父话题 log
     log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_CHILD_TOPIC, topic_id=uid, user_id=g.user.id,
                         before=child_topic.name, before_id=child_topic_id)
     db.session.add(log)
+
+    # 子话题 log
+    child_topic_log = PublicEditLog(kind=TOPIC_EDIT_KIND.REMOVE_PARENT_TOPIC, topic_id=child_topic.id,
+                                    user_id=g.user.id, before=topic.name, before_id=uid)
+    db.session.add(child_topic_log)
+
     db.session.commit()
 
     return json.dumps({'result': True})
