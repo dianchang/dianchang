@@ -249,7 +249,7 @@
                 <div class="related-topic media">
                     <div class="media-left">
                         <a href="{{ url_for('topic.view', uid=relevant_topic.id) }}">
-                            <img src="{{ relevant_topic.avatar_url }}" alt="" class="dc-show-topic-card"
+                            <img src="{{ relevant_topic.avatar_url }}" alt="" class="dc-show-topic-card img-rounded"
                                  data-id="{{ relevant_topic.id }}"/></a>
                     </div>
                     <div class="media-body">
@@ -278,7 +278,7 @@
          data-show-order="{{ expert_topic.show_order }}" data-id="{{ expert_topic.id }}">
         <div class="media-left">
             <a href="{{ url_for('topic.view', uid=topic.id) }}">
-                <img src="{{ topic.avatar_url }}" alt="" class="dc-show-topic-card"
+                <img src="{{ topic.avatar_url }}" alt="" class="dc-show-topic-card img-rounded"
                      data-id="{{ topic.id }}"/></a>
         </div>
         <div class="media-body">
