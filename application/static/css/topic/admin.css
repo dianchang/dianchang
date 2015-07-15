@@ -1,23 +1,23 @@
 .navbar {
   margin-bottom: 0;
 }
-.topic-meta-wap .media-left {
+#main-wap .topic-meta-wap .media-left {
   padding-right: 30px;
 }
-.topic-meta-wap .avatar-wap {
+#main-wap .topic-meta-wap .avatar-wap {
   position: relative;
   width: 90px;
   height: 90px;
   margin-bottom: 30px;
 }
-.topic-meta-wap .avatar-wap input[type='file'] {
+#main-wap .topic-meta-wap .avatar-wap input[type='file'] {
   display: none;
 }
-.topic-meta-wap .avatar-wap img {
+#main-wap .topic-meta-wap .avatar-wap img {
   width: 90px;
   height: 90px;
 }
-.topic-meta-wap .avatar-wap .btn-upload-topic-avatar {
+#main-wap .topic-meta-wap .avatar-wap .btn-upload-topic-avatar {
   width: 90px;
   display: block;
   position: absolute;
@@ -29,37 +29,37 @@
   color: white;
   cursor: pointer;
 }
-.topic-meta-wap .avatar-wap .btn-upload-topic-avatar:hover {
+#main-wap .topic-meta-wap .avatar-wap .btn-upload-topic-avatar:hover {
   background-color: rgba(0, 0, 0, 0.7);
 }
-.topic-meta-wap .avatar-wap .btn-upload-topic-avatar.locked {
+#main-wap .topic-meta-wap .avatar-wap .btn-upload-topic-avatar.locked {
   cursor: default;
 }
-.topic-meta-wap .avatar-wap .btn-upload-topic-avatar.locked:hover {
+#main-wap .topic-meta-wap .avatar-wap .btn-upload-topic-avatar.locked:hover {
   background-color: rgba(0, 0, 0, 0.6);
 }
-.topic-meta-wap .name-wap {
+#main-wap .topic-meta-wap .name-wap {
   margin-bottom: 15px;
 }
-.topic-meta-wap .name-wap .name-inner-wap .name {
+#main-wap .topic-meta-wap .name-wap .name-inner-wap .name {
   font-size: 24px;
   color: #333;
   font-weight: bold;
 }
-.topic-meta-wap .name-wap .name-inner-wap .locked-flag {
+#main-wap .topic-meta-wap .name-wap .name-inner-wap .locked-flag {
   margin-left: 10px;
 }
-.topic-meta-wap .name-wap .name-inner-wap .btn-edit-name {
+#main-wap .topic-meta-wap .name-wap .name-inner-wap .btn-edit-name {
   margin-left: 10px;
   display: none;
 }
-.topic-meta-wap .name-wap .name-inner-wap:hover .btn-edit-name {
+#main-wap .topic-meta-wap .name-wap .name-inner-wap:hover .btn-edit-name {
   display: inline-block;
 }
-.topic-meta-wap .name-wap .form-elements {
+#main-wap .topic-meta-wap .name-wap .form-elements {
   display: none;
 }
-.topic-meta-wap .name-wap .form-elements input {
+#main-wap .topic-meta-wap .name-wap .form-elements input {
   font-size: 24px;
   display: block;
   height: auto;
@@ -68,117 +68,117 @@
   margin-bottom: 10px;
   padding: 6px 12px;
 }
-.topic-meta-wap .name-wap .form-elements .commands {
+#main-wap .topic-meta-wap .name-wap .form-elements .commands {
   text-align: right;
 }
-.topic-meta-wap .name-wap .form-elements .commands .btn-cancel-edit-name {
+#main-wap .topic-meta-wap .name-wap .form-elements .commands .btn-cancel-edit-name {
   margin-right: 5px;
 }
-.topic-meta-wap .name-wap.edit .name-inner-wap {
+#main-wap .topic-meta-wap .name-wap.edit .name-inner-wap {
   display: none;
 }
-.topic-meta-wap .name-wap.edit .form-elements {
+#main-wap .topic-meta-wap .name-wap.edit .form-elements {
   display: block;
 }
-.topic-meta-wap .wiki {
+#main-wap .topic-meta-wap .wiki {
   margin-bottom: 25px;
 }
-.topic-meta-wap .wiki .locked-flag {
+#main-wap .topic-meta-wap .wiki .locked-flag {
   margin-left: 10px;
 }
-.form-group {
+#main-wap .form-group {
   border-top: 1px solid #eaeaea;
   padding-top: 30px;
   margin-bottom: 40px;
 }
-.form-group.no-border {
+#main-wap .form-group.no-border {
   border-top: 0;
   padding-top: 0;
 }
-.form-group .col-sm-2 {
+#main-wap .form-group .col-sm-2 {
   width: 120px;
 }
-.form-group .col-sm-10 {
+#main-wap .form-group .col-sm-10 {
   width: 560px;
   padding: 0;
 }
-.form-group label {
+#main-wap .form-group label {
   padding: 0;
   font-size: 16px;
 }
-.form-group .input-wap {
+#main-wap .form-group .input-wap {
   background: #f5f6f5;
   border-radius: 2px;
   padding: 15px 20px;
   margin-bottom: 25px;
 }
-.form-group .input-wap .help-block {
+#main-wap .form-group .input-wap .help-block {
   color: #333;
   margin-top: 0;
   margin-bottom: 15px;
 }
-.form-group .input-wap input {
+#main-wap .form-group .input-wap input {
   width: 300px;
   display: inline-block;
   vertical-align: middle;
   margin-right: 5px;
 }
-.form-group .synonyms {
+#main-wap .form-group .synonyms {
   padding-left: 18px;
   font-size: 16px;
   margin-top: 15px;
 }
-.form-group .synonyms li {
+#main-wap .form-group .synonyms li {
   margin-bottom: 8px;
 }
-.form-group .synonyms .btn-remove-topic-synonym {
+#main-wap .form-group .synonyms .btn-remove-topic-synonym {
   margin-left: 10px;
   font-size: 14px;
 }
-.form-group .root-topic-tip {
+#main-wap .form-group .root-topic-tip {
   font-size: 16px;
   color: #999;
 }
-.form-group .topics-path a {
+#main-wap .form-group .topics-path a {
   font-size: 16px;
   color: #009999;
 }
-.form-group .topics-path .fa {
+#main-wap .form-group .topics-path .fa {
   margin: 0 5px;
   color: #999;
 }
-.tip {
+#main-wap .tip {
   font-size: 24px;
   padding-top: 30px;
   font-weight: bold;
   text-align: right;
 }
-.btn-apply-for-deletion {
+#main-wap .btn-apply-for-deletion {
   color: #e49176;
   border-color: #e49176;
 }
-.btn-apply-for-deletion:focus,
-.btn-apply-for-deletion:hover,
-.btn-apply-for-deletion:active,
-.btn-apply-for-deletion:active:focus {
+#main-wap .btn-apply-for-deletion:focus,
+#main-wap .btn-apply-for-deletion:hover,
+#main-wap .btn-apply-for-deletion:active,
+#main-wap .btn-apply-for-deletion:active:focus {
   background-color: #fff;
   border-color: #e49176;
   color: #dc6f4b;
 }
-.topic-edit-wap {
+#main-wap .topic-edit-wap {
   position: relative;
   display: inline-block;
   margin: 0 15px 15px 0;
 }
-.topic-edit-wap .dc-topic {
+#main-wap .topic-edit-wap .dc-topic {
   margin: 0;
   padding-right: 22px;
 }
-.topic-edit-wap.locked .dc-topic {
+#main-wap .topic-edit-wap.locked .dc-topic {
   padding-right: 10px;
 }
-.topic-edit-wap .btn-remove-child-topic,
-.topic-edit-wap .btn-remove-parent-topic {
+#main-wap .topic-edit-wap .btn-remove-child-topic,
+#main-wap .topic-edit-wap .btn-remove-parent-topic {
   position: absolute;
   right: 0;
   top: 0;
@@ -191,78 +191,78 @@
   box-sizing: border-box;
   padding-top: 1px;
 }
-.topic-edit-wap .btn-remove-child-topic:hover,
-.topic-edit-wap .btn-remove-parent-topic:hover {
+#main-wap .topic-edit-wap .btn-remove-child-topic:hover,
+#main-wap .topic-edit-wap .btn-remove-parent-topic:hover {
   color: #333 !important;
 }
-.merge-topic-wap .merge-to-topic-wap {
+#main-wap .merge-topic-wap .merge-to-topic-wap {
   display: none;
 }
-.merge-topic-wap .merge-to-topic-wap a {
+#main-wap .merge-topic-wap .merge-to-topic-wap a {
   color: #009999;
 }
-.merge-topic-wap .merge-to-topic-wap .btn-unmerge-current-topic {
+#main-wap .merge-topic-wap .merge-to-topic-wap .btn-unmerge-current-topic {
   margin-left: 10px;
 }
-.merge-topic-wap.merged .merge-to-topic-wap {
+#main-wap .merge-topic-wap.merged .merge-to-topic-wap {
   display: block;
 }
-.merge-topic-wap.merged .merge-topic-input-wap {
+#main-wap .merge-topic-wap.merged .merge-topic-input-wap {
   display: none;
 }
-.merged-topics {
+#main-wap .merged-topics {
   margin-top: 20px;
   padding-left: 20px;
 }
-.merged-topics li {
+#main-wap .merged-topics li {
   margin-bottom: 8px;
 }
-.topics-kind-wap,
-.lock-wap {
+#main-wap .topics-kind-wap,
+#main-wap .lock-wap {
   background-color: #f5f6f5;
   padding: 20px 20px;
   margin-bottom: 40px;
 }
-.topics-kind-wap .sub-title,
-.lock-wap .sub-title {
+#main-wap .topics-kind-wap .sub-title,
+#main-wap .lock-wap .sub-title {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 15px;
 }
-.topics-kind-wap .radio {
+#main-wap .topics-kind-wap .radio {
   margin-bottom: 14px;
 }
-.topics-kind-wap .radio:last-child {
+#main-wap .topics-kind-wap .radio:last-child {
   margin-bottom: 0;
 }
-.topics-kind-wap .locked-flag {
+#main-wap .topics-kind-wap .locked-flag {
   color: #999;
   margin-left: 10px;
 }
-.topics-kind-wap .other-kind-wap {
+#main-wap .topics-kind-wap .other-kind-wap {
   margin-top: -5px;
 }
-.topics-kind-wap .other-kind-wap.empty .inner-wap {
+#main-wap .topics-kind-wap .other-kind-wap.empty .inner-wap {
   display: none;
 }
-.topics-kind-wap .other-kind-wap.on.edit .other-kind-edit-wap {
+#main-wap .topics-kind-wap .other-kind-wap.on.edit .other-kind-edit-wap {
   display: block;
 }
-.topics-kind-wap .other-kind-wap .divider {
+#main-wap .topics-kind-wap .other-kind-wap .divider {
   margin: 0 2px;
 }
-.topics-kind-wap .other-kind-wap .other-kind-edit-wap {
+#main-wap .topics-kind-wap .other-kind-wap .other-kind-edit-wap {
   display: none;
 }
-.topics-kind-wap .other-kind-wap .other-kind-edit-wap input {
+#main-wap .topics-kind-wap .other-kind-wap .other-kind-edit-wap input {
   display: inline-block;
   width: 160px;
   vertical-align: middle;
   margin-right: 5px;
 }
-.lock-wap .checkbox {
+#main-wap .lock-wap .checkbox {
   margin-bottom: 14px;
 }
-.lock-wap .checkbox:last-child {
+#main-wap .lock-wap .checkbox:last-child {
   margin-bottom: 0;
 }

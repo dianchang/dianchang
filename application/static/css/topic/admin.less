@@ -4,346 +4,348 @@
   margin-bottom: 0;
 }
 
-.topic-meta-wap {
-  .media-left {
-    padding-right: 30px;
-  }
-
-  .avatar-wap {
-    position: relative;
-    width: 90px;
-    height: 90px;
-    margin-bottom: 30px;
-
-    input[type='file'] {
-      display: none;
+#main-wap {
+  .topic-meta-wap {
+    .media-left {
+      padding-right: 30px;
     }
 
-    img {
+    .avatar-wap {
+      position: relative;
       width: 90px;
       height: 90px;
-    }
+      margin-bottom: 30px;
 
-    .btn-upload-topic-avatar {
-      width: 90px;
-      display: block;
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      text-align: center;
-      padding: 3px 0;
-      background-color: rgba(0, 0, 0, .6);
-      color: white;
-      cursor: pointer;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, .7);
+      input[type='file'] {
+        display: none;
       }
 
-      &.locked {
-        cursor: default;
+      img {
+        width: 90px;
+        height: 90px;
+      }
+
+      .btn-upload-topic-avatar {
+        width: 90px;
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        padding: 3px 0;
+        background-color: rgba(0, 0, 0, .6);
+        color: white;
+        cursor: pointer;
 
         &:hover {
-          background-color: rgba(0, 0, 0, .6);
+          background-color: rgba(0, 0, 0, .7);
+        }
+
+        &.locked {
+          cursor: default;
+
+          &:hover {
+            background-color: rgba(0, 0, 0, .6);
+          }
         }
       }
     }
-  }
 
-  .name-wap {
-    margin-bottom: 15px;
+    .name-wap {
+      margin-bottom: 15px;
 
-    .name-inner-wap {
-      .name {
-        font-size: 24px;
-        color: #333;
-        font-weight: bold;
+      .name-inner-wap {
+        .name {
+          font-size: 24px;
+          color: #333;
+          font-weight: bold;
+        }
+
+        .locked-flag {
+          margin-left: 10px;
+        }
+
+        .btn-edit-name {
+          margin-left: 10px;
+          display: none;
+        }
+
+        &:hover .btn-edit-name {
+          display: inline-block;
+        }
       }
+
+      .form-elements {
+        display: none;
+
+        input {
+          font-size: 24px;
+          display: block;
+          height: auto;
+          color: #333;
+          font-weight: bold;
+          margin-bottom: 10px;
+          padding: 6px 12px;
+        }
+
+        .commands {
+          text-align: right;
+
+          .btn-cancel-edit-name {
+            margin-right: 5px;
+          }
+        }
+      }
+
+      &.edit {
+        .name-inner-wap {
+          display: none;
+        }
+
+        .form-elements {
+          display: block;
+        }
+      }
+    }
+
+    .wiki {
+      margin-bottom: 25px;
 
       .locked-flag {
         margin-left: 10px;
       }
-
-      .btn-edit-name {
-        margin-left: 10px;
-        display: none;
-      }
-
-      &:hover .btn-edit-name {
-        display: inline-block;
-      }
-    }
-
-    .form-elements {
-      display: none;
-
-      input {
-        font-size: 24px;
-        display: block;
-        height: auto;
-        color: #333;
-        font-weight: bold;
-        margin-bottom: 10px;
-        padding: 6px 12px;
-      }
-
-      .commands {
-        text-align: right;
-
-        .btn-cancel-edit-name {
-          margin-right: 5px;
-        }
-      }
-    }
-
-    &.edit {
-      .name-inner-wap {
-        display: none;
-      }
-
-      .form-elements {
-        display: block;
-      }
     }
   }
 
-  .wiki {
-    margin-bottom: 25px;
+  .form-group {
+    border-top: 1px solid @border-color;
+    padding-top: 30px;
+    margin-bottom: 40px;
 
-    .locked-flag {
-      margin-left: 10px;
-    }
-  }
-}
-
-.form-group {
-  border-top: 1px solid @border-color;
-  padding-top: 30px;
-  margin-bottom: 40px;
-
-  &.no-border {
-    border-top: 0;
-    padding-top: 0;
-  }
-
-  .col-sm-2 {
-    width: 120px;
-  }
-  .col-sm-10 {
-    width: 560px;
-    padding: 0;
-  }
-
-  label {
-    padding: 0;
-    font-size: 16px;
-  }
-
-  .input-wap {
-    background: @background-gray;
-    border-radius: 2px;
-    padding: 15px 20px;
-    margin-bottom: 25px;
-
-    .help-block {
-      color: #333;
-      margin-top: 0;
-      margin-bottom: 15px;
+    &.no-border {
+      border-top: 0;
+      padding-top: 0;
     }
 
-    input {
-      width: 300px;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 5px;
+    .col-sm-2 {
+      width: 120px;
     }
-  }
-
-  .synonyms {
-    padding-left: 18px;
-    font-size: 16px;
-    margin-top: 15px;
-
-    li {
-      margin-bottom: 8px;
+    .col-sm-10 {
+      width: 560px;
+      padding: 0;
     }
 
-    .btn-remove-topic-synonym {
-      margin-left: 10px;
-      font-size: 14px;
-    }
-  }
-
-  .root-topic-tip {
-    font-size: 16px;
-    color: #999;
-  }
-
-  .topics-path {
-    a {
+    label {
+      padding: 0;
       font-size: 16px;
-      color: @main-color;
     }
 
-    .fa {
-      margin: 0 5px;
-      color: #999;
-    }
-  }
-}
+    .input-wap {
+      background: @background-gray;
+      border-radius: 2px;
+      padding: 15px 20px;
+      margin-bottom: 25px;
 
-.tip {
-  font-size: 24px;
-  padding-top: 30px;
-  font-weight: bold;
-  text-align: right;
-}
-
-.btn-apply-for-deletion {
-  color: #e49176;
-  border-color: #e49176;
-
-  &:focus,
-  &:hover,
-  &:active,
-  &:active:focus {
-    background-color: #fff;
-    border-color: #e49176;
-    color: darken(#e49176, 10%);
-  }
-}
-
-.topic-edit-wap {
-  position: relative;
-  display: inline-block;
-  margin: 0 15px 15px 0;
-
-  .dc-topic {
-    margin: 0;
-    padding-right: 22px;
-  }
-
-  &.locked .dc-topic {
-    padding-right: 10px;
-  }
-
-  .btn-remove-child-topic,
-  .btn-remove-parent-topic {
-    position: absolute;
-    right: 0;
-    top: 0;
-    cursor: pointer;
-    width: 24px;
-    height: 24px;
-    display: inline-block;
-    line-height: 1;
-    text-align: center;
-    box-sizing: border-box;
-    padding-top: 1px;
-
-    &:hover {
-      color: #333 !important;
-    }
-  }
-}
-
-.merge-topic-wap {
-  .merge-to-topic-wap {
-    display: none;
-
-    a {
-      color: @main-color;
-    }
-
-    .btn-unmerge-current-topic {
-      margin-left: 10px;
-    }
-  }
-
-  &.merged {
-    .merge-to-topic-wap {
-      display: block;
-    }
-    .merge-topic-input-wap {
-      display: none;
-    }
-  }
-}
-
-.merged-topics {
-  margin-top: 20px;
-  padding-left: 20px;
-
-  li {
-    margin-bottom: 8px;
-  }
-}
-
-.topics-kind-wap,
-.lock-wap {
-  background-color: @background-gray;
-  padding: 20px 20px;
-  margin-bottom: 40px;
-
-  .sub-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-}
-
-.topics-kind-wap {
-  .radio {
-    margin-bottom: 14px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  .locked-flag {
-    color: #999;
-    margin-left: 10px;
-  }
-
-  .other-kind-wap {
-    margin-top: -5px;
-
-    &.empty {
-      .inner-wap {
-        display: none
+      .help-block {
+        color: #333;
+        margin-top: 0;
+        margin-bottom: 15px;
       }
-    }
-
-    &.on.edit {
-      .other-kind-edit-wap {
-        display: block;
-      }
-    }
-
-    .divider {
-      margin: 0 2px;
-    }
-
-    .other-kind-edit-wap {
-      display: none;
 
       input {
+        width: 300px;
         display: inline-block;
-        width: 160px;
         vertical-align: middle;
         margin-right: 5px;
       }
     }
+
+    .synonyms {
+      padding-left: 18px;
+      font-size: 16px;
+      margin-top: 15px;
+
+      li {
+        margin-bottom: 8px;
+      }
+
+      .btn-remove-topic-synonym {
+        margin-left: 10px;
+        font-size: 14px;
+      }
+    }
+
+    .root-topic-tip {
+      font-size: 16px;
+      color: #999;
+    }
+
+    .topics-path {
+      a {
+        font-size: 16px;
+        color: @main-color;
+      }
+
+      .fa {
+        margin: 0 5px;
+        color: #999;
+      }
+    }
   }
-}
 
-.lock-wap {
-  .checkbox {
-    margin-bottom: 14px;
+  .tip {
+    font-size: 24px;
+    padding-top: 30px;
+    font-weight: bold;
+    text-align: right;
+  }
 
-    &:last-child {
-      margin-bottom: 0;
+  .btn-apply-for-deletion {
+    color: #e49176;
+    border-color: #e49176;
+
+    &:focus,
+    &:hover,
+    &:active,
+    &:active:focus {
+      background-color: #fff;
+      border-color: #e49176;
+      color: darken(#e49176, 10%);
+    }
+  }
+
+  .topic-edit-wap {
+    position: relative;
+    display: inline-block;
+    margin: 0 15px 15px 0;
+
+    .dc-topic {
+      margin: 0;
+      padding-right: 22px;
+    }
+
+    &.locked .dc-topic {
+      padding-right: 10px;
+    }
+
+    .btn-remove-child-topic,
+    .btn-remove-parent-topic {
+      position: absolute;
+      right: 0;
+      top: 0;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      line-height: 1;
+      text-align: center;
+      box-sizing: border-box;
+      padding-top: 1px;
+
+      &:hover {
+        color: #333 !important;
+      }
+    }
+  }
+
+  .merge-topic-wap {
+    .merge-to-topic-wap {
+      display: none;
+
+      a {
+        color: @main-color;
+      }
+
+      .btn-unmerge-current-topic {
+        margin-left: 10px;
+      }
+    }
+
+    &.merged {
+      .merge-to-topic-wap {
+        display: block;
+      }
+      .merge-topic-input-wap {
+        display: none;
+      }
+    }
+  }
+
+  .merged-topics {
+    margin-top: 20px;
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 8px;
+    }
+  }
+
+  .topics-kind-wap,
+  .lock-wap {
+    background-color: @background-gray;
+    padding: 20px 20px;
+    margin-bottom: 40px;
+
+    .sub-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+  }
+
+  .topics-kind-wap {
+    .radio {
+      margin-bottom: 14px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .locked-flag {
+      color: #999;
+      margin-left: 10px;
+    }
+
+    .other-kind-wap {
+      margin-top: -5px;
+
+      &.empty {
+        .inner-wap {
+          display: none
+        }
+      }
+
+      &.on.edit {
+        .other-kind-edit-wap {
+          display: block;
+        }
+      }
+
+      .divider {
+        margin: 0 2px;
+      }
+
+      .other-kind-edit-wap {
+        display: none;
+
+        input {
+          display: inline-block;
+          width: 160px;
+          vertical-align: middle;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  .lock-wap {
+    .checkbox {
+      margin-bottom: 14px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }
