@@ -21,6 +21,7 @@ def index():
         total = g.user.home_feeds.count()
         hot_topics = Topic.query. \
             filter(~Topic.hide_from_hot). \
+            filter(Topic.avg != 0). \
             order_by(Topic.avg.desc()).limit(8)
         return render_template('site/index_signin.html', hot_topics=hot_topics, feeds=feeds,
                                total=total, per_page=HOME_FEEDS_PER_PAGE)
