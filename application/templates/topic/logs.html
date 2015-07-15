@@ -116,9 +116,9 @@
                                 <div class="content">
                                     {% if log.kind == TOPIC_EDIT_KIND.CREATE %}
                                     {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_AVATAR %}
-                                        <img src="{{ log.before }}" alt="" class="topic-avatar"/>
+                                        <img src="{{ log.before }}" alt="" class="topic-avatar img-rounded"/>
                                         <span class="fa fa-long-arrow-right"></span>
-                                        <img src="{{ log.after }}" alt="" class="topic-avatar"/>
+                                        <img src="{{ log.after }}" alt="" class="topic-avatar img-rounded"/>
                                     {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_NAME %}
                                         <del class="topic">
                                             <a href="{{ url_for('topic.view', uid=topic.id) }}"
