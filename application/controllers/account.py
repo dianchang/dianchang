@@ -588,24 +588,6 @@ def _remove_repeats(seq):
     return [x for x in seq if not (x in seen or seen_add(x))]
 
 
-@bp.route('/account/generate_home_feeds', methods=['POST'])
-@UserPermission()
-def generate_home_feeds():
-    """为新用户生成首页FEED"""
-    for following in g.user.followings:
-        if g.user.home_feeds.filter(HomeFeed.sender_id == following.following_id).count() == 0:
-            for home_feed_backup in HomeFeedBackup.query. \
-                    filter(HomeFeedBackup.sender_id == following.following_id).limit(10):
-                home_feed = HomeFeed(kind=home_feed_backup.kind, sender_id=home_feed_backup.sender_id,
-                                     user_id=g.user.id, question_id=home_feed_backup.question_id,
-                                     answer_id=home_feed_backup.answer_id)
-                db.session.add(home_feed)
-    db.session.commit()
-    return json.dumps({
-        'result': True
-    })
-
-
 @bp.route('/account/finish_guide', methods=['POST'])
 @UserPermission()
 def finish_guide():

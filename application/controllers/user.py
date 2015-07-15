@@ -2,7 +2,8 @@
 from datetime import datetime, date
 from flask import Blueprint, render_template, url_for, json, g, request, get_template_attribute
 from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
-    ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer, NOTIFICATION_KIND_TYPE
+    ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer, NOTIFICATION_KIND_TYPE, \
+    HomeFeedBackup, HomeFeed
 from ..utils.permissions import UserPermission
 from ..utils._qiniu import qiniu
 from ..utils.helpers import absolute_url_for
@@ -95,7 +96,13 @@ def follow(uid):
         user.followers_count -= 1
         db.session.add(g.user)
         db.session.add(user)
+
+        # HOME FEED：从本人首页 feed 中删除该用户的相关记录
+        for home_feed in g.user.home_feeds.filter(HomeFeed.sender_id == uid):
+            db.session.delete(home_feed)
+
         db.session.commit()
+
         return json.dumps({
             'result': True,
             'followed': False,
@@ -103,42 +110,52 @@ def follow(uid):
         })
     else:
         # 关注
-        if g.user.id != uid:
-            follow_user = FollowUser(follower_id=g.user.id, following_id=uid)
-            db.session.add(follow_user)
-
-            g.user.followings_count += 1
-            user.followers_count += 1
-            db.session.add(g.user)
-            db.session.add(user)
-
-            # NOTI: 插入被关注者的 NOTI（无需合并）
-            noti = user.notifications.filter(
-                Notification.kind == NOTIFICATION_KIND.FOLLOW_ME,
-                Notification.senders_list == json.dumps([g.user.id])).first()
-            if not noti:
-                noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, senders_list=json.dumps([g.user.id]))
-                user.notifications.append(noti)
-                db.session.add(user)
-
-            # USER FEED：插入本人的用户 FEED
-            feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_USER, following_id=uid)
-            g.user.feeds.append(feed)
-            db.session.add(g.user)
-
-            db.session.commit()
-
-            return json.dumps({
-                'result': True,
-                'followed': True,
-                'followers_count': user.followers.count()
-            })
-        else:
+        if g.user.id == uid:
             return json.dumps({
                 'result': False,
                 'followed': False,
                 'followers_count': user.followers.count()
             })
+
+        follow_user = FollowUser(follower_id=g.user.id, following_id=uid)
+        db.session.add(follow_user)
+
+        g.user.followings_count += 1
+        user.followers_count += 1
+        db.session.add(g.user)
+        db.session.add(user)
+
+        # NOTI: 插入被关注者的 NOTI（无需合并）
+        noti = user.notifications.filter(
+            Notification.kind == NOTIFICATION_KIND.FOLLOW_ME,
+            Notification.senders_list == json.dumps([g.user.id])).first()
+        if not noti:
+            noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, senders_list=json.dumps([g.user.id]))
+            user.notifications.append(noti)
+            db.session.add(user)
+
+        # USER FEED：插入本人的用户 FEED
+        feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_USER, following_id=uid)
+        g.user.feeds.append(feed)
+        db.session.add(g.user)
+
+        # HOME FEED：插入该用户最近 10 条动态到本人的首页 feed 中
+        for home_feed_backup in HomeFeedBackup.query. \
+                filter(HomeFeedBackup.sender_id == uid). \
+                order_by(HomeFeedBackup.created_at.desc()).limit(10):
+            home_feed = HomeFeed(kind=home_feed_backup.kind, sender_id=home_feed_backup.sender_id,
+                                 user_id=g.user.id, question_id=home_feed_backup.question_id,
+                                 answer_id=home_feed_backup.answer_id, topic_id=home_feed_backup.topic_id,
+                                 created_at=home_feed_backup.created_at)
+            db.session.add(home_feed)
+
+        db.session.commit()
+
+        return json.dumps({
+            'result': True,
+            'followed': True,
+            'followers_count': user.followers.count()
+        })
 
 
 @bp.route('/people/<int:uid>/answers')
