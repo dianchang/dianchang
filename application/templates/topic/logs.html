@@ -32,7 +32,9 @@
                     {% if not ((log.kind == TOPIC_EDIT_KIND.LOCK or log.kind == TOPIC_EDIT_KIND.UNLOCK) and not admin) %}
                         <div class="topic-log media">
                             <div class="media-left">
-                                <img src="{{ log.user.avatar_url }}" alt="" class="img-circle"/>
+                                <a href="{{ log.user.profile_url }}">
+                                    <img src="{{ log.user.avatar_url }}" alt="" class="img-circle dc-show-user-card"
+                                         data-id="{{ log.user_id }}"/></a>
                             </div>
                             <div class="media-body">
                                 <div class="title text-light">
