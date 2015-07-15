@@ -100,6 +100,14 @@
                                         <span class="label label-primary admin-flag">admin</span>
                                     {% elif log.kind == TOPIC_EDIT_KIND.UPDATE_KIND %}
                                         设置了话题类型
+                                    {% elif log.kind == TOPIC_EDIT_KIND.MERGE_TO %}
+                                        合并本话题至
+                                    {% elif log.kind == TOPIC_EDIT_KIND.MERGE_IN %}
+                                        将以下话题合并到本话题
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UNMERGE_FROM %}
+                                        取消合并本话题至
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UNMERGE_OUT %}
+                                        将以下话题从本话题中移出
                                     {% endif %}
 
                                     <span class="time pull-right">{{ log.created_at|timesince }}</span>
@@ -167,6 +175,22 @@
                                         {% elif log.after|int == 6 %}
                                             其他
                                         {% endif %}
+                                    {% elif log.kind == TOPIC_EDIT_KIND.MERGE_TO %}
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
+                                            {{ log.after }}</a>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.MERGE_IN %}
+                                        <a href="{{ url_for('topic.view', uid=log.after_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.after_id }}">
+                                            {{ log.after }}</a>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UNMERGE_FROM %}
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
+                                            {{ log.before }}</a>
+                                    {% elif log.kind == TOPIC_EDIT_KIND.UNMERGE_OUT %}
+                                        <a href="{{ url_for('topic.view', uid=log.before_id) }}"
+                                           class="dc-topic dc-show-topic-card" data-id="{{ log.before_id }}">
+                                            {{ log.before }}</a>
                                     {% endif %}
                                 </div>
                             </div>

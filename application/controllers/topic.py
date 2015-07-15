@@ -941,6 +941,16 @@ def merge_to(uid):
             merge_to_topic.followers_count += 1
     db.session.add(merge_to_topic)
 
+    # 被合并的话题 Log
+    merge_to_log = PublicEditLog(kind=TOPIC_EDIT_KIND.MERGE_TO, user_id=g.user.id, topic_id=uid,
+                                 after_id=merge_to_topic.id, after=merge_to_topic.name)
+    db.session.add(merge_to_log)
+
+    # 合并至的话题 Log
+    merge_in_log = PublicEditLog(kind=TOPIC_EDIT_KIND.MERGE_IN, user_id=g.user.id, topic_id=merge_to_topic.id,
+                                 after_id=uid, after=topic.name)
+    db.session.add(merge_in_log)
+
     db.session.commit()
 
     return json.dumps({
@@ -994,6 +1004,19 @@ def unmerge_from(uid, unmerge_from_topic_id):
     db.session.add(unmerge_from_topic)
 
     db.session.add(topic)
+
+    # 取消合并至话题 log
+    unmerge_from_log = PublicEditLog(kind=TOPIC_EDIT_KIND.UNMERGE_FROM, user_id=g.user.id,
+                                     topic_id=uid, before=unmerge_from_topic.name,
+                                     before_id=unmerge_from_topic.id)
+    db.session.add(unmerge_from_log)
+
+    # 从话题中移出 log
+    unmerge_out_log = PublicEditLog(kind=TOPIC_EDIT_KIND.UNMERGE_OUT, user_id=g.user.id,
+                                    topic_id=unmerge_from_topic.id, before=topic.name,
+                                    before_id=topic.id)
+    db.session.add(unmerge_out_log)
+
     db.session.commit()
 
     return json.dumps({
