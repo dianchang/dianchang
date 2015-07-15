@@ -225,7 +225,7 @@ def add_parent_topic(uid):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
 
-    if topic.parent_topics_locked or topic.root:
+    if topic.parent_topics_locked:
         return json.dumps({
             'result': False
         })
@@ -238,6 +238,11 @@ def add_parent_topic(uid):
     elif name:
         parent_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
     else:
+        return json.dumps({
+            'result': False
+        })
+
+    if parent_topic.child_topics_locked:
         return json.dumps({
             'result': False
         })
@@ -272,13 +277,13 @@ def add_parent_topic(uid):
 def remove_parent_topic(uid, parent_topic_id):
     """删除直接父话题"""
     topic = Topic.query.get_or_404(uid)
+    parent_topic = Topic.query.get_or_404(parent_topic_id)
 
-    if topic.parent_topics_locked:
+    if topic.parent_topics_locked or parent_topic.child_topics_locked:
         return json.dumps({
             'result': False
         })
 
-    parent_topic = Topic.query.get_or_404(parent_topic_id)
     topic.remove_parent_topic(parent_topic_id)
 
     # MERGE: 若父话题被合并到其他话题，则也将此话题作为子话题添加
@@ -323,6 +328,11 @@ def add_child_topic(uid):
             'result': False
         })
 
+    if child_topic.parent_topics_locked:
+        return json.dumps({
+            'result': False
+        })
+
     topic.add_child_topic(child_topic.id)
 
     # MERGE: 若该话题被合并到其他话题，则也进行子话题添加
@@ -353,13 +363,13 @@ def add_child_topic(uid):
 def remove_child_topic(uid, child_topic_id):
     """删除直接子话题"""
     topic = Topic.query.get_or_404(uid)
+    child_topic = Topic.query.get_or_404(child_topic_id)
 
-    if topic.child_topics_locked:
+    if topic.child_topics_locked or child_topic.parent_topics_locked:
         return json.dumps({
             'result': False
         })
 
-    child_topic = Topic.query.get_or_404(child_topic_id)
     topic.remove_child_topic(child_topic_id)
 
     # MERGE: 若该话题被合并到其他话题，则也进行子话题添加
