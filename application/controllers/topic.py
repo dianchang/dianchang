@@ -426,11 +426,12 @@ def follow(uid):
 
         # HOME FEED: 从首页 feed 中删除与此话题相关的条目
         for feed in g.user.home_feeds.filter(HomeFeed.topic_id == uid,
-                                             HomeFeed.kind in [HOME_FEED_KIND.NEW_ANSWER_FROM_FOLLOWED_TOPIC,
-                                                               HOME_FEED_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC]):
+                                             HomeFeed.kind.in_([HOME_FEED_KIND.NEW_ANSWER_FROM_FOLLOWED_TOPIC,
+                                                                HOME_FEED_KIND.FANTASTIC_ANSWER_FROM_FOLLOWED_TOPIC])):
             db.session.delete(feed)
 
         db.session.commit()
+
         return json.dumps({
             'result': True,
             'followed': False,
@@ -459,7 +460,17 @@ def follow(uid):
         g.user.feeds.append(feed)
         db.session.add(g.user)
 
+        # HOME FEED: 向首页 feed 中插入该话题的精彩回答 10 条
+        for answer in topic.all_answers.filter(Answer.fantastic).order_by(Answer.created_at.desc()).limit(5):
+            home_feed = g.user.home_feeds.filter(HomeFeed.kind == HOME_FEED_KIND.FANTASTIC_ANSWER_FROM_FOLLOWED_TOPIC,
+                                                 HomeFeed.answer_id == answer.id).first()
+            if not home_feed:
+                home_feed = HomeFeed(kind=HOME_FEED_KIND.FANTASTIC_ANSWER_FROM_FOLLOWED_TOPIC, answer_id=answer.id,
+                                     user_id=g.user.id, topic_id=topic.id)
+                db.session.add(home_feed)
+
         db.session.commit()
+
         return json.dumps({
             'result': True,
             'followed': True,

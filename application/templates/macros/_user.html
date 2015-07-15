@@ -1244,8 +1244,15 @@
             {{ render_answer(feed.answer, with_topics=False) }}
         {% elif feed.kind == HOME_FEED_KIND.WAITING_FOR_ANSWER_QUESTION_FROM_EXPERT_TOPIC %}
             {# TODO #}
-        {% elif feed.kind == HOME_FEED_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC %}
-            {# TODO #}
+        {% elif feed.kind == HOME_FEED_KIND.FANTASTIC_ANSWER_FROM_FOLLOWED_TOPIC %}
+            <div class="action text-light">
+                来自
+                <a href="{{ url_for('topic.view', uid=feed.topic_id) }}" class="dc-show-topic-card dc-img-text-link-wap"
+                   data-id="{{ feed.topic_id }}">
+                    <img src="{{ feed.topic.avatar_url }}" alt="" class="img-rounded"/>
+                    <span class="name">{{ feed.topic.name }}</span></a>
+            </div>
+            {{ render_answer(feed.answer, with_topics=False) }}
         {% elif feed.kind == HOME_FEED_KIND.NEW_ANSWER_FROM_FOLLOWED_TOPIC %}
             {# TODO #}
         {% endif %}
