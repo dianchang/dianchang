@@ -2,7 +2,8 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for, abort
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
-    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion, TopicClosure
+    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion, TopicClosure, \
+    HomeFeed, HOME_FEED_KIND
 from ..utils.permissions import UserPermission, AdminPermission
 from ..utils.helpers import generate_lcs_html, absolute_url_for
 from ..utils.uploadsets import process_topic_avatar, topic_avatars
@@ -412,6 +413,12 @@ def follow(uid):
             db.session.delete(follow_merge_to_topic)
             topic.merge_to_topic.followers_count -= 1
             db.session.add(topic.merge_to_topic)
+
+        # HOME FEED: 从首页 feed 中删除与此话题相关的条目
+        for feed in g.user.home_feeds.filter(HomeFeed.topic_id == uid,
+                                             HomeFeed.kind in [HOME_FEED_KIND.NEW_ANSWER_FROM_FOLLOWED_TOPIC,
+                                                               HOME_FEED_KIND.GOOD_ANSWER_FROM_FOLLOWED_TOPIC]):
+            db.session.delete(feed)
 
         db.session.commit()
         return json.dumps({
