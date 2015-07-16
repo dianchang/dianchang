@@ -290,9 +290,10 @@ def compose():
     html = render_template('user/compose.html', feeds=feeds.limit(COMPOSE_FEEDS_PER),
                            total=total, per=COMPOSE_FEEDS_PER)
 
-    for feed in feeds.filter(~ComposeFeed.unread):
+    for feed in feeds.filter(ComposeFeed.unread):
         feed.unread = False
         db.session.add(feed)
+
     db.session.commit()
     return html
 

@@ -177,6 +177,7 @@ def register_hooks(app):
         from application.models import Notification, NOTIFICATION_KIND, NOTIFICATION_KIND_TYPE
         from application.utils._qiniu import qiniu
         from application.utils.helpers import absolute_url_for
+        from application.models import ComposeFeed
 
         g.user = get_current_user()
         if g.user and g.user.is_admin:
@@ -192,11 +193,7 @@ def register_hooks(app):
         if not g.user:
             g.has_new_compose_feeds = False
         else:
-            latest_compose_feed = g.user.compose_feeds.first()
-            if not latest_compose_feed:
-                g.has_new_compose_feeds = False
-            else:
-                g.has_new_compose_feeds = g.user.last_read_compose_feeds_at < latest_compose_feed.created_at
+            g.has_new_compose_feeds = g.user.compose_feeds.filter(ComposeFeed.unread).count() > 0
 
         # 新消息条数
         if not g.user:

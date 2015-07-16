@@ -405,7 +405,7 @@ def answer(uid):
             'result': False
         })
 
-    # 存储回答
+    # 保存回答
     answer = Answer(question_id=uid, content=content, user_id=g.user.id, topic_experience=experience)
     if identity in ['anonymous', 'organization-anonymous']:  # 匿名
         answer.anonymous = True
@@ -465,8 +465,22 @@ def answer(uid):
                                           sender_id=g.user.id, answer_id=answer.id)
         db.session.add(home_feed_backup)
 
+    # 标记 InviteAnswer 中的相关条目为 answered
+    invite_answer = InviteAnswer.query.filter(InviteAnswer.user_id == g.user.id,
+                                              InviteAnswer.question_id == question.id).first()
+    if invite_answer:
+        invite_answer.answered = True
+        db.session.add(invite_answer)
+
+    # 标记 ComposeFeed 中的相关条目为 answered
+    compose_feed = g.user.compose_feeds.filter(ComposeFeed.question_id == question.id).first()
+    if compose_feed:
+        compose_feed.answered = True
+        db.session.add(compose_feed)
+
     question.answers_count += 1
     g.user.answers_count += 1
+
     db.session.add(question)
     db.session.add(g.user)
     db.session.commit()

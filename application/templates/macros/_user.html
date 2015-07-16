@@ -1441,7 +1441,9 @@
             {% set is_invited = False %}
         {% endif %}
 
-        <div class="question-wap {% if is_invited %}invited{% endif %} {% if feed.unread %}new{% endif %}">
+        <div class="question-wap {% if is_invited %}invited{% endif %}
+            {% if feed.unread %}new{% endif %}
+            {% if feed.answered %}answered{% endif %}">
             <div class="new-flag"></div>
             <div class="question">
                 {% if is_invited %}
@@ -1487,12 +1489,14 @@
                 </div>
 
                 <div class="commands">
-                    {#                {% if not question.answered_by_user() %}#}
-                    <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-light">
-                        写答案</a>
+                    {% if feed.answered %}
+                        <a href="javascript: void(0)" class="btn btn-light" disabled>已回答</a>
+                    {% else %}
+                        <a href="{{ url_for('question.view', uid=question.id) }}#answer" class="btn btn-light">
+                            写答案</a>
+                    {% endif %}
 
                     <a href="javascript: void(0)" class="btn btn-white btn-ignore-feed" data-id="{{ feed.id }}">忽略</a>
-                    {#                {% endif %}#}
 
                     <a href="javascript: void(0)"
                        class="{% if g.user and question.followed_by_user(g.user.id) %}followed{% endif %}

@@ -38,6 +38,9 @@
 .question-wap.invited.new .new-flag {
   background-color: red;
 }
+.question-wap.invited.answered .new-flag {
+  display: none;
+}
 .ignore-tip {
   position: relative;
 }
