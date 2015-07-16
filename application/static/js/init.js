@@ -223,8 +223,8 @@
     $.fn.initTopicTypeahead = function (options) {
         var $topicInput = this;
         var params = options.params;
-        var block = (typeof options.block === 'undefined') ? false : true;
-        var small = (typeof options.small === 'undefined') ? false : true;
+        var block = (typeof options.block === 'undefined') ? false : options.block;
+        var small = (typeof options.small === 'undefined') ? false : options.small;
         var callback = options.callback;
         var timerForTopicTypeahead = null;
         var inputMarginRight = parseInt($topicInput.css("margin-right"));
