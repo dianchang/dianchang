@@ -232,7 +232,10 @@
 #main-wap .topics-kind-wap .radio {
   margin-bottom: 14px;
 }
-#main-wap .topics-kind-wap .radio:last-child {
+#main-wap .topics-kind-wap .other-kind-wap {
+  margin-bottom: 0;
+}
+#main-wap .topics-kind-wap .other-kind-wap .radio {
   margin-bottom: 0;
 }
 #main-wap .topics-kind-wap .locked-flag {
