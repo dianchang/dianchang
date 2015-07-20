@@ -1,4 +1,5 @@
-$mainWap = $('#main-wap');
+var active = 'product';
+var $mainWap = $('#main-wap');
 
 // 关注 & 取消关注
 $mainWap.on('click', '.btn-follow-topic', function () {
@@ -20,4 +21,16 @@ $mainWap.on('click', '.btn-follow-topic', function () {
             _this.toggleClass('followed');
         }
     });
+});
+
+// 切换话题大类
+$mainWap.on('click', '.list-group-item', function () {
+    var target = $(this).data('target');
+    var targetClass = '.' + target + '-topics-wap';
+
+    $('.list-group-item').not(this).removeClass('active');
+    $(this).addClass('active');
+
+    $mainWap.find('.topics-wap').not(targetClass).removeClass('active');
+    $mainWap.find(targetClass).addClass('active');
 });
