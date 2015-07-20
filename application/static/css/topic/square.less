@@ -33,6 +33,29 @@
         background-color: #f5f5f5;
         border-color: #ddd;
 
+        &:after, &:before {
+          right: 100%;
+          top: 36px;
+          border: solid transparent;
+          content: " ";
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+        }
+
+        &:after {
+          border-right-color: #f5f5f5;
+          border-width: 8px;
+          margin-top: -8px;
+        }
+
+        &:before {
+          border-right-color: #ddd;
+          border-width: 9px;
+          margin-top: -9px;
+        }
+
         .list-group-item-text {
           color: #888;
         }
