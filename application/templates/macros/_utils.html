@@ -27,47 +27,34 @@
 
 {# 下拉加载内容 #}
 {% macro loading(total, per, content_wap_selector, loading_url, delay=500) %}
-    <div class="dc-loading-flag">
+    <div class="dc-loading-flag {% if total > per %}more{% endif %}"
+         data-total="{{ total }}" data-per="{{ per }}"
+         data-content-wap-selector="{{ content_wap_selector }}"
+         data-loading-url="{{ loading_url }}"
+         data-delay="{{ delay }}"
+         data-offset="{% if per < total %}{{ per }}{% else %}{{ total }}{% endif %}">
         <span class="for-loading">加载中 <span class="fa fa-spin fa-spinner"></span></span>
         <span class="for-more">更多</span>
     </div>
 
     <script>
         (function () {
-            var total = {{ total }};
-            var per = {{ per }};
-            var offset = (per < total) ? per : total;
-            var loading = false;
-            var $loadingFlag = $('.dc-loading-flag');
-            var contentWapSelector = "{{ content_wap_selector }}";
-            var loading_url = "{{ loading_url }}";
-            var $contentWap = $(contentWapSelector);
-            var delay = {{ delay }};
+            $(document).onOnce('click', '.dc-loading-flag', function () {
+                var total = $(this).data('total');
+                var per = $(this).data('per');
+                var offset = $(this).data('offset');
+                var contentWapSelector = $(this).data('content-wap-selector');
+                var $contentWap = $(contentWapSelector);
+                var loading = $(this).hasClass('loading');
+                var loading_url = $(this).data('loading-url');
+                var delay = $(this).data('delay');
+                var _this = $(this);
 
-            if (total > per) {
-                $loadingFlag.addClass('more');
-            }
-
-            $loadingFlag.click(function () {
-                loadingContent();
-            });
-
-            $(window).scroll(function () {
-                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-                    loadingContent();
-                }
-            });
-
-            /**
-             * 加载内容
-             */
-            function loadingContent() {
                 if (offset >= total || loading) {
                     return false;
                 }
 
-                loading = true;
-                $loadingFlag.removeClass('more').addClass('loading');
+                $(this).removeClass('more').addClass('loading');
 
                 setTimeout(function () {
                     var url;
@@ -86,19 +73,24 @@
                         if (response.result) {
                             $contentWap.append(response.html);
                             offset += response.count;
-                            $loadingFlag.removeClass('loading');
+                            _this.data('offset', offset);
+                            _this.removeClass('loading');
 
                             if (offset < total) {
-                                $loadingFlag.addClass('more');
+                                _this.addClass('more');
                             } else {
-                                $loadingFlag.removeClass('more');
+                                _this.removeClass('more');
                             }
-
-                            loading = false;
                         }
                     });
                 }, delay);
-            }
+            });
+
+            $(window).scroll(function () {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                    $('.dc-loading-flag:visible').click();
+                }
+            });
         })();
     </script>
 {% endmacro %}

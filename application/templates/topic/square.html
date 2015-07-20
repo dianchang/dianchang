@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% from "macros/_topic.html" import render_topics %}
+{% from "macros/_utils.html" import loading %}
 
 {% block page_title %}话题广场{% endblock %}
 {% block page_js %}
@@ -15,33 +16,48 @@
                 </div>
 
                 <div class="topics-wap product-topics-wap active">
-                    <div class="product-topics-inner-wap">
+                    <div class="product-topics-inner-wap clearfix">
                         {{ render_topics(product_descendant_topics) }}
                     </div>
+
+                    {{ loading(product_total, per, '.product-topics-inner-wap',
+                        url_for('topic.loading_topics_in_square', type='product')|safe) }}
                 </div>
 
-                <div class="topics-wap organization-topics-wap">
-                    <div class="organization-topics-inner-wap">
+                <div class="topics-wap organization-topics-wap ">
+                    <div class="organization-topics-inner-wap clearfix">
                         {{ render_topics(organization_descendant_topics) }}
                     </div>
+
+                    {{ loading(organization_total, per, '.organization-topics-inner-wap',
+                        url_for('topic.loading_topics_in_square', type='organization')|safe) }}
                 </div>
 
                 <div class="topics-wap skill-topics-wap">
-                    <div class="skill-topics-inner-wap">
+                    <div class="skill-topics-inner-wap clearfix">
                         {{ render_topics(skill_descendant_topics) }}
                     </div>
+
+                    {{ loading(skill_total, per, '.skill-topics-inner-wap',
+                        url_for('topic.loading_topics_in_square', type='skill')|safe) }}
                 </div>
 
                 <div class="topics-wap position-topics-wap">
-                    <div class="position-topics-inner-wap">
+                    <div class="position-topics-inner-wap clearfix">
                         {{ render_topics(position_descendant_topics) }}
                     </div>
+
+                    {{ loading(position_total, per, '.position-topics-inner-wap',
+                        url_for('topic.loading_topics_in_square', type='position')|safe) }}
                 </div>
 
                 <div class="topics-wap people-topics-wap">
-                    <div class="people-topics-inner-wap">
+                    <div class="people-topics-inner-wap clearfix">
                         {{ render_topics(people_descendant_topics) }}
                     </div>
+
+                    {{ loading(people_total, per, '.product-topics-inner-wap',
+                        url_for('topic.loading_topics_in_square', type='product')|safe) }}
                 </div>
             </div>
             <div class="col-md-4">
