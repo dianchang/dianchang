@@ -44,8 +44,8 @@
 #main-wap .topic {
   float: left;
   width: 50%;
+  height: 90px;
   margin-bottom: 25px;
-  padding-bottom: 25px;
   border-bottom: 1px solid #eaeaea;
   position: relative;
 }

@@ -427,7 +427,7 @@
                     <a href="{{ url_for('topic.view', uid=topic.id) }}">{{ topic.name }}</a>
                 </div>
                 {% if topic.wiki_preview %}
-                    <div class="desc text-light">{{ topic.wiki_preview|truncate(50, true) }}</div>
+                    <div class="desc text-light">{{ topic.wiki_preview|truncate(28, true) }}</div>
                 {% endif %}
             </div>
 
