@@ -1,4 +1,5 @@
 # coding: utf-8
+from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
 from ..forms import AddQuestionForm
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
@@ -123,6 +124,9 @@ def add():
                 question.topics.append(question_merge_to_topic)
                 db.session.add(question_merge_to_topic)
 
+            topic.updated_at = datetime.now()
+            db.session.add(topic)
+
     g.user.questions_count += 1
     db.session.add(g.user)
 
@@ -210,6 +214,7 @@ def add_topic(uid):
             UserTopicStatistic.upvote_answer_in_topic(g.user.id, topic.id, answer.upvotes_count)
 
     topic.questions_count += 1
+    topic.updated_at = datetime.now()
     db.session.add(topic)
     db.session.commit()
 
@@ -477,6 +482,11 @@ def answer(uid):
     if compose_feed:
         compose_feed.answered = True
         db.session.add(compose_feed)
+
+    # 更新话题 update 时间
+    for topic in question.topics:
+        topic.topic.updated_at = datetime.now()
+        db.session.add(topic.topic)
 
     question.answers_count += 1
     g.user.answers_count += 1
