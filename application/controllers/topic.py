@@ -12,30 +12,30 @@ from ..forms import AdminTopicForm
 
 bp = Blueprint('topic', __name__)
 
-TOPICS_PER = 45
+TOPICS_PER = 2
 
 
 @bp.route('/topic/square')
 def square():
     """话题广场"""
     product_topic = Topic.query.filter(Topic.name == '产品').first_or_404()
-    product_descendant_topics = product_topic.descendant_topics
+    product_descendant_topics = product_topic.descendant_topics.order_by(Topic.updated_at.desc())
     product_total = product_descendant_topics.count()
 
     organization_topic = Topic.query.filter(Topic.name == '组织').first_or_404()
-    organization_descendant_topics = organization_topic.descendant_topics
+    organization_descendant_topics = organization_topic.descendant_topics.order_by(Topic.updated_at.desc())
     organization_total = organization_descendant_topics.count()
 
     position_topic = Topic.query.filter(Topic.name == '职业').first_or_404()
-    position_descendant_topics = position_topic.descendant_topics
+    position_descendant_topics = position_topic.descendant_topics.order_by(Topic.updated_at.desc())
     position_total = position_descendant_topics.count()
 
     skill_topic = Topic.query.filter(Topic.name == '技能').first_or_404()
-    skill_descendant_topics = skill_topic.descendant_topics
+    skill_descendant_topics = skill_topic.descendant_topics.order_by(Topic.updated_at.desc())
     skill_total = skill_descendant_topics.count()
 
     people_topic = Topic.query.filter(Topic.name == '人').first_or_404()
-    people_descendant_topics = people_topic.descendant_topics
+    people_descendant_topics = people_topic.descendant_topics.order_by(Topic.updated_at.desc())
     people_total = people_descendant_topics.count()
 
     return render_template('topic/square.html', per=TOPICS_PER,
@@ -82,7 +82,7 @@ def loading_topics_in_square():
     else:
         parent_topic = Topic.query.filter(Topic.name == '人').first_or_404()
 
-    topics = parent_topic.descendant_topics.limit(TOPICS_PER).offset(offset)
+    topics = parent_topic.descendant_topics.order_by(Topic.updated_at.desc()).limit(TOPICS_PER).offset(offset)
     count = topics.count()
     macro = get_template_attribute("macros/_topic.html", "render_topics")
 

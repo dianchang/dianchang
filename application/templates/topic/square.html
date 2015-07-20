@@ -51,14 +51,14 @@
                         url_for('topic.loading_topics_in_square', type='position')|safe) }}
                 </div>
 
-                <div class="topics-wap people-topics-wap">
-                    <div class="people-topics-inner-wap clearfix">
-                        {{ render_topics(people_descendant_topics) }}
-                    </div>
-
-                    {{ loading(people_total, per, '.product-topics-inner-wap',
-                        url_for('topic.loading_topics_in_square', type='product')|safe) }}
-                </div>
+                {#                <div class="topics-wap people-topics-wap">#}
+                {#                    <div class="people-topics-inner-wap clearfix">#}
+                {#                        {{ render_topics(people_descendant_topics) }}#}
+                {#                    </div>#}
+                {##}
+                {#                    {{ loading(people_total, per, '.product-topics-inner-wap',#}
+                {#                        url_for('topic.loading_topics_in_square', type='product')|safe) }}#}
+                {#                </div>#}
             </div>
             <div class="col-md-4">
                 <div class="list-group topic-selector">
@@ -82,11 +82,11 @@
 
                         <p class="list-group-item-text">职业技能、工具</p>
                     </button>
-                    <button type="button" class="list-group-item" data-target="people">
-                        <h4 class="list-group-item-heading">{{ people_topic.name }}</h4>
-
-                        <p class="list-group-item-text">某个互联网从业者</p>
-                    </button>
+                    {#                    <button type="button" class="list-group-item" data-target="people">#}
+                    {#                        <h4 class="list-group-item-heading">{{ people_topic.name }}</h4>#}
+                    {##}
+                    {#                        <p class="list-group-item-text">某个互联网从业者</p>#}
+                    {#                    </button>#}
                 </div>
             </div>
         </div>
