@@ -49,6 +49,9 @@
 .dc-question .action .divider {
   margin: 0 5px;
 }
+.dc-question .action .from-child-topic a {
+  margin-left: 3px;
+}
 .dc-question .title {
   margin-bottom: 10px;
 }
