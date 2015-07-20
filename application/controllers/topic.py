@@ -12,7 +12,7 @@ from ..forms import AdminTopicForm
 
 bp = Blueprint('topic', __name__)
 
-TOPICS_PER = 2
+TOPICS_PER = 45
 
 
 @bp.route('/topic/square')
