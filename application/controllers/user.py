@@ -70,6 +70,17 @@ def qa(uid):
                            total=feeds_count, per=USER_FEEDS_PER)
 
 
+@bp.route('/people/<string:url_token>/qa')
+def qa_with_url_token(url_token):
+    """问答（使用url_token）"""
+    user = User.query.filter(User.url_token == url_token).first_or_404()
+    _generate_user_image_upload_token(user)
+    feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION]))
+    feeds_count = feeds.count()
+    return render_template('user/qa.html', user=user, feeds=feeds.limit(USER_FEEDS_PER),
+                           total=feeds_count, per=USER_FEEDS_PER)
+
+
 @bp.route('/user/<int:uid>/loading_qa', methods=['POST'])
 @UserPermission()
 def loading_qa(uid):
@@ -96,6 +107,16 @@ def loading_qa(uid):
 def achievements(uid):
     """成就"""
     user = User.query.get_or_404(uid)
+    _generate_user_image_upload_token(user)
+    upvoters = user.upvoters.filter(UserUpvoteStatistic.upvotes_count != 0)
+    upvoters_count = upvoters.count()
+    return render_template('user/achievements.html', user=user, upvoters=upvoters, upvoters_count=upvoters_count)
+
+
+@bp.route('/people/<string:url_token>/achievements')
+def achievements_with_url_token(url_token):
+    """成就（使用url_token）"""
+    user = User.query.filter(User.url_token == url_token).first_or_404()
     _generate_user_image_upload_token(user)
     upvoters = user.upvoters.filter(UserUpvoteStatistic.upvotes_count != 0)
     upvoters_count = upvoters.count()

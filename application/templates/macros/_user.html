@@ -202,10 +202,10 @@
                         <a href="{{ user.profile_url }}">主页</a>
                     </li>
                     <li {% if active == 'qa' %}class="active"{% endif %}>
-                        <a href="{{ url_for('user.qa', uid=user.id) }}">问答</a>
+                        <a href="{{ user.qa_url }}">问答</a>
                     </li>
                     <li {% if active == 'achievements' %}class="active"{% endif %}>
-                        <a href="{{ url_for('user.achievements', uid=user.id) }}">成就</a>
+                        <a href="{{ user.achievements_url }}">成就</a>
                     </li>
                 </ul>
             {% endif %}

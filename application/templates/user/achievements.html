@@ -7,8 +7,7 @@
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/user/achievements.css?__inline"/>{% endblock %}
 {% block page_content %}
-    {{ user_page_header(user, active='achievements', avatar_uptoken=avatar_uptoken,
-        background_uptoken=background_uptoken) }}
+    {{ user_page_header(user, active='achievements') }}
 
     <div class="achievements-wap">
         <span class="fa fa-trophy"></span>
