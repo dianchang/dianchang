@@ -140,9 +140,15 @@
                         </ul>
 
                         <div class="noti-content empty">
-                            <div class="noti-panel noti-panel-message {% if g.notification_active =='message' %}active{% endif %}"></div>
-                            <div class="noti-panel noti-panel-thanks {% if g.notification_active =='thanks' %}active{% endif %}"></div>
-                            <div class="noti-panel noti-panel-user {% if g.notification_active =='user' %}active{% endif %}"></div>
+                            <div class="noti-panel noti-panel-message {% if g.notification_active =='message' %}active{% endif %}">
+                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                            </div>
+                            <div class="noti-panel noti-panel-thanks {% if g.notification_active =='thanks' %}active{% endif %}">
+                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                            </div>
+                            <div class="noti-panel noti-panel-user {% if g.notification_active =='user' %}active{% endif %}">
+                                <span class="fa fa-spin fa-spinner loading-flag"></span>
+                            </div>
                         </div>
 
                         <div class="noti-footer">

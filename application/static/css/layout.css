@@ -259,6 +259,13 @@ html {
 .navbar #nav-notification .dropdown-menu-noti .noti-content .noti-panel.active {
   display: block;
 }
+.navbar #nav-notification .dropdown-menu-noti .noti-content .loading-flag {
+  display: block;
+  text-align: center;
+  padding: 25px;
+  font-size: 18px;
+  color: #999;
+}
 .navbar #nav-notification .dropdown-menu-noti .noti-footer {
   text-align: center;
   padding: 10px 0;
