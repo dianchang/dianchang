@@ -536,8 +536,8 @@
             {% if most_relevant_topic.id != relevant_topic_id %}
                 <div class="from-child-topic">
                     来自子话题 <a href="{{ url_for('topic.view', uid=most_relevant_topic.id) }}"
-                             class="dc-show-topic-card dc-topic" data-id="{{ most_relevant_topic.id }}">
-                    {{ most_relevant_topic.name }}</a>
+                             class="dc-show-topic-card text-light"
+                             data-id="{{ most_relevant_topic.id }}">{{ most_relevant_topic.name }}</a>
                 </div>
             {% endif %}
         {% endif %}
