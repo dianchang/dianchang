@@ -20,7 +20,7 @@ def profile(uid):
     feeds = user.feeds.limit(USER_FEEDS_PER)
     total = user.feeds.count()
     preview = request.args.get('preview', type=int)
-    preview = True if preview == 1 else False
+    preview = (preview == 1)
     if g.user and g.user.id == uid:
         avatar_uptoken = qiniu.generate_token(policy={
             'callbackUrl': absolute_url_for('.update_avatar'),
@@ -45,7 +45,7 @@ def profile_with_url_token(url_token):
     feeds = user.feeds.limit(USER_FEEDS_PER)
     total = user.feeds.count()
     preview = request.args.get('preview', type=int)
-    preview = True if preview == 1 else False
+    preview = (preview == 1)
     if g.user and g.user.id == user.id:
         avatar_uptoken = qiniu.generate_token(policy={
             'callbackUrl': absolute_url_for('.update_avatar'),
@@ -81,6 +81,72 @@ def loading_user_feeds(uid):
         'html': macro(feeds),
         'count': feeds_count
     })
+
+
+@bp.route('/people/<int:uid>/qa')
+def qa(uid):
+    """问答"""
+    if g.user and g.user.id == uid:
+        avatar_uptoken = qiniu.generate_token(policy={
+            'callbackUrl': absolute_url_for('.update_avatar'),
+            'callbackBody': "id=%d&key=$(key)" % uid
+        })
+        background_uptoken = qiniu.generate_token(policy={
+            'callbackUrl': absolute_url_for('.update_background'),
+            'callbackBody': "id=%d&key=$(key)" % uid
+        })
+    else:
+        avatar_uptoken = ""
+        background_uptoken = ""
+    user = User.query.get_or_404(uid)
+    feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION]))
+    feeds_count = feeds.count()
+    return render_template('user/qa.html', user=user, feeds=feeds.limit(USER_FEEDS_PER),
+                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken,
+                           total=feeds_count, per=USER_FEEDS_PER)
+
+
+@bp.route('/user/<int:uid>/loading_qa', methods=['POST'])
+@UserPermission()
+def loading_qa(uid):
+    """加载用户问答"""
+    user = User.query.get_or_404(uid)
+    offset = request.args.get('offset', type=int)
+    if not offset:
+        return json.dumps({
+            'result': False
+        })
+    feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION])).limit(
+        USER_FEEDS_PER).offset(offset)
+    feeds_count = feeds.count()
+    macro = get_template_attribute("macros/_user.html", "render_user_feeds")
+    return json.dumps({
+        'result': True,
+        'html': macro(feeds),
+        'count': feeds_count
+    })
+
+
+@bp.route('/people/<int:uid>/achievements')
+def achievements(uid):
+    """成就"""
+    if g.user and g.user.id == uid:
+        avatar_uptoken = qiniu.generate_token(policy={
+            'callbackUrl': absolute_url_for('.update_avatar'),
+            'callbackBody': "id=%d&key=$(key)" % uid
+        })
+        background_uptoken = qiniu.generate_token(policy={
+            'callbackUrl': absolute_url_for('.update_background'),
+            'callbackBody': "id=%d&key=$(key)" % uid
+        })
+    else:
+        avatar_uptoken = ""
+        background_uptoken = ""
+    user = User.query.get_or_404(uid)
+    upvoters = user.upvoters.filter(UserUpvoteStatistic.upvotes_count != 0)
+    upvoters_count = upvoters.count()
+    return render_template('user/achievements.html', user=user, upvoters=upvoters, upvoters_count=upvoters_count,
+                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken)
 
 
 @bp.route('/people/<int:uid>/follow', methods=['POST'])
@@ -162,50 +228,6 @@ def follow(uid):
 def answers(uid):
     user = User.query.get_or_404(uid)
     return render_template('user/answers.html', user=user)
-
-
-@bp.route('/people/<int:uid>/qa')
-def qa(uid):
-    """问答"""
-    if g.user and g.user.id == uid:
-        avatar_uptoken = qiniu.generate_token(policy={
-            'callbackUrl': absolute_url_for('.update_avatar'),
-            'callbackBody': "id=%d&key=$(key)" % uid
-        })
-        background_uptoken = qiniu.generate_token(policy={
-            'callbackUrl': absolute_url_for('.update_background'),
-            'callbackBody': "id=%d&key=$(key)" % uid
-        })
-    else:
-        avatar_uptoken = ""
-        background_uptoken = ""
-    user = User.query.get_or_404(uid)
-    feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION]))
-    feeds_count = feeds.count()
-    return render_template('user/qa.html', user=user, feeds=feeds.limit(USER_FEEDS_PER),
-                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken,
-                           total=feeds_count, per=USER_FEEDS_PER)
-
-
-@bp.route('/user/<int:uid>/loading_user_questions_and_answers', methods=['POST'])
-@UserPermission()
-def loading_user_questions_and_answers(uid):
-    """加载用户问答"""
-    user = User.query.get_or_404(uid)
-    offset = request.args.get('offset', type=int)
-    if not offset:
-        return json.dumps({
-            'result': False
-        })
-    feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION])).limit(
-        USER_FEEDS_PER).offset(offset)
-    feeds_count = feeds.count()
-    macro = get_template_attribute("macros/_user.html", "render_user_feeds")
-    return json.dumps({
-        'result': True,
-        'html': macro(feeds),
-        'count': feeds_count
-    })
 
 
 @bp.route('/people/<int:uid>/collects')
@@ -383,28 +405,6 @@ def loading_drafts():
         'html': macro(drafts),
         'count': drafts_count
     })
-
-
-@bp.route('/people/<int:uid>/achievements')
-def achievements(uid):
-    """成就"""
-    if g.user and g.user.id == uid:
-        avatar_uptoken = qiniu.generate_token(policy={
-            'callbackUrl': absolute_url_for('.update_avatar'),
-            'callbackBody': "id=%d&key=$(key)" % uid
-        })
-        background_uptoken = qiniu.generate_token(policy={
-            'callbackUrl': absolute_url_for('.update_background'),
-            'callbackBody': "id=%d&key=$(key)" % uid
-        })
-    else:
-        avatar_uptoken = ""
-        background_uptoken = ""
-    user = User.query.get_or_404(uid)
-    upvoters = user.upvoters.filter(UserUpvoteStatistic.upvotes_count != 0)
-    upvoters_count = upvoters.count()
-    return render_template('user/achievements.html', user=user, upvoters=upvoters, upvoters_count=upvoters_count,
-                           avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken)
 
 
 @bp.route('/user/update_desc', methods=['POST'])

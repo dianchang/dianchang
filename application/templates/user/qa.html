@@ -17,7 +17,7 @@
                     {{ render_user_feeds(feeds) }}
                 </div>
 
-                {{ loading(total, per, '.user-feeds-wap', url_for('user.loading_user_questions_and_answers', uid=user.id)) }}
+                {{ loading(total, per, '.user-feeds-wap', url_for('user.loading_qa', uid=user.id)) }}
             </div>
 
             <div class="col-md-4">
