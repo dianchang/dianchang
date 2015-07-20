@@ -77,16 +77,15 @@ def salt():
 @manager.command
 def upload():
     """上传静态资源到CDN"""
+    upload_dir('output/pkg')
+    upload_dir('output/static')
+
+
+def upload_dir(dir_name):
+    """上传文件夹中的文件到七牛"""
     from application.utils._qiniu import qiniu
 
-    for root, _, files in os.walk(os.path.join(os.getcwd(), 'output/pkg')):
-        for f in files:
-            absolute_path = os.path.join(root, f)
-            relative_path = absolute_path.split(os.path.join(os.getcwd(), 'output'))[1].lstrip('/')
-            qiniu.upload_file(relative_path, absolute_path)
-            print("%s - uploaded" % relative_path)
-
-    for root, _, files in os.walk(os.path.join(os.getcwd(), 'output/static')):
+    for root, _, files in os.walk(os.path.join(os.getcwd(), dir_name)):
         for f in files:
             absolute_path = os.path.join(root, f)
             relative_path = absolute_path.split(os.path.join(os.getcwd(), 'output'))[1].lstrip('/')

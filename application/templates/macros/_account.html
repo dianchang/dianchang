@@ -6,12 +6,12 @@
                 <li {% if active == 'settings' %}class='active'{% endif %}>
                     <a href="{{ url_for('account.settings') }}">账号和密码</a>
                 </li>
-                <li {% if active == 'notification-settings' %}class="active"{% endif %}>
-                    <a href="{{ url_for('account.notification_settings') }}">消息和邮件</a>
-                </li>
-                <li {% if active == 'privacy-settings' %}class="active"{% endif %}>
-                    <a href="{{ url_for('account.privacy_settings') }}">隐私</a>
-                </li>
+                {#                <li {% if active == 'notification-settings' %}class="active"{% endif %}>#}
+                {#                    <a href="{{ url_for('account.notification_settings') }}">消息和邮件</a>#}
+                {#                </li>#}
+                {#                <li {% if active == 'privacy-settings' %}class="active"{% endif %}>#}
+                {#                    <a href="{{ url_for('account.privacy_settings') }}">隐私</a>#}
+                {#                </li>#}
             </ul>
         </div>
     </div>
