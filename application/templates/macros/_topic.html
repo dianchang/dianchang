@@ -16,10 +16,10 @@
 
 
 {# 关注话题组件 #}
-{% macro topic_follow_wap(topic, dark=False, text='关注话题') %}
+{% macro topic_follow_wap(topic, dark=False, sm=False, text='关注话题', with_count=True) %}
     {% set followed = g.user and topic.followed_by_user(g.user.id) %}
 
-    <div class="dc-topic-follow-wap btn {% if dark %}dark{% endif %}
+    <div class="dc-topic-follow-wap btn {% if dark %}dark{% endif %} {% if sm %}btn-sm sm{% endif %}
         {% if followed %}
             btn-default
         {% else %}
@@ -28,8 +28,10 @@
         {% if followed %}followed{% endif %}" data-id="{{ topic.id }}">
         <a href="javascript: void(0)" class="btn-follow-topic">
             <span class="for-follow">{{ text }}</span><span class="for-unfollow">不再关注</span></a>
-        <span class="divider">|</span>
-        <span class="followers-count">{{ topic.followers_count }}</span>
+        {% if with_count %}
+            <span class="divider">|</span>
+            <span class="followers-count">{{ topic.followers_count }}</span>
+        {% endif %}
     </div>
 
     <script>
@@ -407,5 +409,34 @@
 
     {% for question in questions %}
         {{ render_question(question, question.user, relevant_topic_id=topic.id) }}
+    {% endfor %}
+{% endmacro %}
+
+
+{# 在话题广场页显示话题 #}
+{% macro render_topics(topics) %}
+    {% for topic in topics %}
+        <div class="topic media {% if loop.index0 % 2 == 0 %}even{% else %}odd{% endif %}">
+            <div class="media-left">
+                <a href="{{ url_for('topic.view', uid=topic.id) }}">
+                    <img src="{{ topic.avatar_url }}" alt="" class="img-rounded">
+                </a>
+            </div>
+            <div class="media-body">
+                <div class="name">
+                    <a href="{{ url_for('topic.view', uid=topic.id) }}">{{ topic.name }}</a>
+                </div>
+                {% if topic.wiki_preview %}
+                    <div class="desc text-light">{{ topic.wiki_preview|truncate(50, true) }}</div>
+                {% endif %}
+            </div>
+
+            {% set followed = g.user and topic.followed_by_user(g.user.id) %}
+
+            <a href="javascript: void(0)" class="btn-follow-topic {% if followed %}followed{% endif %}"
+               data-id="{{ topic.id }}">
+                <span class="for-follow">+ 关注</span><span class="for-unfollow">不再关注</span>
+            </a>
+        </div>
     {% endfor %}
 {% endmacro %}

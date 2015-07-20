@@ -1,40 +1,123 @@
 @import "../utils";
 
-.navbar {
-  margin-bottom: 0;
-}
+#main-wap {
+  .page-header {
+    border-bottom: 1px solid @border-color;
+    padding-bottom: 0;
+    margin-bottom: 25px;
 
-h3 {
-  margin-bottom: 25px
-}
-
-.expert {
-  position: relative;
-  border-top: 1px solid @border-color;
-  padding-top: 26px;
-  margin-bottom: 26px;
-
-  .media-left {
-    padding-right: 15px;
-  }
-
-  img {
-    width: 50px;
-    height: 50px;
-  }
-
-  .dc-user-follow-wap {
-    position: absolute;
-    right: 0;
-    top: 33px;
-  }
-
-  .meta {
-    margin-bottom: 5px;
-
-    .name {
+    span {
+      margin-bottom: -1px;
+      display: inline-block;
+      padding: 0 0 15px 0;
+      margin-right: 20px;
+      font-size: 16px;
       font-weight: bold;
       color: #333;
+      border-bottom: 1px solid #333;
+    }
+  }
+
+  .topic-selector {
+    .list-group-item {
+      border-radius: 0;
+      padding: 15px 15px;
+      outline: none;
+
+      .list-group-item-text {
+        color: #999;
+      }
+
+      &.active {
+        color: #333;
+        background-color: #f5f5f5;
+        border-color: #ddd;
+
+        .list-group-item-text {
+          color: #888;
+        }
+      }
+
+      &:focus {
+        background-color: white;
+      }
+
+      &:focus:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+
+  .topics-wap {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  .topic {
+    float: left;
+    width: 50%;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid @border-color;
+    position: relative;
+
+    .media-left {
+      padding-right: 15px;
+
+      img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    .name {
+      margin-bottom: 5px;
+
+      a {
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+      }
+    }
+
+    .btn-follow-topic {
+      position: absolute;
+      white-space: nowrap;
+      display: block;
+      right: 0;
+      top: 0;
+      color: #999;
+
+      .for-follow {
+        display: inline;
+      }
+      .for-unfollow {
+        display: none;
+      }
+
+      &.followed {
+        .for-follow {
+          display: none;
+        }
+        .for-unfollow {
+          display: inline;
+        }
+      }
+    }
+
+    &.even {
+      padding-right: 10px;
+
+      .btn-follow-topic {
+        right: 10px;
+      }
+    }
+
+    &.odd {
+      padding-left: 10px;
     }
   }
 }

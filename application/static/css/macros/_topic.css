@@ -111,6 +111,9 @@
 .dc-topic-follow-wap.followed .for-unfollow {
   display: inline-block;
 }
+.dc-topic-follow-wap.sm .divider {
+  margin: 0 5px;
+}
 .dc-expert-topic {
   margin-bottom: 18px;
 }

@@ -16,7 +16,32 @@ bp = Blueprint('topic', __name__)
 @bp.route('/topic/square')
 def square():
     """话题广场"""
-    return render_template('topic/square.html')
+    product_topic = Topic.query.filter(Topic.name == '产品').first_or_404()
+    product_descendant_topics = product_topic.descendant_topics.limit(30)
+
+    organization_topic = Topic.query.filter(Topic.name == '组织').first_or_404()
+    organization_descendant_topics = organization_topic.descendant_topics
+
+    position_topic = Topic.query.filter(Topic.name == '职业').first_or_404()
+    position_descendant_topics = position_topic.descendant_topics.limit(30)
+
+    skill_topic = Topic.query.filter(Topic.name == '技能').first_or_404()
+    skill_descendant_topics = skill_topic.descendant_topics.limit(30)
+
+    people_topic = Topic.query.filter(Topic.name == '人').first_or_404()
+    people_descendant_topics = people_topic.descendant_topics.limit(30)
+
+    return render_template('topic/square.html',
+                           product_topic=product_topic,
+                           product_descendant_topics=product_descendant_topics,
+                           organization_topic=organization_topic,
+                           organization_descendant_topics=organization_descendant_topics,
+                           position_topic=position_topic,
+                           position_descendant_topics=position_descendant_topics,
+                           skill_topic=skill_topic,
+                           skill_descendant_topics=skill_descendant_topics,
+                           people_topic=people_topic,
+                           people_descendant_topics=people_descendant_topics)
 
 
 @bp.route('/topic/query', methods=['POST'])

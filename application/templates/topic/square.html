@@ -1,12 +1,68 @@
 {% extends "layout.html" %}
+{% from "macros/_topic.html" import render_topics %}
 
 {% block page_title %}话题广场{% endblock %}
 {% block page_js %}
-    <script src="/static/js/topic/square.js?__inline"></script>{% endblock %}
+    <script src="/static/js/topic/square.js"></script>{% endblock %}
 {% block page_css %}
-    <link rel="stylesheet" href="/static/css/topic/square.css?__inline"/>{% endblock %}
+    <link rel="stylesheet" href="/static/css/topic/square.css">{% endblock %}
 {% block page_content %}
     <div class="container">
-        <h1>话题广场</h1>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="page-header no-margin-top clearfix">
+                    <span>话题广场</span>
+                </div>
+
+                <div class="topics-wap product-topics-wap active">
+                    {{ render_topics(product_descendant_topics) }}
+                </div>
+
+                <div class="topics-wap organization-topics-wap">
+                    {{ render_topics(organization_descendant_topics) }}
+                </div>
+
+                <div class="topics-wap skill-topics-wap">
+                    {{ render_topics(skill_descendant_topics) }}
+                </div>
+
+                <div class="topics-wap position-topics-wap">
+                    {{ render_topics(position_descendant_topics) }}
+                </div>
+
+                <div class="topics-wap people-topics-wap">
+                    {{ render_topics(people_descendant_topics) }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="list-group topic-selector">
+                    <button type="button" class="list-group-item active">
+                        <h4 class="list-group-item-heading">{{ product_topic.name }}</h4>
+
+                        <p class="list-group-item-text">互联网、移动互联网产品</p>
+                    </button>
+                    <button type="button" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ organization_topic.name }}</h4>
+
+                        <p class="list-group-item-text">公司、团队或组织</p>
+                    </button>
+                    <button type="button" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ position_topic.name }}</h4>
+
+                        <p class="list-group-item-text">产品经理、程序员、运营等职业类别</p>
+                    </button>
+                    <button type="button" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ skill_topic.name }}</h4>
+
+                        <p class="list-group-item-text">职业技能、工具</p>
+                    </button>
+                    <button type="button" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ people_topic.name }}</h4>
+
+                        <p class="list-group-item-text">某个互联网从业者</p>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
