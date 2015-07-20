@@ -929,7 +929,7 @@ def update_other_kind(uid):
 
 
 @bp.route('/topic/<int:uid>/merge_to', methods=['POST'])
-@UserPermission()
+@AdminPermission()
 def merge_to(uid):
     """将本话题合并至另一话题"""
     topic = Topic.query.get_or_404(uid)
@@ -1013,7 +1013,7 @@ def merge_to(uid):
 
 
 @bp.route('/topic/<int:uid>/unmerge_from/<int:unmerge_from_topic_id>', methods=['POST'])
-@UserPermission()
+@AdminPermission()
 def unmerge_from(uid, unmerge_from_topic_id):
     """取消话题合并"""
     topic = Topic.query.get_or_404(uid)

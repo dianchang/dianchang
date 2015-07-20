@@ -129,60 +129,62 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">合并话题</label>
+                    {% if permissions.AdminPermission().check() %}
+                        <div class="form-group clearfix">
+                            <label for="" class="col-sm-2 control-label">合并话题</label>
 
-                        <div class="col-sm-10">
-                            {% set merged = topic.merge_to_topic_id %}
-                            <div class="input-wap merge-topic-wap {% if merged %}merged{% endif %}">
-                                {% if topic.merge_topic_locked %}
-                                    <p class="help-block">合并本话题到其它话题之中。合并之后本话题下的全部问题将会迁移到新的话题之中。
-                                        请将不常用话题合并到常用话题之中。</p>
-
-                                    <div class="text-light">
-                                        <span class="fa fa-lock"></span> 合并话题已锁定
-                                    </div>
-                                {% else %}
-                                    <div class="merge-to-topic-wap">
-                                        本话题已合并至
-                                        <a href="{{ url_for('topic.view', uid=topic.merge_to_topic_id) if merged else "" }}"
-                                           class="link-color merge-to-topic">{{ topic.merge_to_topic.name if merged else "" }}</a>
-                                        <a href="javascript: void(0)" class="text-light btn-unmerge-current-topic"
-                                           data-unmerge-from-id="{{ topic.merge_to_topic_id or "" }}">取消合并</a>
-                                    </div>
-
-                                    <div class="merge-topic-input-wap">
+                            <div class="col-sm-10">
+                                {% set merged = topic.merge_to_topic_id %}
+                                <div class="input-wap merge-topic-wap {% if merged %}merged{% endif %}">
+                                    {% if topic.merge_topic_locked %}
                                         <p class="help-block">合并本话题到其它话题之中。合并之后本话题下的全部问题将会迁移到新的话题之中。
                                             请将不常用话题合并到常用话题之中。</p>
 
-                                        <input type="text" class="form-control" id="" placeholder="合并本话题至..."
-                                               name="merge-topic" autocomplete="off">
+                                        <div class="text-light">
+                                            <span class="fa fa-lock"></span> 合并话题已锁定
+                                        </div>
+                                    {% else %}
+                                        <div class="merge-to-topic-wap">
+                                            本话题已合并至
+                                            <a href="{{ url_for('topic.view', uid=topic.merge_to_topic_id) if merged else "" }}"
+                                               class="link-color merge-to-topic">{{ topic.merge_to_topic.name if merged else "" }}</a>
+                                            <a href="javascript: void(0)" class="text-light btn-unmerge-current-topic"
+                                               data-unmerge-from-id="{{ topic.merge_to_topic_id or "" }}">取消合并</a>
+                                        </div>
 
-                                        <button type="button" class="btn btn-default btn-merge-topic">合并</button>
-                                    </div>
+                                        <div class="merge-topic-input-wap">
+                                            <p class="help-block">合并本话题到其它话题之中。合并之后本话题下的全部问题将会迁移到新的话题之中。
+                                                请将不常用话题合并到常用话题之中。</p>
+
+                                            <input type="text" class="form-control" id="" placeholder="合并本话题至..."
+                                                   name="merge-topic" autocomplete="off">
+
+                                            <button type="button" class="btn btn-default btn-merge-topic">合并</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                {% if merged_topics.count() %}
+                                    <p>以下话题已被合并至本话题：</p>
                                 {% endif %}
+
+                                <ul class="merged-topics">
+                                    {% for merged_topic in merged_topics %}
+                                        <li class="merged-topic">
+                                            <a href="{{ url_for('topic.view', uid=merged_topic.id) }}"
+                                               class="dc-topic dc-show-topic-card" data-id="{{ merged_topic.id }}">
+                                                {{ merged_topic.name }}
+                                            </a>
+
+                                            <a href="javascript: void(0)" class="btn-unmerge-topic text-light"
+                                               data-id="{{ merged_topic.id }}">取消合并</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
                             </div>
-
-                            {% if merged_topics.count() %}
-                                <p>以下话题已被合并至本话题：</p>
-                            {% endif %}
-
-                            <ul class="merged-topics">
-                                {% for merged_topic in merged_topics %}
-                                    <li class="merged-topic">
-                                        <a href="{{ url_for('topic.view', uid=merged_topic.id) }}"
-                                           class="dc-topic dc-show-topic-card" data-id="{{ merged_topic.id }}">
-                                            {{ merged_topic.name }}
-                                        </a>
-
-                                        <a href="javascript: void(0)" class="btn-unmerge-topic text-light"
-                                           data-id="{{ merged_topic.id }}">取消合并</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-
                         </div>
-                    </div>
+                    {% endif %}
 
                     <div class="form-group clearfix">
                         <label for="" class="col-sm-2 control-label">话题同义词</label>
