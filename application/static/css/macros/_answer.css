@@ -154,6 +154,9 @@
   color: #999;
   margin-bottom: 10px;
 }
+.dc-answer .from-child-topic .dc-topic {
+  margin-left: 5px;
+}
 .dc-answer .title {
   display: block;
   margin-bottom: 8px;
