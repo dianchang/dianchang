@@ -247,6 +247,7 @@ html {
 .navbar #nav-notification .dropdown-menu-noti .noti-content {
   height: 300px;
   overflow: auto;
+  overflow-y: hidden;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-content .noti-panel {
   display: none;
@@ -260,7 +261,6 @@ html {
   display: block;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-content .loading-flag {
-  display: block;
   text-align: center;
   padding: 25px;
   font-size: 18px;

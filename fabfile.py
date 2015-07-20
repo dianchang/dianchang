@@ -12,6 +12,7 @@ def deploy(upload_assets='yes'):
     if upload_assets == 'yes':
         env.host_string = "localhost"
         with cd('/var/www/dianchang'):
+            local('rm -r output')
             with prefix('source venv/bin/activate'):
                 local('python manage.py build')
                 local('python manage.py upload')
