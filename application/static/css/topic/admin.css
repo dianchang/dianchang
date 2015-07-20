@@ -255,6 +255,7 @@
   margin: 0 2px;
 }
 #main-wap .topics-kind-wap .other-kind-wap .other-kind-edit-wap {
+  margin-top: 10px;
   display: none;
 }
 #main-wap .topics-kind-wap .other-kind-wap .other-kind-edit-wap input {
