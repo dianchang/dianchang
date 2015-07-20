@@ -8,8 +8,7 @@
 {% block page_css %}
     <link rel="stylesheet" href="/static/css/user/profile.css?__inline"/>{% endblock %}
 {% block page_content %}
-    {{ user_page_header(user, preview=preview, avatar_uptoken=avatar_uptoken,
-        background_uptoken=background_uptoken) }}
+    {{ user_page_header(user, preview=preview) }}
 
     <div class="container">
         <div class="row">
