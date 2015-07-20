@@ -164,8 +164,8 @@ def answers(uid):
     return render_template('user/answers.html', user=user)
 
 
-@bp.route('/people/<int:uid>/questions_and_answers')
-def questions_and_answers(uid):
+@bp.route('/people/<int:uid>/qa')
+def qa(uid):
     """问答"""
     if g.user and g.user.id == uid:
         avatar_uptoken = qiniu.generate_token(policy={
@@ -182,7 +182,7 @@ def questions_and_answers(uid):
     user = User.query.get_or_404(uid)
     feeds = user.feeds.filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION]))
     feeds_count = feeds.count()
-    return render_template('user/questions_and_answers.html', user=user, feeds=feeds.limit(USER_FEEDS_PER),
+    return render_template('user/qa.html', user=user, feeds=feeds.limit(USER_FEEDS_PER),
                            avatar_uptoken=avatar_uptoken, background_uptoken=background_uptoken,
                            total=feeds_count, per=USER_FEEDS_PER)
 

@@ -201,8 +201,8 @@
                     <li {% if active == 'profile' %}class="active"{% endif %}>
                         <a href="{{ user.profile_url }}">主页</a>
                     </li>
-                    <li {% if active == 'questions_and_answers' %}class="active"{% endif %}>
-                        <a href="{{ url_for('user.questions_and_answers', uid=user.id) }}">问答</a>
+                    <li {% if active == 'qa' %}class="active"{% endif %}>
+                        <a href="{{ url_for('user.qa', uid=user.id) }}">问答</a>
                     </li>
                     <li {% if active == 'achievements' %}class="active"{% endif %}>
                         <a href="{{ url_for('user.achievements', uid=user.id) }}">成就</a>
