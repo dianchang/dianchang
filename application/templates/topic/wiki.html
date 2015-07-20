@@ -27,9 +27,11 @@
                     {% endfor %}
                 </div>
 
-                <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}" class="btn btn-default btn-block">
-                    编辑话题百科
-                </a>
+                {% if not topic.wiki_locked %}
+                    <a href="{{ url_for('topic.edit_wiki', uid=topic.id) }}" class="btn btn-default btn-block">
+                        编辑话题百科
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

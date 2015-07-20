@@ -20,9 +20,18 @@
 
   .topic-selector {
     .list-group-item {
-      border-radius: 0;
       padding: 20px 20px;
       outline: none;
+
+      &:first-child {
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
 
       .list-group-item-text {
         color: #999;
