@@ -102,51 +102,7 @@ def build():
 
 @manager.command
 def test():
-    # graph = {'A': ['B', 'C'],
-    #          'B': ['C', 'D'],
-    #          'C': ['D'],
-    #          'D': ['C'],
-    #          'E': ['F'],
-    #          'F': ['C']}
-    #
-    # graph1 = {
-    #     'A': ['B', 'C'],
-    #     'B': ['D'],
-    #     'C': ['D']
-    # }
-    #
-    # def find_path(graph, start, end, path=[]):
-    #     path = path + [start]
-    #     if start == end:
-    #         return path
-    #     if not graph.has_key(start):
-    #         return None
-    #     for node in graph[start]:
-    #         if node not in path:
-    #             newpath = find_path(graph, node, end, path)
-    #             if newpath:
-    #                 return newpath
-    #     return None
-    #
-    # def find_all_paths(graph, start, end, path=[]):
-    #     path = path + [start]
-    #     if start == end:
-    #         return [path]
-    #     if not graph.has_key(start):
-    #         return []
-    #     paths = []
-    #     for node in graph[start]:
-    #         if node not in path:
-    #             newpaths = find_all_paths(graph, node, end, path)
-    #             for newpath in newpaths:
-    #                 paths.append(newpath)
-    #     return paths
-    #
-    # print(find_all_paths(graph1, 'A', 'D'))
-    from pypinyin import pinyin, lazy_pinyin
-
-    a = unicode("呵呵s")
-    print(''.join(lazy_pinyin(a)))
+    pass
 
 
 @manager.command
@@ -165,7 +121,6 @@ def pinyin():
 
 @manager.command
 def uniform():
-    from flask import json
     from application.models import db, User, Answer, Question, AnswerComment, Notification, Topic
 
     for user in User.query:
@@ -196,14 +151,6 @@ def uniform():
     for comment in AnswerComment.query:
         comment.likes_count = comment.likes.count()
         db.session.add(comment)
-
-    # for answer_comment in AnswerComment.query:
-    #     answer_comment.question_id = answer_comment.answer.question_id
-    #     db.session.add(answer_comment)
-    #
-    # for noti in Notification.query:
-    #     noti.senders_list = json.dumps([noti.sender_id])
-    #     db.session.add(noti)
 
     db.session.commit()
 
