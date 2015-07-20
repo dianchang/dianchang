@@ -264,6 +264,10 @@ html {
   padding: 10px 0;
   position: relative;
   border-top: 1px solid #eaeaea;
+  cursor: pointer;
+}
+.navbar #nav-notification .dropdown-menu-noti .noti-footer:hover {
+  background-color: #f6f6f6;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications {
   color: #999;
