@@ -379,27 +379,27 @@
 
     // 弹出用户卡片
     $(document).onOnce('mouseenter', '.dc-show-user-card', function () {
-        var id = $(this).data('id');
-        var html = $(this).data('user');
+        var id = parseInt($(this).data('id'));
         var _this = $(this);
+        var userData = getUserData(id);
 
         // 隐藏其他的用户卡片
         $('.dc-show-user-card').popover('hide').popover('destroy');
 
-        //if (typeof html === 'undefined') {
-        $.ajax({
-            url: urlFor('user.get_card', {uid: id}),
-            method: 'post',
-            dataType: 'json'
-        }).done(function (response) {
-            if (response.result) {
-                //_this.data('user', response.html);
-                showUserCard(_this, response.html);
-            }
-        });
-        //} else {
-        //    showUserCard(_this, html);
-        //}
+        if (typeof userData === 'undefined') {
+            $.ajax({
+                url: urlFor('user.get_data_for_card', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    setUserData(id, response.user);
+                    showUserCard(_this, response.user);
+                }
+            });
+        } else {
+            showUserCard(_this, userData);
+        }
     });
 
     // 隐藏用户卡片
@@ -470,14 +470,18 @@
     /**
      * 显示用户卡片
      * @param $element
-     * @param html
+     * @param userData
      */
-    function showUserCard($element, html) {
+    function showUserCard($element, userData) {
         clearTimeout(timerForUserCard);
 
         $element.popover({
             content: function () {
-                return html;
+                if (typeof g.userCardTemplate === 'undefined') {
+                    g.userCardTemplate = $('#user-card-template').html();
+                }
+
+                return nunjucks.renderString(g.userCardTemplate, userData);
             },
             html: true,
             container: 'body',

@@ -292,6 +292,37 @@
         }
     };
 
+    /**
+     * 获取用户数据
+     * @param id
+     * @returns {Object}
+     */
+    function getUserData(id) {
+        id = parseInt(id);
+
+        if (typeof g.users === 'undefined') {
+            g.users = {};
+        }
+        return g.users[id];
+    }
+
+    /**
+     * 设置用户数据
+     * @param id
+     * @param data
+     */
+    function setUserData(id, data) {
+        id = parseInt(id);
+
+        var currentData = getUserData(id);
+
+        if (typeof currentData === 'undefined') {
+            g.users[id] = {};
+        }
+
+        $.extend(g.users[id], data);
+    }
+
     window.showTip = showTip;
     window.hideTip = hideTip;
     window.urlFor = urlFor;
@@ -301,4 +332,6 @@
     window.disableScroll = disableScroll;
     window.enableScroll = enableScroll;
     window.getJsonFromUrl = getJsonFromUrl;
+    window.getUserData = getUserData;
+    window.setUserData = setUserData;
 })();

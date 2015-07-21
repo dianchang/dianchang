@@ -29,7 +29,7 @@
     </div>
 
     <script>
-        $('.dc-user-follow-wap').onOnce('click', function () {
+        $(document).onOnce('click', '.dc-user-follow-wap', function () {
             var userId = $(this).data('id');
             var followed = $(this).hasClass('followed');
             var myself = $(this).hasClass('myself');
@@ -69,6 +69,7 @@
                         }
                     }
 
+                    setUserData(userId, {'followed': response.followed});
                     $count.text(response.followers_count);
                 }
             });
@@ -673,46 +674,6 @@
         <a href="{{ url_for('user.drafts') }}"
            class="{% if active == 'drafts' %}active{% endif %}">
             草稿 <span class="drafts-count">{{ g.user.drafts_count }}</span></a>
-    </div>
-{% endmacro %}
-
-
-{# 用户卡片 #}
-{% macro user_card(user) %}
-    <div class="dc-user-card">
-        <div class="user-wap">
-            <div class="avatar-wap">
-                <a href="{{ user.profile_url }}">
-                    <img src="{{ user.avatar_url }}" class="img-circle" alt=""/>
-                </a>
-            </div>
-
-            <div class="name">
-                <a href="{{ user.profile_url }}">{{ user.name }}</a>
-            </div>
-
-            {% if user.desc %}
-                <div class="desc">{{ user.desc }}</div>
-            {% endif %}
-
-            <div class="other">
-                {% if user.organization %}
-                    <span class="organization">{{ user.organization }}</span>
-                {% endif %}
-
-                {% if user.organization and user.position %}
-                    <span class="divider">·</span>
-                {% endif %}
-
-                {% if user.position %}
-                    <span class="position">{{ user.position }}</span>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="follow-wap">
-            {{ user_follow_wap(user, dark=True) }}
-        </div>
     </div>
 {% endmacro %}
 

@@ -54,6 +54,7 @@
     <script src="/static/js/libs/Sortable.min.js"></script>
     <script src="/static/js/libs/jquery.animate-colors-min.js"></script>
     <script src="/static/js/libs/raven.min.js"></script>
+    <script src="/static/js/libs/nunjucks.min.js"></script>
     {% if not config.DEBUG and not config.TESTING %}
         <script>
             Raven.config('http://130d24bbaa494dc799165ec12cc6b288@119.254.101.73:9000/2').install();
@@ -298,6 +299,59 @@
         </div>
     </div>
 </div>
+
+{# 用户卡片 #}
+{% raw %}
+<script id="user-card-template" type="text/x-handlebars-template">
+    <div class="dc-user-card">
+        <div class="user-wap">
+            <div class="avatar-wap">
+                <a href="{{ profile_url }}">
+                    <img src="{{ avatar_url }}" class="img-circle" alt=""/>
+                </a>
+            </div>
+
+            <div class="name">
+                <a href="{{ profile_url }}">{{ name }}</a>
+            </div>
+
+            {% if user.desc %}
+            <div class="desc">{{ desc }}</div>
+            {% endif %}
+
+            <div class="other">
+                {% if organization %}
+                <span class="organization">{{ organization }}</span>
+                {% endif %}
+
+                {% if organization and position %}
+                <span class="divider">·</span>
+                {% endif %}
+
+                {% if position %}
+                <span class="position">{{ position }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="follow-wap">
+            <div class="dc-user-follow-wap btn
+                {% if sm %}btn-sm{% endif %} dark
+                {% if followed %}btn-default{% else %}btn-dark{% endif %}
+                {% if myself %}myself{% endif %}
+                {% if followed %}followed{% endif %}" data-id="{{ id }}">
+                {% if myself %}
+                我自己
+                {% else %}
+                <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span>
+                <span class="divider">|</span>
+                <span class="followers-count">{{ followers_count }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</script>
+{% endraw %}
 
 {# JS layout #}
 <script src="/static/js/layout.js?__inline"></script>

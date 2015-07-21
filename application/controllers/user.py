@@ -515,14 +515,24 @@ def loading_followed_questions():
     })
 
 
-@bp.route('/user/<int:uid>/get_card', methods=['POST'])
-def get_card(uid):
+@bp.route('/user/<int:uid>/get_data_for_card', methods=['POST'])
+def get_data_for_card(uid):
     """获取用于显示用户卡片的数据"""
     user = User.query.get_or_404(uid)
-    macro = get_template_attribute('macros/_user.html', 'user_card')
     return json.dumps({
         'result': True,
-        'html': macro(user)
+        'user': {
+            'id': uid,
+            'name': user.name,
+            'avatar_url': user.avatar_url,
+            'profile_url': user.profile_url,
+            'desc': user.desc or "",
+            'organization': user.organization or "",
+            'position': user.position or "",
+            'followed': bool(g.user and user.followed_by_user(g.user.id)),
+            'followers_count': user.followers_count,
+            'myself': bool(g.user and g.user.id == user.id)
+        }
     })
 
 
