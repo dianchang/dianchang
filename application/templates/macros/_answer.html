@@ -289,35 +289,35 @@
                     {{ answer.comments_count }}
                 </a>
 
-                <a href="javascript:void(0)" class="btn-share">
+                <a href="javascript:void(0)" class="btn-share" data-qrcode-url="{{ answer.qrcode_url }}">
                     <span class="fa fa-share-square-o"></span>
                     分享
                 </a>
 
-            <span class="btn-more dc-hide-commands-trigger">
-                更多
+                <span class="btn-more dc-hide-commands-trigger">
+                    更多
 
-                <span class="hide-commands dc-hide-commands">
-                    {% if not myself %}
-                        {# 感谢 #}
-                        <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
-                           data-user-id="{{ answer.user_id }}" href="javascript: void(0)">
-                            <span class="for-thanked">已感谢</span>
-                            <span class="for-un-thanked">感谢作者</span></a>
+                    <span class="hide-commands dc-hide-commands">
+                        {% if not myself %}
+                            {# 感谢 #}
+                            <a class="btn-thank-answer {% if thanked %}thanked{% endif %}" data-id="{{ answer.id }}"
+                               data-user-id="{{ answer.user_id }}" href="javascript: void(0)">
+                                <span class="for-thanked">已感谢</span>
+                                <span class="for-un-thanked">感谢作者</span></a>
 
-                        {# 没有帮助 #}
-                        <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
-                           data-user-id="{{ answer.user.id }}" href="javascript: void(0)">
-                            <span class="for-nohelped">已标记为没有帮助</span>
-                            <span class="for-un-nohelped">没有帮助</span></a>
-                    {% endif %}
+                            {# 没有帮助 #}
+                            <a class="btn-nohelp-answer {% if nohelped %}nohelped{% endif %}" data-id="{{ answer.id }}"
+                               data-user-id="{{ answer.user.id }}" href="javascript: void(0)">
+                                <span class="for-nohelped">已标记为没有帮助</span>
+                                <span class="for-un-nohelped">没有帮助</span></a>
+                        {% endif %}
 
-                    {% if with_full_screen %}
-                        <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
-                           class="btn-fullscreen">全屏阅读</a>
-                    {% endif %}
+                        {% if with_full_screen %}
+                            <a href="{{ url_for('answer.view', uid=answer.id) }}" target="_blank"
+                               class="btn-fullscreen">全屏阅读</a>
+                        {% endif %}
+                    </span>
                 </span>
-            </span>
             </div>
         </div>
 
@@ -455,7 +455,8 @@
 
         // 分享回答
         $answerCommands.onOnce('click', '.btn-share', function () {
-            $('#modal-share-answer').modal('toggle');
+            var qrcodeUrl = $(this).data('qrcode-url');
+            $('#modal-share-answer').modal('show').find('.qrcode').attr('src', qrcodeUrl);
         });
 
         // 感谢回答
