@@ -49,21 +49,22 @@
         </div>
     </div>
 
-    <div class="answer-comments-wap">
-        <div class="container">
-            <div class="comments-count">{{ answer.comments_count }} 条评论</div>
+    {% if answer.comments_count %}
+        <div class="answer-comments-wap">
+            <div class="container">
+                <div class="comments-count">{{ answer.comments_count }} 条评论</div>
 
-            <div class="dc-answer-comments">
-                <div class="comments">
-                    {% for comment in answer.comments %}
+                <div class="dc-answer-comments">
+                    <div class="comments">
+                        {% for comment in answer.comments %}
 
-                        <div class="answer-comment media" data-id="{{ comment.id }}">
-                            <div class="media-left">
-                                <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
-                            </div>
+                            <div class="answer-comment media" data-id="{{ comment.id }}">
+                                <div class="media-left">
+                                    <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
+                                </div>
 
-                            <div class="media-body">
-                                <div class="meta">
+                                <div class="media-body">
+                                    <div class="meta">
                                     <span class="comment-user-info">
                                         <span class="name">
                                             {{ comment.user.name }}</span>
@@ -72,24 +73,27 @@
                                     <span title="{{ comment.created_at }}" class="time text-light">
                                         {{ comment.created_at|timesince }}
                                     </span>
-                                </div>
+                                    </div>
 
-                                <div class="content rich-text-area">
-                                    {% if comment.parent %}
-                                        <span>@{{ comment.parent.user.name }}</span>
-                                    {% endif %}
+                                    <div class="content rich-text-area">
+                                        {% if comment.parent %}
+                                            <span class="text-light">@{{ comment.parent.user.name }}</span>
+                                        {% endif %}
 
-                                    {{ comment.content|safe }}
+                                        {{ comment.content|safe }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
     <div class="logo-wap">
-
+        <div class="copyright">电场 © 2015</div>
+        <div class="slogan text-light">互联网职业领域问答社区 </div>
+        <div class="site-link text-light">dianchang.me</div>
     </div>
 {% endblock %}
