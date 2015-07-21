@@ -16,6 +16,13 @@ def view(uid):
     return render_template('answer/view.html', answer=answer)
 
 
+@bp.route('/answer/<int:uid>/mobile_view')
+def mobile_view(uid):
+    """单个回答页（适配移动端）"""
+    answer = Answer.query.get_or_404(uid)
+    return render_template('answer/mobile_view.html', answer=answer)
+
+
 @bp.route('/answer/<int:uid>/upvote', methods=['POST'])
 @UserPermission()
 def upvote(uid):

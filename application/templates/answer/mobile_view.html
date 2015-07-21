@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% from "macros/_answer.html" import render_answer_comment, render_answer_commands, render_answer_comments %}
+
+{% block page_title %}「{{ answer.question.title }}」@{{ answer.user.name }}：
+    {{ answer.content_preview or "" }}{% endblock %}
+{% block page_js %}
+    <script src="/static/js/answer/mobile_view.js"></script>{% endblock %}
+{% block page_css %}
+    <link rel="stylesheet" href="/static/css/answer/mobile_view.css"/>{% endblock %}
+{% block page_content %}
+    <div class="question">
+        <div class="container">
+            <div class="title">
+                {{ answer.question.title }}
+            </div>
+
+            {% if answer.question.desc %}
+                <div class="desc">{{ answer.question.desc|safe }}</div>
+            {% endif %}
+
+            {% for topic in answer.question.topics %}
+                <span class="dc-topic dc-topic-white">
+                    {{ topic.topic.name }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="answer">
+            <div class="content rich-text-area {% if answer.content|length < 60 %}less{% endif %}">
+                {{ answer.content|safe }}
+            </div>
+
+            <div class="time text-light">
+                发布于 <span title="{{ answer.created_at }}">{{ answer.created_at|timesince }}</span>
+            </div>
+        </div>
+
+        <div class="answerer-wap media">
+            <div class="media-left">
+                <img src="{{ answer.user.avatar_url }}" class="img-circle" alt=""/>
+            </div>
+            <div class="media-body">
+                <div class="answerer-name">{{ answer.user.name }}</div>
+                <div class="text-light">
+                    © 作者保留所有权利
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="answer-comments-wap">
+        <div class="container">
+            <div class="comments-count">{{ answer.comments_count }} 条评论</div>
+
+            <div class="dc-answer-comments">
+                <div class="comments">
+                    {% for comment in answer.comments %}
+
+                        <div class="answer-comment media" data-id="{{ comment.id }}">
+                            <div class="media-left">
+                                <img src="{{ comment.user.avatar_url }}" class="img-circle" alt=""/>
+                            </div>
+
+                            <div class="media-body">
+                                <div class="meta">
+                                    <span class="comment-user-info">
+                                        <span class="name">
+                                            {{ comment.user.name }}</span>
+                                    </span>
+
+                                    <span title="{{ comment.created_at }}" class="time text-light">
+                                        {{ comment.created_at|timesince }}
+                                    </span>
+                                </div>
+
+                                <div class="content rich-text-area">
+                                    {% if comment.parent %}
+                                        <span>@{{ comment.parent.user.name }}</span>
+                                    {% endif %}
+
+                                    {{ comment.content|safe }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo-wap">
+
+    </div>
+{% endblock %}

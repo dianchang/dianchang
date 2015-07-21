@@ -8,7 +8,7 @@ from ._qiniu import qiniu
 def generate_qrcode_for_answer(answer):
     """为答案生成qrcode"""
     qr = qrcode.QRCode(box_size=10, border=0)
-    qr.add_data(absolute_url_for('answer.view', uid=answer.id))
+    qr.add_data(absolute_url_for('answer.mobile_view', uid=answer.id))
     qr.make(fit=True)
     img = qr.make_image()
     output = io.BytesIO()
