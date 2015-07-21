@@ -323,6 +323,37 @@
         $.extend(g.users[id], data);
     }
 
+    /**
+     * 获取话题数据
+     * @param id
+     * @returns {Object}
+     */
+    function getTopicData(id) {
+        id = parseInt(id);
+
+        if (typeof g.topics === 'undefined') {
+            g.topics = {};
+        }
+        return g.topics[id];
+    }
+
+    /**
+     * 设置话题数据
+     * @param id
+     * @param data
+     */
+    function setTopicData(id, data) {
+        id = parseInt(id);
+
+        var currentData = getTopicData(id);
+
+        if (typeof currentData === 'undefined') {
+            g.topics[id] = {};
+        }
+
+        $.extend(g.topics[id], data);
+    }
+
     window.showTip = showTip;
     window.hideTip = hideTip;
     window.urlFor = urlFor;
@@ -334,4 +365,6 @@
     window.getJsonFromUrl = getJsonFromUrl;
     window.getUserData = getUserData;
     window.setUserData = setUserData;
+    window.getTopicData = getTopicData;
+    window.setTopicData = setTopicData;
 })();

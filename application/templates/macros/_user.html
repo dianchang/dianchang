@@ -27,54 +27,6 @@
             {% endif %}
         {% endif %}
     </div>
-
-    <script>
-        $(document).onOnce('click', '.dc-user-follow-wap', function () {
-            var userId = $(this).data('id');
-            var followed = $(this).hasClass('followed');
-            var myself = $(this).hasClass('myself');
-            var _this = $(this);
-            var $count = _this.find('.followers-count');
-            var url = urlFor('user.follow', {uid: userId});
-
-            if (!g.signin) {
-                window.location = urlFor('account.signin');
-                return;
-            }
-
-            if (myself) {
-                return;
-            }
-
-            $.ajax({
-                url: url,
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.followed) {
-                        _this.addClass('followed').addClass('btn-default');
-                        if (_this.hasClass('dark')) {
-                            _this.removeClass('btn-dark');
-                        } else {
-                            _this.removeClass('btn-light');
-                        }
-                    } else {
-                        _this.removeClass('followed').removeClass('btn-default');
-
-                        if (_this.hasClass('dark')) {
-                            _this.addClass('btn-dark');
-                        } else {
-                            _this.addClass('btn-light');
-                        }
-                    }
-
-                    setUserData(userId, {'followed': response.followed});
-                    $count.text(response.followers_count);
-                }
-            });
-        });
-    </script>
 {% endmacro %}
 
 
@@ -697,8 +649,8 @@
         {% endif %}
 
         <span class="action">
-        {% if senders_count == 3 %}3 人{% elif senders_count > 3 %}等 {{ senders_count }} 人{% endif %}{{ action }}
-    </span>
+            {% if senders_count == 3 %}3 人{% elif senders_count > 3 %}等 {{ senders_count }} 人{% endif %}{{ action }}
+        </span>
     </div>
 {% endmacro %}
 

@@ -33,53 +33,6 @@
             <span class="followers-count">{{ topic.followers_count }}</span>
         {% endif %}
     </div>
-
-    <script>
-        (function () {
-            // 关注话题
-            $('.dc-topic-follow-wap').onOnce('click', function () {
-                var topicId = $(this).data('id');
-                var followed = $(this).hasClass('followed');
-                var _this = $(this);
-                var $count = _this.find('.followers-count');
-                var url = urlFor('topic.follow', {uid: topicId});
-
-                if (!g.signin) {
-                    window.location = urlFor('account.signin');
-                    return;
-                }
-
-                $.ajax({
-                    url: url,
-                    method: 'post',
-                    dataType: 'json'
-                }).done(function (response) {
-                    if (response.result) {
-                        if (response.followed) {
-                            if (!_this.hasClass('followed')) {
-                                _this.addClass('followed').addClass('btn-default');
-                                if (_this.hasClass('dark')) {
-                                    _this.removeClass('btn-dark');
-                                } else {
-                                    _this.removeClass('btn-light');
-                                }
-                            }
-                        } else {
-                            _this.removeClass('followed').removeClass('btn-default');
-
-                            if (_this.hasClass('dark')) {
-                                _this.addClass('btn-dark');
-                            } else {
-                                _this.addClass('btn-light');
-                            }
-                        }
-
-                        $count.text(response.followers_count);
-                    }
-                });
-            });
-        })();
-    </script>
 {% endmacro %}
 
 
@@ -328,31 +281,6 @@
                 </a>
             </div>
         {% endif %}
-    </div>
-{% endmacro %}
-
-
-{# 话题卡片 #}
-{% macro topic_card(topic) %}
-    <div class="dc-topic-card">
-        <div class="topic-wap">
-            <div class="meta-wap">
-                <a href="{{ url_for('topic.view', uid=topic.id) }}">
-                    <img src="{{ topic.avatar_url }}" alt="" class="img-rounded"/></a>
-
-                <a class="name" href="{{ url_for('topic.view', uid=topic.id) }}">
-                    {{ topic.name }}</a>
-            </div>
-
-            {% if topic.wiki_preview %}
-                <div class="desc text-light">
-                    {{ topic.wiki_preview|truncate(30, true) }}
-                </div>
-            {% endif %}
-        </div>
-        <div class="follow-wap">
-            {{ topic_follow_wap(topic, dark=True, text='关注') }}
-        </div>
     </div>
 {% endmacro %}
 

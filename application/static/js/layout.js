@@ -413,29 +413,78 @@
         }, 200);
     });
 
-    // 弹出话题卡片
-    $(document).onOnce('mouseenter', '.dc-show-topic-card', function () {
-        var id = $(this).data('id');
-        var html = $(this).data('topic');
+    $(document).onOnce('click', '.dc-user-follow-wap', function () {
+        var userId = $(this).data('id');
+        var followed = $(this).hasClass('followed');
+        var myself = $(this).hasClass('myself');
         var _this = $(this);
+        var $count = _this.find('.followers-count');
+        var url = urlFor('user.follow', {uid: userId});
 
-        // 隐藏其他的用户卡片
-        $('.dc-show-topic-card').popover('destroy');
+        if (!g.signin) {
+            window.location = urlFor('account.signin');
+            return;
+        }
 
-        //if (typeof html === 'undefined') {
+        if (myself) {
+            return;
+        }
+
         $.ajax({
-            url: urlFor('topic.get_card', {uid: id}),
+            url: url,
             method: 'post',
             dataType: 'json'
         }).done(function (response) {
             if (response.result) {
-                //_this.data('topic', response.html);
-                showTopicCard(_this, response.html);
+                if (response.followed) {
+                    _this.addClass('followed').addClass('btn-default');
+                    if (_this.hasClass('dark')) {
+                        _this.removeClass('btn-dark');
+                    } else {
+                        _this.removeClass('btn-light');
+                    }
+                } else {
+                    _this.removeClass('followed').removeClass('btn-default');
+
+                    if (_this.hasClass('dark')) {
+                        _this.addClass('btn-dark');
+                    } else {
+                        _this.addClass('btn-light');
+                    }
+                }
+
+                setUserData(userId, {
+                    'followed': response.followed,
+                    'followers_count': response.followers_count
+                });
+                $count.text(response.followers_count);
             }
         });
-        //} else {
-        //    showUserCard(_this, html);
-        //}
+    });
+
+    // 弹出话题卡片
+    $(document).onOnce('mouseenter', '.dc-show-topic-card', function () {
+        var id = $(this).data('id');
+        var _this = $(this);
+        var topicData = getTopicData(id);
+
+        // 隐藏其他的用户卡片
+        $('.dc-show-topic-card').popover('destroy');
+
+        if (typeof topicData === 'undefined') {
+            $.ajax({
+                url: urlFor('topic.get_data_for_card', {uid: id}),
+                method: 'post',
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.result) {
+                    showTopicCard(_this, response.topic);
+                    setTopicData(id, response.topic);
+                }
+            });
+        } else {
+            showTopicCard(_this, topicData);
+        }
     });
 
     // 隐藏话题卡片
@@ -447,6 +496,53 @@
                 $(_this).popover("destroy");
             }
         }, 200);
+    });
+
+    // 关注话题
+    $(document).onOnce('click', '.dc-topic-follow-wap', function () {
+        var topicId = $(this).data('id');
+        var followed = $(this).hasClass('followed');
+        var _this = $(this);
+        var $count = _this.find('.followers-count');
+        var url = urlFor('topic.follow', {uid: topicId});
+
+        if (!g.signin) {
+            window.location = urlFor('account.signin');
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            method: 'post',
+            dataType: 'json'
+        }).done(function (response) {
+            if (response.result) {
+                if (response.followed) {
+                    if (!_this.hasClass('followed')) {
+                        _this.addClass('followed').addClass('btn-default');
+                        if (_this.hasClass('dark')) {
+                            _this.removeClass('btn-dark');
+                        } else {
+                            _this.removeClass('btn-light');
+                        }
+                    }
+                } else {
+                    _this.removeClass('followed').removeClass('btn-default');
+
+                    if (_this.hasClass('dark')) {
+                        _this.addClass('btn-dark');
+                    } else {
+                        _this.addClass('btn-light');
+                    }
+                }
+
+                setTopicData(topicId, {
+                    'followed': response.followed,
+                    'followers_count': response.followers_count
+                });
+                $count.text(response.followers_count);
+            }
+        });
     });
 
     /**
@@ -510,14 +606,18 @@
     /**
      * 显示话题卡片
      * @param $element
-     * @param html
+     * @param topicData
      */
-    function showTopicCard($element, html) {
+    function showTopicCard($element, topicData) {
         clearTimeout(timerForTopicCard);
 
         $element.popover({
             content: function () {
-                return html;
+                if (typeof g.topicCardTemplate === 'undefined') {
+                    g.topicCardTemplate = $('#topic-card-template').html();
+                }
+
+                return nunjucks.renderString(g.topicCardTemplate, topicData);
             },
             html: true,
             container: 'body',

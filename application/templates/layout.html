@@ -353,6 +353,38 @@
 </script>
 {% endraw %}
 
+{# 话题卡片 #}
+{% raw %}
+<script id="topic-card-template" type="text/x-handlebars-template">
+    <div class="dc-topic-card">
+        <div class="topic-wap">
+            <div class="meta-wap">
+                <a href="{{ url }}">
+                    <img src="{{ avatar_url }}" alt="" class="img-rounded"/></a>
+                <a class="name" href="{{ url }}">{{ name }}</a>
+            </div>
+
+            {% if wiki_preview %}
+            <div class="desc text-light">
+                {{ wiki_preview }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="follow-wap">
+            <div class="dc-topic-follow-wap btn dark
+                {% if followed %}btn-default{% else %}btn-dark{% endif %}
+                {% if followed %}followed{% endif %}" data-id="{{ id }}">
+                <a href="javascript: void(0)" class="btn-follow-topic">
+                    <span class="for-follow">关注</span><span class="for-unfollow">不再关注</span></a>
+                <span class="divider">|</span>
+                <span class="followers-count">{{ followers_count }}</span>
+            </div>
+        </div>
+    </div>
+</script>
+{% endraw %}
+
 {# JS layout #}
 <script src="/static/js/layout.js?__inline"></script>
 

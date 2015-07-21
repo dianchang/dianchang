@@ -509,7 +509,7 @@ def follow(uid):
         return json.dumps({
             'result': True,
             'followed': False,
-            'followers_count': topic.followers.count()
+            'followers_count': topic.followers_count
         })
     else:
         # 关注
@@ -548,7 +548,7 @@ def follow(uid):
         return json.dumps({
             'result': True,
             'followed': True,
-            'followers_count': topic.followers.count()
+            'followers_count': topic.followers_count
         })
 
 
@@ -776,14 +776,21 @@ def update_show_order():
     })
 
 
-@bp.route('/topic/<int:uid>/get_card', methods=['POST'])
-def get_card(uid):
+@bp.route('/topic/<int:uid>/get_data_for_card', methods=['POST'])
+def get_data_for_card(uid):
     """获取话题卡片"""
     topic = Topic.query.get_or_404(uid)
-    macro = get_template_attribute('macros/_topic.html', 'topic_card')
     return json.dumps({
         'result': True,
-        'html': macro(topic)
+        'topic': {
+            'id': uid,
+            'name': topic.name,
+            'url': url_for('.view', uid=uid),
+            'avatar_url': topic.avatar_url,
+            'followers_count': topic.followers_count,
+            'followed': bool(g.user and topic.followed_by_user(g.user.id)),
+            'wiki_preview': topic.wiki_preview
+        }
     })
 
 
