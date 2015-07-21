@@ -1,12 +1,13 @@
 # coding: utf-8
 from datetime import datetime
-from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute
-from ..forms import AddQuestionForm
+from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute, \
+    current_app
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
     UserTopicStatistic, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
     NOTIFICATION_KIND, InviteAnswer, User, ComposeFeed, COMPOSE_FEED_KIND, HomeFeedBackup
 from ..utils.permissions import UserPermission
-from ..utils.helpers import generate_lcs_html
+from ..utils.helpers import generate_lcs_html, absolute_url_for
+from ..utils.answer import generate_qrcode_for_answer
 
 bp = Blueprint('question', __name__)
 
@@ -428,6 +429,10 @@ def answer(uid):
         db.session.delete(draft)
 
     db.session.commit()
+
+    if current_app.production:
+        generate_qrcode_for_answer(answer)
+
     answer.save_to_es()
 
     # 自动关注该问题
@@ -490,9 +495,9 @@ def answer(uid):
 
     question.answers_count += 1
     g.user.answers_count += 1
-
     db.session.add(question)
     db.session.add(g.user)
+
     db.session.commit()
 
     macro = get_template_attribute("macros/_answer.html", "render_answer_in_question")

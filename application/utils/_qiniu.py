@@ -1,5 +1,5 @@
 # coding: utf-8
-from qiniu import Auth, put_file
+from qiniu import Auth, put_file, put_data
 
 
 class Qiniu(object):
@@ -11,8 +11,17 @@ class Qiniu(object):
         self.auth = Auth(access_key, secret_key)
 
     def upload_file(self, filename, filepath):
+        """上传本地文件"""
         token = self.auth.upload_token(self.bucket, filename)
         ret, info = put_file(token, filename, filepath)
+
+        if info.exception is not None:
+            raise UploadError(info)
+
+    def upload_data(self, filename, data):
+        """上传二进制数据"""
+        token = self.auth.upload_token(self.bucket, filename)
+        ret, info = put_data(token, filename, data)
 
         if info.exception is not None:
             raise UploadError(info)

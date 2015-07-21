@@ -292,7 +292,6 @@
                 <a href="javascript:void(0)" class="btn-share">
                     <span class="fa fa-share-square-o"></span>
                     分享
-                    {{ answer.shares_count }}
                 </a>
 
             <span class="btn-more dc-hide-commands-trigger">
@@ -453,6 +452,11 @@
                 $commentsOuterWap.toggleClass('hide');
             });
         {% endif %}
+
+        // 分享回答
+        $answerCommands.onOnce('click', '.btn-share', function () {
+            $('#modal-share-answer').modal('toggle');
+        });
 
         // 感谢回答
         $answerCommands.onOnce('click', '.btn-thank-answer', function () {

@@ -4,7 +4,9 @@ import os
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from application import create_app
-from application.models import db
+from application.models import db, QuestionTopic, RelevantTopic, User, Answer, Question, \
+    AnswerComment, Topic
+from application.utils.answer import generate_qrcode_for_answer
 
 # Used by app debug & livereload
 PORT = 5000
@@ -54,8 +56,6 @@ def createdb():
 
 @manager.command
 def save_to_es():
-    from application.models import Question, Topic, Answer, User
-
     with app.app_context():
         for question in Question.query:
             question.save_to_es()
@@ -121,8 +121,6 @@ def pinyin():
 
 @manager.command
 def uniform():
-    from application.models import db, User, Answer, Question, AnswerComment, Notification, Topic
-
     for user in User.query:
         user.followers_count = user.followers.count()
         user.followings_count = user.followings.count()
@@ -158,7 +156,6 @@ def uniform():
 @manager.command
 def relevant_topics():
     import operator
-    from application.models import db, Topic, QuestionTopic, RelevantTopic
 
     for topic in Topic.query.filter(Topic.id == 13):
         map(db.session.delete, topic.relevant_topics)
@@ -176,6 +173,15 @@ def relevant_topics():
         for relevant_topic_id, score in relevant_topics:
             relevant_topic = RelevantTopic(topic_id=topic.id, relevant_topic_id=relevant_topic_id, score=score)
             db.session.add(relevant_topic)
+        db.session.commit()
+
+
+@manager.command
+def make_answer_qrcodes():
+    with app.app_context():
+        for answer in Answer.query:
+            generate_qrcode_for_answer(answer)
+            db.session.add(answer)
         db.session.commit()
 
 

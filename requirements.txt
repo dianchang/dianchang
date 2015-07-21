@@ -16,6 +16,7 @@ raven
 qiniu
 pypinyin
 Flask-Turbolinks
+qrcode
 
 # dev
 livereload

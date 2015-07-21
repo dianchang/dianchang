@@ -462,3 +462,6 @@ html {
 .ask-question-bg .btn-close-bg:hover {
   color: #999;
 }
+#modal-share-answer h4 {
+  text-align: center;
+}
