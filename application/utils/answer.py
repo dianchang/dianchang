@@ -2,6 +2,7 @@
 import qrcode
 import io
 from .helpers import absolute_url_for
+from .uploadsets import random_filename
 from ._qiniu import qiniu
 
 
@@ -13,6 +14,6 @@ def generate_qrcode_for_answer(answer):
     img = qr.make_image()
     output = io.BytesIO()
     img.save(output)
-    key = 'answer/%d/qrcode.png' % answer.id
+    key = 'answer/%d/%s.png' % (answer.id, random_filename())
     answer.qrcode = key
     qiniu.upload_data(key, output.getvalue())
