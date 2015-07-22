@@ -948,6 +948,7 @@
                 }).done(function (response) {
                     if (response.result) {
                         $topic.detach();
+                        $expertTopicsOuterWap.removeClass('full');
                     }
                 });
             });
@@ -1028,7 +1029,6 @@
             $expertTopicsOuterWap.find('.btn-add-expert-topic').tooltip().click(function () {
                 var $wap = $(this).parents('.add-expert-topic-wap');
 
-
                 if (!myself) {
                     return false;
                 }
@@ -1095,7 +1095,6 @@
                     },
                     callback: function (e, topic) {
                         var _this = $(this);
-                        var $outerWap = $(this).parents('.expert-topics-outer-wap');
                         var data;
 
                         if (typeof topic.create === 'undefined') {
@@ -1114,10 +1113,10 @@
                                 $('.expert-topics').append(response.html);
 
                                 if (response.full) {
-                                    $outerWap.addClass('full');
+                                    $expertTopicsOuterWap.addClass('full');
                                     _this.parents('.add-expert-topic-wap').removeClass('edit');
                                 } else {
-                                    $outerWap.removeClass('full');
+                                    $expertTopicsOuterWap.removeClass('full');
                                 }
                             }
 

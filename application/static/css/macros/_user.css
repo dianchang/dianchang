@@ -624,21 +624,6 @@
 .noti-in-nav.noti-message .question-title a {
   color: #009999;
 }
-.dc-expert-topics .add-expert-topic-wap {
-  display: block;
-}
-.dc-expert-topics .full-tip {
-  display: none;
-}
-.dc-expert-topics.full .add-expert-topic-wap {
-  display: none;
-}
-.dc-expert-topics.full .full-tip {
-  display: block;
-}
-.dc-expert-topics.myself .expert-topic {
-  cursor: move;
-}
 .dc-expert-topics .expert-topic {
   margin-bottom: 18px;
   position: relative;
@@ -755,4 +740,19 @@
 }
 .dc-expert-topics .add-expert-topic-wap.edit .form-wap {
   display: block;
+}
+.dc-expert-topics .add-expert-topic-wap {
+  display: block;
+}
+.dc-expert-topics .full-tip {
+  display: none;
+}
+.dc-expert-topics.full .add-expert-topic-wap {
+  display: none;
+}
+.dc-expert-topics.full .full-tip {
+  display: block;
+}
+.dc-expert-topics.myself .expert-topic {
+  cursor: move;
 }

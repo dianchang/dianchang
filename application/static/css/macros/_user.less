@@ -819,26 +819,6 @@
 
 // 用户擅长话题
 .dc-expert-topics {
-  .add-expert-topic-wap {
-    display: block;
-  }
-  .full-tip {
-    display: none;
-  }
-
-  &.full {
-    .add-expert-topic-wap {
-      display: none;
-    }
-    .full-tip {
-      display: block;
-    }
-  }
-
-  &.myself .expert-topic {
-    cursor: move;
-  }
-
   // 用户擅长话题
   .expert-topic {
     margin-bottom: 18px;
@@ -996,6 +976,28 @@
       .form-wap {
         display: block;
       }
+    }
+  }
+
+  .add-expert-topic-wap {
+    display: block;
+  }
+  .full-tip {
+    display: none;
+  }
+
+  &.full {
+    .add-expert-topic-wap {
+      display: none;
+    }
+    .full-tip {
+      display: block;
+    }
+  }
+
+  &.myself {
+    .expert-topic {
+      cursor: move;
     }
   }
 }

@@ -733,7 +733,7 @@ def add_expert():
     macro = get_template_attribute("macros/_topic.html", "render_expert_topic")
     return {
         'result': True,
-        'html': macro(new_expert_topic),
+        'html': macro(new_expert_topic, myself=True),
         'full': g.user.expert_topics.count() == 8
     }
 
