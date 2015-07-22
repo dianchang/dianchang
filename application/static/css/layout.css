@@ -268,26 +268,15 @@ html {
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-footer {
   text-align: center;
-  padding: 10px 0;
-  position: relative;
   border-top: 1px solid #eaeaea;
-  cursor: pointer;
-}
-.navbar #nav-notification .dropdown-menu-noti .noti-footer:hover {
-  background-color: #f6f6f6;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications {
+  display: block;
   color: #999;
+  padding: 10px 0;
 }
-.navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications-settings {
-  position: absolute;
-  right: 10px;
-  top: 7px;
-  color: #999;
-  font-size: 18px;
-}
-.navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications-settings:hover {
-  color: #666;
+.navbar #nav-notification .dropdown-menu-noti .noti-footer .btn-go-to-notifications:hover {
+  background-color: #f6f6f6;
 }
 .navbar #nav-notification.new > a {
   padding-top: 3px;
