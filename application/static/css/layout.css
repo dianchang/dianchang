@@ -247,7 +247,6 @@ html {
 .navbar #nav-notification .dropdown-menu-noti .noti-content {
   height: 300px;
   overflow: auto;
-  overflow-y: hidden;
 }
 .navbar #nav-notification .dropdown-menu-noti .noti-content .noti-panel {
   display: none;
