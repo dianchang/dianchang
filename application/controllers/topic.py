@@ -34,9 +34,8 @@ def square():
     skill_descendant_topics = skill_topic.descendant_topics.order_by(Topic.avg.desc())
     skill_total = skill_descendant_topics.count()
 
-    people_topic = Topic.query.filter(Topic.name == '人').first_or_404()
-    people_descendant_topics = people_topic.descendant_topics.order_by(Topic.avg.desc())
-    people_total = people_descendant_topics.count()
+    other_descendant_topics = Topic.other_topics()
+    other_total = other_descendant_topics.count()
 
     return render_template('topic/square.html', per=TOPICS_PER,
                            product_topic=product_topic,
@@ -55,9 +54,8 @@ def square():
                            skill_descendant_topics=skill_descendant_topics.limit(TOPICS_PER),
                            skill_total=skill_total,
 
-                           people_topic=people_topic,
-                           people_descendant_topics=people_descendant_topics.limit(TOPICS_PER),
-                           people_total=people_total)
+                           other_descendant_topics=other_descendant_topics.limit(TOPICS_PER),
+                           other_total=other_total)
 
 
 @bp.route('/topic/loading_topics_in_square', methods=['POST'])
