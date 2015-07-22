@@ -13,10 +13,12 @@ def absolute_url_for(endpoint, **values):
 
 
 def join_url(pre_url, pro_url):
+    """拼接url"""
     return "%s/%s" % (pre_url.rstrip('/'), pro_url.lstrip('/'))
 
 
 def mkdir_p(path):
+    """创建文件夹，存在时不报错"""
     try:
         os.makedirs(path)
     except OSError as exc:  # Python >2.5
@@ -27,6 +29,7 @@ def mkdir_p(path):
 
 
 def lcs(a, b):
+    """生成LCS矩阵"""
     if not a or not b:
         return [], []
 
@@ -49,6 +52,7 @@ def lcs(a, b):
 
 
 def generate_lcs_html(src, dest):
+    """生成LCS HTML"""
     if not src and not dest:
         return ""
     elif not src:

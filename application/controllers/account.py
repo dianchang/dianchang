@@ -1,12 +1,12 @@
 # coding: utf-8
 from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json, session, \
     get_template_attribute
-from ..forms import SigninForm, SignupForm, SettingsForm, ForgotPasswordForm
+from ..forms import SigninForm, SignupForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email, absolute_url_for
-from ..utils.uploadsets import process_user_avatar, avatars, images, process_user_background
 from ..utils._qiniu import qiniu
+from ..utils.decorators import jsonify
 from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
     HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
 from ..models._helpers import pinyin
@@ -14,63 +14,69 @@ from ..models._helpers import pinyin
 bp = Blueprint('account', __name__)
 
 
-@bp.route('/signin', methods=['GET', 'POST'])
+@bp.route('/signin')
 @VisitorPermission()
 def signin():
     """登录"""
-    form = SigninForm()
-    if request.method == 'POST':
-        referer = session.get('referer') or url_for('site.index')
-        session.pop('referer', None)
-        if form.validate():
-            signin_user(form.user, form.remember.data)
-            return json.dumps({
-                'result': True,
-                'referer': referer
-            })
-        else:
-            return json.dumps({
-                'result': False,
-                'email': form.email.errors[0] if len(form.email.errors) else "",
-                'password': form.password.errors[0] if len(form.password.errors) else "",
-                'referer': referer
-            })
-    else:
-        session['referer'] = request.referrer or url_for('site.index')
+    session['referrer'] = request.referrer or url_for('site.index')
     return render_template('account/signin.html')
+
+
+@bp.route('/signin', methods=['POST'])
+@VisitorPermission()
+@jsonify
+def do_signin():
+    form = SigninForm()
+    referrer = session.get('referrer') or url_for('site.index')
+    session.pop('referrer', None)
+    if form.validate():
+        signin_user(form.user, form.remember.data)
+        return {
+            'result': True,
+            'referrer': referrer
+        }
+    else:
+        return {
+            'result': False,
+            'email': form.email.errors[0] if len(form.email.errors) else "",
+            'password': form.password.errors[0] if len(form.password.errors) else "",
+            'referrer': referrer
+        }
 
 
 @bp.route('/account/test_invitation_code', methods=['POST'])
 @VisitorPermission()
+@jsonify
 def test_invitation_code():
     """验证邀请码"""
     code = request.form.get('code')
 
     if not code:
-        return json.dumps({
+        return {
             'result': False,
             'code': '邀请码不能为空',
-        })
+        }
 
     invitation_code = InvitationCode.query.filter(InvitationCode.code == code).first()
     if not invitation_code:
-        return json.dumps({
+        return {
             'result': False,
             'code': '无效的邀请码'
-        })
+        }
     elif invitation_code.used:
-        return json.dumps({
+        return {
             'result': False,
             'code': '邀请码已被使用'
-        })
+        }
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/signup', methods=['POST'])
 @VisitorPermission()
+@jsonify
 def signup():
     """注册"""
     form = SignupForm()
@@ -102,17 +108,17 @@ def signup():
 
         user.save_to_es()  # 存储到elasticsearch
         signin_user(user)
-        return json.dumps({
+        return {
             'result': True,
             'domain': get_domain_from_email(user.email)
-        })
+        }
     else:
-        return json.dumps({
+        return {
             'result': False,
             'name': form.name.errors[0] if len(form.name.errors) else "",
             'email': form.email.errors[0] if len(form.email.errors) else "",
             'password': form.password.errors[0] if len(form.password.errors) else ""
-        })
+        }
 
 
 @bp.route('/signout')
@@ -123,44 +129,37 @@ def signout():
 
 
 @bp.route('/send_reset_password_mail', methods=['POST'])
+@VisitorPermission()
+@jsonify
 def send_reset_password_mail():
     """忘记密码"""
     form = ForgotPasswordForm()
     if form.validate():
         user = User.query.filter(User.email == form.email.data).first()
         if not user.is_active:
-            return json.dumps({
+            return {
                 'result': False,
                 'email': '该账户尚未激活'
-            })
+            }
 
         # TODO: need to uncomment this in production
         # send_reset_password_mail(user)
-        return json.dumps({
+        return {
             'result': True,
             'domain': get_domain_from_email(user.email) or ""
-        })
+        }
     else:
-        return json.dumps({
+        return {
             'result': False,
             'email': form.email.errors[0] if len(form.email.errors) else ""
-        })
+        }
 
 
-@bp.route('/settings', methods=['GET', 'POST'])
+@bp.route('/settings')
 @UserPermission()
 def settings():
     """个人设置"""
-    form = SettingsForm(obj=g.user)
-
-    if form.validate_on_submit():
-        form.populate_obj(g.user)
-        db.session.add(g.user)
-        db.session.commit()
-        g.user.save_to_es()
-        flash('设置已更新')
-        return redirect(url_for('.settings'))
-    return render_template('account/settings.html', form=form)
+    return render_template('account/settings.html')
 
 
 @bp.route('/notification_settings')
@@ -177,175 +176,149 @@ def privacy_settings():
     return render_template('account/privacy_settings.html')
 
 
-@bp.route('/account/upload_avatar', methods=['POST'])
-@UserPermission()
-def upload_avatar():
-    """上传用户头像"""
-    try:
-        filename = process_user_avatar(request.files['file'], 200)
-        g.user.avatar = filename
-        db.session.add(g.user)
-        db.session.commit()
-    except Exception, e:
-        return json.dumps({'result': False, 'error': e.__repr__()})
-    else:
-        return json.dumps({
-            'result': True,
-            'url': avatars.url(filename),
-        })
-
-
-@bp.route('/account/upload_background', methods=['POST'])
-@UserPermission()
-def upload_background():
-    """上传用户首页背景"""
-    try:
-        filename = process_user_background(request.files['file'], 200)
-        g.user.background = filename
-        db.session.add(g.user)
-        db.session.commit()
-    except Exception, e:
-        return json.dumps({'result': False, 'error': e.__repr__()})
-    else:
-        return json.dumps({
-            'result': True,
-            'url': images.url(filename)
-        })
-
-
-@bp.route('/reset_password', methods=['POST', 'GET'])
+@bp.route('/reset_password')
 @VisitorPermission()
 def reset_password():
     """重设密码"""
+    return render_template('account/reset_password.html')
+
+
+@bp.route('/reset_password', methods=['POST'])
+@VisitorPermission()
+@jsonify
+def do_reset_password():
+    """重设密码"""
     # TODO: need to finish the reset logic
-    if request.method == 'POST':
-        return json.dumps({
-            'result': True
-        })
-    else:
-        return render_template('account/reset_password.html')
+    return {
+        'result': True
+    }
 
 
 @bp.route('/account/update_setting', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_setting():
     """更新用户设置"""
     key = request.form.get('key')
     value = request.form.get('value')
 
     if not hasattr(g.user, key):
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     setattr(g.user, key, True if value == 'on' else False)
     db.session.add(g.user)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/account/update_name', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_name():
     """更新称谓"""
     if g.user.name_edit_count == 0:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     name = request.form.get('name')
     if not name:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     if name == g.user.name:
-        return json.dumps({
+        return {
             'result': True,
             'name_edit_count': g.user.name_edit_count
-        })
+        }
 
     g.user.name = name
     g.user.name_edit_count -= 1
     db.session.add(g.user)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True,
         'name_edit_count': g.user.name_edit_count
-    })
+    }
 
 
 @bp.route('/account/update_email', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_email():
     """更新邮箱"""
     email = request.form.get('email')
     if not email:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     if email == g.user.email:
         g.user.inactive_email = ""
         db.session.add(g.user)
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'active': g.user.is_active
-        })
+        }
 
     g.user.inactive_email = email
     db.session.add(g.user)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True,
         'active': False
-    })
+    }
 
 
 @bp.route('/account/update_url_token', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_url_token():
     """更新个人主页网址"""
     url_token = request.form.get('url_token')
 
     if not url_token:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     g.user.url_token = url_token
     db.session.add(g.user)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/account/update_password', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_password():
     """更新密码"""
     password = request.form.get('password')
 
     if not password:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     g.user.password = password
     db.session.add(g.user)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 INTERESTING_TOPICS_PER = 20
@@ -391,14 +364,15 @@ def select_interesting_topics():
 
 @bp.route('/account/loading_interesting_topics', methods=['POST'])
 @UserPermission()
+@jsonify
 def loading_interesting_topics():
     """加载感兴趣的话题"""
     _type = request.args.get('type')
     offset = request.args.get('offset', type=int)
     if not offset or not _type:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     if _type == 'hot':
         topics = Topic.query.order_by(Topic.questions_count.desc())
@@ -415,15 +389,16 @@ def loading_interesting_topics():
     topics_count = topics.count()
     macro = get_template_attribute("macros/_account.html", "render_interesting_topics")
 
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(topics),
         'count': topics_count
-    })
+    }
 
 
 @bp.route('/account/submit_interesting_topics', methods=['POST'])
 @UserPermission()
+@jsonify
 def submit_interesting_topics():
     """提交感兴趣的话题"""
     topics_id_list = request.form.getlist('topic_id', type=int)
@@ -448,9 +423,9 @@ def submit_interesting_topics():
     db.session.add(g.user)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/account/select_products_worked_on')
@@ -462,6 +437,7 @@ def select_products_worked_on():
 
 @bp.route('/account/submit_product_worked_on', methods=['POST'])
 @UserPermission()
+@jsonify
 def submit_product_worked_on():
     """添加话题"""
     name = request.form.get('name')
@@ -479,9 +455,9 @@ def submit_product_worked_on():
         WorkOnProduct.user_id == g.user.id).first()
 
     if product:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
     else:
         product = WorkOnProduct(topic_id=topic.id, user_id=g.user.id)
         db.session.add(product)
@@ -521,12 +497,15 @@ def submit_product_worked_on():
             upload_token = ""
 
         macro = get_template_attribute('macros/_account.html', 'render_product_worked_on')
-        return json.dumps({'result': True,
-                           'html': macro(product, new_topic, upload_token)})
+        return {
+            'result': True,
+            'html': macro(product, new_topic, upload_token)
+        }
 
 
 @bp.route('/account/product_worked_on/<int:uid>/set_current_working_on', methods=['POST'])
 @UserPermission()
+@jsonify
 def set_product_current_working_on(uid):
     """设置为当前就职的产品"""
     product = WorkOnProduct.query.get_or_404(uid)
@@ -537,34 +516,36 @@ def set_product_current_working_on(uid):
     product.current = True
     db.session.add(product)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/account/product_worked_on/<int:uid>/cancel_set_current_working_on', methods=['POST'])
 @UserPermission()
+@jsonify
 def cancel_set_product_current_working_on(uid):
     """取消设置为当前就职的产品"""
     product = WorkOnProduct.query.get_or_404(uid)
     product.current = False
     db.session.add(product)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/account/product_worked_on/<int:uid>/remove', methods=['POST'])
 @UserPermission()
+@jsonify
 def remove_product(uid):
     """移除产品"""
     product = WorkOnProduct.query.get_or_404(uid)
     db.session.delete(product)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/account/follow_users')
@@ -590,13 +571,14 @@ def _remove_repeats(seq):
 
 @bp.route('/account/finish_guide', methods=['POST'])
 @UserPermission()
+@jsonify
 def finish_guide():
     """完成引导步骤"""
     current_step = request.form.get('step', type=int)
     if current_step < 1 or current_step > 6:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
     if current_step < 6:
         g.user.current_guide_step = current_step + 1
     else:
@@ -604,6 +586,6 @@ def finish_guide():
         g.user.has_finish_guide_steps = True
     db.session.add(g.user)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True
-    })
+    }

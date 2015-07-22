@@ -6,8 +6,8 @@ from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiC
     HomeFeed, HOME_FEED_KIND
 from ..utils.permissions import UserPermission, AdminPermission
 from ..utils.helpers import generate_lcs_html, absolute_url_for
-from ..utils.uploadsets import process_topic_avatar, topic_avatars
 from ..utils._qiniu import qiniu
+from ..utils.decorators import jsonify
 from ..forms import AdminTopicForm
 
 bp = Blueprint('topic', __name__)
@@ -61,15 +61,16 @@ def square():
 
 
 @bp.route('/topic/loading_topics_in_square', methods=['POST'])
+@jsonify
 def loading_topics_in_square():
     """在话题广场"""
     offset = request.args.get('offset', type=int)
     _type = request.args.get('type', 'product')
 
     if not offset:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     if _type == 'product':
         parent_topic = Topic.query.filter(Topic.name == '产品').first_or_404()
@@ -86,15 +87,16 @@ def loading_topics_in_square():
     count = topics.count()
     macro = get_template_attribute("macros/_topic.html", "render_topics")
 
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(topics),
         'count': count
-    })
+    }
 
 
 @bp.route('/topic/query', methods=['POST'])
 @UserPermission()
+@jsonify
 def query():
     """查询话题"""
     q = request.form.get('q')
@@ -136,9 +138,9 @@ def query():
                     'name': q,
                     'create': True
                 })
-        return json.dumps(topics_data)
+        return topics_data
     else:
-        return json.dumps({})
+        return {[]}
 
 
 TOPIC_FANTASTIC_ANSWERS_PER = 15
@@ -164,23 +166,24 @@ def view(uid):
 
 @bp.route('/topic/<int:uid>/loading_fantastic_answers', methods=['POST'])
 @UserPermission()
+@jsonify
 def loading_fantastic_answers(uid):
     """加载话题下的精彩回答"""
     topic = Topic.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     answers = topic.all_answers.order_by(Answer.score.desc()).limit(TOPIC_FANTASTIC_ANSWERS_PER).offset(offset)
     count = answers.count()
     macro = get_template_attribute("macros/_topic.html", "render_topic_fantastic_answers")
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(answers, topic),
         'count': count
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/rank')
@@ -230,23 +233,24 @@ def questions(uid):
 
 @bp.route('/topic/<int:uid>/loading_all_questions', methods=['POST'])
 @UserPermission()
+@jsonify
 def loading_all_questions(uid):
     """加载话题下的全部问题"""
     topic = Topic.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     questions = topic.all_questions.limit(ALL_QUESTIONS_PER).offset(offset)
     count = questions.count()
     macro = get_template_attribute("macros/_topic.html", "render_all_questions")
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(questions, topic),
         'count': count
-    })
+    }
 
 
 WAITING_FOR_ANSWER_QUESTIONS_PER = 15
@@ -266,24 +270,25 @@ def waiting_for_answer(uid):
 
 @bp.route('/topic/<int:uid>/loading_waiting_for_answer_questions', methods=['POST'])
 @UserPermission()
+@jsonify
 def loading_waiting_for_answer_questions(uid):
     """加载话题下的待回答问题"""
     topic = Topic.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     questions = topic.all_questions.filter(Question.answers_count == 0). \
         limit(WAITING_FOR_ANSWER_QUESTIONS_PER).offset(offset)
     count = questions.count()
     macro = get_template_attribute("macros/_topic.html", "render_topic_waiting_for_answer_questions")
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(questions, topic),
         'count': count
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/logs')
@@ -295,14 +300,15 @@ def logs(uid):
 
 @bp.route('/topic/<int:uid>/add_parent_topic', methods=['POST'])
 @UserPermission()
+@jsonify
 def add_parent_topic(uid):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
 
     if topic.parent_topics_locked:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     parent_topic_id = request.form.get('parent_topic_id', type=int)
     name = request.form.get('name', '').strip()
@@ -312,14 +318,14 @@ def add_parent_topic(uid):
     elif name:
         parent_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
     else:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     if parent_topic.child_topics_locked:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     topic.add_parent_topic(parent_topic.id)
 
@@ -340,23 +346,24 @@ def add_parent_topic(uid):
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'parent_topic_edit_wap')
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(parent_topic)
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/remove_parent_topic/<int:parent_topic_id>', methods=['POST'])
 @UserPermission()
+@jsonify
 def remove_parent_topic(uid, parent_topic_id):
     """删除直接父话题"""
     topic = Topic.query.get_or_404(uid)
     parent_topic = Topic.query.get_or_404(parent_topic_id)
 
     if topic.parent_topics_locked or parent_topic.child_topics_locked:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     topic.remove_parent_topic(parent_topic_id)
 
@@ -376,19 +383,22 @@ def remove_parent_topic(uid, parent_topic_id):
 
     db.session.commit()
 
-    return json.dumps({'result': True})
+    return {
+        'result': True
+    }
 
 
 @bp.route('/topic/<int:uid>/add_child_topic', methods=['POST'])
 @UserPermission()
+@jsonify
 def add_child_topic(uid):
     """添加直接子话题"""
     topic = Topic.query.get_or_404(uid)
 
     if topic.child_topics_locked:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     child_topic_id = request.form.get('child_topic_id', type=int)
     name = request.form.get('name', '').strip()
@@ -398,14 +408,14 @@ def add_child_topic(uid):
     elif name:
         child_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
     else:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     if child_topic.parent_topics_locked:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     topic.add_child_topic(child_topic.id)
 
@@ -426,23 +436,24 @@ def add_child_topic(uid):
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'child_topic_edit_wap')
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(child_topic)
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/remove_child_topic/<int:child_topic_id>', methods=['POST'])
 @UserPermission()
+@jsonify
 def remove_child_topic(uid, child_topic_id):
     """删除直接子话题"""
     topic = Topic.query.get_or_404(uid)
     child_topic = Topic.query.get_or_404(child_topic_id)
 
     if topic.child_topics_locked or child_topic.parent_topics_locked:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     topic.remove_child_topic(child_topic_id)
 
@@ -462,23 +473,27 @@ def remove_child_topic(uid, child_topic_id):
 
     db.session.commit()
 
-    return json.dumps({'result': True})
+    return {
+        'result': True
+    }
 
 
 @bp.route('/topic/get_by_name/<string:name>', methods=['POST'])
 @UserPermission()
+@jsonify
 def get_by_name(name):
     """通过name获取话题，若不存在则创建"""
     topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
-    return json.dumps({
+    return {
         'id': topic.id,
         'name': topic.name,
         'followers_count': topic.followers_count
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/follow', methods=['POST'])
 @UserPermission()
+@jsonify
 def follow(uid):
     """关注 & 取消关注话题"""
     topic = Topic.query.get_or_404(uid)
@@ -506,11 +521,11 @@ def follow(uid):
 
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'followed': False,
             'followers_count': topic.followers_count
-        })
+        }
     else:
         # 关注
         follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
@@ -545,14 +560,15 @@ def follow(uid):
 
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'followed': True,
             'followers_count': topic.followers_count
-        })
+        }
 
 
 @bp.route('/topic/<int:uid>/add_synonym', methods=['POST'])
+@jsonify
 def add_synonym(uid):
     """添加话题同义词"""
     topic = Topic.query.get_or_404(uid)
@@ -571,17 +587,18 @@ def add_synonym(uid):
             db.session.commit()
             topic.save_to_es()
             macro = get_template_attribute('macros/_topic.html', 'topic_synonym_edit_wap')
-            return json.dumps({
+            return {
                 'result': True,
                 'html': macro(topic_synonym)
-            })
+            }
         else:
-            return json.dumps({'result': False})
+            return {'result': False}
     else:
-        return json.dumps({'result': False})
+        return {'result': False}
 
 
 @bp.route('/topic/synonym/<int:uid>/remove', methods=['POST'])
+@jsonify
 def remove_synonym(uid):
     """移除话题同义词"""
     topic_synonym = TopicSynonym.query.get_or_404(uid)
@@ -593,36 +610,12 @@ def remove_synonym(uid):
     db.session.delete(topic_synonym)
     topic_synonym.topic.save_to_es()
     db.session.commit()
-    return json.dumps({'result': True})
-
-
-@bp.route('/topic/<int:uid>/upload_avatar', methods=['POST'])
-@UserPermission()
-def upload_avatar(uid):
-    """上传话题头像"""
-    topic = Topic.query.get_or_404(uid)
-    try:
-        filename = process_topic_avatar(request.files['file'], 200)
-
-        # Update avatar log
-        log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_AVATAR, before=topic.avatar_url,
-                            after=topic_avatars.url(filename), user_id=g.user.id)
-        topic.logs.append(log)
-
-        topic.avatar = filename
-        db.session.add(topic)
-        db.session.commit()
-    except Exception, e:
-        return json.dumps({'result': True, 'error': e.__repr__()})
-    else:
-        return json.dumps({
-            'result': True,
-            'image_url': topic_avatars.url(filename),
-        })
+    return {'result': True}
 
 
 @bp.route('/topic/<int:uid>/update_experience', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_experience(uid):
     """更新当前用户在该话题下的话题经验"""
     topic = Topic.query.get_or_404(uid)
@@ -646,26 +639,28 @@ def update_experience(uid):
 
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/apply_for_deletion', methods=['POST'])
 @UserPermission()
+@jsonify
 def apply_for_deletion(uid):
     """申请删除话题"""
     topic = Topic.query.get_or_404(uid)
     apply = ApplyTopicDeletion(user_id=g.user.id, topic_id=uid)
     db.session.add(apply)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/expert/<int:uid>/remove', methods=['POST'])
 @UserPermission()
+@jsonify
 def remove_expert(uid):
     """移除擅长话题"""
     expert_topic = UserTopicStatistic.query.get_or_404(uid)
@@ -680,20 +675,21 @@ def remove_expert(uid):
     db.session.add(expert_topic)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/add_expert', methods=['POST'])
 @UserPermission()
+@jsonify
 def add_expert():
     """添加擅长话题"""
     # 最多设置 8 个擅长话题
     if g.user.expert_topics.count() == 8:
-        return json.dumps({
+        return {
             'result': True
-        })
+        }
 
     id = request.form.get('id', type=int)
     name = request.form.get('name', '').strip()
@@ -710,9 +706,9 @@ def add_expert():
         db.session.add(new_expert_topic)
     else:
         if new_expert_topic.selected:
-            return json.dumps({
+            return {
                 'result': True
-            })
+            }
         else:
             new_expert_topic.selected = True
 
@@ -735,21 +731,22 @@ def add_expert():
     db.session.commit()
 
     macro = get_template_attribute("macros/_topic.html", "render_expert_topic")
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(new_expert_topic),
         'full': g.user.expert_topics.count() == 8
-    })
+    }
 
 
 @bp.route('/topic/update_show_order', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_show_order():
     show_orders = request.form.get('show_orders')
     if not show_orders:
-        return json.dumps({
+        return {
             'result': True
-        })
+        }
 
     # 若从未编辑过擅长话题，则首先赋予 show_order
     if not g.user.has_selected_expert_topics:
@@ -771,16 +768,17 @@ def update_show_order():
             db.session.add(expert_topic)
 
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/get_data_for_card', methods=['POST'])
+@jsonify
 def get_data_for_card(uid):
     """获取话题卡片"""
     topic = Topic.query.get_or_404(uid)
-    return json.dumps({
+    return {
         'result': True,
         'topic': {
             'id': uid,
@@ -791,29 +789,30 @@ def get_data_for_card(uid):
             'followed': bool(g.user and topic.followed_by_user(g.user.id)),
             'wiki_preview': topic.wiki_preview
         }
-    })
+    }
 
 
 @bp.route('/topic/update_avatar', methods=['POST'])
+@jsonify
 def update_avatar():
     """更新话题头像"""
     id = request.form.get('id', type=int)
     topic = Topic.query.get_or_404(id)
 
     if topic.avatar_locked:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     avatar = request.form.get('key')
     topic.avatar = avatar
     db.session.add(topic)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True,
         'url': topic.avatar_url,
         'id': topic.id
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/edit_wiki', methods=['GET', 'POST'])
@@ -853,34 +852,22 @@ def edit_wiki(uid):
 
 @bp.route('/topic/<int:uid>/update_name', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_name(uid):
     """更新话题名称"""
     topic = Topic.query.get_or_404(uid)
+    name = request.form.get('name', '').strip()
 
-    if topic.name_locked:
-        return json.dumps({
+    if topic.name_locked or not name:
+        return {
             'result': False
-        })
-
-    name = request.form.get('name')
-
-    if name is not None:
-        name = name.strip()
-    else:
-        return json.dumps({
-            'result': False
-        })
-
-    if name == '':
-        return json.dumps({
-            'result': False
-        })
+        }
 
     # 话题名称不可重复
     if Topic.query.filter(Topic.name == name, Topic.id != uid).first():
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     # Update name log
     if topic.name != name:
@@ -893,29 +880,30 @@ def update_name(uid):
     db.session.add(topic)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/lock', methods=['POST'])
 @AdminPermission()
+@jsonify
 def lock(uid):
     """锁定话题"""
     topic = Topic.query.get_or_404(uid)
     target = request.form.get('target')
 
     if not target:
-        return json.dumps({
+        return {
             'result': True
-        })
+        }
 
     attr = '%s_locked' % target
 
     if not hasattr(topic, attr):
-        return json.dumps({
+        return {
             'result': True
-        })
+        }
 
     locked = bool(getattr(topic, attr))
     setattr(topic, attr, not locked)
@@ -957,28 +945,24 @@ def lock(uid):
     db.session.add(topic)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True,
         'locked': not locked
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/update_kind', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_kind(uid):
     """更新话题类型"""
     topic = Topic.query.get_or_404(uid)
-
-    if topic.topic_kind_locked:
-        return json.dumps({
-            'result': False
-        })
-
     kind = request.form.get('kind', type=int)
-    if not kind or kind < 1 or kind > 6:
-        return json.dumps({
+
+    if topic.topic_kind_locked or not kind or kind < 1 or kind > 6:
+        return {
             'result': False
-        })
+        }
 
     # log
     if topic.kind != kind:
@@ -990,13 +974,14 @@ def update_kind(uid):
     db.session.add(topic)
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/update_other_kind', methods=['POST'])
 @UserPermission()
+@jsonify
 def update_other_kind(uid):
     """更新话题其他类型"""
     topic = Topic.query.get_or_404(uid)
@@ -1004,37 +989,38 @@ def update_other_kind(uid):
     topic.other_kind = kind
     db.session.add(topic)
     db.session.commit()
-    return json.dumps({
+    return {
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/merge_to', methods=['POST'])
 @AdminPermission()
+@jsonify
 def merge_to(uid):
     """将本话题合并至另一话题"""
     topic = Topic.query.get_or_404(uid)
 
     if topic.merge_topic_locked or topic.merge_to_topic_id:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     merge_to_topic_id = request.form.get('merge_to_topic_id', type=int)
     name = request.form.get('name', '').strip()
 
     if merge_to_topic_id:
         if uid == merge_to_topic_id:
-            return json.dumps({
+            return {
                 'result': False
-            })
+            }
         merge_to_topic = Topic.query.get_or_404(merge_to_topic_id)
     else:
         merge_to_topic = Topic.get_by_name(name)
         if not merge_to_topic:
-            return json.dumps({
+            return {
                 'result': False
-            })
+            }
 
     topic.merge_to_topic_id = merge_to_topic.id
 
@@ -1086,24 +1072,25 @@ def merge_to(uid):
 
     db.session.commit()
 
-    return json.dumps({
+    return {
         'id': merge_to_topic.id,
         'name': merge_to_topic.name,
         'result': True
-    })
+    }
 
 
 @bp.route('/topic/<int:uid>/unmerge_from/<int:unmerge_from_topic_id>', methods=['POST'])
 @AdminPermission()
+@jsonify
 def unmerge_from(uid, unmerge_from_topic_id):
     """取消话题合并"""
     topic = Topic.query.get_or_404(uid)
     unmerge_from_topic = Topic.query.get_or_404(unmerge_from_topic_id)
 
     if topic.merge_topic_locked or topic.merge_to_topic_id != unmerge_from_topic_id:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     topic.merge_to_topic_id = None
 
@@ -1152,6 +1139,6 @@ def unmerge_from(uid, unmerge_from_topic_id):
 
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True
-    })
+    }

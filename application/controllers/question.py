@@ -8,6 +8,7 @@ from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion,
 from ..utils.permissions import UserPermission
 from ..utils.helpers import generate_lcs_html, absolute_url_for
 from ..utils.answer import generate_qrcode_for_answer
+from ..utils.decorators import jsonify
 
 bp = Blueprint('question', __name__)
 
@@ -82,6 +83,7 @@ def view(uid):
 
 @bp.route('/question/add', methods=['POST'])
 @UserPermission()
+@jsonify
 def add():
     """添加问题"""
     title = request.form.get('title')
@@ -90,9 +92,9 @@ def add():
     title = _add_question_mark_to_title(title)
 
     if not title:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     question = Question(title=title, desc=desc, user_id=g.user.id, anonymous=anonymous)
 
@@ -105,10 +107,10 @@ def add():
     # 添加话题
     topics_id_list = request.form.getlist('topic')
     if len(topics_id_list) == 0:
-        return json.dumps({
+        return {
             'result': False,
             'error': 'notopic'
-        })
+        }
     for topic_id in topics_id_list:
         topic = Topic.query.get(topic_id)
         if topic:
@@ -162,14 +164,15 @@ def add():
 
     db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True,
         'id': question.id
-    })
+    }
 
 
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])
 @UserPermission()
+@jsonify
 def add_topic(uid):
     """添加话题"""
     question = Question.query.get_or_404(uid)
@@ -220,13 +223,16 @@ def add_topic(uid):
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'topic_wap')
-    return json.dumps({'result': True,
-                       'id': topic.id,
-                       'html': macro(topic)})
+    return {
+        'result': True,
+        'id': topic.id,
+        'html': macro(topic)
+    }
 
 
 @bp.route('/question/<int:uid>/remove_topic/<int:topic_id>', methods=['POST'])
 @UserPermission()
+@jsonify
 def remove_topic(uid, topic_id):
     """移除话题"""
     question = Question.query.get_or_404(uid)
@@ -260,11 +266,14 @@ def remove_topic(uid, topic_id):
     db.session.add(topic)
     db.session.commit()
 
-    return json.dumps({'result': True})
+    return {
+        'result': True
+    }
 
 
 @bp.route('/question/<int:uid>/follow', methods=['POST'])
 @UserPermission()
+@jsonify
 def follow(uid):
     """关注 & 取消关注话题"""
     question = Question.query.get_or_404(uid)
@@ -277,7 +286,11 @@ def follow(uid):
         question.followers_count -= 1
         db.session.add(question)
         db.session.commit()
-        return json.dumps({'result': True, 'followed': False, 'followers_count': question.followers_count})
+        return {
+            'result': True,
+            'followed': False,
+            'followers_count': question.followers_count
+        }
     else:
         # 关注
         follow_question = FollowQuestion(question_id=uid, user_id=g.user.id)
@@ -305,7 +318,11 @@ def follow(uid):
         db.session.add(home_feed_backup)
 
         db.session.commit()
-        return json.dumps({'result': True, 'followed': True, 'followers_count': question.followers_count})
+        return {
+            'result': True,
+            'followed': True,
+            'followers_count': question.followers_count
+        }
 
 
 @bp.route('/question/<int:uid>/logs')
@@ -316,8 +333,9 @@ def logs(uid):
 
 @bp.route('/question/<int:uid>/update', methods=['POST'])
 @UserPermission()
+@jsonify
 def update(uid):
-    """通过Ajax更新问题的title和desc"""
+    """更新问题的title和desc"""
     question = Question.query.get_or_404(uid)
     title = request.form.get('title')
     desc = request.form.get('desc')
@@ -352,14 +370,15 @@ def update(uid):
     db.session.commit()
     question.save_to_es()  # 更新es中的question
 
-    return json.dumps({
+    return {
         'result': True,
         'title': question.title,
         'desc': question.desc
-    })
+    }
 
 
 @bp.route('/question/similar', methods=['POST'])
+@jsonify
 def similar():
     """类似问题"""
     title = request.form.get('title')
@@ -367,14 +386,15 @@ def similar():
         return ""
     similar_questions, total, took = Question.query_from_es(title, only_title=True, page=1, per_page=5)
     macro = get_template_attribute('macros/_question.html', 'similar_questions')
-    return json.dumps({
+    return {
         'count': len(similar_questions),
         'html': macro(similar_questions)
-    })
+    }
 
 
 @bp.route('/question/<int:uid>/save_answer_draft', methods=['POST'])
 @UserPermission()
+@jsonify
 def save_answer_draft(uid):
     """保存回答草稿"""
     question = Question.query.get_or_404(uid)
@@ -394,11 +414,14 @@ def save_answer_draft(uid):
         db.session.add(g.user)
         db.session.add(draft)
     db.session.commit()
-    return json.dumps({'result': True})
+    return {
+        'result': True
+    }
 
 
 @bp.route('/question/<int:uid>/answer', methods=['POST'])
 @UserPermission()
+@jsonify
 def answer(uid):
     """回答问题"""
     question = Question.query.get_or_404(uid)
@@ -407,9 +430,9 @@ def answer(uid):
     experience = request.form.get('experience')
 
     if not content:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     # 保存回答
     answer = Answer(question_id=uid, content=content, user_id=g.user.id, topic_experience=experience)
@@ -501,22 +524,23 @@ def answer(uid):
     db.session.commit()
 
     macro = get_template_attribute("macros/_answer.html", "render_answer_in_question")
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(answer)
-    })
+    }
 
 
 @bp.route('/question/<int:uid>/invite/<int:user_id>', methods=['POST'])
 @UserPermission()
+@jsonify
 def invite(uid, user_id):
     """邀请回答"""
     question = Question.query.get_or_404(uid)
 
     if user_id == g.user.id or user_id == question.user_id:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     user = User.query.get_or_404(user_id)
 
@@ -529,10 +553,10 @@ def invite(uid, user_id):
         db.session.delete(feed)
         db.session.delete(invitation)
         db.session.commit()
-        return json.dumps({
+        return {
             'result': True,
             'invited': False
-        })
+        }
     else:
         # 邀请
         invitation = InviteAnswer(question_id=uid, user_id=user_id, inviter_id=g.user.id)
@@ -546,13 +570,13 @@ def invite(uid, user_id):
         db.session.commit()
 
         macro = get_template_attribute("macros/_question.html", "invited_user_wap")
-        return json.dumps({
+        return {
             'result': True,
             'invited': True,
             'username': user.name,
             'user_profile_url': user.profile_url,
             'html': macro(user)
-        })
+        }
 
 
 def _add_question_mark_to_title(title):

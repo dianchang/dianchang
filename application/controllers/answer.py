@@ -5,6 +5,7 @@ from ..models import db, Answer, UpvoteAnswer, UserTopicStatistic, DownvoteAnswe
     AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
     NOTIFICATION_KIND, UserUpvoteStatistic, HomeFeedBackup
 from ..utils.permissions import UserPermission
+from ..utils.decorators import jsonify
 
 bp = Blueprint('answer', __name__)
 
@@ -25,6 +26,7 @@ def mobile_view(uid):
 
 @bp.route('/answer/<int:uid>/upvote', methods=['POST'])
 @UserPermission()
+@jsonify
 def upvote(uid):
     """赞同 & 取消赞同回答"""
     answer = Answer.query.get_or_404(uid)
@@ -53,11 +55,11 @@ def upvote(uid):
 
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'upvoted': False,
             'count': answer.upvotes_count
-        })
+        }
     else:  # 赞同
         upvote_answer = UpvoteAnswer(user_id=g.user.id)
         answer.upvotes.append(upvote_answer)
@@ -128,15 +130,16 @@ def upvote(uid):
 
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'upvoted': True,
             'count': answer.upvotes_count
-        })
+        }
 
 
 @bp.route('/answer/<int:uid>/downvote', methods=['POST'])
 @UserPermission()
+@jsonify
 def downvote(uid):
     """反对 & 取消反对"""
     answer = Answer.query.get_or_404(uid)
@@ -149,10 +152,10 @@ def downvote(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'downvoted': False
-        })
+        }
     else:  # 反对
         downvote_answer = DownvoteAnswer(user_id=g.user.id)
         answer.downvotes.append(downvote_answer)
@@ -170,14 +173,15 @@ def downvote(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'downvoted': True
-        })
+        }
 
 
 @bp.route('/answer/<int:uid>/thank', methods=['POST'])
 @UserPermission()
+@jsonify
 def thank(uid):
     """感谢（无法取消感谢）"""
     answer = Answer.query.get_or_404(uid)
@@ -210,14 +214,15 @@ def thank(uid):
 
         db.session.commit()
 
-    return json.dumps({
+    return {
         'result': True,
         'thanked': True
-    })
+    }
 
 
 @bp.route('/answer/<int:uid>/nohelp', methods=['POST'])
 @UserPermission()
+@jsonify
 def nohelp(uid):
     """没有帮助 & 取消没有帮助"""
     answer = Answer.query.get_or_404(uid)
@@ -230,10 +235,10 @@ def nohelp(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'nohelped': False
-        })
+        }
     else:  # 没有帮助
         nohelp_answer = NohelpAnswer(user_id=g.user.id)
         answer.nohelps.append(nohelp_answer)
@@ -242,14 +247,15 @@ def nohelp(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return json.dumps({
+        return {
             'result': True,
             'nohelped': True
-        })
+        }
 
 
 @bp.route('/answer/draft/<int:uid>/remove', methods=['POST'])
 @UserPermission()
+@jsonify
 def remove_draft(uid):
     """移除草稿"""
     draft = AnswerDraft.query.get_or_404(uid)
@@ -257,11 +263,14 @@ def remove_draft(uid):
     db.session.add(g.user)
     db.session.delete(draft)
     db.session.commit()
-    return json.dumps({'result': True})
+    return {
+        'result': True
+    }
 
 
 @bp.route('/answer/comment/<int:uid>/like', methods=['POST'])
 @UserPermission()
+@jsonify
 def like_comment(uid):
     """赞评论"""
     comment = AnswerComment.query.get_or_404(uid)
@@ -271,11 +280,11 @@ def like_comment(uid):
         comment.likes_count -= 1
         db.session.add(comment)
         db.session.commit()
-        return json.dumps({
+        return {
             'result': True,
             'liked': False,
             'count': comment.likes_count
-        })
+        }
     else:
         # 赞评论
         like = LikeAnswerComment(user_id=g.user.id)
@@ -298,17 +307,18 @@ def like_comment(uid):
                 comment.user.notifications.append(noti)
                 db.session.add(comment.user)
 
-        db.session.commit()
+                db.session.commit()
 
-        return json.dumps({
-            'result': True,
-            'liked': True,
-            'count': comment.likes_count
-        })
+    return {
+        'result': True,
+        'liked': True,
+        'count': comment.likes_count
+    }
 
 
 @bp.route('/answer/comment/<int:uid>/reply', methods=['POST'])
 @UserPermission()
+@jsonify
 def reply_comment(uid):
     """回复评论"""
     parent_comment = AnswerComment.query.get_or_404(uid)
@@ -330,13 +340,14 @@ def reply_comment(uid):
         db.session.commit()
 
     macro = get_template_attribute('macros/_answer.html', 'render_answer_comment')
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(new_comment)
-    })
+    }
 
 
 @bp.route('/answer/<int:uid>/comment', methods=['POST'])
+@jsonify
 def comment(uid):
     answer = Answer.query.get_or_404(uid)
     permission = UserPermission()
@@ -346,9 +357,9 @@ def comment(uid):
     # 评论回答
     comment_content = request.form.get('content')
     if not comment_content:
-        return json.dumps({
+        return {
             'result': False
-        })
+        }
 
     comment = AnswerComment(content=comment_content, user_id=g.user.id, question_id=answer.question_id)
     answer.comments.append(comment)
@@ -366,18 +377,19 @@ def comment(uid):
     db.session.commit()
 
     macro = get_template_attribute('macros/_answer.html', 'render_answer_comment')
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(comment)
-    })
+    }
 
 
 @bp.route('/answer/<int:uid>/load_comments_wap', methods=['POST'])
+@jsonify
 def load_comments_wap(uid):
     """加载回答的评论wap"""
     answer = Answer.query.get_or_404(uid)
     macro = get_template_attribute('macros/_answer.html', 'render_answer_comments')
-    return json.dumps({
+    return {
         'result': True,
         'html': macro(answer)
-    })
+    }
