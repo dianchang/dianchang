@@ -203,7 +203,7 @@
                     }
                 }).done(function (response) {
                     if (response.result) {
-                        window.location = response.referer;
+                        window.location = response.referrer;
                     } else {
                         if (response.email !== "") {
                             showTip($signinEmail, response.email);
