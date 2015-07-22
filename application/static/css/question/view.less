@@ -4,405 +4,666 @@
   margin-bottom: 0;
 }
 
-.question-header {
-  padding: 40px 0 30px 0;
-  background-color: #F5F6F5;
-  position: relative;
+#main-wap {
+  .question-header {
+    padding: 40px 0 30px 0;
+    background-color: #F5F6F5;
+    position: relative;
 
-  .title-desc-wap {
-    // 标题
-    .title-wap {
-      margin-bottom: 15px;
+    .title-desc-wap {
+      // 标题
+      .title-wap {
+        margin-bottom: 15px;
 
-      .title-inner-wap {
-        display: block;
+        .title-inner-wap {
+          display: block;
 
-        .title {
-          font-weight: bold;
-          font-size: 24px;
+          .title {
+            font-weight: bold;
+            font-size: 24px;
+          }
+
+          .btn-edit-title {
+            color: #999;
+            margin-left: 10px;
+            display: none;
+          }
+
+          &:hover {
+            .btn-edit-title {
+              display: inline-block;
+            }
+          }
         }
 
-        .btn-edit-title {
-          color: #999;
-          margin-left: 10px;
+        .form-elements {
+          margin-bottom: 15px;
+        }
+
+        input {
+          display: none;
+          vertical-align: middle;
+          margin-right: 5px;
+          font-size: 24px;
+          font-weight: bold;
+          padding: 4px 12px;
+          height: auto;
+          color: #333;
+        }
+
+        .simditor {
+          border-top: 0;
+
+          .simditor-body {
+            padding: 15px 15px 40px 15px;
+            min-height: 150px;
+          }
+        }
+
+        .simditor,
+        textarea[name='desc-in-title'] {
           display: none;
         }
 
-        &:hover {
-          .btn-edit-title {
-            display: inline-block;
+        .title-commands {
+          display: none;
+
+          .btn-save-title {
+            margin-left: 10px;
+          }
+
+          .btn-add-desc {
+            display: none;
+            float: left;
+            margin-top: 5px;
+          }
+        }
+
+        &.edit {
+          .title-inner-wap {
+            display: none;
+          }
+
+          input {
+            display: block;
+          }
+
+          .title-commands {
+            display: block;
+          }
+        }
+
+        &.add-desc {
+          input {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+
+          .simditor {
+            display: block;
           }
         }
       }
 
-      .form-elements {
-        margin-bottom: 15px;
-      }
+      // 描述
+      .desc-wap {
+        margin-bottom: 20px;
 
-      input {
-        display: none;
-        vertical-align: middle;
-        margin-right: 5px;
-        font-size: 24px;
-        font-weight: bold;
-        padding: 4px 12px;
-        height: auto;
-        color: #333;
-      }
+        .desc-inner-wap {
+          display: block;
 
-      .simditor {
-        border-top: 0;
+          .btn-edit-desc {
+            visibility: hidden;
+          }
 
-        .simditor-body {
-          padding: 15px 15px 40px 15px;
-          min-height: 150px;
-        }
-      }
-
-      .simditor,
-      textarea[name='desc-in-title'] {
-        display: none;
-      }
-
-      .title-commands {
-        display: none;
-
-        .btn-save-title {
-          margin-left: 10px;
+          &:hover {
+            .btn-edit-desc {
+              visibility: visible;
+            }
+          }
         }
 
-        .btn-add-desc {
-          display: none;
-          float: left;
-          margin-top: 5px;
-        }
-      }
-
-      &.edit {
-        .title-inner-wap {
+        textarea,
+        .simditor {
           display: none;
         }
 
-        input {
-          display: block;
+        .desc-commands {
+          display: none;
+
+          .btn-save-desc {
+            margin-left: 10px;
+          }
         }
 
-        .title-commands {
-          display: block;
-        }
-      }
+        &.edit {
+          display: block !important;
 
-      &.add-desc {
-        input {
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
+          .desc-inner-wap {
+            display: none !important;
+          }
+
+          .desc-commands {
+            display: block;
+          }
+
+          .btn-save-desc {
+            display: inline-block;
+          }
+
+          .simditor {
+            display: block;
+          }
+        }
+
+        &.empty {
+          .desc-inner-wap {
+            display: none;
+          }
+
+          .btn-add-desc {
+            display: inline-block;
+          }
         }
 
         .simditor {
+          margin-bottom: 15px;
+
+          .simditor-body {
+            padding: 15px 15px 40px 15px;
+            min-height: 150px;
+          }
+        }
+      }
+
+      &.empty-desc {
+        .title-wap .title-commands .btn-add-desc {
           display: block;
+        }
+
+        .desc-wap {
+          display: none;
         }
       }
     }
 
-    // 描述
-    .desc-wap {
-      margin-bottom: 20px;
+    // 话题
+    .topics-wap {
+      .btn-add-topic,
+      .btn-edit-topic,
+      .btn-delete-topic,
+      .form-wap {
+        display: none;
+      }
 
-      .desc-inner-wap {
-        display: block;
+      .form-wap {
+        margin-top: 10px;
 
-        .btn-edit-desc {
-          visibility: hidden;
+        .twitter-typeahead {
+          vertical-align: middle;
         }
 
-        &:hover {
-          .btn-edit-desc {
-            visibility: visible;
+        input {
+          width: 250px;
+          margin-right: 5px;
+        }
+      }
+
+      .topics-inner-wap {
+        display: inline-block;
+      }
+
+      .topic-wap {
+        display: inline-block;
+        margin: 0 10px 10px 0;
+
+        .dc-topic-white {
+          margin: 0;
+        }
+
+        .btn-delete-topic {
+          color: #999;
+
+          &:hover {
+            color: #666;
           }
         }
       }
 
-      textarea,
-      .simditor {
-        display: none;
-      }
-
-      .desc-commands {
-        display: none;
-
-        .btn-save-desc {
-          margin-left: 10px;
-        }
-      }
-
       &.edit {
-        display: block !important;
-
-        .desc-inner-wap {
+        .btn-add-topic,
+        .btn-edit-topic {
           display: none !important;
         }
 
-        .desc-commands {
-          display: block;
-        }
-
-        .btn-save-desc {
+        .btn-delete-topic {
           display: inline-block;
         }
 
-        .simditor {
+        .form-wap {
           display: block;
         }
       }
 
       &.empty {
-        .desc-inner-wap {
+        .topics,
+        .btn-edit-topic {
           display: none;
         }
+        .btn-add-topic {
+          display: block;
+        }
+      }
 
-        .btn-add-desc {
+      .topics:hover {
+        .btn-edit-topic {
           display: inline-block;
         }
       }
-
-      .simditor {
-        margin-bottom: 15px;
-
-        .simditor-body {
-          padding: 15px 15px 40px 15px;
-          min-height: 150px;
-        }
-      }
     }
 
-    &.empty-desc {
-      .title-wap .title-commands .btn-add-desc {
-        display: block;
+    .col-md-4 {
+      .commands {
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        .dc-hide-commands-trigger {
+          padding: 6px 10px;
+          margin-left: 5px;
+
+          .dc-hide-commands {
+            top: 20px;
+            right: -1px;
+            padding-top: 13px;
+          }
+        }
       }
 
-      .desc-wap {
-        display: none;
+      .followers {
+        position: absolute;
+        right: 0;
+        top: 50px;
+
+        .follower {
+          display: inline-block;
+          margin: 0 0 5px 5px;
+
+          img {
+            width: 30px;
+            height: 30px;
+          }
+        }
       }
     }
   }
 
-  // 话题
-  .topics-wap {
-    .btn-add-topic,
-    .btn-edit-topic,
-    .btn-delete-topic,
-    .form-wap {
-      display: none;
-    }
+  .content-tabs {
+    margin: 30px 0 25px 0;
 
-    .form-wap {
-      margin-top: 10px;
-
-      .twitter-typeahead {
-        vertical-align: middle;
-      }
-
-      input {
-        width: 250px;
-        margin-right: 5px;
-      }
-    }
-
-    .topics-inner-wap {
+    a {
       display: inline-block;
-    }
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #333;
 
-    .topic-wap {
-      display: inline-block;
-      margin: 0 10px 10px 0;
-
-      .dc-topic-white {
-        margin: 0;
-      }
-
-      .btn-delete-topic {
+      &.btn-toggle-invitation {
         color: #999;
 
+        .for-active {
+          display: none;
+        }
+        .for-unactive {
+          display: inline-block;
+        }
+
         &:hover {
-          color: #666;
+          color: #333;
+        }
+
+        &.active {
+          color: #333;
+
+          .for-active {
+            display: inline-block;
+          }
+          .for-unactive {
+            display: none;
+          }
         }
       }
     }
 
-    &.edit {
-      .btn-add-topic,
-      .btn-edit-topic {
-        display: none !important;
-      }
-
-      .btn-delete-topic {
-        display: inline-block;
-      }
-
-      .form-wap {
-        display: block;
-      }
-    }
-
-    &.empty {
-      .topics,
-      .btn-edit-topic {
-        display: none;
-      }
-      .btn-add-topic {
-        display: block;
-      }
-    }
-
-    .topics:hover {
-      .btn-edit-topic {
-        display: inline-block;
-      }
+    .divider {
+      color: #999;
+      margin: 0 5px;
     }
   }
 
-  .col-md-4 {
-    .commands {
-      position: absolute;
-      right: 0;
-      top: 0;
+  // 邀请
+  .invitation-wap {
+    border: 1px solid #ddd;
+    display: none;
+    margin-bottom: 30px;
 
-      .dc-hide-commands-trigger {
-        padding: 6px 10px;
-        margin-left: 5px;
+    &.active {
+      display: block;
+    }
 
-        .dc-hide-commands {
-          top: 20px;
-          right: -1px;
-          padding-top: 13px;
+    .invited-users-wap {
+      padding: 15px 15px 0 15px;
+
+      &.empty {
+        display: none;
+      }
+
+      .invited-users {
+        margin: 0 3px;
+
+        .invited-user {
+          color: #333;
+          font-weight: bold;
         }
       }
     }
 
-    .followers {
-      position: absolute;
-      right: 0;
-      top: 50px;
+    .header {
+      padding: 15px 15px;
+      border-bottom: 1px solid #ddd;
 
-      .follower {
-        display: inline-block;
-        margin: 0 0 5px 5px;
+      .form-control {
+        padding: 18px 12px;
+      }
+
+      .tt-suggestion {
+        font-size: 14px;
+        padding: 10px 15px;
 
         img {
           width: 30px;
           height: 30px;
+          display: inline-block;
+          margin-right: 12px;
         }
       }
     }
+
+    .recommend-wap {
+      padding: 0 15px;
+
+      .item {
+        margin-top: 0;
+        position: relative;
+        padding: 20px 0 20px 0;
+        border-bottom: 1px solid @border-color;
+
+        &:last-child {
+          border-bottom: 0;
+        }
+
+        .candidate-meta {
+          margin-bottom: 2px;
+
+          a {
+            color: #333;
+            font-weight: bold;
+          }
+        }
+
+        img {
+          width: 40px;
+          height: 40px;
+        }
+
+        .btn-invite {
+          position: absolute;
+          right: 0;
+          top: 22px;
+
+          .for-invited {
+            display: none;
+          }
+          .for-non-invited {
+            display: block;
+          }
+
+          &.invited {
+            color: #999;
+
+            .for-invited {
+              display: block;
+            }
+            .for-non-invited {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .tip {
+        padding: 15px 0;
+      }
+    }
   }
-}
 
-.content-tabs {
-  margin: 30px 0 25px 0;
+  .answers {
+    .answer {
+      padding-top: 25px;
+      padding-bottom: 25px;
+      border-top: 1px solid @border-color;
 
-  a {
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #333;
+      .media-left {
+        img {
+          width: 40px;
+          height: 40px;
+        }
+      }
 
-    &.btn-toggle-invitation {
+      .answerer-info {
+        margin-bottom: 20px;
+
+        .answerer {
+          margin-bottom: 2px;
+
+          .name {
+            color: #333;
+            font-weight: bold;
+          }
+        }
+      }
+
+      .answer-content {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .time {
+        margin-bottom: 25px;
+      }
+    }
+
+    .toogle-hided-answers-wap {
+      border-top: 1px solid @border-color;
+      border-bottom: 1px solid @border-color;
+      padding: 20px 0;
+      font-size: 16px;
       color: #999;
+    }
+  }
 
-      .for-active {
-        display: none;
-      }
-      .for-unactive {
+  h3 {
+    margin-top: 30px;
+  }
+
+  .hided-answers {
+    display: none;
+    margin-top: -1px;
+  }
+
+  // 底部的邀请框
+  .bottom-invitation-wap {
+    background-color: #fafafa;
+    border: 1px dashed #d4d4d4;
+    padding: 40px 0 35px 0;
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 40px;
+
+    .tip {
+      color: #999;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .candidates {
+      margin-bottom: 20px;
+
+      a {
         display: inline-block;
+        margin-right: 5px;
+        img {
+          width: 34px;
+          height: 34px;
+        }
       }
+    }
+
+    .btn-go-to-invitation-wap {
+      font-weight: bold;
+      display: inline-block;
+      font-size: 16px;
+      border: 1px solid #c5c5c5;
+      padding: 8px 25px;
 
       &:hover {
-        color: #333;
-      }
-
-      &.active {
-        color: #333;
-
-        .for-active {
-          display: inline-block;
-        }
-        .for-unactive {
-          display: none;
-        }
+        background-color: #fff;
+        border-color: #b5b5b5;
       }
     }
   }
 
-  .divider {
-    color: #999;
-    margin: 0 5px;
-  }
-}
+  // 已回答该问题
+  .answered-tip-wap {
+    margin-top: -1px;
+    text-align: center;
+    padding-top: 30px;
+    font-size: 16px;
+    border-top: 1px solid @border-color;
 
-// 邀请
-.invitation-wap {
-  border: 1px solid #ddd;
-  display: none;
-  margin-bottom: 30px;
-
-  &.active {
-    display: block;
-  }
-
-  .invited-users-wap {
-    padding: 15px 15px 0 15px;
-
-    &.empty {
-      display: none;
+    img {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 20px auto;
+      opacity: .4;
+      display: block;
     }
 
-    .invited-users {
-      margin: 0 3px;
+    a {
+      color: @main-color;
+    }
+  }
 
-      .invited-user {
+  // 个人资料
+  .myself {
+    margin-top: 30px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .myself-info {
+      margin-bottom: 3px;
+
+      a {
         color: #333;
         font-weight: bold;
       }
     }
-  }
 
-  .header {
-    padding: 15px 15px;
-    border-bottom: 1px solid #ddd;
-
-    .form-control {
-      padding: 18px 12px;
-    }
-
-    .tt-suggestion {
-      font-size: 14px;
-      padding: 10px 15px;
-
-      img {
-        width: 30px;
-        height: 30px;
-        display: inline-block;
-        margin-right: 12px;
+    .commands {
+      .divider {
+        margin: 0 3px;
       }
     }
   }
 
-  .recommend-wap {
-    padding: 0 15px;
+  // 回答表单
+  form.answer-form {
+    margin-top: 18px;
 
-    .item {
-      margin-top: 0;
+    .tip-save-draft {
+      color: #999;
+    }
+
+    .simditor {
+      margin-bottom: 15px;
+
+      .simditor-body {
+        min-height: 200px;
+      }
+    }
+  }
+
+  // 相关问题
+  .relevant-question {
+    margin-bottom: 15px;
+
+    .title {
+      color: @main-color;
+    }
+
+    .answers-count {
+      margin-left: 10px;
+    }
+  }
+
+  // 修改显示身份 modal
+  .modal-edit-identity {
+    .modal-body {
+      text-align: center;
+      padding: 30px 15px;
+    }
+
+    .btn-group {
+      .btn.active {
+        background-color: @light-main;
+        color: @main-color;
+        border-color: #b7e1e2;
+        padding: 6px 15px;
+        box-shadow: none;
+
+        a {
+          color: @main-color;
+        }
+
+        &:hover,
+        &:active,
+        &:focus,
+        &:active:focus {
+          box-shadow: none;
+          outline: none;
+          background-color: darken(@light-main, 5%);
+          border-color: darken(#b7e1e2, 5%);
+          color: @main-color;
+        }
+      }
+    }
+  }
+
+  // 修改话题经验 modal
+  #modal-edit-experience {
+    .topic-experience {
+      margin-bottom: 12px;
       position: relative;
-      padding: 20px 0 20px 0;
-      border-bottom: 1px solid @border-color;
 
       &:last-child {
-        border-bottom: 0;
+        margin-bottom: 0;
       }
 
-      .candidate-meta {
-        margin-bottom: 2px;
+      .topic {
+        margin-bottom: 5px;
 
         a {
           color: #333;
@@ -410,323 +671,64 @@
         }
       }
 
-      img {
-        width: 40px;
-        height: 40px;
-      }
+      .experience-wap {
+        form {
+          margin-top: 10px;
+          width: 60%;
 
-      .btn-invite {
-        position: absolute;
-        right: 0;
-        top: 22px;
+          textarea {
+            margin-bottom: 10px;
+            resize: none;
+          }
 
-        .for-invited {
+          .btn-submit-experience {
+            margin-left: 8px;
+          }
+        }
+
+        .btn-edit-experience {
+          margin-left: 8px;
+        }
+
+        form,
+        .btn-add-experience {
           display: none;
         }
-        .for-non-invited {
-          display: block;
+
+        .experience,
+        .btn-edit-experience {
+          display: inline-block;
         }
 
-        &.invited {
-          color: #999;
-
-          .for-invited {
+        &.empty {
+          .btn-add-experience {
             display: block;
           }
-          .for-non-invited {
+
+          .experience,
+          .btn-edit-experience {
+            display: none;
+          }
+        }
+
+        &.edit {
+          form {
+            display: block
+          }
+
+          .btn-add-experience,
+          .experience,
+          .btn-edit-experience {
             display: none;
           }
         }
       }
-    }
 
-    .tip {
-      padding: 15px 0;
-    }
-  }
-}
-
-.answers {
-  .answer {
-    padding-top: 25px;
-    padding-bottom: 25px;
-    border-top: 1px solid @border-color;
-
-    .media-left {
-      img {
-        width: 40px;
-        height: 40px;
+      .btn-apply-experience {
+        position: absolute;
+        right: 0;
+        top: 10px;
       }
-    }
-
-    .answerer-info {
-      margin-bottom: 20px;
-
-      .answerer {
-        margin-bottom: 2px;
-
-        .name {
-          color: #333;
-          font-weight: bold;
-        }
-      }
-    }
-
-    .answer-content {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .time {
-      margin-bottom: 25px;
-    }
-  }
-
-  .toogle-hided-answers-wap {
-    border-top: 1px solid @border-color;
-    border-bottom: 1px solid @border-color;
-    padding: 20px 0;
-    font-size: 16px;
-    color: #999;
-  }
-}
-
-h3 {
-  margin-top: 30px;
-}
-
-.hided-answers {
-  display: none;
-  margin-top: -1px;
-}
-
-// 底部的邀请框
-.bottom-invitation-wap {
-  background-color: #fafafa;
-  border: 1px dashed #d4d4d4;
-  padding: 40px 0 35px 0;
-  text-align: center;
-  border-radius: 4px;
-  margin-bottom: 40px;
-
-  .tip {
-    color: #999;
-    font-size: 18px;
-    margin-bottom: 15px;
-  }
-
-  .candidates {
-    margin-bottom: 20px;
-
-    a {
-      display: inline-block;
-      margin-right: 5px;
-      img {
-        width: 34px;
-        height: 34px;
-      }
-    }
-  }
-
-  .btn-go-to-invitation-wap {
-    font-weight: bold;
-    display: inline-block;
-    font-size: 16px;
-    border: 1px solid #c5c5c5;
-    padding: 8px 25px;
-
-    &:hover {
-      background-color: #fff;
-      border-color: #b5b5b5;
-    }
-  }
-}
-
-// 已回答该问题
-.answered-tip-wap {
-  margin-top: -1px;
-  text-align: center;
-  padding-top: 30px;
-  font-size: 16px;
-  border-top: 1px solid @border-color;
-
-  img {
-    width: 40px;
-    height: 40px;
-    margin: 0 auto 20px auto;
-    opacity: .4;
-    display: block;
-  }
-
-  a {
-    color: @main-color;
-  }
-}
-
-// 个人资料
-.myself {
-  margin-top: 30px;
-
-  img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .myself-info {
-    margin-bottom: 3px;
-
-    a {
-      color: #333;
-      font-weight: bold;
-    }
-  }
-
-  .commands {
-    .divider {
-      margin: 0 3px;
-    }
-  }
-}
-
-// 回答表单
-form.answer-form {
-  margin-top: 18px;
-
-  .tip-save-draft {
-    color: #999;
-  }
-
-  .simditor {
-    margin-bottom: 15px;
-
-    .simditor-body {
-      min-height: 200px;
-    }
-  }
-}
-
-// 相关问题
-.relevant-question {
-  margin-bottom: 15px;
-
-  .title {
-    color: @main-color;
-  }
-
-  .answers-count {
-    margin-left: 10px;
-  }
-}
-
-// 修改显示身份 modal
-.modal-edit-identity {
-  .modal-body {
-    text-align: center;
-    padding: 30px 15px;
-  }
-
-  .btn-group {
-    .btn.active {
-      background-color: @light-main;
-      color: @main-color;
-      border-color: #b7e1e2;
-      padding: 6px 15px;
-      box-shadow: none;
-
-      a {
-        color: @main-color;
-      }
-
-      &:hover,
-      &:active,
-      &:focus,
-      &:active:focus {
-        box-shadow: none;
-        outline: none;
-        background-color: darken(@light-main, 5%);
-        border-color: darken(#b7e1e2, 5%);
-        color: @main-color;
-      }
-    }
-  }
-}
-
-// 修改话题经验 modal
-#modal-edit-experience {
-  .topic-experience {
-    margin-bottom: 12px;
-    position: relative;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    .topic {
-      margin-bottom: 5px;
-
-      a {
-        color: #333;
-        font-weight: bold;
-      }
-    }
-
-    .experience-wap {
-      form {
-        margin-top: 10px;
-        width: 60%;
-
-        textarea {
-          margin-bottom: 10px;
-          resize: none;
-        }
-
-        .btn-submit-experience {
-          margin-left: 8px;
-        }
-      }
-
-      .btn-edit-experience {
-        margin-left: 8px;
-      }
-
-      form,
-      .btn-add-experience {
-        display: none;
-      }
-
-      .experience,
-      .btn-edit-experience {
-        display: inline-block;
-      }
-
-      &.empty {
-        .btn-add-experience {
-          display: block;
-        }
-
-        .experience,
-        .btn-edit-experience {
-          display: none;
-        }
-      }
-
-      &.edit {
-        form {
-          display: block
-        }
-
-        .btn-add-experience,
-        .experience,
-        .btn-edit-experience {
-          display: none;
-        }
-      }
-    }
-
-    .btn-apply-experience {
-      position: absolute;
-      right: 0;
-      top: 10px;
     }
   }
 }

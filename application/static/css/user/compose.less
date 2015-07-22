@@ -1,138 +1,140 @@
 @import "../utils";
 
-.compose-feeds-wap {
-  margin-bottom: 25px;
-}
-
-.question-wap {
-  position: relative;
-  border-bottom: 1px solid @border-color;
-  transition: height 2s, background-color 0.2s;
-
-  .question {
-    display: block;
-  }
-  .ignore-tip {
-    display: none;
+#main-wap {
+  .compose-feeds-wap {
+    margin-bottom: 25px;
   }
 
-  &.ignored {
-    background-color: @background-gray;
-    padding: 22px 20px;
+  .question-wap {
+    position: relative;
+    border-bottom: 1px solid @border-color;
+    transition: height 2s, background-color 0.2s;
 
     .question {
-      display: none;
+      display: block;
     }
     .ignore-tip {
-      display: block;
-    }
-  }
-
-  .new-flag {
-    position: absolute;
-    display: none;
-    width: 8px;
-    height: 8px;
-    border-radius: 8px;
-    background-color: #999;
-    left: -18px;
-    top: 28px;
-  }
-
-  &.invited {
-    .new-flag {
-      display: block;
-    }
-
-    &.new {
-      .new-flag {
-        background-color: red;
-      }
-    }
-
-    &.answered {
-      .new-flag {
-        display: none;
-      }
-    }
-  }
-}
-
-.ignore-tip {
-  position: relative;
-
-  .divider {
-    margin: 0 5px;
-  }
-}
-
-// 问题
-.question {
-  padding: 22px 0;
-
-  .topics {
-    margin-bottom: 18px;
-  }
-
-  .action {
-    margin-bottom: 10px;
-
-    img {
-      width: 20px;
-      height: 20px;
-    }
-
-    .name {
-      margin-left: 2px;
-    }
-
-    .divider {
-      margin: 0 5px;
-    }
-  }
-
-  .title {
-    margin-bottom: 10px;
-
-    a {
-      color: #333;
-      font-size: 18px;
-      font-weight: bold;
-    }
-  }
-
-  .meta {
-    margin-bottom: 16px;
-
-    .divider {
-      margin: 0 5px;
-    }
-  }
-
-  .btn-ignore-feed {
-    margin: 0 15px 0 8px;
-  }
-
-  .btn-follow-question {
-    .for-non-followed {
-      display: inline;
-    }
-    .for-followed {
       display: none;
     }
 
-    &.followed {
-      .for-non-followed {
+    &.ignored {
+      background-color: @background-gray;
+      padding: 22px 20px;
+
+      .question {
         display: none;
       }
-      .for-followed {
-        display: inline;
+      .ignore-tip {
+        display: block;
+      }
+    }
+
+    .new-flag {
+      position: absolute;
+      display: none;
+      width: 8px;
+      height: 8px;
+      border-radius: 8px;
+      background-color: #999;
+      left: -18px;
+      top: 28px;
+    }
+
+    &.invited {
+      .new-flag {
+        display: block;
+      }
+
+      &.new {
+        .new-flag {
+          background-color: red;
+        }
+      }
+
+      &.answered {
+        .new-flag {
+          display: none;
+        }
       }
     }
   }
-}
 
-.tooltip-inner {
-  padding: 5px 8px;
-  border-radius: 2px;
+  .ignore-tip {
+    position: relative;
+
+    .divider {
+      margin: 0 5px;
+    }
+  }
+
+  // 问题
+  .question {
+    padding: 22px 0;
+
+    .topics {
+      margin-bottom: 18px;
+    }
+
+    .action {
+      margin-bottom: 10px;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .name {
+        margin-left: 2px;
+      }
+
+      .divider {
+        margin: 0 5px;
+      }
+    }
+
+    .title {
+      margin-bottom: 10px;
+
+      a {
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+    .meta {
+      margin-bottom: 16px;
+
+      .divider {
+        margin: 0 5px;
+      }
+    }
+
+    .btn-ignore-feed {
+      margin: 0 15px 0 8px;
+    }
+
+    .btn-follow-question {
+      .for-non-followed {
+        display: inline;
+      }
+      .for-followed {
+        display: none;
+      }
+
+      &.followed {
+        .for-non-followed {
+          display: none;
+        }
+        .for-followed {
+          display: inline;
+        }
+      }
+    }
+  }
+
+  .tooltip-inner {
+    padding: 5px 8px;
+    border-radius: 2px;
+  }
 }

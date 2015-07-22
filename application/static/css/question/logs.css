@@ -1,56 +1,56 @@
-.header {
+#main-wap .header {
   margin-bottom: 25px;
   padding-bottom: 15px;
   border-bottom: 1px solid #eaeaea;
 }
-.header .name {
+#main-wap .header .name {
   font-size: 24px;
   font-weight: bold;
   color: #333;
   margin-right: 10px;
 }
-.header .tip {
+#main-wap .header .tip {
   font-size: 18px;
   color: #999;
 }
-.question-log {
+#main-wap .question-log {
   padding-bottom: 25px;
   margin-bottom: 25px;
   border-bottom: 1px solid #eaeaea;
 }
-.question-log .media-left {
+#main-wap .question-log .media-left {
   padding-right: 15px;
 }
-.question-log .media-left img {
+#main-wap .question-log .media-left img {
   width: 40px;
   height: 40px;
 }
-.question-log .media-body {
+#main-wap .question-log .media-body {
   overflow: visible;
 }
-.question-log .title {
+#main-wap .question-log .title {
   margin-bottom: 20px;
 }
-.question-log .content .fa-long-arrow-right {
+#main-wap .question-log .content .fa-long-arrow-right {
   margin: 0 8px;
 }
-.question-log .content .topic-avatar {
+#main-wap .question-log .content .topic-avatar {
   width: 80px;
   height: 80px;
 }
-.question-log del.topic {
+#main-wap .question-log del.topic {
   text-decoration: none;
   padding: 0;
   background-color: #fff;
 }
-.question-log del.topic a {
+#main-wap .question-log del.topic a {
   margin: 0;
   text-decoration: line-through;
 }
-.question-log ins.topic {
+#main-wap .question-log ins.topic {
   padding: 0;
   background-color: #fff;
 }
-.question-log ins.topic a {
+#main-wap .question-log ins.topic a {
   margin: 0;
 }

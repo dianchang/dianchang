@@ -1,14 +1,14 @@
 .navbar {
   margin-bottom: 0;
 }
-.wiki-content {
+#main-wap .wiki-content {
   font-size: 16px;
   margin-top: 20px;
 }
-.contributors {
+#main-wap .contributors {
   margin-bottom: 20px;
 }
-.contributors img {
+#main-wap .contributors img {
   width: 28px;
   height: 28px;
   margin: 0 2px 4px 0;

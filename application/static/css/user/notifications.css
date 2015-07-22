@@ -2,47 +2,47 @@
   width: 750px;
   margin: 0 auto;
 }
-h3 {
+#main-wap h3 {
   text-align: center;
   margin-top: 0;
 }
-.noti {
+#main-wap .noti {
   position: relative;
   padding-bottom: 25px;
   padding-top: 25px;
   border-top: 1px solid #eaeaea;
 }
-.noti:hover {
+#main-wap .noti:hover {
   cursor: pointer;
   background-color: #f5f6f5;
 }
-.noti:last-child {
+#main-wap .noti:last-child {
   border-bottom: 1px solid #eaeaea;
   margin-bottom: 25px;
 }
-.noti .content {
+#main-wap .noti .content {
   margin-top: 8px;
 }
-.noti .content .question-title {
+#main-wap .noti .content .question-title {
   margin-bottom: 5px;
 }
-.noti .content .question-title a {
+#main-wap .noti .content .question-title a {
   color: #333;
   font-size: 18px;
   font-weight: bold;
 }
-.noti .content .answer-content {
+#main-wap .noti .content .answer-content {
   font-size: 16px;
   color: #999;
 }
-.noti .content .answer-content p:last-child {
+#main-wap .noti .content .answer-content p:last-child {
   margin-bottom: 0;
 }
-.noti .content .answer-comment {
+#main-wap .noti .content .answer-comment {
   font-size: 16px;
   color: #999;
 }
-.noti .date-wap {
+#main-wap .noti .date-wap {
   position: absolute;
   top: -1px;
   width: 50px;
@@ -52,14 +52,14 @@ h3 {
   padding: 5px 0;
   background-color: #f5f6f5;
 }
-.noti .date-wap .day {
+#main-wap .noti .date-wap .day {
   font-weight: bold;
   font-size: 18px;
 }
-.noti .date-wap .month {
+#main-wap .noti .date-wap .month {
   color: #999;
 }
-.noti .new-flag {
+#main-wap .noti .new-flag {
   position: absolute;
   width: 8px;
   height: 8px;

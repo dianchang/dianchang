@@ -4,68 +4,70 @@
   margin-bottom: 0;
 }
 
-#main-wap .container {
-  width: 750px;
-  margin: 0 auto;
-  padding: 0;
-}
-
-.item {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  position: relative;
-  border-bottom: 1px solid @border-color;
-
-  .key {
-    color: #999;
-    font-size: 16px;
-    margin-bottom: 10px;
+#main-wap {
+  .container {
+    width: 750px;
+    margin: 0 auto;
+    padding: 0;
   }
 
-  .value {
-    font-size: 18px;
-    font-weight: bold;
+  .item {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    border-bottom: 1px solid @border-color;
 
-    .url-prefix {
-      font-weight: normal;
-    }
-
-    input {
-      border: none;
-      outline: none;
-    }
-  }
-
-  .commands {
-    position: absolute;
-    right: 0;
-    top: 12px;
-
-    .btn-edit {
-      margin-left: 15px;
-    }
-
-    .btn-cancel {
-      margin-left: 10px;
-    }
-
-    .for-edit {
-      display: none;
-    }
-    .for-non-edit {
-      display: block;
-    }
-
-    .tip {
+    .key {
       color: #999;
+      font-size: 16px;
+      margin-bottom: 10px;
     }
 
-    &.edit {
+    .value {
+      font-size: 18px;
+      font-weight: bold;
+
+      .url-prefix {
+        font-weight: normal;
+      }
+
+      input {
+        border: none;
+        outline: none;
+      }
+    }
+
+    .commands {
+      position: absolute;
+      right: 0;
+      top: 12px;
+
+      .btn-edit {
+        margin-left: 15px;
+      }
+
+      .btn-cancel {
+        margin-left: 10px;
+      }
+
       .for-edit {
-        display: block;
+        display: none;
       }
       .for-non-edit {
-        display: none;
+        display: block;
+      }
+
+      .tip {
+        color: #999;
+      }
+
+      &.edit {
+        .for-edit {
+          display: block;
+        }
+        .for-non-edit {
+          display: none;
+        }
       }
     }
   }

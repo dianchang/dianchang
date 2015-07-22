@@ -10,164 +10,165 @@ body {
   padding: 30px 0 100px 0;
 }
 
-.text-logo {
-  color: @background-gray;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 30px;
-}
+#main-wap {
+  .text-logo {
+    color: @background-gray;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
 
-.outer-wap {
-  width: 680px;
-  margin: 0 auto;
-  background-color: @background-gray;
-  border-radius: 2px;
+  .outer-wap {
+    width: 680px;
+    margin: 0 auto;
+    background-color: @background-gray;
+    border-radius: 2px;
 
-  .header {
-    padding-top: 25px;
-    border-bottom: 1px solid #d2d2d2;
+    .header {
+      padding-top: 25px;
+      border-bottom: 1px solid #d2d2d2;
 
-    .title {
-      text-align: center;
-      font-weight: bold;
-      font-size: 20px;
-      margin-bottom: 25px;
+      .title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 25px;
+      }
+
+      .selector-wap {
+        text-align: center;
+
+        .selector {
+          font-weight: bold;
+          padding: 0 8px 10px 8px;
+          color: #999;
+          display: inline-block;
+          margin-bottom: -1px;
+          margin-right: 5px;
+
+          &:hover {
+            color: #666;
+            cursor: pointer;
+          }
+
+          &.active {
+            color: #333 !important;
+            border-bottom: 2px solid #333;
+          }
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+
+      }
     }
 
-    .selector-wap {
-      text-align: center;
+    .topics-wap {
+      padding: 25px 0 25px 25px;
+      display: none;
+      background-color: white;
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
 
-      .selector {
-        font-weight: bold;
-        padding: 0 8px 10px 8px;
-        color: #999;
-        display: inline-block;
-        margin-bottom: -1px;
-        margin-right: 5px;
+      &.active {
+        display: block;
+      }
+
+      .topic {
+        width: 110px;
+        height: 110px;
+        float: left;
+        margin: 0 20px 20px 0;
+        position: relative;
+        border-radius: 2px;
 
         &:hover {
-          color: #666;
           cursor: pointer;
+
+          .selected-flag {
+            display: block;
+            background-color: transparent;
+            border: 1px solid #00cc99;
+            padding-top: 5px;
+            color: #00cc99;
+          }
         }
 
         &.active {
-          color: #333 !important;
-          border-bottom: 2px solid #333;
+          .selected-flag {
+            display: block;
+            background-color: #00cc99 !important;
+            border: none !important;
+            padding-top: 6px !important;
+            color: white !important;
+          }
         }
 
-        &:last-child {
-          margin-right: 0;
+        img {
+          width: 110px;
+          height: 110px;
+          border-radius: 2px;
         }
-      }
 
-    }
-  }
-
-  .topics-wap {
-    padding: 25px 0 25px 25px;
-    display: none;
-    background-color: white;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
-
-    &.active {
-      display: block;
-    }
-
-    .topic {
-      width: 110px;
-      height: 110px;
-      float: left;
-      margin: 0 20px 20px 0;
-      position: relative;
-      border-radius: 2px;
-
-      &:hover {
-        cursor: pointer;
-
-        .selected-flag {
-          display: block;
-          background-color: transparent;
-          border: 1px solid #00cc99;
-          padding-top: 5px;
-          color: #00cc99;
-        }
-      }
-
-      &.active {
-        .selected-flag {
-          display: block;
-          background-color: #00cc99 !important;
-          border: none !important;
-          padding-top: 6px !important;
-          color: white !important;
-        }
-      }
-
-      img {
-        width: 110px;
-        height: 110px;
-        border-radius: 2px;
-      }
-
-      .name {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        text-align: center;
-        color: white;
-        padding: 5px 5px;
-        font-weight: bold;
-        font-size: 16px;
-        background-color: rgba(0, 0, 0, .75);
-        border-bottom-left-radius: 2px;
-        border-bottom-right-radius: 2px;
-      }
-
-      .selected-flag {
-        display: none;
-        width: 30px;
-        height: 30px;
-        border-radius: 30px;
-        text-align: center;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-
-        .fa {
+        .name {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          text-align: center;
+          color: white;
+          padding: 5px 5px;
+          font-weight: bold;
           font-size: 16px;
-          font-weight: normal;
+          background-color: rgba(0, 0, 0, .75);
+          border-bottom-left-radius: 2px;
+          border-bottom-right-radius: 2px;
+        }
+
+        .selected-flag {
+          display: none;
+          width: 30px;
+          height: 30px;
+          border-radius: 30px;
+          text-align: center;
+          position: absolute;
+          right: 10px;
+          top: 10px;
+
+          .fa {
+            font-size: 16px;
+            font-weight: normal;
+          }
         }
       }
-    }
 
-    .dc-loading-flag {
-      margin-right: 25px;
-      margin-top: 10px;
-    }
-  }
-
-  .btn-wap {
-    margin-top: 20px;
-
-    .btn-next {
-      font-weight: bold;
-
-      .for-not-finish {
-        display: none;
+      .dc-loading-flag {
+        margin-right: 25px;
+        margin-top: 10px;
       }
+    }
 
-      &.not-finish {
-        background-color: #72ceb9;
-        border-color: #72ceb9;
+    .btn-wap {
+      margin-top: 20px;
+
+      .btn-next {
+        font-weight: bold;
 
         .for-not-finish {
-          display: inline-block;
+          display: none;
+        }
+
+        &.not-finish {
+          background-color: #72ceb9;
+          border-color: #72ceb9;
+
+          .for-not-finish {
+            display: inline-block;
+          }
         }
       }
     }
   }
 }
-

@@ -6,51 +6,51 @@
   margin: 0 auto;
   padding: 0;
 }
-.item {
+#main-wap .item {
   padding-bottom: 20px;
   margin-bottom: 20px;
   position: relative;
   border-bottom: 1px solid #eaeaea;
 }
-.item .key {
+#main-wap .item .key {
   color: #999;
   font-size: 16px;
   margin-bottom: 10px;
 }
-.item .value {
+#main-wap .item .value {
   font-size: 18px;
   font-weight: bold;
 }
-.item .value .url-prefix {
+#main-wap .item .value .url-prefix {
   font-weight: normal;
 }
-.item .value input {
+#main-wap .item .value input {
   border: none;
   outline: none;
 }
-.item .commands {
+#main-wap .item .commands {
   position: absolute;
   right: 0;
   top: 12px;
 }
-.item .commands .btn-edit {
+#main-wap .item .commands .btn-edit {
   margin-left: 15px;
 }
-.item .commands .btn-cancel {
+#main-wap .item .commands .btn-cancel {
   margin-left: 10px;
 }
-.item .commands .for-edit {
+#main-wap .item .commands .for-edit {
   display: none;
 }
-.item .commands .for-non-edit {
+#main-wap .item .commands .for-non-edit {
   display: block;
 }
-.item .commands .tip {
+#main-wap .item .commands .tip {
   color: #999;
 }
-.item .commands.edit .for-edit {
+#main-wap .item .commands.edit .for-edit {
   display: block;
 }
-.item .commands.edit .for-non-edit {
+#main-wap .item .commands.edit .for-non-edit {
   display: none;
 }

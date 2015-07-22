@@ -1,33 +1,33 @@
 .navbar {
   margin-bottom: 0;
 }
-.question-header {
+#main-wap .question-header {
   padding: 40px 0 30px 0;
   background-color: #F5F6F5;
   position: relative;
 }
-.question-header .title-desc-wap .title-wap {
+#main-wap .question-header .title-desc-wap .title-wap {
   margin-bottom: 15px;
 }
-.question-header .title-desc-wap .title-wap .title-inner-wap {
+#main-wap .question-header .title-desc-wap .title-wap .title-inner-wap {
   display: block;
 }
-.question-header .title-desc-wap .title-wap .title-inner-wap .title {
+#main-wap .question-header .title-desc-wap .title-wap .title-inner-wap .title {
   font-weight: bold;
   font-size: 24px;
 }
-.question-header .title-desc-wap .title-wap .title-inner-wap .btn-edit-title {
+#main-wap .question-header .title-desc-wap .title-wap .title-inner-wap .btn-edit-title {
   color: #999;
   margin-left: 10px;
   display: none;
 }
-.question-header .title-desc-wap .title-wap .title-inner-wap:hover .btn-edit-title {
+#main-wap .question-header .title-desc-wap .title-wap .title-inner-wap:hover .btn-edit-title {
   display: inline-block;
 }
-.question-header .title-desc-wap .title-wap .form-elements {
+#main-wap .question-header .title-desc-wap .title-wap .form-elements {
   margin-bottom: 15px;
 }
-.question-header .title-desc-wap .title-wap input {
+#main-wap .question-header .title-desc-wap .title-wap input {
   display: none;
   vertical-align: middle;
   margin-right: 5px;
@@ -37,339 +37,339 @@
   height: auto;
   color: #333;
 }
-.question-header .title-desc-wap .title-wap .simditor {
+#main-wap .question-header .title-desc-wap .title-wap .simditor {
   border-top: 0;
 }
-.question-header .title-desc-wap .title-wap .simditor .simditor-body {
+#main-wap .question-header .title-desc-wap .title-wap .simditor .simditor-body {
   padding: 15px 15px 40px 15px;
   min-height: 150px;
 }
-.question-header .title-desc-wap .title-wap .simditor,
-.question-header .title-desc-wap .title-wap textarea[name='desc-in-title'] {
+#main-wap .question-header .title-desc-wap .title-wap .simditor,
+#main-wap .question-header .title-desc-wap .title-wap textarea[name='desc-in-title'] {
   display: none;
 }
-.question-header .title-desc-wap .title-wap .title-commands {
+#main-wap .question-header .title-desc-wap .title-wap .title-commands {
   display: none;
 }
-.question-header .title-desc-wap .title-wap .title-commands .btn-save-title {
+#main-wap .question-header .title-desc-wap .title-wap .title-commands .btn-save-title {
   margin-left: 10px;
 }
-.question-header .title-desc-wap .title-wap .title-commands .btn-add-desc {
+#main-wap .question-header .title-desc-wap .title-wap .title-commands .btn-add-desc {
   display: none;
   float: left;
   margin-top: 5px;
 }
-.question-header .title-desc-wap .title-wap.edit .title-inner-wap {
+#main-wap .question-header .title-desc-wap .title-wap.edit .title-inner-wap {
   display: none;
 }
-.question-header .title-desc-wap .title-wap.edit input {
+#main-wap .question-header .title-desc-wap .title-wap.edit input {
   display: block;
 }
-.question-header .title-desc-wap .title-wap.edit .title-commands {
+#main-wap .question-header .title-desc-wap .title-wap.edit .title-commands {
   display: block;
 }
-.question-header .title-desc-wap .title-wap.add-desc input {
+#main-wap .question-header .title-desc-wap .title-wap.add-desc input {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.question-header .title-desc-wap .title-wap.add-desc .simditor {
+#main-wap .question-header .title-desc-wap .title-wap.add-desc .simditor {
   display: block;
 }
-.question-header .title-desc-wap .desc-wap {
+#main-wap .question-header .title-desc-wap .desc-wap {
   margin-bottom: 20px;
 }
-.question-header .title-desc-wap .desc-wap .desc-inner-wap {
+#main-wap .question-header .title-desc-wap .desc-wap .desc-inner-wap {
   display: block;
 }
-.question-header .title-desc-wap .desc-wap .desc-inner-wap .btn-edit-desc {
+#main-wap .question-header .title-desc-wap .desc-wap .desc-inner-wap .btn-edit-desc {
   visibility: hidden;
 }
-.question-header .title-desc-wap .desc-wap .desc-inner-wap:hover .btn-edit-desc {
+#main-wap .question-header .title-desc-wap .desc-wap .desc-inner-wap:hover .btn-edit-desc {
   visibility: visible;
 }
-.question-header .title-desc-wap .desc-wap textarea,
-.question-header .title-desc-wap .desc-wap .simditor {
+#main-wap .question-header .title-desc-wap .desc-wap textarea,
+#main-wap .question-header .title-desc-wap .desc-wap .simditor {
   display: none;
 }
-.question-header .title-desc-wap .desc-wap .desc-commands {
+#main-wap .question-header .title-desc-wap .desc-wap .desc-commands {
   display: none;
 }
-.question-header .title-desc-wap .desc-wap .desc-commands .btn-save-desc {
+#main-wap .question-header .title-desc-wap .desc-wap .desc-commands .btn-save-desc {
   margin-left: 10px;
 }
-.question-header .title-desc-wap .desc-wap.edit {
+#main-wap .question-header .title-desc-wap .desc-wap.edit {
   display: block !important;
 }
-.question-header .title-desc-wap .desc-wap.edit .desc-inner-wap {
+#main-wap .question-header .title-desc-wap .desc-wap.edit .desc-inner-wap {
   display: none !important;
 }
-.question-header .title-desc-wap .desc-wap.edit .desc-commands {
+#main-wap .question-header .title-desc-wap .desc-wap.edit .desc-commands {
   display: block;
 }
-.question-header .title-desc-wap .desc-wap.edit .btn-save-desc {
+#main-wap .question-header .title-desc-wap .desc-wap.edit .btn-save-desc {
   display: inline-block;
 }
-.question-header .title-desc-wap .desc-wap.edit .simditor {
+#main-wap .question-header .title-desc-wap .desc-wap.edit .simditor {
   display: block;
 }
-.question-header .title-desc-wap .desc-wap.empty .desc-inner-wap {
+#main-wap .question-header .title-desc-wap .desc-wap.empty .desc-inner-wap {
   display: none;
 }
-.question-header .title-desc-wap .desc-wap.empty .btn-add-desc {
+#main-wap .question-header .title-desc-wap .desc-wap.empty .btn-add-desc {
   display: inline-block;
 }
-.question-header .title-desc-wap .desc-wap .simditor {
+#main-wap .question-header .title-desc-wap .desc-wap .simditor {
   margin-bottom: 15px;
 }
-.question-header .title-desc-wap .desc-wap .simditor .simditor-body {
+#main-wap .question-header .title-desc-wap .desc-wap .simditor .simditor-body {
   padding: 15px 15px 40px 15px;
   min-height: 150px;
 }
-.question-header .title-desc-wap.empty-desc .title-wap .title-commands .btn-add-desc {
+#main-wap .question-header .title-desc-wap.empty-desc .title-wap .title-commands .btn-add-desc {
   display: block;
 }
-.question-header .title-desc-wap.empty-desc .desc-wap {
+#main-wap .question-header .title-desc-wap.empty-desc .desc-wap {
   display: none;
 }
-.question-header .topics-wap .btn-add-topic,
-.question-header .topics-wap .btn-edit-topic,
-.question-header .topics-wap .btn-delete-topic,
-.question-header .topics-wap .form-wap {
+#main-wap .question-header .topics-wap .btn-add-topic,
+#main-wap .question-header .topics-wap .btn-edit-topic,
+#main-wap .question-header .topics-wap .btn-delete-topic,
+#main-wap .question-header .topics-wap .form-wap {
   display: none;
 }
-.question-header .topics-wap .form-wap {
+#main-wap .question-header .topics-wap .form-wap {
   margin-top: 10px;
 }
-.question-header .topics-wap .form-wap .twitter-typeahead {
+#main-wap .question-header .topics-wap .form-wap .twitter-typeahead {
   vertical-align: middle;
 }
-.question-header .topics-wap .form-wap input {
+#main-wap .question-header .topics-wap .form-wap input {
   width: 250px;
   margin-right: 5px;
 }
-.question-header .topics-wap .topics-inner-wap {
+#main-wap .question-header .topics-wap .topics-inner-wap {
   display: inline-block;
 }
-.question-header .topics-wap .topic-wap {
+#main-wap .question-header .topics-wap .topic-wap {
   display: inline-block;
   margin: 0 10px 10px 0;
 }
-.question-header .topics-wap .topic-wap .dc-topic-white {
+#main-wap .question-header .topics-wap .topic-wap .dc-topic-white {
   margin: 0;
 }
-.question-header .topics-wap .topic-wap .btn-delete-topic {
+#main-wap .question-header .topics-wap .topic-wap .btn-delete-topic {
   color: #999;
 }
-.question-header .topics-wap .topic-wap .btn-delete-topic:hover {
+#main-wap .question-header .topics-wap .topic-wap .btn-delete-topic:hover {
   color: #666;
 }
-.question-header .topics-wap.edit .btn-add-topic,
-.question-header .topics-wap.edit .btn-edit-topic {
+#main-wap .question-header .topics-wap.edit .btn-add-topic,
+#main-wap .question-header .topics-wap.edit .btn-edit-topic {
   display: none !important;
 }
-.question-header .topics-wap.edit .btn-delete-topic {
+#main-wap .question-header .topics-wap.edit .btn-delete-topic {
   display: inline-block;
 }
-.question-header .topics-wap.edit .form-wap {
+#main-wap .question-header .topics-wap.edit .form-wap {
   display: block;
 }
-.question-header .topics-wap.empty .topics,
-.question-header .topics-wap.empty .btn-edit-topic {
+#main-wap .question-header .topics-wap.empty .topics,
+#main-wap .question-header .topics-wap.empty .btn-edit-topic {
   display: none;
 }
-.question-header .topics-wap.empty .btn-add-topic {
+#main-wap .question-header .topics-wap.empty .btn-add-topic {
   display: block;
 }
-.question-header .topics-wap .topics:hover .btn-edit-topic {
+#main-wap .question-header .topics-wap .topics:hover .btn-edit-topic {
   display: inline-block;
 }
-.question-header .col-md-4 .commands {
+#main-wap .question-header .col-md-4 .commands {
   position: absolute;
   right: 0;
   top: 0;
 }
-.question-header .col-md-4 .commands .dc-hide-commands-trigger {
+#main-wap .question-header .col-md-4 .commands .dc-hide-commands-trigger {
   padding: 6px 10px;
   margin-left: 5px;
 }
-.question-header .col-md-4 .commands .dc-hide-commands-trigger .dc-hide-commands {
+#main-wap .question-header .col-md-4 .commands .dc-hide-commands-trigger .dc-hide-commands {
   top: 20px;
   right: -1px;
   padding-top: 13px;
 }
-.question-header .col-md-4 .followers {
+#main-wap .question-header .col-md-4 .followers {
   position: absolute;
   right: 0;
   top: 50px;
 }
-.question-header .col-md-4 .followers .follower {
+#main-wap .question-header .col-md-4 .followers .follower {
   display: inline-block;
   margin: 0 0 5px 5px;
 }
-.question-header .col-md-4 .followers .follower img {
+#main-wap .question-header .col-md-4 .followers .follower img {
   width: 30px;
   height: 30px;
 }
-.content-tabs {
+#main-wap .content-tabs {
   margin: 30px 0 25px 0;
 }
-.content-tabs a {
+#main-wap .content-tabs a {
   display: inline-block;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
   color: #333;
 }
-.content-tabs a.btn-toggle-invitation {
+#main-wap .content-tabs a.btn-toggle-invitation {
   color: #999;
 }
-.content-tabs a.btn-toggle-invitation .for-active {
+#main-wap .content-tabs a.btn-toggle-invitation .for-active {
   display: none;
 }
-.content-tabs a.btn-toggle-invitation .for-unactive {
+#main-wap .content-tabs a.btn-toggle-invitation .for-unactive {
   display: inline-block;
 }
-.content-tabs a.btn-toggle-invitation:hover {
+#main-wap .content-tabs a.btn-toggle-invitation:hover {
   color: #333;
 }
-.content-tabs a.btn-toggle-invitation.active {
+#main-wap .content-tabs a.btn-toggle-invitation.active {
   color: #333;
 }
-.content-tabs a.btn-toggle-invitation.active .for-active {
+#main-wap .content-tabs a.btn-toggle-invitation.active .for-active {
   display: inline-block;
 }
-.content-tabs a.btn-toggle-invitation.active .for-unactive {
+#main-wap .content-tabs a.btn-toggle-invitation.active .for-unactive {
   display: none;
 }
-.content-tabs .divider {
+#main-wap .content-tabs .divider {
   color: #999;
   margin: 0 5px;
 }
-.invitation-wap {
+#main-wap .invitation-wap {
   border: 1px solid #ddd;
   display: none;
   margin-bottom: 30px;
 }
-.invitation-wap.active {
+#main-wap .invitation-wap.active {
   display: block;
 }
-.invitation-wap .invited-users-wap {
+#main-wap .invitation-wap .invited-users-wap {
   padding: 15px 15px 0 15px;
 }
-.invitation-wap .invited-users-wap.empty {
+#main-wap .invitation-wap .invited-users-wap.empty {
   display: none;
 }
-.invitation-wap .invited-users-wap .invited-users {
+#main-wap .invitation-wap .invited-users-wap .invited-users {
   margin: 0 3px;
 }
-.invitation-wap .invited-users-wap .invited-users .invited-user {
+#main-wap .invitation-wap .invited-users-wap .invited-users .invited-user {
   color: #333;
   font-weight: bold;
 }
-.invitation-wap .header {
+#main-wap .invitation-wap .header {
   padding: 15px 15px;
   border-bottom: 1px solid #ddd;
 }
-.invitation-wap .header .form-control {
+#main-wap .invitation-wap .header .form-control {
   padding: 18px 12px;
 }
-.invitation-wap .header .tt-suggestion {
+#main-wap .invitation-wap .header .tt-suggestion {
   font-size: 14px;
   padding: 10px 15px;
 }
-.invitation-wap .header .tt-suggestion img {
+#main-wap .invitation-wap .header .tt-suggestion img {
   width: 30px;
   height: 30px;
   display: inline-block;
   margin-right: 12px;
 }
-.invitation-wap .recommend-wap {
+#main-wap .invitation-wap .recommend-wap {
   padding: 0 15px;
 }
-.invitation-wap .recommend-wap .item {
+#main-wap .invitation-wap .recommend-wap .item {
   margin-top: 0;
   position: relative;
   padding: 20px 0 20px 0;
   border-bottom: 1px solid #eaeaea;
 }
-.invitation-wap .recommend-wap .item:last-child {
+#main-wap .invitation-wap .recommend-wap .item:last-child {
   border-bottom: 0;
 }
-.invitation-wap .recommend-wap .item .candidate-meta {
+#main-wap .invitation-wap .recommend-wap .item .candidate-meta {
   margin-bottom: 2px;
 }
-.invitation-wap .recommend-wap .item .candidate-meta a {
+#main-wap .invitation-wap .recommend-wap .item .candidate-meta a {
   color: #333;
   font-weight: bold;
 }
-.invitation-wap .recommend-wap .item img {
+#main-wap .invitation-wap .recommend-wap .item img {
   width: 40px;
   height: 40px;
 }
-.invitation-wap .recommend-wap .item .btn-invite {
+#main-wap .invitation-wap .recommend-wap .item .btn-invite {
   position: absolute;
   right: 0;
   top: 22px;
 }
-.invitation-wap .recommend-wap .item .btn-invite .for-invited {
+#main-wap .invitation-wap .recommend-wap .item .btn-invite .for-invited {
   display: none;
 }
-.invitation-wap .recommend-wap .item .btn-invite .for-non-invited {
+#main-wap .invitation-wap .recommend-wap .item .btn-invite .for-non-invited {
   display: block;
 }
-.invitation-wap .recommend-wap .item .btn-invite.invited {
+#main-wap .invitation-wap .recommend-wap .item .btn-invite.invited {
   color: #999;
 }
-.invitation-wap .recommend-wap .item .btn-invite.invited .for-invited {
+#main-wap .invitation-wap .recommend-wap .item .btn-invite.invited .for-invited {
   display: block;
 }
-.invitation-wap .recommend-wap .item .btn-invite.invited .for-non-invited {
+#main-wap .invitation-wap .recommend-wap .item .btn-invite.invited .for-non-invited {
   display: none;
 }
-.invitation-wap .recommend-wap .tip {
+#main-wap .invitation-wap .recommend-wap .tip {
   padding: 15px 0;
 }
-.answers .answer {
+#main-wap .answers .answer {
   padding-top: 25px;
   padding-bottom: 25px;
   border-top: 1px solid #eaeaea;
 }
-.answers .answer .media-left img {
+#main-wap .answers .answer .media-left img {
   width: 40px;
   height: 40px;
 }
-.answers .answer .answerer-info {
+#main-wap .answers .answer .answerer-info {
   margin-bottom: 20px;
 }
-.answers .answer .answerer-info .answerer {
+#main-wap .answers .answer .answerer-info .answerer {
   margin-bottom: 2px;
 }
-.answers .answer .answerer-info .answerer .name {
+#main-wap .answers .answer .answerer-info .answerer .name {
   color: #333;
   font-weight: bold;
 }
-.answers .answer .answer-content {
+#main-wap .answers .answer .answer-content {
   font-size: 16px;
   margin-bottom: 10px;
 }
-.answers .answer .time {
+#main-wap .answers .answer .time {
   margin-bottom: 25px;
 }
-.answers .toogle-hided-answers-wap {
+#main-wap .answers .toogle-hided-answers-wap {
   border-top: 1px solid #eaeaea;
   border-bottom: 1px solid #eaeaea;
   padding: 20px 0;
   font-size: 16px;
   color: #999;
 }
-h3 {
+#main-wap h3 {
   margin-top: 30px;
 }
-.hided-answers {
+#main-wap .hided-answers {
   display: none;
   margin-top: -1px;
 }
-.bottom-invitation-wap {
+#main-wap .bottom-invitation-wap {
   background-color: #fafafa;
   border: 1px dashed #d4d4d4;
   padding: 40px 0 35px 0;
@@ -377,164 +377,164 @@ h3 {
   border-radius: 4px;
   margin-bottom: 40px;
 }
-.bottom-invitation-wap .tip {
+#main-wap .bottom-invitation-wap .tip {
   color: #999;
   font-size: 18px;
   margin-bottom: 15px;
 }
-.bottom-invitation-wap .candidates {
+#main-wap .bottom-invitation-wap .candidates {
   margin-bottom: 20px;
 }
-.bottom-invitation-wap .candidates a {
+#main-wap .bottom-invitation-wap .candidates a {
   display: inline-block;
   margin-right: 5px;
 }
-.bottom-invitation-wap .candidates a img {
+#main-wap .bottom-invitation-wap .candidates a img {
   width: 34px;
   height: 34px;
 }
-.bottom-invitation-wap .btn-go-to-invitation-wap {
+#main-wap .bottom-invitation-wap .btn-go-to-invitation-wap {
   font-weight: bold;
   display: inline-block;
   font-size: 16px;
   border: 1px solid #c5c5c5;
   padding: 8px 25px;
 }
-.bottom-invitation-wap .btn-go-to-invitation-wap:hover {
+#main-wap .bottom-invitation-wap .btn-go-to-invitation-wap:hover {
   background-color: #fff;
   border-color: #b5b5b5;
 }
-.answered-tip-wap {
+#main-wap .answered-tip-wap {
   margin-top: -1px;
   text-align: center;
   padding-top: 30px;
   font-size: 16px;
   border-top: 1px solid #eaeaea;
 }
-.answered-tip-wap img {
+#main-wap .answered-tip-wap img {
   width: 40px;
   height: 40px;
   margin: 0 auto 20px auto;
   opacity: .4;
   display: block;
 }
-.answered-tip-wap a {
+#main-wap .answered-tip-wap a {
   color: #009999;
 }
-.myself {
+#main-wap .myself {
   margin-top: 30px;
 }
-.myself img {
+#main-wap .myself img {
   width: 40px;
   height: 40px;
 }
-.myself .myself-info {
+#main-wap .myself .myself-info {
   margin-bottom: 3px;
 }
-.myself .myself-info a {
+#main-wap .myself .myself-info a {
   color: #333;
   font-weight: bold;
 }
-.myself .commands .divider {
+#main-wap .myself .commands .divider {
   margin: 0 3px;
 }
-form.answer-form {
+#main-wap form.answer-form {
   margin-top: 18px;
 }
-form.answer-form .tip-save-draft {
+#main-wap form.answer-form .tip-save-draft {
   color: #999;
 }
-form.answer-form .simditor {
+#main-wap form.answer-form .simditor {
   margin-bottom: 15px;
 }
-form.answer-form .simditor .simditor-body {
+#main-wap form.answer-form .simditor .simditor-body {
   min-height: 200px;
 }
-.relevant-question {
+#main-wap .relevant-question {
   margin-bottom: 15px;
 }
-.relevant-question .title {
+#main-wap .relevant-question .title {
   color: #009999;
 }
-.relevant-question .answers-count {
+#main-wap .relevant-question .answers-count {
   margin-left: 10px;
 }
-.modal-edit-identity .modal-body {
+#main-wap .modal-edit-identity .modal-body {
   text-align: center;
   padding: 30px 15px;
 }
-.modal-edit-identity .btn-group .btn.active {
+#main-wap .modal-edit-identity .btn-group .btn.active {
   background-color: #dcf8f1;
   color: #009999;
   border-color: #b7e1e2;
   padding: 6px 15px;
   box-shadow: none;
 }
-.modal-edit-identity .btn-group .btn.active a {
+#main-wap .modal-edit-identity .btn-group .btn.active a {
   color: #009999;
 }
-.modal-edit-identity .btn-group .btn.active:hover,
-.modal-edit-identity .btn-group .btn.active:active,
-.modal-edit-identity .btn-group .btn.active:focus,
-.modal-edit-identity .btn-group .btn.active:active:focus {
+#main-wap .modal-edit-identity .btn-group .btn.active:hover,
+#main-wap .modal-edit-identity .btn-group .btn.active:active,
+#main-wap .modal-edit-identity .btn-group .btn.active:focus,
+#main-wap .modal-edit-identity .btn-group .btn.active:active:focus {
   box-shadow: none;
   outline: none;
   background-color: #c7f4e9;
   border-color: #a5d9db;
   color: #009999;
 }
-#modal-edit-experience .topic-experience {
+#main-wap #modal-edit-experience .topic-experience {
   margin-bottom: 12px;
   position: relative;
 }
-#modal-edit-experience .topic-experience:last-child {
+#main-wap #modal-edit-experience .topic-experience:last-child {
   margin-bottom: 0;
 }
-#modal-edit-experience .topic-experience .topic {
+#main-wap #modal-edit-experience .topic-experience .topic {
   margin-bottom: 5px;
 }
-#modal-edit-experience .topic-experience .topic a {
+#main-wap #modal-edit-experience .topic-experience .topic a {
   color: #333;
   font-weight: bold;
 }
-#modal-edit-experience .topic-experience .experience-wap form {
+#main-wap #modal-edit-experience .topic-experience .experience-wap form {
   margin-top: 10px;
   width: 60%;
 }
-#modal-edit-experience .topic-experience .experience-wap form textarea {
+#main-wap #modal-edit-experience .topic-experience .experience-wap form textarea {
   margin-bottom: 10px;
   resize: none;
 }
-#modal-edit-experience .topic-experience .experience-wap form .btn-submit-experience {
+#main-wap #modal-edit-experience .topic-experience .experience-wap form .btn-submit-experience {
   margin-left: 8px;
 }
-#modal-edit-experience .topic-experience .experience-wap .btn-edit-experience {
+#main-wap #modal-edit-experience .topic-experience .experience-wap .btn-edit-experience {
   margin-left: 8px;
 }
-#modal-edit-experience .topic-experience .experience-wap form,
-#modal-edit-experience .topic-experience .experience-wap .btn-add-experience {
+#main-wap #modal-edit-experience .topic-experience .experience-wap form,
+#main-wap #modal-edit-experience .topic-experience .experience-wap .btn-add-experience {
   display: none;
 }
-#modal-edit-experience .topic-experience .experience-wap .experience,
-#modal-edit-experience .topic-experience .experience-wap .btn-edit-experience {
+#main-wap #modal-edit-experience .topic-experience .experience-wap .experience,
+#main-wap #modal-edit-experience .topic-experience .experience-wap .btn-edit-experience {
   display: inline-block;
 }
-#modal-edit-experience .topic-experience .experience-wap.empty .btn-add-experience {
+#main-wap #modal-edit-experience .topic-experience .experience-wap.empty .btn-add-experience {
   display: block;
 }
-#modal-edit-experience .topic-experience .experience-wap.empty .experience,
-#modal-edit-experience .topic-experience .experience-wap.empty .btn-edit-experience {
+#main-wap #modal-edit-experience .topic-experience .experience-wap.empty .experience,
+#main-wap #modal-edit-experience .topic-experience .experience-wap.empty .btn-edit-experience {
   display: none;
 }
-#modal-edit-experience .topic-experience .experience-wap.edit form {
+#main-wap #modal-edit-experience .topic-experience .experience-wap.edit form {
   display: block;
 }
-#modal-edit-experience .topic-experience .experience-wap.edit .btn-add-experience,
-#modal-edit-experience .topic-experience .experience-wap.edit .experience,
-#modal-edit-experience .topic-experience .experience-wap.edit .btn-edit-experience {
+#main-wap #modal-edit-experience .topic-experience .experience-wap.edit .btn-add-experience,
+#main-wap #modal-edit-experience .topic-experience .experience-wap.edit .experience,
+#main-wap #modal-edit-experience .topic-experience .experience-wap.edit .btn-edit-experience {
   display: none;
 }
-#modal-edit-experience .topic-experience .btn-apply-experience {
+#main-wap #modal-edit-experience .topic-experience .btn-apply-experience {
   position: absolute;
   right: 0;
   top: 10px;

@@ -1,73 +1,73 @@
 .navbar {
   margin-bottom: 0;
 }
-.header {
+#main-wap .header {
   margin-bottom: 25px;
   padding-bottom: 15px;
   border-bottom: 1px solid #eaeaea;
 }
-.header .img-wap {
+#main-wap .header .img-wap {
   margin-right: 10px;
   vertical-align: middle;
   width: 30px;
   height: 30px;
   display: inline-block;
 }
-.header .img-wap img {
+#main-wap .header .img-wap img {
   width: 30px;
   height: 30px;
 }
-.header .name {
+#main-wap .header .name {
   font-weight: bold;
   font-size: 24px;
   color: #333;
   margin-right: 10px;
 }
-.header .tip {
+#main-wap .header .tip {
   font-size: 18px;
   color: #999;
 }
-.topic-log {
+#main-wap .topic-log {
   padding-bottom: 25px;
   margin-bottom: 25px;
   border-bottom: 1px solid #eaeaea;
 }
-.topic-log .media-left {
+#main-wap .topic-log .media-left {
   padding-right: 15px;
 }
-.topic-log .media-left img {
+#main-wap .topic-log .media-left img {
   width: 40px;
   height: 40px;
 }
-.topic-log .media-body {
+#main-wap .topic-log .media-body {
   overflow: visible;
 }
-.topic-log .title {
+#main-wap .topic-log .title {
   margin-bottom: 20px;
 }
-.topic-log .content .fa-long-arrow-right {
+#main-wap .topic-log .content .fa-long-arrow-right {
   margin: 0 8px;
 }
-.topic-log .content .topic-avatar {
+#main-wap .topic-log .content .topic-avatar {
   width: 80px;
   height: 80px;
 }
-.topic-log del.topic {
+#main-wap .topic-log del.topic {
   text-decoration: none;
   padding: 0;
   background-color: #fff;
 }
-.topic-log del.topic a {
+#main-wap .topic-log del.topic a {
   margin: 0;
   text-decoration: line-through;
 }
-.topic-log ins.topic {
+#main-wap .topic-log ins.topic {
   padding: 0;
   background-color: #fff;
 }
-.topic-log ins.topic a {
+#main-wap .topic-log ins.topic a {
   margin: 0;
 }
-.topic-log .label {
+#main-wap .topic-log .label {
   margin-left: 5px;
 }

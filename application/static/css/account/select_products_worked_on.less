@@ -10,199 +10,201 @@ body {
   padding: 30px 0 100px 0;
 }
 
-.text-logo {
-  color: @background-gray;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.outer-wap {
-  width: 680px;
-  margin: 0 auto;
-  background-color: @background-gray;
-  border-radius: 2px;
-
-  .header {
-    padding: 25px 0 30px 0;
-    border-bottom: 1px solid #d2d2d2;
-
-    .title {
-      text-align: center;
-      font-weight: bold;
-      font-size: 20px;
-      margin-bottom: 25px;
-    }
-
-    .input-wap {
-      width: 500px;
-      margin: 0 auto;
-      position: relative;
-
-      input {
-        border: 2px solid #a9a9a9;
-        font-size: 16px;
-        height: auto;
-        padding: 10px 10px 10px 35px;
-      }
-
-      .fa-search {
-        position: absolute;
-        left: 15px;
-        top: 16px;
-        color: #a9a9a9;
-      }
-    }
+#main-wap {
+  .text-logo {
+    color: @background-gray;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
   }
 
-  .products-wap {
-    min-height: 200px;
-    background-color: white;
-    text-align: center;
+  .outer-wap {
+    width: 680px;
+    margin: 0 auto;
+    background-color: @background-gray;
+    border-radius: 2px;
 
-    .placeholder-img {
-      opacity: .2;
-      display: none;
-      padding-top: 38px;
-    }
+    .header {
+      padding: 25px 0 30px 0;
+      border-bottom: 1px solid #d2d2d2;
 
-    &.empty .placeholder-img {
-      display: inline-block;
-    }
+      .title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 25px;
+      }
 
-    .inner-wap {
-      padding: 30px 0 0 30px;
-
-      .product-worked-on {
-        display: inline-block;
+      .input-wap {
+        width: 500px;
+        margin: 0 auto;
         position: relative;
-        margin: 0 30px 30px 0;
-        vertical-align: top;
 
-        .topic-avatar {
-          width: 80px;
-          height: 80px;
-          display: inline-block;
-          margin-bottom: 12px;
-        }
-
-        .btn-upload-topic-avatar {
-          border: 3px dashed #c9c9c9;
-          background-color: @background-gray;
-          text-align: center;
-          width: 80px;
-          height: 80px;
-          position: absolute;
-          top: 0;
-          left: 0;
-          padding-top: 18px;
-          color: #aeaeae;
-          border-radius: 4px;
-
-          .fa {
-            font-size: 20px;
-          }
-
-          &:hover {
-            cursor: pointer;
-            color: #666;
-          }
-        }
-
-        .name {
+        input {
+          border: 2px solid #a9a9a9;
           font-size: 16px;
-          font-weight: bold;
-          margin-bottom: 10px;
-          width: 80px;
+          height: auto;
+          padding: 10px 10px 10px 35px;
         }
 
-        .current-working-on-wap {
-          position: relative;
-
-          .for-current {
-            visibility: hidden;
-          }
-
-          .commands {
-            position: absolute;
-            left: -7px;
-            top: 0;
-            text-align: center;
-            width: 94px;
-          }
-
-          .btn-set-current-working-on {
-            display: inline-block;
-            visibility: hidden;
-            padding: 1px 4px;
-            font-size: 14px;
-          }
-          .btn-cancel-current-working-on {
-            display: none;
-            visibility: hidden;
-            padding: 1px 4px;
-            font-size: 14px;
-          }
-        }
-
-        .btn-remove-product {
-          width: 20px;
-          height: 20px;
-          border-radius: 10px;
-          text-align: center;
-          background-color: #ccc;
-          padding-top: 2px;
+        .fa-search {
           position: absolute;
-          line-height: 1;
-          right: -10px;
-          top: -10px;
-          display: none;
-          color: #666;
-          z-index: 10000;
-
-          &:hover {
-            background-color: #bbb;
-            cursor: pointer;
-          }
+          left: 15px;
+          top: 16px;
+          color: #a9a9a9;
         }
+      }
+    }
 
-        &:hover {
-          .current-working-on-wap .btn-set-current-working-on {
-            visibility: visible;
-          }
-          .btn-remove-product {
-            display: block;
-          }
-        }
+    .products-wap {
+      min-height: 200px;
+      background-color: white;
+      text-align: center;
 
-        &.current {
-          .current-working-on-wap .for-current {
-            visibility: visible;
-          }
+      .placeholder-img {
+        opacity: .2;
+        display: none;
+        padding-top: 38px;
+      }
 
-          .current-working-on-wap .btn-set-current-working-on {
-            display: none;
-          }
-          .current-working-on-wap .btn-cancel-current-working-on {
+      &.empty .placeholder-img {
+        display: inline-block;
+      }
+
+      .inner-wap {
+        padding: 30px 0 0 30px;
+
+        .product-worked-on {
+          display: inline-block;
+          position: relative;
+          margin: 0 30px 30px 0;
+          vertical-align: top;
+
+          .topic-avatar {
+            width: 80px;
+            height: 80px;
             display: inline-block;
+            margin-bottom: 12px;
+          }
+
+          .btn-upload-topic-avatar {
+            border: 3px dashed #c9c9c9;
+            background-color: @background-gray;
+            text-align: center;
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding-top: 18px;
+            color: #aeaeae;
+            border-radius: 4px;
+
+            .fa {
+              font-size: 20px;
+            }
+
+            &:hover {
+              cursor: pointer;
+              color: #666;
+            }
+          }
+
+          .name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            width: 80px;
+          }
+
+          .current-working-on-wap {
+            position: relative;
+
+            .for-current {
+              visibility: hidden;
+            }
+
+            .commands {
+              position: absolute;
+              left: -7px;
+              top: 0;
+              text-align: center;
+              width: 94px;
+            }
+
+            .btn-set-current-working-on {
+              display: inline-block;
+              visibility: hidden;
+              padding: 1px 4px;
+              font-size: 14px;
+            }
+            .btn-cancel-current-working-on {
+              display: none;
+              visibility: hidden;
+              padding: 1px 4px;
+              font-size: 14px;
+            }
+          }
+
+          .btn-remove-product {
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            text-align: center;
+            background-color: #ccc;
+            padding-top: 2px;
+            position: absolute;
+            line-height: 1;
+            right: -10px;
+            top: -10px;
+            display: none;
+            color: #666;
+            z-index: 10000;
+
+            &:hover {
+              background-color: #bbb;
+              cursor: pointer;
+            }
           }
 
           &:hover {
-            .current-working-on-wap .btn-cancel-current-working-on {
+            .current-working-on-wap .btn-set-current-working-on {
               visibility: visible;
+            }
+            .btn-remove-product {
+              display: block;
+            }
+          }
+
+          &.current {
+            .current-working-on-wap .for-current {
+              visibility: visible;
+            }
+
+            .current-working-on-wap .btn-set-current-working-on {
+              display: none;
+            }
+            .current-working-on-wap .btn-cancel-current-working-on {
+              display: inline-block;
+            }
+
+            &:hover {
+              .current-working-on-wap .btn-cancel-current-working-on {
+                visibility: visible;
+              }
             }
           }
         }
       }
     }
-  }
 
-  .btn-wap {
-    margin-top: 20px;
+    .btn-wap {
+      margin-top: 20px;
 
-    .btn-next {
-      font-weight: bold;
+      .btn-next {
+        font-weight: bold;
+      }
     }
   }
 }

@@ -10,90 +10,92 @@ body {
   padding: 30px 0 100px 0;
 }
 
-.text-logo {
-  color: @background-gray;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 30px;
-}
+#main-wap {
+  .text-logo {
+    color: @background-gray;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
 
-.outer-wap {
-  width: 680px;
-  margin: 0 auto;
-  background-color: @background-gray;
-  border-radius: 2px;
+  .outer-wap {
+    width: 680px;
+    margin: 0 auto;
+    background-color: @background-gray;
+    border-radius: 2px;
 
-  .header {
-    padding: 25px 0 25px 0;
-    position: relative;
-    border-bottom: 1px solid #d2d2d2;
+    .header {
+      padding: 25px 0 25px 0;
+      position: relative;
+      border-bottom: 1px solid #d2d2d2;
 
-    .title {
-      text-align: center;
-      font-weight: bold;
-      font-size: 20px;
+      .title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+      .btn-refresh {
+        position: absolute;
+        right: 25px;
+        top: 28px;
+        color: #999;
+        font-size: 16px;
+
+        &:hover {
+          cursor: pointer;
+          color: #333;
+        }
+      }
     }
 
-    .btn-refresh {
-      position: absolute;
-      right: 25px;
-      top: 28px;
-      color: #999;
+    .users-wap {
+      max-height: 500px;
+      overflow: auto;
+    }
+
+    .recommend-user-wap {
+      position: relative;
+      padding: 25px 25px;
+      border-bottom: 1px solid #e4e4e4;
       font-size: 16px;
 
-      &:hover {
-        cursor: pointer;
-        color: #333;
+      .media-left {
+        padding-right: 15px;
+
+        img {
+          width: 55px;
+          height: 55px;
+        }
+      }
+
+      .user-info {
+        margin-bottom: 6px;
+
+        .name {
+          font-weight: bold;
+          color: #333;
+        }
+      }
+
+      .dc-user-follow-wap {
+        position: absolute;
+        top: 35px;
+        right: 25px;
+      }
+
+      &:last-child {
+        border-bottom: none;
       }
     }
-  }
 
-  .users-wap {
-    max-height: 500px;
-    overflow: auto;
-  }
+    .btn-wap {
+      margin-top: 20px;
 
-  .recommend-user-wap {
-    position: relative;
-    padding: 25px 25px;
-    border-bottom: 1px solid #e4e4e4;
-    font-size: 16px;
-
-    .media-left {
-      padding-right: 15px;
-
-      img {
-        width: 55px;
-        height: 55px;
-      }
-    }
-
-    .user-info {
-      margin-bottom: 6px;
-
-      .name {
+      .btn-next {
         font-weight: bold;
-        color: #333;
       }
-    }
-
-    .dc-user-follow-wap {
-      position: absolute;
-      top: 35px;
-      right: 25px;
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .btn-wap {
-    margin-top: 20px;
-
-    .btn-next {
-      font-weight: bold;
     }
   }
 }

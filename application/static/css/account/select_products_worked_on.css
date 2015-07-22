@@ -6,75 +6,75 @@ body {
   background-color: #252e3c;
   padding: 30px 0 100px 0;
 }
-.text-logo {
+#main-wap .text-logo {
   color: #f5f6f5;
   font-size: 28px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 30px;
 }
-.outer-wap {
+#main-wap .outer-wap {
   width: 680px;
   margin: 0 auto;
   background-color: #f5f6f5;
   border-radius: 2px;
 }
-.outer-wap .header {
+#main-wap .outer-wap .header {
   padding: 25px 0 30px 0;
   border-bottom: 1px solid #d2d2d2;
 }
-.outer-wap .header .title {
+#main-wap .outer-wap .header .title {
   text-align: center;
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 25px;
 }
-.outer-wap .header .input-wap {
+#main-wap .outer-wap .header .input-wap {
   width: 500px;
   margin: 0 auto;
   position: relative;
 }
-.outer-wap .header .input-wap input {
+#main-wap .outer-wap .header .input-wap input {
   border: 2px solid #a9a9a9;
   font-size: 16px;
   height: auto;
   padding: 10px 10px 10px 35px;
 }
-.outer-wap .header .input-wap .fa-search {
+#main-wap .outer-wap .header .input-wap .fa-search {
   position: absolute;
   left: 15px;
   top: 16px;
   color: #a9a9a9;
 }
-.outer-wap .products-wap {
+#main-wap .outer-wap .products-wap {
   min-height: 200px;
   background-color: white;
   text-align: center;
 }
-.outer-wap .products-wap .placeholder-img {
+#main-wap .outer-wap .products-wap .placeholder-img {
   opacity: .2;
   display: none;
   padding-top: 38px;
 }
-.outer-wap .products-wap.empty .placeholder-img {
+#main-wap .outer-wap .products-wap.empty .placeholder-img {
   display: inline-block;
 }
-.outer-wap .products-wap .inner-wap {
+#main-wap .outer-wap .products-wap .inner-wap {
   padding: 30px 0 0 30px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on {
   display: inline-block;
   position: relative;
   margin: 0 30px 30px 0;
   vertical-align: top;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .topic-avatar {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .topic-avatar {
   width: 80px;
   height: 80px;
   display: inline-block;
   margin-bottom: 12px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar {
   border: 3px dashed #c9c9c9;
   background-color: #f5f6f5;
   text-align: center;
@@ -87,45 +87,45 @@ body {
   color: #aeaeae;
   border-radius: 4px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar .fa {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar .fa {
   font-size: 20px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar:hover {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .btn-upload-topic-avatar:hover {
   cursor: pointer;
   color: #666;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .name {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .name {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
   width: 80px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap {
   position: relative;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .for-current {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .for-current {
   visibility: hidden;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .commands {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .commands {
   position: absolute;
   left: -7px;
   top: 0;
   text-align: center;
   width: 94px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .btn-set-current-working-on {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .btn-set-current-working-on {
   display: inline-block;
   visibility: hidden;
   padding: 1px 4px;
   font-size: 14px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .btn-cancel-current-working-on {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .current-working-on-wap .btn-cancel-current-working-on {
   display: none;
   visibility: hidden;
   padding: 1px 4px;
   font-size: 14px;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .btn-remove-product {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .btn-remove-product {
   width: 20px;
   height: 20px;
   border-radius: 10px;
@@ -140,31 +140,31 @@ body {
   color: #666;
   z-index: 10000;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on .btn-remove-product:hover {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on .btn-remove-product:hover {
   background-color: #bbb;
   cursor: pointer;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on:hover .current-working-on-wap .btn-set-current-working-on {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on:hover .current-working-on-wap .btn-set-current-working-on {
   visibility: visible;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on:hover .btn-remove-product {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on:hover .btn-remove-product {
   display: block;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on.current .current-working-on-wap .for-current {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on.current .current-working-on-wap .for-current {
   visibility: visible;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on.current .current-working-on-wap .btn-set-current-working-on {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on.current .current-working-on-wap .btn-set-current-working-on {
   display: none;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on.current .current-working-on-wap .btn-cancel-current-working-on {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on.current .current-working-on-wap .btn-cancel-current-working-on {
   display: inline-block;
 }
-.outer-wap .products-wap .inner-wap .product-worked-on.current:hover .current-working-on-wap .btn-cancel-current-working-on {
+#main-wap .outer-wap .products-wap .inner-wap .product-worked-on.current:hover .current-working-on-wap .btn-cancel-current-working-on {
   visibility: visible;
 }
-.outer-wap .btn-wap {
+#main-wap .outer-wap .btn-wap {
   margin-top: 20px;
 }
-.outer-wap .btn-wap .btn-next {
+#main-wap .outer-wap .btn-wap .btn-next {
   font-weight: bold;
 }

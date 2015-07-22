@@ -1,28 +1,28 @@
-.compose-feeds-wap {
+#main-wap .compose-feeds-wap {
   margin-bottom: 25px;
 }
-.question-wap {
+#main-wap .question-wap {
   position: relative;
   border-bottom: 1px solid #eaeaea;
   transition: height 2s, background-color 0.2s;
 }
-.question-wap .question {
+#main-wap .question-wap .question {
   display: block;
 }
-.question-wap .ignore-tip {
+#main-wap .question-wap .ignore-tip {
   display: none;
 }
-.question-wap.ignored {
+#main-wap .question-wap.ignored {
   background-color: #f5f6f5;
   padding: 22px 20px;
 }
-.question-wap.ignored .question {
+#main-wap .question-wap.ignored .question {
   display: none;
 }
-.question-wap.ignored .ignore-tip {
+#main-wap .question-wap.ignored .ignore-tip {
   display: block;
 }
-.question-wap .new-flag {
+#main-wap .question-wap .new-flag {
   position: absolute;
   display: none;
   width: 8px;
@@ -32,70 +32,70 @@
   left: -18px;
   top: 28px;
 }
-.question-wap.invited .new-flag {
+#main-wap .question-wap.invited .new-flag {
   display: block;
 }
-.question-wap.invited.new .new-flag {
+#main-wap .question-wap.invited.new .new-flag {
   background-color: red;
 }
-.question-wap.invited.answered .new-flag {
+#main-wap .question-wap.invited.answered .new-flag {
   display: none;
 }
-.ignore-tip {
+#main-wap .ignore-tip {
   position: relative;
 }
-.ignore-tip .divider {
+#main-wap .ignore-tip .divider {
   margin: 0 5px;
 }
-.question {
+#main-wap .question {
   padding: 22px 0;
 }
-.question .topics {
+#main-wap .question .topics {
   margin-bottom: 18px;
 }
-.question .action {
+#main-wap .question .action {
   margin-bottom: 10px;
 }
-.question .action img {
+#main-wap .question .action img {
   width: 20px;
   height: 20px;
 }
-.question .action .name {
+#main-wap .question .action .name {
   margin-left: 2px;
 }
-.question .action .divider {
+#main-wap .question .action .divider {
   margin: 0 5px;
 }
-.question .title {
+#main-wap .question .title {
   margin-bottom: 10px;
 }
-.question .title a {
+#main-wap .question .title a {
   color: #333;
   font-size: 18px;
   font-weight: bold;
 }
-.question .meta {
+#main-wap .question .meta {
   margin-bottom: 16px;
 }
-.question .meta .divider {
+#main-wap .question .meta .divider {
   margin: 0 5px;
 }
-.question .btn-ignore-feed {
+#main-wap .question .btn-ignore-feed {
   margin: 0 15px 0 8px;
 }
-.question .btn-follow-question .for-non-followed {
+#main-wap .question .btn-follow-question .for-non-followed {
   display: inline;
 }
-.question .btn-follow-question .for-followed {
+#main-wap .question .btn-follow-question .for-followed {
   display: none;
 }
-.question .btn-follow-question.followed .for-non-followed {
+#main-wap .question .btn-follow-question.followed .for-non-followed {
   display: none;
 }
-.question .btn-follow-question.followed .for-followed {
+#main-wap .question .btn-follow-question.followed .for-followed {
   display: inline;
 }
-.tooltip-inner {
+#main-wap .tooltip-inner {
   padding: 5px 8px;
   border-radius: 2px;
 }

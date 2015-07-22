@@ -1,16 +1,16 @@
 .navbar {
   margin-bottom: 0;
 }
-.tabs {
+#main-wap .tabs {
   background-color: #f5f6f5;
   border-bottom: 1px solid #eaeaea;
   margin-bottom: 30px;
   padding-left: 106px;
 }
-.tabs ul {
+#main-wap .tabs ul {
   margin-bottom: -1px;
 }
-.tabs ul li a {
+#main-wap .tabs ul li a {
   text-decoration: none;
   width: 42px;
   text-align: center;
@@ -20,41 +20,41 @@
   color: #999;
   border-bottom: 1px solid #eaeaea;
 }
-.tabs ul li.active a {
+#main-wap .tabs ul li.active a {
   color: #333;
   border-bottom: 1px solid #333;
 }
-em {
+#main-wap em {
   font-style: normal;
   background-color: #ffffcc;
 }
-.search-results-wap {
+#main-wap .search-results-wap {
   margin: 0 auto 0 91px;
 }
-.search-result {
+#main-wap .search-result {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #eaeaea;
 }
-.question {
+#main-wap .question {
   position: relative;
 }
-.question .title a {
+#main-wap .question .title a {
   font-weight: bold;
   color: #333;
   font-size: 18px;
   margin-bottom: 10px;
   display: inline-block;
 }
-.question .desc {
+#main-wap .question .desc {
   font-size: 16px;
   color: #999;
   margin-bottom: 15px;
 }
-.question .dc-question-follow-wap {
+#main-wap .question .dc-question-follow-wap {
   margin-right: 10px;
 }
-.question .answers-count-wap {
+#main-wap .question .answers-count-wap {
   position: absolute;
   top: 0;
   left: -65px;
@@ -64,94 +64,94 @@ em {
   color: #999;
   width: 50px;
 }
-.question .answers-count-wap .count {
+#main-wap .question .answers-count-wap .count {
   display: block;
   font-weight: bold;
   font-size: 18px;
   color: #333;
   margin-bottom: 2px;
 }
-.topic {
+#main-wap .topic {
   position: relative;
 }
-.topic .media-left {
+#main-wap .topic .media-left {
   padding-right: 12px;
 }
-.topic .media-left img {
+#main-wap .topic .media-left img {
   width: 40px;
   height: 40px;
 }
-.topic .name {
+#main-wap .topic .name {
   margin-bottom: 2px;
 }
-.topic .name a {
+#main-wap .topic .name a {
   font-weight: bold;
   color: #333;
 }
-.topic .dc-topic-follow-wap {
+#main-wap .topic .dc-topic-follow-wap {
   position: absolute;
   right: 0;
   top: 0;
 }
-.user {
+#main-wap .user {
   position: relative;
 }
-.user .media-left {
+#main-wap .user .media-left {
   padding-right: 15px;
 }
-.user .media-left img {
+#main-wap .user .media-left img {
   width: 50px;
   height: 50px;
 }
-.user .meta {
+#main-wap .user .meta {
   margin-bottom: 5px;
   color: #333;
 }
-.user .meta .name {
+#main-wap .user .meta .name {
   font-weight: bold;
   color: #333;
 }
-.user .dc-user-follow-wap {
+#main-wap .user .dc-user-follow-wap {
   position: absolute;
   right: 0;
   top: 0;
 }
-.exact-user {
+#main-wap .exact-user {
   margin-bottom: 10px;
   border: 1px solid #eaeaea;
   padding: 15px;
   border-radius: 2px;
 }
-.exact-user .name {
+#main-wap .exact-user .name {
   font-weight: bold;
   margin-bottom: 2px;
 }
-.exact-user .name a {
+#main-wap .exact-user .name a {
   color: #333;
 }
-.exact-user .media-left img {
+#main-wap .exact-user .media-left img {
   width: 50px;
   height: 50px;
 }
-.exact-topic {
+#main-wap .exact-topic {
   margin-bottom: 10px;
   border: 1px solid #eaeaea;
   padding: 15px;
   border-radius: 2px;
 }
-.exact-topic .name {
+#main-wap .exact-topic .name {
   font-weight: bold;
   margin-bottom: 2px;
 }
-.exact-topic .name a {
+#main-wap .exact-topic .name a {
   color: #333;
 }
-.exact-topic .media-left img {
+#main-wap .exact-topic .media-left img {
   width: 40px;
   height: 40px;
 }
-.more-users,
-.more-topics {
+#main-wap .more-users,
+#main-wap .more-topics {
   text-align: right;
   margin-bottom: 20px;
 }

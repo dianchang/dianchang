@@ -1,61 +1,63 @@
 @import "../utils";
 
-#main-wap .container {
-  width: 750px;
-  margin: 0 auto;
-}
-
-h3 {
-  text-align: center;
-  margin-top: 0;
-}
-
-.question {
-  position: relative;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  border-top: 1px solid @border-color;
-
-  &:last-child {
-    border-bottom: 1px solid @border-color;
+#main-wap {
+  .container {
+    width: 750px;
+    margin: 0 auto;
   }
 
-  .title {
-    margin-bottom: 8px;
-
-    a {
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
-  }
-
-  .answers-count {
-    margin-bottom: 14px;
-  }
-
-  .dc-question-follow-wap {
-    margin-right: 8px;
-  }
-
-  .date-wap {
-    position: absolute;
-    top: -1px;
-    width: 50px;
-    right: -70px;
-    border-radius: 2px;
+  h3 {
     text-align: center;
-    padding: 5px 0;
-    background-color: @background-gray;
+    margin-top: 0;
+  }
 
-    .day {
-      font-weight: bold;
-      font-size: 18px;
+  .question {
+    position: relative;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    border-top: 1px solid @border-color;
+
+    &:last-child {
+      border-bottom: 1px solid @border-color;
     }
 
-    .month {
-      color: #999;
+    .title {
+      margin-bottom: 8px;
+
+      a {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+    }
+
+    .answers-count {
+      margin-bottom: 14px;
+    }
+
+    .dc-question-follow-wap {
+      margin-right: 8px;
+    }
+
+    .date-wap {
+      position: absolute;
+      top: -1px;
+      width: 50px;
+      right: -70px;
+      border-radius: 2px;
+      text-align: center;
+      padding: 5px 0;
+      background-color: @background-gray;
+
+      .day {
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+      .month {
+        color: #999;
+      }
     }
   }
 }

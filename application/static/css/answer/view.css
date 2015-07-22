@@ -4,15 +4,15 @@
 body {
   margin-bottom: 50px;
 }
-body #main-wap .container {
+#main-wap .container {
   width: 750px;
 }
-.question {
+#main-wap .question {
   position: relative;
   background-color: #f5f5f5;
   padding: 70px 0 60px 0;
 }
-.question .logo {
+#main-wap .question .logo {
   position: absolute;
   left: 10px;
   top: 10px;
@@ -23,69 +23,69 @@ body #main-wap .container {
   font-size: 28px;
   color: #D5DCE6;
 }
-.question .logo:hover {
+#main-wap .question .logo:hover {
   color: #c5cfdc;
 }
-.question .title {
+#main-wap .question .title {
   font-size: 28px;
   margin-bottom: 20px;
 }
-.question .title a {
+#main-wap .question .title a {
   font-weight: bold;
   color: #333;
 }
-.question .title a:hover {
+#main-wap .question .title a:hover {
   color: #333;
 }
-.question .desc {
+#main-wap .question .desc {
   font-size: 18px;
   margin-bottom: 30px;
 }
-.answer {
+#main-wap .answer {
   padding: 50px 0 50px 0;
 }
-.answer .content {
+#main-wap .answer .content {
   font-size: 18px;
 }
-.answer .content.less {
+#main-wap .answer .content.less {
   font-size: 28px;
 }
-.answer .content p {
+#main-wap .answer .content p {
   margin-bottom: 20px;
 }
-.answer .time {
+#main-wap .answer .time {
   display: block;
   margin-top: 15px;
   margin-bottom: 40px;
 }
-.answerer-wap {
+#main-wap .answerer-wap {
   border: 1px solid #e1e1e1;
   background-color: #f5f6f5;
   padding: 20px 20px;
   border-radius: 2px;
   position: relative;
 }
-.answerer-wap .media-left {
+#main-wap .answerer-wap .media-left {
   padding-right: 20px;
 }
-.answerer-wap img {
+#main-wap .answerer-wap img {
   width: 60px;
   height: 60px;
 }
-.answerer-wap .answerer-meta {
+#main-wap .answerer-wap .answerer-meta {
   margin-bottom: 10px;
   font-size: 16px;
 }
-.answerer-wap .answerer-meta .answerer-name {
+#main-wap .answerer-wap .answerer-meta .answerer-name {
   color: #333;
   font-weight: bold;
 }
-.answerer-wap .dc-user-follow-wap {
+#main-wap .answerer-wap .dc-user-follow-wap {
   position: absolute;
   right: 20px;
   top: 32px;
 }
-.other-answers {
+#main-wap .other-answers {
   margin: 0 4px 0 4px;
   display: block;
   padding: 13px 0;
@@ -96,21 +96,21 @@ body #main-wap .container {
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
 }
-.other-answers:hover {
+#main-wap .other-answers:hover {
   color: #333;
 }
-.answer-comments-wap {
+#main-wap .answer-comments-wap {
   margin-top: 80px;
   padding: 50px 0 40px 0;
   background-color: #f5f5f5;
 }
-.answer-comments-wap .comments-count {
+#main-wap .answer-comments-wap .comments-count {
   font-size: 18px;
   color: #999;
   text-align: center;
   margin-bottom: 40px;
 }
-.bottom-banner {
+#main-wap .bottom-banner {
   position: fixed;
   left: 0;
   right: 0;
@@ -119,23 +119,23 @@ body #main-wap .container {
   background-color: white;
   border-top: 1px solid #e4e4e4;
 }
-.bottom-banner .bottom-answerer {
+#main-wap .bottom-banner .bottom-answerer {
   position: absolute;
   left: 10px;
   top: 8px;
 }
-.bottom-banner .bottom-answerer img {
+#main-wap .bottom-banner .bottom-answerer img {
   width: 36px;
   height: 36px;
 }
-.bottom-banner .bottom-answerer .name {
+#main-wap .bottom-banner .bottom-answerer .name {
   margin-left: 5px;
   color: #666;
 }
-.bottom-banner .bottom-answerer .name:hover {
+#main-wap .bottom-banner .bottom-answerer .name:hover {
   color: #333;
 }
-.dc-answer-commands .vote-wap .btn-downvote-answer {
+#main-wap .dc-answer-commands .vote-wap .btn-downvote-answer {
   border: 1px solid #E4E4E4;
   background-color: #FAFAFA;
   padding: 6px 12px;
@@ -143,56 +143,56 @@ body #main-wap .container {
   margin-left: 5px;
   vertical-align: middle;
 }
-.dc-answer-commands .vote-wap .btn-downvote-answer:hover {
+#main-wap .dc-answer-commands .vote-wap .btn-downvote-answer:hover {
   background-color: #ededed;
   border-color: #d7d7d7;
 }
-.more-answers-form-user .title {
+#main-wap .more-answers-form-user .title {
   text-align: center;
   font-size: 18px;
   margin: 40px 0 40px 0;
 }
-.more-answers-form-user .more-answer {
+#main-wap .more-answers-form-user .more-answer {
   cursor: pointer;
   padding: 10px 12px;
   margin-bottom: 10px;
   border-radius: 2px;
 }
-.more-answers-form-user .more-answer:hover {
+#main-wap .more-answers-form-user .more-answer:hover {
   background-color: #F3FAFF;
 }
-.more-answers-form-user .more-answer .question-title {
+#main-wap .more-answers-form-user .more-answer .question-title {
   margin-bottom: 5px;
 }
-.more-answers-form-user .more-answer .question-title a {
+#main-wap .more-answers-form-user .more-answer .question-title a {
   font-size: 18px;
   font-weight: bold;
   color: #009999;
 }
-.more-answers-form-user .more-answer .answerer {
+#main-wap .more-answers-form-user .more-answer .answerer {
   margin-bottom: 5px;
 }
-.more-answers-form-user .more-answer .answerer .name {
+#main-wap .more-answers-form-user .more-answer .answerer .name {
   color: #999;
 }
-.more-answers-form-user .more-answer .content {
+#main-wap .more-answers-form-user .more-answer .content {
   font-size: 16px;
 }
-.more-answers-form-user .more-answer .content p:last-child {
+#main-wap .more-answers-form-user .more-answer .content p:last-child {
   margin-bottom: 0;
 }
-.more-answers-form-user .more-answer .content .btn-continue-reading {
+#main-wap .more-answers-form-user .more-answer .content .btn-continue-reading {
   color: #999;
 }
-.more-answers-form-user .more-answer .content .preview {
+#main-wap .more-answers-form-user .more-answer .content .preview {
   display: block;
 }
-.more-answers-form-user .more-answer .content .full-content {
+#main-wap .more-answers-form-user .more-answer .content .full-content {
   display: none;
 }
-.more-answers-form-user .more-answer.full .preview {
+#main-wap .more-answers-form-user .more-answer.full .preview {
   display: none;
 }
-.more-answers-form-user .more-answer.full .full-content {
+#main-wap .more-answers-form-user .more-answer.full .full-content {
   display: block;
 }

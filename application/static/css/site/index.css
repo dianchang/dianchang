@@ -8,14 +8,14 @@ body {
 #main-wap {
   margin: 0;
 }
-.left-wap {
+#main-wap .left-wap {
   position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   background-color: #252e3c;
 }
-.left-wap .inner-wap {
+#main-wap .left-wap .inner-wap {
   overflow: hidden;
   width: 340px;
   position: absolute;
@@ -23,24 +23,24 @@ body {
   right: 0;
   bottom: 0;
 }
-.left-wap .logo-wap {
+#main-wap .left-wap .logo-wap {
   position: absolute;
   top: 200px;
   left: 82px;
   text-align: center;
 }
-.left-wap .logo-wap .name {
+#main-wap .left-wap .logo-wap .name {
   font-size: 56px;
   font-weight: bold;
   color: white;
   margin-bottom: 10px;
 }
-.left-wap .logo-wap .desc {
+#main-wap .left-wap .logo-wap .desc {
   color: #959eac;
   font-size: 16px;
   margin-bottom: 50px;
 }
-.left-wap .logo-wap .btn-go-to-signin-signup {
+#main-wap .left-wap .logo-wap .btn-go-to-signin-signup {
   font-size: 18px;
   font-weight: bold;
   background-color: #00cc99;
@@ -48,10 +48,10 @@ body {
   border: none;
   padding: 10px 25px;
 }
-.left-wap .logo-wap .btn-go-to-signin-signup:hover {
+#main-wap .left-wap .logo-wap .btn-go-to-signin-signup:hover {
   background-color: #00b386;
 }
-.left-wap .dc-signin-signup-forgot-pwd-wap {
+#main-wap .left-wap .dc-signin-signup-forgot-pwd-wap {
   display: none;
   position: absolute;
   top: 50px;
@@ -59,12 +59,12 @@ body {
   z-index: 2;
   margin: 0;
 }
-.answers {
+#main-wap .answers {
   display: none;
   background-color: white;
   width: 720px;
   padding: 30px 0 70px 40px;
 }
-.tooltip.tooltip-white .tooltip-inner {
+#main-wap .tooltip.tooltip-white .tooltip-inner {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }

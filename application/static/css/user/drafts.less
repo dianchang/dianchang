@@ -1,48 +1,50 @@
 @import "../utils";
 
-.drafts {
-  margin-top: 20px;
-}
-
-.draft {
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid @border-color;
-
-  .title {
-    margin-bottom: 8px;
-
-    a {
-      color: #333;
-      font-size: 18px;
-      font-weight: bold;
-    }
+#main-wap {
+  .drafts {
+    margin-top: 20px;
   }
 
-  .content {
-    font-size: 16px;
-    margin-bottom: 8px;
+  .draft {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid @border-color;
 
-    .preview {
-      display: block;
+    .title {
+      margin-bottom: 8px;
+
+      a {
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+      }
     }
 
-    .full-content {
-      display: none;
+    .content {
+      font-size: 16px;
+      margin-bottom: 8px;
+
+      .preview {
+        display: block;
+      }
+
+      .full-content {
+        display: none;
+      }
+
+      .btn-continue-reading {
+        color: #999;
+      }
     }
 
-    .btn-continue-reading {
-      color: #999;
+    .time {
+      margin-bottom: 15px;
     }
-  }
 
-  .time {
-    margin-bottom: 15px;
-  }
-
-  .commands {
-    .btn-remove-draft {
-      margin-left: 10px;
+    .commands {
+      .btn-remove-draft {
+        margin-left: 10px;
+      }
     }
   }
 }

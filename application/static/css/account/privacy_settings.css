@@ -6,19 +6,19 @@
   margin: 0 auto;
   padding: 0;
 }
-.item {
+#main-wap .item {
   padding-bottom: 35px;
   position: relative;
   border-bottom: 1px solid #eaeaea;
 }
-.item .key {
+#main-wap .item .key {
   font-size: 18px;
   font-weight: bold;
 }
-.item .key .url-prefix {
+#main-wap .item .key .url-prefix {
   font-weight: normal;
 }
-.item .commands {
+#main-wap .item .commands {
   position: absolute;
   right: 0;
   top: -5px;

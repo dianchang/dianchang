@@ -1,32 +1,32 @@
 .navbar {
   margin-bottom: 0;
 }
-textarea[name='wiki'] {
+#main-wap textarea[name='wiki'] {
   display: none;
 }
-.title {
+#main-wap .title {
   font-size: 24px;
   color: #999;
   font-weight: bold;
   margin-bottom: 30px;
 }
-.btns-wap {
+#main-wap .btns-wap {
   width: 270px;
 }
-.btns-wap .btn {
+#main-wap .btns-wap .btn {
   font-weight: bold;
 }
-.btns-wap .btn-preview {
+#main-wap .btns-wap .btn-preview {
   margin-right: 10px;
 }
-.btns-wap .btn-submit {
+#main-wap .btns-wap .btn-submit {
   padding: 8px 50px;
 }
-.btns-wap.stick {
+#main-wap .btns-wap.stick {
   position: fixed;
   top: 30px;
 }
-.preview-wap {
+#main-wap .preview-wap {
   position: fixed;
   top: 0;
   left: 0;
@@ -37,12 +37,12 @@ textarea[name='wiki'] {
   z-index: 100000;
   display: none;
 }
-.preview-wap .inner-wap {
+#main-wap .preview-wap .inner-wap {
   width: 680px;
   margin: 0 auto;
   overflow: auto;
 }
-.preview-wap .inner-wap .topic-name {
+#main-wap .preview-wap .inner-wap .topic-name {
   font-size: 30px;
   text-align: center;
   padding-bottom: 20px;
@@ -50,17 +50,17 @@ textarea[name='wiki'] {
   font-weight: bold;
   border-bottom: 1px solid #eaeaea;
 }
-.preview-wap .inner-wap .wiki {
+#main-wap .preview-wap .inner-wap .wiki {
   font-size: 16px;
 }
-.preview-wap .btn-close-preview {
+#main-wap .preview-wap .btn-close-preview {
   position: absolute;
   right: 30px;
   top: 10px;
   font-size: 60px;
   color: #999;
 }
-.preview-wap .btn-close-preview:hover {
+#main-wap .preview-wap .btn-close-preview:hover {
   cursor: pointer;
   color: #666;
 }

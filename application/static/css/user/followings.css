@@ -2,32 +2,32 @@ nav,
 #footer {
   display: none;
 }
-.dc-user-page-header .follows-data {
+#main-wap .dc-user-page-header .follows-data {
   margin-bottom: 60px;
 }
-.title {
+#main-wap .title {
   font-size: 20px;
   padding-top: 40px;
   text-align: center;
 }
-.followings {
+#main-wap .followings {
   padding-top: 30px;
   width: 750px;
   margin: 0 auto;
 }
-.followings .following {
+#main-wap .followings .following {
   margin: 0 20px 20px 0;
   float: left;
 }
-.followings .following img {
+#main-wap .followings .following img {
   width: 50px;
   height: 50px;
 }
-.followings .following .name {
+#main-wap .followings .following .name {
   margin-top: 10px;
   text-align: center;
 }
-.followings .following .name a {
+#main-wap .followings .following .name a {
   color: #333;
   font-weight: bold;
 }

@@ -1,58 +1,58 @@
 .navbar {
   margin-bottom: 0;
 }
-.achievements-wap {
+#main-wap .achievements-wap {
   width: 750px;
   margin: 0 auto;
 }
-.fa-trophy {
+#main-wap .fa-trophy {
   display: block;
   text-align: center;
   font-size: 100px;
   color: #e8e8e8;
   margin: 70px;
 }
-.achievements-data {
+#main-wap .achievements-data {
   text-align: center;
   margin: 0 auto;
   width: 610px;
 }
-.achievements-data .item {
+#main-wap .achievements-data .item {
   display: inline-block;
   width: 200px;
   color: #999;
   font-size: 20px;
 }
-.achievements-data .item .count {
+#main-wap .achievements-data .item .count {
   display: inline-block;
   font-weight: bold;
   font-size: 40px;
   color: #333;
   margin-bottom: 15px;
 }
-.upvoters-wap {
+#main-wap .upvoters-wap {
   border-top: 1px solid #eaeaea;
   padding-top: 40px;
   margin-top: 40px;
 }
-.upvoters-wap .upvotes-count {
+#main-wap .upvoters-wap .upvotes-count {
   text-align: center;
   font-size: 20px;
   margin-bottom: 40px;
 }
-.upvoters-wap .upvoter {
+#main-wap .upvoters-wap .upvoter {
   margin: 0 20px 20px 0;
   float: left;
 }
-.upvoters-wap .upvoter img {
+#main-wap .upvoters-wap .upvoter img {
   width: 50px;
   height: 50px;
 }
-.upvoters-wap .upvoter .user-name {
+#main-wap .upvoters-wap .upvoter .user-name {
   margin-top: 10px;
   text-align: center;
 }
-.upvoters-wap .upvoter .user-name a {
+#main-wap .upvoters-wap .upvoter .user-name a {
   color: #333;
   font-weight: bold;
 }

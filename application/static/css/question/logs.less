@@ -1,73 +1,75 @@
 @import "../utils";
 
-.header {
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid @border-color;
+#main-wap {
+  .header {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid @border-color;
 
-  .name {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-right: 10px;
-  }
+    .name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-right: 10px;
+    }
 
-  .tip {
-    font-size: 18px;
-    color: #999;
-  }
-}
-
-.question-log {
-  padding-bottom: 25px;
-  margin-bottom: 25px;
-  border-bottom: 1px solid @border-color;
-
-  .media-left {
-    padding-right: 15px;
-
-    img {
-      width: 40px;
-      height: 40px;
+    .tip {
+      font-size: 18px;
+      color: #999;
     }
   }
 
-  .media-body {
-    overflow: visible;
-  }
+  .question-log {
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid @border-color;
 
-  .title {
-    margin-bottom: 20px;
-  }
+    .media-left {
+      padding-right: 15px;
 
-  .content {
-    .fa-long-arrow-right {
-      margin: 0 8px;
+      img {
+        width: 40px;
+        height: 40px;
+      }
     }
 
-    .topic-avatar {
-      width: 80px;
-      height: 80px;
+    .media-body {
+      overflow: visible;
     }
-  }
 
-  del.topic {
-    text-decoration: none;
-    padding: 0;
-    background-color: #fff;
-
-    a {
-      margin: 0;
-      text-decoration: line-through;
+    .title {
+      margin-bottom: 20px;
     }
-  }
 
-  ins.topic {
-    padding: 0;
-    background-color: #fff;
+    .content {
+      .fa-long-arrow-right {
+        margin: 0 8px;
+      }
 
-    a {
-      margin: 0;
+      .topic-avatar {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    del.topic {
+      text-decoration: none;
+      padding: 0;
+      background-color: #fff;
+
+      a {
+        margin: 0;
+        text-decoration: line-through;
+      }
+    }
+
+    ins.topic {
+      padding: 0;
+      background-color: #fff;
+
+      a {
+        margin: 0;
+      }
     }
   }
 }
