@@ -1497,7 +1497,7 @@
             },
             _onCursorMoved: function onCursorMoved() {
                 var datum = this.dropdown.getDatumForCursor();
-                this.input.setInputValue(datum.value, true);
+                //this.input.setInputValue(datum.value, true);
                 this.eventBus.trigger("cursorchanged", datum.raw, datum.datasetName);
             },
             _onCursorRemoved: function onCursorRemoved() {
