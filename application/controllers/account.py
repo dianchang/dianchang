@@ -345,6 +345,9 @@ def select_interesting_topics():
     skill_topics = Topic.query.get_or_404(config.get('SKILL_TOPIC_ID')).descendant_topics
     skill_topics_total = skill_topics.count()
 
+    other_topics = Topic.other_topics()
+    other_topics_total = other_topics.count()
+
     return render_template('account/select_interesting_topics.html',
                            hot_topics=hot_topics.limit(INTERESTING_TOPICS_PER),
                            hot_topics_total=hot_topics_total,
@@ -361,6 +364,9 @@ def select_interesting_topics():
                            skill_topics=skill_topics.limit(INTERESTING_TOPICS_PER),
                            skill_topics_total=skill_topics_total,
 
+                           other_topics=other_topics.limit(INTERESTING_TOPICS_PER),
+                           other_topics_total=other_topics_total,
+
                            per=INTERESTING_TOPICS_PER)
 
 
@@ -372,9 +378,7 @@ def loading_interesting_topics():
     _type = request.args.get('type')
     offset = request.args.get('offset', type=int)
     if not offset or not _type:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     if _type == 'hot':
         topics = Topic.query.order_by(Topic.questions_count.desc())
@@ -384,8 +388,10 @@ def loading_interesting_topics():
         topics = Topic.query.filter(Topic.name == '组织').first().descendant_topics
     elif _type == 'position':
         topics = Topic.query.filter(Topic.name == '职业').first().descendant_topics
-    else:
+    elif _type == 'skill':
         topics = Topic.query.filter(Topic.name == '技能').first().descendant_topics
+    else:
+        topics = Topic.other_topics()
 
     topics = topics.limit(INTERESTING_TOPICS_PER).offset(offset)
     topics_count = topics.count()

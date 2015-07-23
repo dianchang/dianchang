@@ -23,6 +23,7 @@
                 <span class="selector" data-target="organization-topics">组织</span>
                 <span class="selector" data-target="position-topics">职业</span>
                 <span class="selector" data-target="skill-topics">技能</span>
+                <span class="selector" data-target="other-topics">其他</span>
             </div>
         </div>
 
@@ -71,6 +72,15 @@
 
                 {{ loading(skill_topics_total, per, '.skill-topics-inner-wap',
                     url_for('account.loading_interesting_topics', type='skill')|safe) }}
+            </div>
+
+            <div class="topics-wap other-topics">
+                <div class="other-topics-inner-wap clearfix">
+                    {{ render_interesting_topics(other_topics) }}
+                </div>
+
+                {{ loading(other_topics_total, per, '.other-topics-inner-wap',
+                    url_for('account.loading_interesting_topics', type='other')|safe) }}
             </div>
         </form>
 
