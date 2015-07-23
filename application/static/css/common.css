@@ -293,3 +293,6 @@ a.dc-img-text-link-wap:focus span {
 .dc-loading-flag.loading .for-loading {
   display: inline-block;
 }
+.hljs {
+  padding: 10px 15px;
+}

@@ -1,4 +1,15 @@
 (function () {
+    // Add csrf token header for Ajax request
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", g.csrfToken);
+            }
+        }
+    });
+
+    hljs.initHighlightingOnLoad();
+
     // Flash message
     setTimeout(showFlash, 200);
     setTimeout(hideFlash, 2000);

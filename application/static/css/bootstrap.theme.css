@@ -218,3 +218,8 @@ input[type=text].form-control.dark {
 .label {
   border-radius: 2px;
 }
+pre {
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+}

@@ -17,6 +17,7 @@
     "jquery-form": "~3.46.0",
     "Sortable": "~1.2.0",
     "raven-js": "~1.1.19",
-    "nunjucks": "~1.3.4"
+    "nunjucks": "~1.3.4",
+    "highlightjs": "~8.6.0"
   }
 }
