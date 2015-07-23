@@ -99,37 +99,19 @@ def query():
     """查询话题"""
     q = request.form.get('q')
     limit = request.form.get('limit', type=int)  # 话题个数限制
-    with_create = request.form.get('create')  # 当找不到名称完全匹配的topic时，是否返回创建选项
-    question_id = request.form.get('question_id')  # 不包括此问题的话题（用于给问题添加话题）
-    ancestor_topic_id = request.form.get('ancestor_topic_id')  # 不为此话题的子孙话题的话题（用于给话题添加子话题）
-    descendant_topic_id = request.form.get('descendant_topic_id')  # 不为此话题的祖先话题的话题（用于给话题添加父话题）
+    with_create = request.form.get('create') == 'true'  # 当找不到名称完全匹配的topic时，是否返回创建选项
     if q:
         topics_id_list = Topic.query_from_es(q, page=1, per_page=10, only_id_list=True)
         topics = Topic.query.filter(Topic.id.in_(topics_id_list))
         topics = topics.filter(Topic.merge_to_topic_id == None)  # 不显示被合并的话题
-        if question_id:  # 排除该问题的所有话题
-            topics = topics.filter(
-                ~Topic.questions.any(QuestionTopic.question_id == question_id))
-        if ancestor_topic_id:  # 排除该话题及其所有子话题
-            ancestor_topic = Topic.query.get(ancestor_topic_id)
-            if ancestor_topic:
-                excluded_list = ancestor_topic.descendant_topics_id_list
-                excluded_list.append(ancestor_topic_id)
-                topics = topics.filter(Topic.id.notin_(excluded_list))
-        if descendant_topic_id:  # 排除该话题及其所有父话题
-            descendant_topic = Topic.query.get(descendant_topic_id)
-            if descendant_topic:
-                excluded_list = descendant_topic.ancestor_topics_id_list
-                excluded_list.append(descendant_topic_id)
-                topics = topics.filter(Topic.id.notin_(excluded_list))
         if limit:
-            topics = topics[:5]
+            topics = topics[:limit]
         topics_data = [{'name': topic.name,
                         'id': topic.id,
                         'avatar_url': topic.avatar_url,
                         'followers_count': topic.followers_count}
                        for topic in topics]
-        if with_create == 'true':
+        if with_create:
             exact_topic = Topic.query.filter(Topic.name == q).first() is not None
             if not exact_topic:
                 topics_data.insert(0, {

@@ -176,13 +176,16 @@ def add():
 def add_topic(uid):
     """添加话题"""
     question = Question.query.get_or_404(uid)
-    name = request.form.get('name')
-    topic_id = request.form.get('topic_id')
+    topic_id = request.form.get('topic_id', type=int)
+    name = request.form.get('name', '').strip()
+
+    if topic_id is None and name == "":
+        return {'result': False}
 
     topic = None
     if name:
         topic = Topic.get_by_name(name, user_id=g.user.id, create_if_not_exist=True)
-    elif topic_id:
+    else:
         topic = Topic.query.get_or_404(topic_id)
 
     if not topic:
@@ -192,23 +195,26 @@ def add_topic(uid):
     question_topic = QuestionTopic.query.filter(
         QuestionTopic.topic_id == topic.id,
         QuestionTopic.question_id == uid).first()
-    if not question_topic:
-        question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
-        # Log
-        log = PublicEditLog(question_id=uid, user_id=g.user.id, after=topic.name, after_id=topic.id,
-                            kind=QUESTION_EDIT_KIND.ADD_TOPIC)
-        db.session.add(log)
-        db.session.add(question_topic)
+    if question_topic:
+        return {'result': False}
 
-        # MERGE: 若该话题被合并到其他话题，则也对此问题添加 merge_to_topic
-        if topic.merge_to_topic_id:
-            question_merge_to_topic = topic.merge_to_topic.questions.filter(QuestionTopic.question_id == uid).first()
-            if not question_merge_to_topic:
-                question_merge_to_topic = QuestionTopic(topic_id=topic.merge_to_topic_id, question_id=uid,
-                                                        from_merge=True)
-                db.session.add(question_merge_to_topic)
+    question_topic = QuestionTopic(topic_id=topic.id, question_id=uid)
 
-        db.session.commit()
+    # Log
+    log = PublicEditLog(question_id=uid, user_id=g.user.id, after=topic.name, after_id=topic.id,
+                        kind=QUESTION_EDIT_KIND.ADD_TOPIC)
+    db.session.add(log)
+    db.session.add(question_topic)
+
+    # MERGE: 若该话题被合并到其他话题，则也对此问题添加 merge_to_topic
+    if topic.merge_to_topic_id:
+        question_merge_to_topic = topic.merge_to_topic.questions.filter(QuestionTopic.question_id == uid).first()
+        if not question_merge_to_topic:
+            question_merge_to_topic = QuestionTopic(topic_id=topic.merge_to_topic_id, question_id=uid,
+                                                    from_merge=True)
+            db.session.add(question_merge_to_topic)
+
+    db.session.commit()
 
     # 更新话题统计数据
     answer = question.answers.filter(Answer.user_id == g.user.id).first()

@@ -68,9 +68,6 @@ $('.btn-cancel-edit-name').click(function () {
 // 所属话题启用 Typeahead
 $parentTopicInput.initTopicTypeahead({
     small: true,
-    params: {
-        descendant_topic_id: g.topicId
-    },
     callback: function (e, parentTopic) {
         if (typeof parentTopic.create === 'undefined') {
             addParentTopic(g.topicId, {parent_topic_id: parentTopic.id});
@@ -108,9 +105,7 @@ $(document).on('click', '.btn-remove-parent-topic', function () {
 // 下属话题启用 Typeahead
 $childTopicInput.initTopicTypeahead({
     small: true,
-    params: {
-        ancestor_topic_id: g.topicId
-    }, callback: function (e, childTopic) {
+    callback: function (e, childTopic) {
         if (typeof childTopic.create === 'undefined') {
             addChildTopic(g.topicId, {child_topic_id: childTopic.id});
         } else {
