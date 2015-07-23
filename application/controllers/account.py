@@ -375,6 +375,7 @@ def select_interesting_topics():
 @jsonify
 def loading_interesting_topics():
     """加载感兴趣的话题"""
+    config = current_app.config
     _type = request.args.get('type')
     offset = request.args.get('offset', type=int)
     if not offset or not _type:
@@ -383,13 +384,13 @@ def loading_interesting_topics():
     if _type == 'hot':
         topics = Topic.query.order_by(Topic.questions_count.desc())
     elif _type == 'product':
-        topics = Topic.query.filter(Topic.name == '产品').first().descendant_topics
+        topics = Topic.query.get_or_404(config.get('PRODUCT_TOPIC_ID')).descendant_topics
     elif _type == 'organization':
-        topics = Topic.query.filter(Topic.name == '组织').first().descendant_topics
+        topics = Topic.query.get_or_404(config.get('ORGANIZATION_TOPIC_ID')).descendant_topics
     elif _type == 'position':
-        topics = Topic.query.filter(Topic.name == '职业').first().descendant_topics
+        topics = Topic.query.get_or_404(config.get('POSITION_TOPIC_ID')).descendant_topics
     elif _type == 'skill':
-        topics = Topic.query.filter(Topic.name == '技能').first().descendant_topics
+        topics = Topic.query.get_or_404(config.get('SKILL_TOPIC_ID')).descendant_topics
     else:
         topics = Topic.other_topics()
 
