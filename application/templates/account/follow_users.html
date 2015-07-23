@@ -13,16 +13,20 @@
         <div class="header">
             <div class="title">你可能喜欢的人</div>
 
-            <div class="btn-refresh">
-                <span class="fa fa-refresh"></span> 换一批
-            </div>
+            {% if recommend_users_count > per %}
+                <div class="btn-refresh">
+                    <span class="fa fa-refresh"></span> 换一批
+                </div>
+            {% endif %}
         </div>
 
         <div class="users-wap">
             {% for recommend_user in recommend_users %}
                 {% set user = recommend_user.user %}
+                {% set index = (loop.index0 / per)|int + 1 %}
 
-                <div class="recommend-user-wap media">
+                <div class="recommend-user-wap media recommend-user-wap-{{ index }}"
+                     {% if index != 1 %}style="display: none"{% endif %}>
                     <div class="media-left">
                         <a class="name" href="{{ user.profile_url }}" target="_blank">
                             <img src="{{ user.avatar_url }}" alt="" class="img-circle"/>

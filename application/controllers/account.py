@@ -561,14 +561,18 @@ def remove_product(uid):
 @UserPermission()
 def follow_users():
     """关注感兴趣的人"""
+    TOTAL = 24
+    PER = 8
     topics_id_list = [followed_topic.topic_id for followed_topic in g.user.followed_topics]
     recommend_users = UserTopicStatistic.query. \
         filter(UserTopicStatistic.topic_id.in_(topics_id_list)). \
         filter(UserTopicStatistic.user_id != g.user.id). \
         filter(UserTopicStatistic.answers_count != 0). \
         group_by(UserTopicStatistic.user_id). \
-        order_by(UserTopicStatistic.score.desc()).limit(24)
-    return render_template('account/follow_users.html', recommend_users=recommend_users)
+        order_by(UserTopicStatistic.score.desc()).limit(TOTAL)
+    recommend_users_count = recommend_users.count()
+    return render_template('account/follow_users.html', recommend_users=recommend_users, per=PER,
+                           recommend_users_count=recommend_users_count)
 
 
 def _remove_repeats(seq):
