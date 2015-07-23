@@ -231,9 +231,9 @@
         var $twitterTypeahead;
 
         $topicInput.typeahead({
-            minLength: 1,
+            hint: true,
             highlight: true,
-            hint: true
+            minLength: 1
         }, {
             displayKey: 'name',
             source: function (q, cb) {
@@ -263,6 +263,8 @@
                             cb(matchs);
                             event.which = event.keyCode = 40;
                             $topicInput.trigger(event);
+                        } else {
+                            $topicInput.typeahead('close');
                         }
                     });
                 }, 300);
