@@ -1,6 +1,7 @@
 # coding: utf-8
 from datetime import datetime
-from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for, abort
+from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for, abort, \
+    current_app
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
     PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion, TopicClosure, \
     HomeFeed, HOME_FEED_KIND
@@ -18,19 +19,21 @@ TOPICS_PER = 45
 @bp.route('/topic/square')
 def square():
     """话题广场"""
-    product_topic = Topic.query.filter(Topic.name == '产品').first_or_404()
+    config = current_app.config
+
+    product_topic = Topic.query.get_or_404(config.get('PRODUCT_TOPIC_ID'))
     product_descendant_topics = product_topic.descendant_topics.order_by(Topic.avg.desc())
     product_total = product_descendant_topics.count()
 
-    organization_topic = Topic.query.filter(Topic.name == '组织').first_or_404()
+    organization_topic = Topic.query.get_or_404(config.get('ORGANIZATION_TOPIC_ID'))
     organization_descendant_topics = organization_topic.descendant_topics.order_by(Topic.avg.desc())
     organization_total = organization_descendant_topics.count()
 
-    position_topic = Topic.query.filter(Topic.name == '职业').first_or_404()
+    position_topic = Topic.query.get_or_404(config.get('POSITION_TOPIC_ID'))
     position_descendant_topics = position_topic.descendant_topics.order_by(Topic.avg.desc())
     position_total = position_descendant_topics.count()
 
-    skill_topic = Topic.query.filter(Topic.name == '技能').first_or_404()
+    skill_topic = Topic.query.get_or_404(config.get('SKILL_TOPIC_ID'))
     skill_descendant_topics = skill_topic.descendant_topics.order_by(Topic.avg.desc())
     skill_total = skill_descendant_topics.count()
 
