@@ -139,6 +139,12 @@
   font-size: 16px;
   color: #999;
 }
+#main-wap .form-group .topics-path {
+  padding-left: 20px;
+}
+#main-wap .form-group .topics-path li {
+  margin-bottom: 10px;
+}
 #main-wap .form-group .topics-path a {
   font-size: 16px;
   color: #009999;

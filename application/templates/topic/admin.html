@@ -129,6 +129,32 @@
                         </div>
                     </div>
 
+                    <div class="form-group clearfix">
+                        <label for="" class="col-sm-2 control-label">话题结构</label>
+
+                        <div class="col-sm-10">
+                            {% if topic.root %}
+                                <div class="root-topic-tip">根话题</div>
+                            {% else %}
+                                <ul class="topics-path">
+                                    {% for path in topic.ancestor_paths %}
+                                        <li>
+                                            {% for topic in path %}
+                                                <a href="{{ url_for('topic.view', uid=topic.id) }}"
+                                                   class="dc-show-topic-card" data-id="{{ topic.id }}">
+                                                    {{ topic.name }}</a>
+
+                                                {% if not loop.last %}
+                                                    <span class="fa fa-long-arrow-right"></span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     {% if permissions.AdminPermission().check() %}
                         <div class="form-group clearfix">
                             <label for="" class="col-sm-2 control-label">合并话题</label>
@@ -222,48 +248,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">父级话题结构</label>
-
-                        <div class="col-sm-10">
-                            {% if topic.root %}
-                                <div class="root-topic-tip">根话题</div>
-                            {% else %}
-                                <ul class="topics-path">
-                                    {% for path in topic.ancestor_paths %}
-                                        <li>
-                                            {% for topic in path %}
-                                                <a href="{{ url_for('topic.view', uid=topic.id) }}"
-                                                   class="dc-show-topic-card" data-id="{{ topic.id }}">
-                                                    {{ topic.name }}</a>
-
-                                                {% if not loop.last %}
-                                                    <span class="fa fa-long-arrow-right"></span>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {##}
-                    {#                    <div class="form-group clearfix">#}
-                    {#                        <label for="" class="col-sm-2 control-label">子级话题结构</label>#}
-                    {##}
-                    {#                        <div class="col-sm-10">#}
-                    {#                            <ul>#}
-                    {#                                {% for child_topic in topic.child_topics %}#}
-                    {#                                    <li>#}
-                    {#                                        <a href="{{ url_for('topic.view', uid=child_topic.id) }}"#}
-                    {#                                           class="{{ child_topic.id }}" data-id="{{ child_topic.id }}">#}
-                    {#                                            {{ child_topic.name }}</a>#}
-                    {#                                    </li>#}
-                    {#                                {% endfor %}#}
-                    {#                            </ul>#}
-                    {#                        </div>#}
-                    {#                    </div>#}
                 </form>
             </div>
 
