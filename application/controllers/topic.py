@@ -302,28 +302,28 @@ def logs(uid):
 def add_parent_topic(uid):
     """添加直接父话题"""
     topic = Topic.query.get_or_404(uid)
-
-    if topic.parent_topics_locked:
-        return {
-            'result': False
-        }
-
     parent_topic_id = request.form.get('parent_topic_id', type=int)
     name = request.form.get('name', '').strip()
 
+    if topic.parent_topics_locked or (parent_topic_id is None and name == ''):
+        return {'result': False}
+
     if parent_topic_id:
         parent_topic = Topic.query.get_or_404(parent_topic_id)
-    elif name:
-        parent_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
     else:
-        return {
-            'result': False
-        }
+        parent_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
 
     if parent_topic.child_topics_locked:
-        return {
-            'result': False
-        }
+        return {'result': False}
+
+    # 不允许添加以下话题为该话题的直接父话题：
+    # 1. 自己
+    # 2. 直接父话题
+    # 3. 子孙话题
+    if parent_topic.id == topic.id \
+            or parent_topic.id in topic.descendant_topics_id_list \
+            or parent_topic.id in topic.parent_topics:
+        return {'result': False}
 
     topic.add_parent_topic(parent_topic.id)
 
@@ -359,9 +359,7 @@ def remove_parent_topic(uid, parent_topic_id):
     parent_topic = Topic.query.get_or_404(parent_topic_id)
 
     if topic.parent_topics_locked or parent_topic.child_topics_locked:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     topic.remove_parent_topic(parent_topic_id)
 
@@ -381,9 +379,7 @@ def remove_parent_topic(uid, parent_topic_id):
 
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/<int:uid>/add_child_topic', methods=['POST'])
@@ -392,28 +388,28 @@ def remove_parent_topic(uid, parent_topic_id):
 def add_child_topic(uid):
     """添加直接子话题"""
     topic = Topic.query.get_or_404(uid)
-
-    if topic.child_topics_locked:
-        return {
-            'result': False
-        }
-
     child_topic_id = request.form.get('child_topic_id', type=int)
     name = request.form.get('name', '').strip()
 
+    if topic.child_topics_locked or (child_topic_id is None and name == ''):
+        return {'result': False}
+
     if child_topic_id:
         child_topic = Topic.query.get_or_404(child_topic_id)
-    elif name:
-        child_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
     else:
-        return {
-            'result': False
-        }
+        child_topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
 
     if child_topic.parent_topics_locked:
-        return {
-            'result': False
-        }
+        return {'result': False}
+
+    # 不允许以下的话题添加为该话题的直接子话题
+    # 1. 自己
+    # 2. 直接子话题
+    # 3. 祖先话题
+    if child_topic_id == uid \
+            or child_topic_id in topic.ancestor_topics_id_list \
+            or child_topic_id in topic.child_topics_id_list:
+        return {'result': False}
 
     topic.add_child_topic(child_topic.id)
 
