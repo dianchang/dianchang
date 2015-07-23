@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json, session, \
-    get_template_attribute
+    get_template_attribute, current_app
 from ..forms import SigninForm, SignupForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
 from ..utils.permissions import VisitorPermission, UserPermission
@@ -328,19 +328,21 @@ INTERESTING_TOPICS_PER = 20
 @UserPermission()
 def select_interesting_topics():
     """选择感兴趣的话题"""
+    config = current_app.config
+
     hot_topics = Topic.query.order_by(Topic.questions_count.desc())
     hot_topics_total = hot_topics.count()
 
-    product_topics = Topic.query.filter(Topic.name == '产品').first().descendant_topics
+    product_topics = Topic.query.get_or_404(config.get('PRODUCT_TOPIC_ID')).descendant_topics
     product_topics_total = product_topics.count()
 
-    organization_topics = Topic.query.filter(Topic.name == '组织').first().descendant_topics
+    organization_topics = Topic.query.get_or_404(config.get('ORGANIZATION_TOPIC_ID')).descendant_topics
     organization_topics_total = organization_topics.count()
 
-    position_topics = Topic.query.filter(Topic.name == '职业').first().descendant_topics
+    position_topics = Topic.query.get_or_404(config.get('POSITION_TOPIC_ID')).descendant_topics
     position_topics_total = position_topics.count()
 
-    skill_topics = Topic.query.filter(Topic.name == '技能').first().descendant_topics
+    skill_topics = Topic.query.get_or_404(config.get('SKILL_TOPIC_ID')).descendant_topics
     skill_topics_total = skill_topics.count()
 
     return render_template('account/select_interesting_topics.html',
