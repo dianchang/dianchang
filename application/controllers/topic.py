@@ -65,6 +65,7 @@ def square():
 @jsonify
 def loading_topics_in_square():
     """在话题广场"""
+    config = current_app.config
     offset = request.args.get('offset', type=int)
     _type = request.args.get('type', 'product')
 
@@ -74,25 +75,20 @@ def loading_topics_in_square():
         }
 
     if _type == 'product':
-        parent_topic = Topic.query.filter(Topic.name == '产品').first_or_404()
+        descendant_topics = Topic.query.get_or_404(config.get('PRODUCT_TOPIC_ID')).descendant_topics
     elif _type == 'organization':
-        parent_topic = Topic.query.filter(Topic.name == '组织').first_or_404()
+        descendant_topics = Topic.query.get_or_404(config.get('ORGANIZATION_TOPIC_ID')).descendant_topics
     elif _type == 'position':
-        parent_topic = Topic.query.filter(Topic.name == '职业').first_or_404()
+        descendant_topics = Topic.query.get_or_404(config.get('POSITION_TOPIC_ID')).descendant_topics
     elif _type == 'skill':
-        parent_topic = Topic.query.filter(Topic.name == '技能').first_or_404()
+        descendant_topics = Topic.query.get_or_404(config.get('SKILL_TOPIC_ID')).descendant_topics
     else:
-        parent_topic = Topic.query.filter(Topic.name == '人').first_or_404()
+        descendant_topics = Topic.other_topics()
 
-    topics = parent_topic.descendant_topics.order_by(Topic.avg.desc()).limit(TOPICS_PER).offset(offset)
-    count = topics.count()
+    descendant_topics = descendant_topics.order_by(Topic.avg.desc()).limit(TOPICS_PER).offset(offset)
+    count = descendant_topics.count()
     macro = get_template_attribute("macros/_topic.html", "render_topics")
-
-    return {
-        'result': True,
-        'html': macro(topics),
-        'count': count
-    }
+    return {'result': True, 'html': macro(descendant_topics), 'count': count}
 
 
 @bp.route('/topic/query', methods=['POST'])
