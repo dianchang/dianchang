@@ -584,10 +584,14 @@
                         }
                     }).done(function (response) {
                         if (response.result) {
-                            var $answerContent = $answer.find('.answer-content')
+                            var $answerContent = $answer.find('.answer-content');
+
                             $answerContent.html(response.content);
+                            $answerContent.find('pre code').each(function (i, block) {
+                                hljs.highlightBlock(block);
+                            });
+
                             answerEditor.setValue(response.content);
-                            hljs.highlightBlock($answerContent[0]);
                             $answer.removeClass('edit');
                             $draftTip.empty();
                             $btnCancelEdit.text('取消');
