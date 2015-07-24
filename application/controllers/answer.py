@@ -24,6 +24,29 @@ def mobile_view(uid):
     return render_template('answer/mobile_view.html', answer=answer)
 
 
+@bp.route('/answer/<int:uid>/update', methods=['POST'])
+@UserPermission()
+@jsonify
+def update(uid):
+    answer = Answer.query.get_or_404(uid)
+    content = request.form.get('content', '')
+
+    if not content:
+        return {'result': False}
+
+    answer.content = content
+    db.session.add(answer)
+
+    print(answer.draft)
+
+    # 删除草稿
+    if answer.draft:
+        db.session.delete(answer.draft)
+
+    db.session.commit()
+    return {'result': True, 'content': answer.content}
+
+
 @bp.route('/answer/<int:uid>/upvote', methods=['POST'])
 @UserPermission()
 @jsonify

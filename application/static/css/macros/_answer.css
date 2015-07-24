@@ -1,6 +1,7 @@
 .dc-answer-commands .btn-collapse,
 .dc-answer-commands .btn-downvote-answer,
 .dc-answer-commands .btn-share,
+.dc-answer-commands .btn-edit,
 .dc-answer-commands .btn-comments {
   text-decoration: none;
   color: #999;
@@ -8,6 +9,7 @@
 .dc-answer-commands .btn-collapse:hover,
 .dc-answer-commands .btn-downvote-answer:hover,
 .dc-answer-commands .btn-share:hover,
+.dc-answer-commands .btn-edit:hover,
 .dc-answer-commands .btn-comments:hover {
   color: #009999;
 }
@@ -64,7 +66,8 @@
 }
 .dc-answer-commands .btn-collapse,
 .dc-answer-commands .btn-comments,
-.dc-answer-commands .btn-share {
+.dc-answer-commands .btn-share,
+.dc-answer-commands .btn-edit {
   margin-right: 20px;
 }
 .dc-answer-commands .btn-collapse {

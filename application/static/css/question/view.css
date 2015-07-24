@@ -355,6 +355,25 @@
 #main-wap .answers .answer .time {
   margin-bottom: 25px;
 }
+#main-wap .answers .answer .answer-edit-wap {
+  display: none;
+  margin-bottom: 10px;
+}
+#main-wap .answers .answer .answer-edit-wap .simditor {
+  margin-bottom: 15px;
+}
+#main-wap .answers .answer .answer-edit-wap .simditor .simditor-body {
+  padding: 22px 15px;
+}
+#main-wap .answers .answer .answer-edit-wap .btn-cancel-edit {
+  margin-right: 10px;
+}
+#main-wap .answers .answer.edit .answer-content {
+  display: none;
+}
+#main-wap .answers .answer.edit .answer-edit-wap {
+  display: block;
+}
 #main-wap .answers .toogle-hided-answers-wap {
   border-top: 1px solid #eaeaea;
   border-bottom: 1px solid #eaeaea;

@@ -450,13 +450,6 @@ def answer(uid):
             answer.identity = "匿名%s员工" % (g.user.organization)
     db.session.add(answer)
 
-    # 删除草稿
-    draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
-    if draft:
-        g.user.drafts_count -= 1
-        db.session.add(g.user)
-        db.session.delete(draft)
-
     db.session.commit()
 
     if current_app.production:
@@ -526,6 +519,13 @@ def answer(uid):
     g.user.answers_count += 1
     db.session.add(question)
     db.session.add(g.user)
+
+    # 删除草稿
+    draft = question.drafts.filter(AnswerDraft.user_id == g.user.id).first()
+    if draft:
+        g.user.drafts_count -= 1
+        db.session.add(g.user)
+        db.session.delete(draft)
 
     db.session.commit()
 

@@ -221,5 +221,6 @@ input[type=text].form-control.dark {
 pre {
   padding: 0;
   border: 0;
+  margin-bottom: 15px;
   border-radius: 2px;
 }

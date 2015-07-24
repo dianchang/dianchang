@@ -294,6 +294,13 @@
                     分享
                 </a>
 
+                {% if g.user and g.user.id == answer.user_id %}
+                    <a href="javascript: void(0)" class="btn-edit" data-user-id="{{ answer.user_id }}">
+                        <span class="fa fa-edit"></span>
+                        <span class="btn-text">编辑{% if answer.draft %}（有未发布的草稿）{% endif %}</span>
+                    </a>
+                {% endif %}
+
                 <span class="btn-more dc-hide-commands-trigger">
                     更多
 
@@ -322,201 +329,333 @@
         </div>
 
         {% if with_comments %}
-            <div class="comments-outer-wap hide empty">
-            </div>
+            <div class="comments-outer-wap hide empty"></div>
         {% endif %}
     </div>
 
     <script>
-        var $answerCommands = $('.dc-answer-commands');
+        (function () {
+            var $answerCommands = $('.dc-answer-commands');
 
-        // 赞同回答
-        $answerCommands.onOnce('click', '.upvote-wap', function () {
-            var id = parseInt($(this).data('id'));
-            var $voteWap = $(this).parents('.vote-wap').first();
-            var answerer_id = parseInt($(this).data('user-id'));
-            var _this = $(this);
-            var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
+            // 赞同回答
+            $answerCommands.onOnce('click', '.upvote-wap', function () {
+                var id = parseInt($(this).data('id'));
+                var $voteWap = $(this).parents('.vote-wap').first();
+                var answerer_id = parseInt($(this).data('user-id'));
+                var _this = $(this);
+                var $downvoteBtn = $voteWap.find('.btn-downvote-answer');
 
-            if (!g.signin) {
-                window.location = urlFor('account.signin');
-                return false;
-            }
-
-            if (g.userId === answerer_id) {
-                return false;
-            }
-
-            $.ajax({
-                url: urlFor('answer.upvote', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.upvoted) {
-                        _this.addClass('upvoted').addClass('btn-default');
-
-                        if (_this.hasClass('dark')) {
-                            _this.removeClass('btn-dark');
-                        } else {
-                            _this.removeClass('btn-light');
-                        }
-
-                        // 取消反对按钮的显示
-                        $downvoteBtn.removeClass('downvoted')
-                    } else {
-                        _this.removeClass('upvoted').removeClass('btn-default');
-
-                        if (_this.hasClass('dark')) {
-                            _this.addClass('btn-dark');
-                        } else {
-                            _this.addClass('btn-light');
-                        }
-                    }
-
-                    $voteWap.find('.upvotes-count').text(response.count);
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return false;
                 }
-            });
-        });
 
-        // 反对回答
-        $answerCommands.onOnce('click', '.btn-downvote-answer', function () {
-            var id = parseInt($(this).data('id'));
-            var $voteWap = $(this).parents('.vote-wap').first();
-            var $upvoteWap = $voteWap.find('.upvote-wap');
-            var $upvotesCount = $upvoteWap.find('.upvotes-count');
-            var answerer_id = parseInt($(this).data('user-id'));
-            var _this = $(this);
+                if (g.userId === answerer_id) {
+                    return false;
+                }
 
-            if (!g.signin) {
-                window.location = urlFor('account.signin');
-                return false;
-            }
+                $.ajax({
+                    url: urlFor('answer.upvote', {uid: id}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        if (response.upvoted) {
+                            _this.addClass('upvoted').addClass('btn-default');
 
-            if (g.userId === answerer_id) {
-                return false;
-            }
-
-            $.ajax({
-                url: urlFor('answer.downvote', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.downvoted) {
-                        _this.addClass('downvoted');
-
-                        // 取消赞同效果
-                        if ($upvoteWap.hasClass('upvoted')) {
-                            $upvoteWap.removeClass('upvoted').removeClass('btn-default');
-
-                            if ($upvoteWap.hasClass('dark')) {
-                                $upvoteWap.addClass('btn-dark');
+                            if (_this.hasClass('dark')) {
+                                _this.removeClass('btn-dark');
                             } else {
-                                $upvoteWap.addClass('btn-light');
+                                _this.removeClass('btn-light');
                             }
 
-                            var upvotesCount = parseInt($upvotesCount.text());
-                            $upvotesCount.text(upvotesCount > 0 ? upvotesCount - 1 : 0);
+                            // 取消反对按钮的显示
+                            $downvoteBtn.removeClass('downvoted')
+                        } else {
+                            _this.removeClass('upvoted').removeClass('btn-default');
+
+                            if (_this.hasClass('dark')) {
+                                _this.addClass('btn-dark');
+                            } else {
+                                _this.addClass('btn-light');
+                            }
                         }
-                    } else {
-                        _this.removeClass('downvoted');
+
+                        $voteWap.find('.upvotes-count').text(response.count);
                     }
-                }
+                });
             });
-        });
 
-        // 收起回答内容
-        $answerCommands.onOnce('click', '.btn-collapse', function () {
-            $(this).parents('.dc-answer').removeClass('full');
-        });
+            // 反对回答
+            $answerCommands.onOnce('click', '.btn-downvote-answer', function () {
+                var id = parseInt($(this).data('id'));
+                var $voteWap = $(this).parents('.vote-wap').first();
+                var $upvoteWap = $voteWap.find('.upvote-wap');
+                var $upvotesCount = $upvoteWap.find('.upvotes-count');
+                var answerer_id = parseInt($(this).data('user-id'));
+                var _this = $(this);
 
-        // 展开评论
-        {% if with_comments %}
-            $answerCommands.onOnce('click', '.btn-comments', function () {
-                var $commentsOuterWap = $(this).parents('.dc-answer-commands').find('.comments-outer-wap');
-                var answerId = $(this).data('answer-id');
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return false;
+                }
 
-                if ($commentsOuterWap.hasClass('empty')) {
-                    $.ajax({
-                        url: urlFor('answer.load_comments_wap', {uid: answerId}),
-                        dataType: 'json',
-                        method: 'post'
-                    }).done(function (response) {
-                        if (response.result) {
-                            $commentsOuterWap.removeClass('empty').html(response.html);
+                if (g.userId === answerer_id) {
+                    return false;
+                }
+
+                $.ajax({
+                    url: urlFor('answer.downvote', {uid: id}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        if (response.downvoted) {
+                            _this.addClass('downvoted');
+
+                            // 取消赞同效果
+                            if ($upvoteWap.hasClass('upvoted')) {
+                                $upvoteWap.removeClass('upvoted').removeClass('btn-default');
+
+                                if ($upvoteWap.hasClass('dark')) {
+                                    $upvoteWap.addClass('btn-dark');
+                                } else {
+                                    $upvoteWap.addClass('btn-light');
+                                }
+
+                                var upvotesCount = parseInt($upvotesCount.text());
+                                $upvotesCount.text(upvotesCount > 0 ? upvotesCount - 1 : 0);
+                            }
+                        } else {
+                            _this.removeClass('downvoted');
+                        }
+                    }
+                });
+            });
+
+            // 收起回答内容
+            $answerCommands.onOnce('click', '.btn-collapse', function () {
+                $(this).parents('.dc-answer').removeClass('full');
+            });
+
+            // 展开评论
+            {% if with_comments %}
+                $answerCommands.onOnce('click', '.btn-comments', function () {
+                    var $commentsOuterWap = $(this).parents('.dc-answer-commands').find('.comments-outer-wap');
+                    var answerId = $(this).data('answer-id');
+
+                    if ($commentsOuterWap.hasClass('empty')) {
+                        $.ajax({
+                            url: urlFor('answer.load_comments_wap', {uid: answerId}),
+                            dataType: 'json',
+                            method: 'post'
+                        }).done(function (response) {
+                            if (response.result) {
+                                $commentsOuterWap.removeClass('empty').html(response.html);
+                            }
+                        });
+                    }
+
+                    $commentsOuterWap.toggleClass('hide');
+                });
+            {% endif %}
+
+            // 分享回答
+            $answerCommands.onOnce('click', '.btn-share', function () {
+                var qrcodeUrl = $(this).data('qrcode-url');
+                $('#modal-share-answer').modal('show').find('.qrcode').attr('src', qrcodeUrl);
+            });
+
+            var answerEditor = null;
+
+            // 编辑回答
+            $answerCommands.onOnce('click', '.btn-edit', function () {
+                var userId = parseInt($(this).data('user-id'));
+                var $answer = $(this).parents('.answer');
+                var $btnCancelEdit = $answer.find('.btn-cancel-edit');
+                var $btnSubmitEditedAnswer = $answer.find('.btn-submit-edited-answer');
+                var $draftTip = $answer.find('.tip-save-draft');
+                var questionId = $answer.data('question-id');
+                var timerForAnswer = null;
+                var $btnEditAnswer = $(this);
+
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return false;
+                }
+
+                if (g.userId !== userId) {
+                    return false;
+                }
+
+                $answer.addClass('edit');
+
+                if (answerEditor === null) {
+                    answerEditor = new Simditor({
+                        textarea: $answer.find('textarea'),
+                        toolbar: ['bold', 'italic', 'underline', 'ol', 'ul', 'blockquote', 'code', 'link', 'image', 'markdown'],
+                        upload: {
+                            url: 'http://upload.qiniu.com',
+                            fileKey: 'file',
+                            connectionCount: 1,
+                            leaveConfirm: '正在上传文件，如果离开上传会自动取消',
+                            params: {
+                                token: g.editorUptoken
+                            }
                         }
                     });
                 }
 
-                $commentsOuterWap.toggleClass('hide');
-            });
-        {% endif %}
+                answerEditor.focus();
 
-        // 分享回答
-        $answerCommands.onOnce('click', '.btn-share', function () {
-            var qrcodeUrl = $(this).data('qrcode-url');
-            $('#modal-share-answer').modal('show').find('.qrcode').attr('src', qrcodeUrl);
-        });
+                // 自动保存草稿
+                setTimeout(function () {
+                    answerEditor.on('valuechanged', function () {
+                        var content = answerEditor.getValue();
 
-        // 感谢回答
-        $answerCommands.onOnce('click', '.btn-thank-answer', function () {
-            var id = parseInt($(this).data('id'));
-            var thanked = $(this).hasClass('thanked');
-            var answerer_id = parseInt($(this).data('user-id'));
-            var _this = $(this);
+                        $answer.addClass('modified');
+                        $btnCancelEdit.text('保存草稿并离开');
 
-            if (!g.signin) {
-                window.location = urlFor('account.signin');
-                return false;
-            }
+                        if (timerForAnswer) {
+                            clearTimeout(timerForAnswer);
+                        }
 
-            if (g.userId === answerer_id || thanked) {
-                return false;
-            }
+                        $draftTip.text('保存中...');
 
-            $.ajax({
-                url: urlFor('answer.thank', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.thanked) {
-                        _this.addClass('thanked');
-                    }
-                }
-            });
-        });
+                        timerForAnswer = setTimeout(function () {
+                            $.ajax({
+                                url: urlFor('question.save_answer_draft', {uid: questionId}),
+                                method: 'post',
+                                dataType: 'json',
+                                data: {
+                                    content: content
+                                }
+                            }).done(function (response) {
+                                if (response.result) {
+                                    $draftTip.text('已保存');
+                                    $btnEditAnswer.find('.btn-text').text('编辑（有未发布的草稿）');
+                                } else {
+                                    $draftTip.text('系统繁忙');
+                                }
+                            });
+                        }, 4000);
+                    });
+                }, 200);
 
-        // 没有帮助
-        $answerCommands.onOnce('click', '.btn-nohelp-answer', function () {
-            var id = parseInt($(this).data('id'));
-            var answerer_id = parseInt($(this).data('user-id'));
-            var _this = $(this);
+                // 取消编辑回答 or 保存草稿并离开
+                $btnCancelEdit.click(function () {
+                    var modified = $answer.hasClass('modified');
+                    var content = answerEditor.getValue();
 
-            if (!g.signin) {
-                window.location = urlFor('account.signin');
-                return false;
-            }
-
-            if (g.userId === answerer_id) {
-                return false;
-            }
-
-            $.ajax({
-                url: urlFor('answer.nohelp', {uid: id}),
-                method: 'post',
-                dataType: 'json'
-            }).done(function (response) {
-                if (response.result) {
-                    if (response.nohelped) {
-                        _this.addClass('nohelped');
+                    if (modified) {
+                        $.ajax({
+                            url: urlFor('question.save_answer_draft', {uid: questionId}),
+                            method: 'post',
+                            dataType: 'json',
+                            data: {
+                                content: content
+                            }
+                        }).done(function (response) {
+                            if (response.result) {
+                                $answer.removeClass('edit');
+                                $btnEditAnswer.find('.btn-text').text('编辑（有未发布的草稿）');
+                            }
+                        });
                     } else {
-                        _this.removeClass('nohelped');
+                        // 取消编辑
+                        $answer.removeClass('edit');
                     }
-                }
+                });
+
+                // 发布修改后的答案
+                $btnSubmitEditedAnswer.click(function () {
+                    var content = answerEditor.getValue();
+                    var id = $answer.data('id');
+
+                    answerEditor.off('valuechanged');
+                    clearTimeout(timerForAnswer);
+
+                    $.ajax({
+                        url: urlFor('answer.update', {uid: id}),
+                        dataType: 'json',
+                        method: 'post',
+                        data: {
+                            content: content
+                        }
+                    }).done(function (response) {
+                        if (response.result) {
+                            var $answerContent = $answer.find('.answer-content')
+                            $answerContent.html(response.content);
+                            answerEditor.setValue(response.content);
+                            hljs.highlightBlock($answerContent[0]);
+                            $answer.removeClass('edit');
+                            $draftTip.empty();
+                            $btnCancelEdit.text('取消');
+                            $btnEditAnswer.find('.btn-text').text('编辑');
+                        }
+                    });
+                });
             });
-        });
+
+            // 感谢回答
+            $answerCommands.onOnce('click', '.btn-thank-answer', function () {
+                var id = parseInt($(this).data('id'));
+                var thanked = $(this).hasClass('thanked');
+                var answerer_id = parseInt($(this).data('user-id'));
+                var _this = $(this);
+
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return false;
+                }
+
+                if (g.userId === answerer_id || thanked) {
+                    return false;
+                }
+
+                $.ajax({
+                    url: urlFor('answer.thank', {uid: id}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        if (response.thanked) {
+                            _this.addClass('thanked');
+                        }
+                    }
+                });
+            });
+
+            // 没有帮助
+            $answerCommands.onOnce('click', '.btn-nohelp-answer', function () {
+                var id = parseInt($(this).data('id'));
+                var answerer_id = parseInt($(this).data('user-id'));
+                var _this = $(this);
+
+                if (!g.signin) {
+                    window.location = urlFor('account.signin');
+                    return false;
+                }
+
+                if (g.userId === answerer_id) {
+                    return false;
+                }
+
+                $.ajax({
+                    url: urlFor('answer.nohelp', {uid: id}),
+                    method: 'post',
+                    dataType: 'json'
+                }).done(function (response) {
+                    if (response.result) {
+                        if (response.nohelped) {
+                            _this.addClass('nohelped');
+                        } else {
+                            _this.removeClass('nohelped');
+                        }
+                    }
+                });
+            });
+        })();
     </script>
 {% endmacro %}
 
@@ -595,7 +734,7 @@
 
 {# 在问题页中显示的回答 #}
 {% macro render_answer_in_question(answer) %}
-    <div class="answer" data-id="{{ answer.id }}">
+    <div class="answer" data-id="{{ answer.id }}" data-question-id="{{ answer.question_id }}">
         <div class="answerer-info media">
             <div class="media-left">
                 {% if answer.anonymous %}
@@ -642,6 +781,31 @@
         </div>
 
         <div class="answer-content rich-text-area">{{ answer.content|safe }}</div>
+
+        {% if g.user and g.user.id == answer.user_id %}
+            <div class="answer-edit-wap">
+                <textarea name="answer" class="textarea-answer-cotnent">
+                    {% if answer.draft %}
+                        {{ answer.draft.content }}
+                    {% else %}
+                        {{ answer.content }}
+                    {% endif %}
+                </textarea>
+
+                <div class="commands text-right">
+                    <span class="tip-save-draft pull-left text-light"></span>
+
+                    <a href="javascript: void(0)" class="btn-cancel-edit text-light">
+                        {% if answer.draft %}
+                            保存草稿并离开
+                        {% else %}
+                            取消
+                        {% endif %}
+                    </a>
+                    <button type="button" class="btn-submit-edited-answer btn btn-primary">发布</button>
+                </div>
+            </div>
+        {% endif %}
 
         <div class="time text-light">
             发布于 {{ answer.created_at|timesince }}
