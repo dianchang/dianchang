@@ -104,9 +104,8 @@ def query():
     limit = request.form.get('limit', type=int)  # 话题个数限制
     with_create = request.form.get('create') == 'true'  # 当找不到名称完全匹配的topic时，是否返回创建选项
     if q:
-        topics_id_list = Topic.query_from_es(q, page=1, per_page=10, only_id_list=True)
-        topics = Topic.query.filter(Topic.id.in_(topics_id_list))
-        topics = topics.filter(Topic.merge_to_topic_id == None)  # 不显示被合并的话题
+        topics, _, _ = Topic.query_from_es(q, page=1, per_page=10)
+        topics = [topic for topic in topics if topic.merge_to_topic_id is None]  # 不显示被合并的话题
         if limit:
             topics = topics[:limit]
         topics_data = [{'name': topic.name,
