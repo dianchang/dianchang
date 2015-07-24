@@ -37,11 +37,11 @@ def update(uid):
     answer.content = content
     db.session.add(answer)
 
-    print(answer.draft)
-
     # 删除草稿
     if answer.draft:
         db.session.delete(answer.draft)
+        g.user.drafts_count -= 1
+        db.session.add(g.user)
 
     db.session.commit()
     return {'result': True, 'content': answer.content}

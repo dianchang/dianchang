@@ -592,7 +592,7 @@
                             });
 
                             answerEditor.setValue(response.content);
-                            $answer.removeClass('edit');
+                            $answer.removeClass('edit').removeClass('modified');
                             $draftTip.empty();
                             $btnCancelEdit.text('取消');
                             $btnEditAnswer.find('.btn-text').text('编辑');
