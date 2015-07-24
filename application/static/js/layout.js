@@ -8,6 +8,7 @@
         }
     });
 
+    // 代码高亮
     hljs.initHighlightingOnLoad();
 
     // Flash message
@@ -216,6 +217,7 @@
     $('.btn-ask-question').click(function () {
         if (!$askQuestionBg.hasClass('open')) {
             $askQuestionBg.show().addClass('open');
+            $questionInput.focus();
         }
     });
 
