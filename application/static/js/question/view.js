@@ -462,8 +462,13 @@ if (!g.answered && g.signin) {
             }
         }).done(function (response) {
             if (response.result) {
+                var $answer = $(response.html);
+
                 $('.answers-tab-item').click();
-                $(response.html).hide().appendTo($('.showed-answers')).fadeIn('slow');
+                $answer.hide().appendTo($('.showed-answers')).fadeIn('slow');
+                $answer.find('pre code').each(function (i, block) {
+                    hljs.highlightBlock(block);
+                });
                 $('.new-answer-wap').detach();
             }
         });
