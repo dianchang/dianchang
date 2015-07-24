@@ -31,7 +31,7 @@ sudo pip install -U git+https://github.com/hustlzp/Flask-Boost.git@fis#egg=flask
 ###创建index
 
 ```
-PUT /dc
+curl -XPUT 'http://localhost:9200/dc' -d '
 {
     "settings": {
         "number_of_shards": 1,
@@ -55,13 +55,13 @@ PUT /dc
             }
         }
     }
-}
+}'
 ```
 
 ###应用analyzer到field
 
 ```
-PUT /dc/_mapping/topic
+curl -XPUT 'http://localhost:9200/dc/_mapping/topic' -d '
 {
     "topic": {
         "properties": {
@@ -79,9 +79,9 @@ PUT /dc/_mapping/topic
             }
         }
     }
-}
+}'
 
-PUT /dc/_mapping/user
+curl -XPUT 'http://localhost:9200/dc/_mapping/user' -d '
 {
     "user": {
         "properties": {
@@ -95,7 +95,7 @@ PUT /dc/_mapping/user
             }
         }
     }
-}
+}'
 ```
 
 ###填充数据
