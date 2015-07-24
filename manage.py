@@ -186,7 +186,7 @@ def make_answer_qrcodes():
 
 
 @manager.command
-def reindex_es():
+def index_es():
     """将数据库中的内容索引到Elasticsearch"""
     with app.app_context():
         for user in User.query:

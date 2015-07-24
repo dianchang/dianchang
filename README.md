@@ -101,6 +101,6 @@ PUT /dc/_mapping/user
 ###填充数据
 
 ```py
-python manage.py reindex_es
+python manage.py index_es
 
 ```
