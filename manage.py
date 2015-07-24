@@ -185,5 +185,19 @@ def make_answer_qrcodes():
         db.session.commit()
 
 
+@manager.command
+def reindex_es():
+    """将数据库中的内容索引到Elasticsearch"""
+    with app.app_context():
+        for user in User.query:
+            user.save_to_es()
+        for topic in Topic.query:
+            topic.save_to_es()
+        for answer in Answer.query:
+            answer.save_to_es()
+        for question in Question.query:
+            question.save_to_es()
+
+
 if __name__ == "__main__":
     manager.run()
