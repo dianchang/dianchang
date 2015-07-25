@@ -97,15 +97,12 @@ def upvote(uid):
         # USER FEED: 赞同回答
         UserFeed.upvote_answer(g.user, answer)
 
-        # HOME FEED: 插入到 followers 的首页 FEED
+        # HOME FEED: 关注的人赞同回答
         # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
             # 赞同的回答若是该 follower 创建的，则不插入此条 feed
             if follower.follower_id != answer.user_id:
-                home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER, sender_id=g.user.id,
-                                     answer_id=uid)
-                follower.follower.home_feeds.append(home_feed)
-                db.session.add(follower.follower)
+                HomeFeed.following_upvote_answer(follower.follower, g.user, answer)
 
         # HOME FEED: 备份
         home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_UPVOTE_ANSWER,

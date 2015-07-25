@@ -107,10 +107,7 @@ def add():
     # 添加话题
     topics_id_list = request.form.getlist('topic')
     if len(topics_id_list) == 0:
-        return {
-            'result': False,
-            'error': 'notopic'
-        }
+        return {'result': False, 'error': 'notopic'}
     for topic_id in topics_id_list:
         topic = Topic.query.get(topic_id)
         if topic:
@@ -134,8 +131,8 @@ def add():
     db.session.add(g.user)
 
     db.session.add(question)
-    db.session.commit()
     question.save_to_es()
+    db.session.commit()
 
     # 自动关注该问题
     follow_question = FollowQuestion(question_id=question.id, user_id=g.user.id)
@@ -147,13 +144,10 @@ def add():
         # USER FEED: 提问
         UserFeed.ask_question(g.user, question)
 
-        # HOME FEED: 插入 followers 的首页 FEED
+        # HOME FEED: 关注的人提问
         # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
-            home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION, sender_id=g.user.id,
-                                 question_id=question.id)
-            follower.follower.home_feeds.append(home_feed)
-            db.session.add(follower.follower)
+            HomeFeed.following_ask_question(follower.follower, g.user, question)
 
         # HOME FEED: 备份
         home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_ASK_QUESTION,
@@ -302,13 +296,10 @@ def follow(uid):
         # USER FEED: 关注问题
         UserFeed.follow_question(g.user, question)
 
-        # HOME FEED: 插入到 followers 的首页 FEED
+        # HOME FEED: 关注的人关注问题
         # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
-            feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION, sender_id=g.user.id,
-                            question_id=uid)
-            follower.follower.home_feeds.append(feed)
-            db.session.add(follower.follower)
+            HomeFeed.following_follow_question(follower.follower, g.user, question)
 
         # HOME FEED: 备份
         home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_FOLLOW_QUESTION,
@@ -472,15 +463,12 @@ def answer(uid):
         # USER FEED: 回答
         UserFeed.answer_question(g.user, answer)
 
-        # HOME FEED: 插入 followers 的首页 FEED
+        # HOME FEED: 关注的人回答问题
         # TODO: 使用消息队列进行插入操作
         for follower in g.user.followers:
             # 若该问题为 follower 提出，则不插入此条 feed
             if follower.follower_id != question.user_id:
-                home_feed = HomeFeed(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION, sender_id=g.user.id,
-                                     answer_id=answer.id)
-                follower.follower.home_feeds.append(home_feed)
-                db.session.add(home_feed)
+                HomeFeed.following_answer_question(follower.follower, g.user, answer)
 
         # HOME FEED: 备份
         home_feed_backup = HomeFeedBackup(kind=HOME_FEED_KIND.FOLLOWING_ANSWER_QUESTION,
