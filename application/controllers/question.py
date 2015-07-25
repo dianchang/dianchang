@@ -144,10 +144,8 @@ def add():
     db.session.add(question)
 
     if not anonymous:
-        # USER FEED: 插入本人的用户 FEED
-        feed = UserFeed(kind=USER_FEED_KIND.ASK_QUESTION, question_id=question.id)
-        g.user.feeds.append(feed)
-        db.session.add(g.user)
+        # USER FEED: 提问
+        UserFeed.ask_question(g.user, question)
 
         # HOME FEED: 插入 followers 的首页 FEED
         # TODO: 使用消息队列进行插入操作
@@ -292,11 +290,7 @@ def follow(uid):
         question.followers_count -= 1
         db.session.add(question)
         db.session.commit()
-        return {
-            'result': True,
-            'followed': False,
-            'followers_count': question.followers_count
-        }
+        return {'result': True, 'followed': False, 'followers_count': question.followers_count}
     else:
         # 关注
         follow_question = FollowQuestion(question_id=uid, user_id=g.user.id)
@@ -305,10 +299,8 @@ def follow(uid):
         question.followers_count += 1
         db.session.add(question)
 
-        # USER FEED: 插入到本人的用户FEED
-        user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_QUESTION, question_id=uid)
-        g.user.feeds.append(user_feed)
-        db.session.add(g.user)
+        # USER FEED: 关注问题
+        UserFeed.follow_question(g.user, question)
 
         # HOME FEED: 插入到 followers 的首页 FEED
         # TODO: 使用消息队列进行插入操作
@@ -477,10 +469,8 @@ def answer(uid):
         for topic in question.topics:
             UserTopicStatistic.add_answer_in_topic(g.user.id, topic.topic_id)
 
-        # USER FEED: 插入本人的用户FEED
-        user_feed = UserFeed(kind=USER_FEED_KIND.ANSWER_QUESTION, answer_id=answer.id)
-        g.user.feeds.append(user_feed)
-        db.session.add(g.user)
+        # USER FEED: 回答
+        UserFeed.answer_question(g.user, answer)
 
         # HOME FEED: 插入 followers 的首页 FEED
         # TODO: 使用消息队列进行插入操作

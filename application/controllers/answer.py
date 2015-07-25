@@ -94,10 +94,8 @@ def upvote(uid):
         answer.calculate_score()  # 更新回答分值
         db.session.add(answer)
 
-        # USER FEED: 插入到本人的用户FEED
-        user_feed = UserFeed(kind=USER_FEED_KIND.UPVOTE_ANSWER, answer_id=uid)
-        g.user.feeds.append(user_feed)
-        db.session.add(g.user)
+        # USER FEED: 赞同回答
+        UserFeed.upvote_answer(g.user, answer)
 
         # HOME FEED: 插入到 followers 的首页 FEED
         # TODO: 使用消息队列进行插入操作
