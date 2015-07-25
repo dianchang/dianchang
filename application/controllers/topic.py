@@ -489,8 +489,7 @@ def follow(uid):
 
         # HOME FEED: 从首页 feed 中删除与此话题相关的条目
         for feed in g.user.home_feeds.filter(HomeFeed.topic_id == uid,
-                                             HomeFeed.kind.in_([HOME_FEED_KIND.NEW_ANSWER_FROM_FOLLOWED_TOPIC,
-                                                                HOME_FEED_KIND.FANTASTIC_ANSWER_FROM_FOLLOWED_TOPIC])):
+                                             HomeFeed.kind == HOME_FEED_KIND.FANTASTIC_ANSWER_FROM_FOLLOWED_TOPIC):
             db.session.delete(feed)
 
         db.session.commit()
@@ -518,10 +517,8 @@ def follow(uid):
                 topic.merge_to_topic.followers_count += 1
                 db.session.add(topic.merge_to_topic)
 
-        # USER FEED: 插入本人的用户FEED
-        feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, topic_id=uid)
-        g.user.feeds.append(feed)
-        db.session.add(g.user)
+        # USER FEED: 关注话题
+        UserFeed.follow_topic(g.user, topic)
 
         # HOME FEED: 向首页 feed 中插入该话题的精彩回答 10 条
         for answer in topic.all_answers.filter(Answer.fantastic).order_by(Answer.created_at.desc()).limit(5):

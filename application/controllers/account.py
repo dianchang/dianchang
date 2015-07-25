@@ -414,27 +414,25 @@ def submit_interesting_topics():
     topics_id_list = _remove_repeats(topics_id_list)
 
     for topic_id in topics_id_list:
+        topic = Topic.query.get_or_404(topic_id)
+
         # 关注话题
         follow_topic = g.user.followed_topics.filter(FollowTopic.topic_id == topic_id).first()
         if not follow_topic:
             follow_topic = FollowTopic(user_id=g.user.id, topic_id=topic_id)
             db.session.add(follow_topic)
 
-            topic = Topic.query.get_or_404(topic_id)
             topic.followers_count += 1
             db.session.add(topic)
 
-        # USER FEED: 插入到用户 feed 中
-        user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic_id)
-        db.session.add(user_feed)
+        # USER FEED: 关注话题
+        UserFeed.follow_topic(g.user, topic)
 
     g.user.has_selected_interesting_topics = True
     db.session.add(g.user)
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/account/select_products_worked_on')
@@ -448,7 +446,7 @@ def select_products_worked_on():
 @UserPermission()
 @jsonify
 def submit_product_worked_on():
-    """添加话题"""
+    """提交工作过的产品"""
     name = request.form.get('name')
     topic_id = request.form.get('topic_id')
 
@@ -464,9 +462,7 @@ def submit_product_worked_on():
         WorkOnProduct.user_id == g.user.id).first()
 
     if product:
-        return {
-            'result': False
-        }
+        return {'result': False}
     else:
         product = WorkOnProduct(topic_id=topic.id, user_id=g.user.id)
         db.session.add(product)
@@ -481,9 +477,8 @@ def submit_product_worked_on():
             topic.followers_count += 1
             db.session.add(topic)
 
-            # USER FEED: 插入到用户 feed 中
-            user_feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_TOPIC, user_id=g.user.id, topic_id=topic.id)
-            db.session.add(user_feed)
+            # USER FEED: 关注话题
+            UserFeed.follow_topic(g.user, topic)
 
         # 在 UserTopicStatistic 中标记该话题
         topic_statistic = UserTopicStatistic.query.filter(UserTopicStatistic.topic_id == topic.id,
