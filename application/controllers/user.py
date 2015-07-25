@@ -147,19 +147,11 @@ def follow(uid):
 
         db.session.commit()
 
-        return {
-            'result': True,
-            'followed': False,
-            'followers_count': user.followers.count()
-        }
+        return {'result': True, 'followed': False, 'followers_count': user.followers.count()}
     else:
         # 关注
         if g.user.id == uid:
-            return {
-                'result': False,
-                'followed': False,
-                'followers_count': user.followers.count()
-            }
+            return {'result': False, 'followed': False, 'followers_count': user.followers.count()}
 
         follow_user = FollowUser(follower_id=g.user.id, following_id=uid)
         db.session.add(follow_user)
@@ -178,12 +170,10 @@ def follow(uid):
             user.notifications.append(noti)
             db.session.add(user)
 
-        # USER FEED：插入本人的用户 FEED
-        feed = UserFeed(kind=USER_FEED_KIND.FOLLOW_USER, following_id=uid)
-        g.user.feeds.append(feed)
-        db.session.add(g.user)
+        # USER FEED: 关注用户
+        UserFeed.follow_user(g.user, user)
 
-        # HOME FEED：插入该用户最近 10 条动态到本人的首页 feed 中
+        # HOME FEED: 插入该用户最近 10 条动态到本人的首页 feed 中
         for home_feed_backup in HomeFeedBackup.query. \
                 filter(HomeFeedBackup.sender_id == uid). \
                 order_by(HomeFeedBackup.created_at.desc()).limit(10):
@@ -195,11 +185,7 @@ def follow(uid):
 
         db.session.commit()
 
-        return {
-            'result': True,
-            'followed': True,
-            'followers_count': user.followers.count()
-        }
+        return {'result': True, 'followed': True, 'followers_count': user.followers.count()}
 
 
 @bp.route('/people/<int:uid>/answers')
