@@ -520,13 +520,10 @@ def answer(uid):
 def invite(uid, user_id):
     """邀请回答"""
     question = Question.query.get_or_404(uid)
+    user = User.query.get_or_404(user_id)
 
     if user_id == g.user.id or user_id == question.user_id:
-        return {
-            'result': False
-        }
-
-    user = User.query.get_or_404(user_id)
+        return {'result': False}
 
     # 取消邀请
     invitation = InviteAnswer.query.filter(InviteAnswer.question_id == uid,
@@ -537,30 +534,20 @@ def invite(uid, user_id):
         db.session.delete(feed)
         db.session.delete(invitation)
         db.session.commit()
-        return {
-            'result': True,
-            'invited': False
-        }
+        return {'result': True, 'invited': False}
     else:
         # 邀请
         invitation = InviteAnswer(question_id=uid, user_id=user_id, inviter_id=g.user.id)
         db.session.add(invitation)
         db.session.commit()
 
-        # FEED：插入到用户的撰写FEED中
-        feed = ComposeFeed(kind=COMPOSE_FEED_KIND.INVITE_TO_ANSWER, invitation_id=invitation.id,
-                           user_id=user_id, question_id=uid)
-        db.session.add(feed)
+        # COMPOSE FEED: 邀请回答
+        ComposeFeed.invite_to_answer(user, question, invitation)
         db.session.commit()
 
         macro = get_template_attribute("macros/_question.html", "invited_user_wap")
-        return {
-            'result': True,
-            'invited': True,
-            'username': user.name,
-            'user_profile_url': user.profile_url,
-            'html': macro(user)
-        }
+        return {'result': True, 'invited': True, 'username': user.name, 'user_profile_url': user.profile_url,
+                'html': macro(user)}
 
 
 def _add_question_mark_to_title(title):
