@@ -448,12 +448,9 @@ def answer(uid):
         question.followers_count += 1
         db.session.add(question)
 
-    # NOTI: 插入提问者的用户 NOTI
+    # NOTI: 回答问题
     if g.user.id != question.user_id:
-        noti = Notification(kind=NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION, senders_list=json.dumps([g.user.id]),
-                            answer_id=answer.id)
-        question.user.notifications.append(noti)
-        db.session.add(question.user)
+        Notification.answer_from_asked_question(g.user, answer)
 
     if not answer.anonymous:
         # 更新话题统计数据

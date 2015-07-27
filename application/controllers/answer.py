@@ -109,20 +109,9 @@ def upvote(uid):
                                           sender_id=g.user.id, answer_id=uid)
         db.session.add(home_feed_backup)
 
-        # NOTI: 插入到被赞回答者的 NOTI（需合并）
+        # NOTI: 赞同回答
         if g.user.id != answer.user_id:
-            noti = answer.user.notifications.filter(
-                Notification.kind == NOTIFICATION_KIND.UPVOTE_ANSWER,
-                Notification.unread,
-                Notification.created_at_date == date.today()).first()
-            if noti:
-                noti.add_sender(g.user.id)
-                db.session.add(noti)
-            else:
-                noti = Notification(kind=NOTIFICATION_KIND.UPVOTE_ANSWER, senders_list=json.dumps([g.user.id]),
-                                    answer_id=uid)
-                answer.user.notifications.append(noti)
-                db.session.add(answer.user)
+            Notification.upvote_answer(g.user, answer)
 
         # 更新话题统计数据
         for topic in answer.question.topics:
@@ -215,27 +204,13 @@ def thank(uid):
         db.session.add(answer.user)
         db.session.add(answer)
 
-        # NOTI: 插入被感谢者的 NOTI（需合并）
+        # NOTI: 感谢回答
         if g.user.id != answer.user_id:
-            noti = answer.user.notifications.filter(
-                Notification.unread,
-                Notification.kind == NOTIFICATION_KIND.THANK_ANSWER,
-                Notification.created_at_date == date.today()).first()
-            if noti:
-                noti.add_sender(g.user.id)
-                db.session.add(noti)
-            else:
-                noti = Notification(kind=NOTIFICATION_KIND.THANK_ANSWER, senders_list=json.dumps([g.user.id]),
-                                    answer_id=uid)
-                answer.user.notifications.append(noti)
-                db.session.add(answer.user)
+            Notification.thank_answer(g.user, answer)
 
         db.session.commit()
 
-    return {
-        'result': True,
-        'thanked': True
-    }
+    return {'result': True, 'thanked': True}
 
 
 @bp.route('/answer/<int:uid>/nohelp', methods=['POST'])
@@ -298,11 +273,7 @@ def like_comment(uid):
         comment.likes_count -= 1
         db.session.add(comment)
         db.session.commit()
-        return {
-            'result': True,
-            'liked': False,
-            'count': comment.likes_count
-        }
+        return {'result': True, 'liked': False, 'count': comment.likes_count}
     else:
         # 赞评论
         like = LikeAnswerComment(user_id=g.user.id)
@@ -310,28 +281,10 @@ def like_comment(uid):
         comment.likes_count += 1
         db.session.add(comment)
 
-        # NOTI: 插入被赞者的 NOTI（需合并）
+        # NOTI: 赞回答评论
         if g.user.id != comment.user_id:
-            noti = comment.user.notifications.filter(
-                Notification.unread,
-                Notification.kind == NOTIFICATION_KIND.LIKE_ANSWER_COMMENT,
-                Notification.created_at_date == date.today()).first()
-            if noti:
-                noti.add_sender(g.user.id)
-                db.session.add(noti)
-            else:
-                noti = Notification(kind=NOTIFICATION_KIND.LIKE_ANSWER_COMMENT, senders_list=json.dumps([g.user.id]),
-                                    answer_comment_id=uid)
-                comment.user.notifications.append(noti)
-                db.session.add(comment.user)
-
-                db.session.commit()
-
-    return {
-        'result': True,
-        'liked': True,
-        'count': comment.likes_count
-    }
+            Notification.like_answer_comment(g.user, comment)
+    return {'result': True, 'liked': True, 'count': comment.likes_count}
 
 
 @bp.route('/answer/comment/<int:uid>/reply', methods=['POST'])
@@ -349,19 +302,13 @@ def reply_comment(uid):
     db.session.add(parent_comment.answer)
     db.session.commit()
 
-    # NOTI: 插入到被回复者的 NOTI
+    # NOTI: 回复评论
     if g.user.id != parent_comment.user_id:
-        noti = Notification(kind=NOTIFICATION_KIND.REPLY_ANSWER_COMMENT, senders_list=json.dumps([g.user.id]),
-                            answer_comment_id=new_comment.id)
-        parent_comment.user.notifications.append(noti)
-        db.session.add(parent_comment.user)
+        Notification.reply_answer_comment(g.user, new_comment)
         db.session.commit()
 
     macro = get_template_attribute('macros/_answer.html', 'render_answer_comment')
-    return {
-        'result': True,
-        'html': macro(new_comment)
-    }
+    return {'result': True, 'html': macro(new_comment)}
 
 
 @bp.route('/answer/<int:uid>/comment', methods=['POST'])
@@ -375,9 +322,7 @@ def comment(uid):
     # 评论回答
     comment_content = request.form.get('content')
     if not comment_content:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     comment = AnswerComment(content=comment_content, user_id=g.user.id, question_id=answer.question_id)
     answer.comments.append(comment)
@@ -385,20 +330,14 @@ def comment(uid):
     db.session.add(answer)
     db.session.commit()
 
-    # NOTI: 插入被评论回答者的 NOTI
+    # NOTI: 评论回答
     if g.user.id != answer.user_id:
-        noti = Notification(kind=NOTIFICATION_KIND.COMMENT_ANSWER, senders_list=json.dumps([g.user.id]),
-                            answer_comment_id=comment.id)
-        answer.user.notifications.append(noti)
-        db.session.add(answer.user)
+        Notification.comment_answer(g.user, comment)
 
     db.session.commit()
 
     macro = get_template_attribute('macros/_answer.html', 'render_answer_comment')
-    return {
-        'result': True,
-        'html': macro(comment)
-    }
+    return {'result': True, 'html': macro(comment)}
 
 
 @bp.route('/answer/<int:uid>/load_comments_wap', methods=['POST'])

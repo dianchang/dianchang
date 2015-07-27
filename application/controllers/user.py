@@ -161,14 +161,8 @@ def follow(uid):
         db.session.add(g.user)
         db.session.add(user)
 
-        # NOTI: 插入被关注者的 NOTI（无需合并）
-        noti = user.notifications.filter(
-            Notification.kind == NOTIFICATION_KIND.FOLLOW_ME,
-            Notification.senders_list == json.dumps([g.user.id])).first()
-        if not noti:
-            noti = Notification(kind=NOTIFICATION_KIND.FOLLOW_ME, senders_list=json.dumps([g.user.id]))
-            user.notifications.append(noti)
-            db.session.add(user)
+        # NOTI: 关注某人
+        Notification.follow_me(g.user, user)
 
         # USER FEED: 关注用户
         UserFeed.follow_user(g.user, user)
