@@ -222,7 +222,7 @@ NOTIFICATIONS_PER = 15
 @bp.route('/notifications')
 @UserPermission()
 def notifications():
-    """用户消息
+    """用户全部消息
 
     不显示关注类消息。
     """
@@ -244,9 +244,7 @@ def loading_notifications():
     """加载通知"""
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     notifications = g.user.notifications.filter(Notification.kind != NOTIFICATION_KIND_TYPE.USER).limit(
         NOTIFICATIONS_PER).offset(offset)

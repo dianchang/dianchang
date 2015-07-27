@@ -398,11 +398,7 @@ def loading_interesting_topics():
     topics_count = topics.count()
     macro = get_template_attribute("macros/_account.html", "render_interesting_topics")
 
-    return {
-        'result': True,
-        'html': macro(topics),
-        'count': topics_count
-    }
+    return {'result': True, 'html': macro(topics), 'count': topics_count}
 
 
 @bp.route('/account/submit_interesting_topics', methods=['POST'])

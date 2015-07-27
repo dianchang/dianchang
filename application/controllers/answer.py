@@ -78,11 +78,7 @@ def upvote(uid):
 
         db.session.commit()
 
-        return {
-            'result': True,
-            'upvoted': False,
-            'count': answer.upvotes_count
-        }
+        return {'result': True, 'upvoted': False, 'count': answer.upvotes_count}
     else:  # 赞同
         upvote_answer = UpvoteAnswer(user_id=g.user.id)
         answer.upvotes.append(upvote_answer)
@@ -136,12 +132,7 @@ def upvote(uid):
         db.session.add(answer.user)
 
         db.session.commit()
-
-        return {
-            'result': True,
-            'upvoted': True,
-            'count': answer.upvotes_count
-        }
+        return {'result': True, 'upvoted': True, 'count': answer.upvotes_count}
 
 
 @bp.route('/answer/<int:uid>/downvote', methods=['POST'])
@@ -284,6 +275,7 @@ def like_comment(uid):
         # NOTI: 赞回答评论
         if g.user.id != comment.user_id:
             Notification.like_answer_comment(g.user, comment)
+            db.session.commit()
     return {'result': True, 'liked': True, 'count': comment.likes_count}
 
 

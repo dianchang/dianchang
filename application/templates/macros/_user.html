@@ -630,7 +630,19 @@
 {% endmacro %}
 
 
-{# 通知发起者 #}
+{# 通知发起者（单个） #}
+{% macro render_notification_sender(sender, action) %}
+    <div class="dc-noti-sender">
+        <a href="{{ sender.profile_url }}" class="sender dc-img-text-link-wap dc-show-user-card"
+           data-id="{{ sender.id }}">
+            <img src="{{ sender.avatar_url }}" alt="" class="img-circle"/>
+            <span class="sender-name">{{ sender.name }}</span></a>
+        <span class="action">{{ action }}</span>
+    </div>
+{% endmacro %}
+
+
+{# 通知发起者（多个） #}
 {% macro render_notification_senders(senders, action) %}
     {% set senders_count = senders.count() %}
 
@@ -661,7 +673,7 @@
         {% if noti.kind == NOTIFICATION_KIND.ANSWER_FROM_ASKED_QUESTION %}
             <div class="noti-in-nav noti-message {% if noti.unread %}unread{% endif %}"
                  data-href="{{ url_for('question.view', uid=noti.answer.question_id, answer_id=noti.answer_id) }}">
-                {{ render_notification_senders(noti.senders, action='回答了你提出的问题') }}
+                {{ render_notification_sender(noti.sender, action='回答了你提出的问题') }}
 
                 <div class="question-title">
                     <a href="{{ url_for('question.view', uid=noti.answer.question_id) }}">
@@ -679,7 +691,7 @@
         {% elif noti.kind == NOTIFICATION_KIND.COMMENT_ANSWER %}
             <div class="noti-in-nav noti-message {% if noti.unread %}unread{% endif %}"
                  data-href="{{ url_for('question.view', uid=noti.answer_comment.question_id, answer_id=noti.answer_comment.answer_id, comment_id=noti.answer_comment_id) }}">
-                {{ render_notification_senders(noti.senders, action='评论了你的回答') }}
+                {{ render_notification_sender(noti.sender, action='评论了你的回答') }}
 
                 <div class="answer-content text-light">
                     {% if noti.answer_comment.content %}
@@ -692,7 +704,7 @@
         {% elif noti.kind == NOTIFICATION_KIND.REPLY_ANSWER_COMMENT %}
             <div class="noti-in-nav noti-message {% if noti.unread %}unread{% endif %}"
                  data-href="{{ url_for('question.view', uid=noti.answer_comment.question_id, answer_id=noti.answer_comment.answer_id, comment_id=noti.answer_comment_id) }}">
-                {{ render_notification_senders(noti.senders, action='回复了你的评论') }}
+                {{ render_notification_sender(noti.sender, action='回复了你的评论') }}
 
                 <div class="answer-comment text-light">
                     {% if noti.answer_comment.content %}
@@ -710,40 +722,40 @@
 {# 用户类通知 #}
 {% macro render_user_notifications(notifications) %}
     {% for noti in notifications %}
-        {% for follower in noti.senders %}
-            <div class="noti-in-nav noti-user media {% if noti.unread %}unread{% endif %}">
-                <div class="media-left">
-                    <a href="{{ follower.profile_url }}">
-                        <img src="{{ follower.avatar_url }}" alt="" class="dc-show-user-card img-circle"
-                             data-id="{{ follower.id }}"/>
-                    </a>
-                </div>
+        {% set follower = noti.sender %}
 
-                <div class="media-body">
-                    <div class="user-info">
-                        <a href="{{ follower.profile_url }}" class="dc-show-user-card"
-                           data-id="{{ follower.id }}">{{ follower.name }}</a>
-                        {% if follower.desc %}，{{ follower.desc }}{% endif %}
-                    </div>
-                    <div class="other-info text-light">
-                        {% if follower.organization %}{{ follower.organization }}{% endif %}
-                        {% if follower.organization and follower.position %}<span class="divider">·</span>{% endif %}
-                        {% if follower.position %}{{ follower.position }}{% endif %}
-                    </div>
-                </div>
-
-                {{ user_follow_wap(follower, sm=True, with_count=False) }}
-
-                <span class="new-flag"></span>
+        <div class="noti-in-nav noti-user media {% if noti.unread %}unread{% endif %}">
+            <div class="media-left">
+                <a href="{{ follower.profile_url }}">
+                    <img src="{{ follower.avatar_url }}" alt="" class="dc-show-user-card img-circle"
+                         data-id="{{ follower.id }}"/>
+                </a>
             </div>
-        {% endfor %}
+
+            <div class="media-body">
+                <div class="user-info">
+                    <a href="{{ follower.profile_url }}" class="dc-show-user-card"
+                       data-id="{{ follower.id }}">{{ follower.name }}</a>
+                    {% if follower.desc %}，{{ follower.desc }}{% endif %}
+                </div>
+                <div class="other-info text-light">
+                    {% if follower.organization %}{{ follower.organization }}{% endif %}
+                    {% if follower.organization and follower.position %}<span class="divider">·</span>{% endif %}
+                    {% if follower.position %}{{ follower.position }}{% endif %}
+                </div>
+            </div>
+
+            {{ user_follow_wap(follower, sm=True, with_count=False) }}
+
+            <span class="new-flag"></span>
+        </div>
     {% endfor %}
 {% endmacro %}
 
 
 {# 感谢类通知 #}
 {% macro render_thanks_notifications(notifications) %}
-    {% for noti in notifications %}
+    {% for noti in notifications if noti.merged %}
         {% if noti.kind == NOTIFICATION_KIND.THANK_ANSWER %}
             <div class="noti-in-nav noti-thanks {% if noti.unread %}unread{% endif %}"
                  data-href="{{ url_for('question.view', uid=noti.answer.question_id, answer_id=noti.answer_id) }}">
@@ -798,7 +810,7 @@
 {% endmacro %}
 
 
-{# 用户类通知 #}
+{# 关注的用户 #}
 {% macro render_followed_users(followings) %}
     {% for following in followings %}
         {% set user = following.following %}
