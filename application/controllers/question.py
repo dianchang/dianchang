@@ -131,8 +131,10 @@ def add():
     db.session.add(g.user)
 
     db.session.add(question)
-    question.save_to_es()
     db.session.commit()
+
+    # 必须在commit之后提交es
+    question.save_to_es()
 
     # 自动关注该问题
     follow_question = FollowQuestion(question_id=question.id, user_id=g.user.id)
