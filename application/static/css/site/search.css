@@ -5,7 +5,6 @@
   background-color: #f5f6f5;
   border-bottom: 1px solid #eaeaea;
   margin-bottom: 30px;
-  padding-left: 106px;
 }
 #main-wap .tabs ul {
   margin-bottom: -1px;
@@ -27,9 +26,6 @@
 #main-wap em {
   font-style: normal;
   background-color: #ffffcc;
-}
-#main-wap .search-results-wap {
-  margin: 0 auto 0 91px;
 }
 #main-wap .search-result {
   margin-bottom: 20px;

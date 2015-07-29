@@ -9,20 +9,22 @@
     <link rel="stylesheet" href="/static/css/site/search.css?__inline"/>{% endblock %}
 {% block page_content %}
     <div class="tabs">
-        <ul class="list-inline list-unstyled">
-            <li {% if _type == 'question' %}class="active"{% endif %}>
-                <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
-            </li>
-            <li {% if _type == 'answer' %}class="active"{% endif %}>
-                <a href="{{ url_for('site.search', type="answer", q=q) }}">回答</a>
-            </li>
-            <li {% if _type == 'topic' %}class="active"{% endif %}>
-                <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
-            </li>
-            <li {% if _type == 'user' %}class="active"{% endif %}>
-                <a href="{{ url_for('site.search', type="user", q=q) }}">人</a>
-            </li>
-        </ul>
+        <div class="container">
+            <ul class="list-inline list-unstyled">
+                <li {% if _type == 'question' %}class="active"{% endif %}>
+                    <a href="{{ url_for("site.search", type="question", q=q) }}">问题</a>
+                </li>
+                <li {% if _type == 'answer' %}class="active"{% endif %}>
+                    <a href="{{ url_for('site.search', type="answer", q=q) }}">回答</a>
+                </li>
+                <li {% if _type == 'topic' %}class="active"{% endif %}>
+                    <a href="{{ url_for('site.search', type="topic", q=q) }}">话题</a>
+                </li>
+                <li {% if _type == 'user' %}class="active"{% endif %}>
+                    <a href="{{ url_for('site.search', type="user", q=q) }}">人</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="container search-results-wap">
