@@ -214,13 +214,13 @@ def create_root_topics():
         nc_topic = _create_topic('未分类', parent_topic_id=root_topic.id)
 
         print("""
-ROOT_TOPIC_ID = %d,
-PRODUCT_TOPIC_ID = %d,
-ORGANIZATION_TOPIC_ID = %d,
-POSITION_TOPIC_ID = %d,
-SKILL_TOPIC_ID = %d,
-PEOPLE_TOPIC_ID = %d,
-OTHER_TOPIC_ID = %d,
+ROOT_TOPIC_ID = %d
+PRODUCT_TOPIC_ID = %d
+ORGANIZATION_TOPIC_ID = %d
+POSITION_TOPIC_ID = %d
+SKILL_TOPIC_ID = %d
+PEOPLE_TOPIC_ID = %d
+OTHER_TOPIC_ID = %d
 NC_TOPIC_ID = %d
         """ % (
             root_topic.id, product_topic.id, organization_topic.id, position_topic.id, skill_topic.id, people_topic.id,
