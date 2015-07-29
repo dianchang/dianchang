@@ -7,7 +7,7 @@ from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email, absolute_url_for
 from ..utils._qiniu import qiniu
 from ..utils.decorators import jsonify
-from ..models import db, User, InvitationCode, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
+from ..models import db, User, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
     HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
 from ..models._helpers import pinyin
 
@@ -44,36 +44,6 @@ def do_signin():
         }
 
 
-@bp.route('/account/test_invitation_code', methods=['POST'])
-@VisitorPermission()
-@jsonify
-def test_invitation_code():
-    """验证邀请码"""
-    code = request.form.get('code')
-
-    if not code:
-        return {
-            'result': False,
-            'code': '邀请码不能为空',
-        }
-
-    invitation_code = InvitationCode.query.filter(InvitationCode.code == code).first()
-    if not invitation_code:
-        return {
-            'result': False,
-            'code': '无效的邀请码'
-        }
-    elif invitation_code.used:
-        return {
-            'result': False,
-            'code': '邀请码已被使用'
-        }
-
-    return {
-        'result': True
-    }
-
-
 @bp.route('/signup', methods=['POST'])
 @VisitorPermission()
 @jsonify
@@ -81,9 +51,7 @@ def signup():
     """注册"""
     form = SignupForm()
     if form.validate():
-        params = form.data.copy()
-        params.pop('code')
-        user = User(**params)
+        user = User(**form.data)
         db.session.add(user)
 
         # 设置默认的 url token
@@ -98,20 +66,9 @@ def signup():
         user.url_token = non_repeat_url_token
 
         db.session.commit()
-
-        invitation_code = form.invitation_code
-        invitation_code.used = True
-        invitation_code.user_id = user.id
-        db.session.add(invitation_code)
-        # TODO: need to uncomment this in production
-        # db.session.commit()
-
-        user.save_to_es()  # 存储到elasticsearch
+        user.save_to_es()
         signin_user(user)
-        return {
-            'result': True,
-            'domain': get_domain_from_email(user.email)
-        }
+        return {'result': True, 'domain': get_domain_from_email(user.email)}
     else:
         return {
             'result': False,

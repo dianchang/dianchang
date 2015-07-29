@@ -1,8 +1,8 @@
 # coding: utf-8
 from datetime import datetime, date
 from flask import Blueprint, render_template, url_for, json, g, request, get_template_attribute
-from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, BlockUser, \
-    ReportUser, UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer, NOTIFICATION_KIND_TYPE, \
+from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, \
+    UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer, NOTIFICATION_KIND_TYPE, \
     HomeFeedBackup, HomeFeed
 from ..utils.permissions import UserPermission
 from ..utils._qiniu import qiniu
@@ -20,11 +20,8 @@ def profile(uid):
     user = User.query.get_or_404(uid)
     feeds = user.feeds.limit(USER_FEEDS_PER)
     total = user.feeds.count()
-    preview = request.args.get('preview', type=int)
-    preview = (preview == 1)
     _generate_user_image_upload_token(user)
-    return render_template('user/profile.html', user=user, preview=preview, feeds=feeds,
-                           total=total, per=USER_FEEDS_PER)
+    return render_template('user/profile.html', user=user, feeds=feeds, total=total, per=USER_FEEDS_PER)
 
 
 @bp.route('/people/<string:url_token>')
@@ -33,11 +30,8 @@ def profile_with_url_token(url_token):
     user = User.query.filter(User.url_token == url_token).first_or_404()
     feeds = user.feeds.limit(USER_FEEDS_PER)
     total = user.feeds.count()
-    preview = request.args.get('preview', type=int)
-    preview = (preview == 1)
     _generate_user_image_upload_token(user)
-    return render_template('user/profile.html', user=user, preview=preview, feeds=feeds,
-                           total=total, per=USER_FEEDS_PER)
+    return render_template('user/profile.html', user=user, feeds=feeds, total=total, per=USER_FEEDS_PER)
 
 
 @bp.route('/user/<int:uid>/loading_user_feeds', methods=['POST'])
@@ -399,59 +393,6 @@ def update_meta_info():
     return {
         'result': True
     }
-
-
-@bp.route('/people/<int:uid>/block', methods=['POST'])
-@UserPermission()
-@jsonify
-def block(uid):
-    """屏蔽用户"""
-    user = User.query.get_or_404(uid)
-    blocked_user = g.user.blocks.filter(BlockUser.blocked_user_id == uid)
-    # 取消屏蔽
-    if blocked_user.count() > 0:
-        map(db.session.delete, blocked_user)
-        db.session.commit()
-        return {
-            'result': True,
-            'blocked': False
-        }
-    else:
-        # 屏蔽
-        if g.user.id != uid:
-            blocked_user = BlockUser(user_id=g.user.id, blocked_user_id=uid)
-            db.session.add(blocked_user)
-
-            db.session.commit()
-            return {
-                'result': True,
-                'blocked': True
-            }
-        else:
-            return {
-                'result': False,
-                'blocked': False
-            }
-
-
-@bp.route('/people/<int:uid>/report', methods=['POST'])
-@UserPermission()
-@jsonify
-def report(uid):
-    """举报用户"""
-    user = User.query.get_or_404(uid)
-    if g.user.id != uid:
-        reported_user = ReportUser(user_id=g.user.id, reported_user_id=uid)
-        db.session.add(reported_user)
-
-        db.session.commit()
-        return {
-            'result': True
-        }
-    else:
-        return {
-            'result': False
-        }
 
 
 @bp.route('/user/query', methods=['POST'])

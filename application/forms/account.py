@@ -2,7 +2,7 @@
 from flask_wtf import Form
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, Email, EqualTo
-from ..models import User, InvitationCode
+from ..models import User
 
 
 class SigninForm(Form):
@@ -36,10 +36,6 @@ class SigninForm(Form):
 
 class SignupForm(Form):
     """Form for signin"""
-    code = StringField('邀请码',
-                       validators=[DataRequired('邀请码不能为空')],
-                       description="请输入邀请码")
-
     name = StringField('用户名',
                        validators=[DataRequired("用户名不能为空")],
                        description="真实姓名 / 常用昵称")
@@ -64,14 +60,6 @@ class SignupForm(Form):
         user = User.query.filter(User.email == self.email.data).first()
         if user:
             raise ValueError('邮箱已存在')
-
-    def validate_code(self, field):
-        invitation_code = InvitationCode.query.filter(InvitationCode.code == self.code.data).first()
-        if not invitation_code:
-            raise ValueError('无效的邀请码')
-        if invitation_code.used:
-            raise ValueError('邀请码已被使用')
-        self.invitation_code = invitation_code
 
 
 class SettingsForm(Form):

@@ -50,15 +50,6 @@
             </div>
 
             <form autocomplete="off">
-                <div class="code clearfix">
-                    <input type="text" placeholder="请"/>
-                    <input type="text" placeholder="输"/>
-                    <input type="text" placeholder="入"/>
-                    <input type="text" placeholder="邀"/>
-                    <input type="text" placeholder="请"/>
-                    <input type="text" placeholder="码"/>
-                </div>
-
                 <div class="next">
                     <input type="text" name="name" placeholder="真实姓名 / 常用昵称" class="form-control dark"/>
                     <input type="text" name="email" placeholder="邮箱" class="form-control dark"/>
@@ -109,7 +100,6 @@
             var $signupWap = $('.signup-wap');
             var $signupEmail = $(".signup-wap input[name='email']");
             var $signupName = $(".signup-wap input[name='name']");
-            var $signupCode = $(".signup-wap .code");
             var $signupPwd = $(".signup-wap input[name='password']");
 
             var $forgotPwdWap = $(".forgot-pwd-wap");
@@ -127,7 +117,6 @@
                 }).removeClass('on').show().animate({
                     'right': '0'
                 }, 180, function () {
-                    $signupCode.find('input').first().focus();
                     $('.signin-wap').hide();
                     $('.forgot-pwd-wap').hide();
                     hideTip($('.dc-account-wap input'));
@@ -148,7 +137,6 @@
                 }, 180, function () {
                     $('.forgot-pwd-wap').hide();
                     $('.signup-wap').hide();
-                    cleanCode();
                     hideTip($('.dc-account-wap input'));
 
                     $signinWap.css({
@@ -167,7 +155,6 @@
                 }, 180, function () {
                     $('.signin-wap').hide();
                     $('.signup-wap').hide();
-                    cleanCode();
                     hideTip($('.dc-account-wap input'));
 
                     $forgotPwdWap.css({
@@ -220,67 +207,8 @@
                 });
             });
 
-            // 输入邀请码
-            $signupCode.find('input').on('keypress', function (e) {
-                if (e.which !== 32) {
-                    forwardCode($(this));
-                }
-            });
-
-            // 退格键
-            // TODO
-            //$signupCode.find('input').on('keydown', function (e) {
-            //    var current = $.trim($(this).val());
-            //
-            //    console.log($(this));
-            //    console.log(current);
-            //
-            //    if (e.which === 8 && current === "") {
-            //        backwardCode($(this));
-            //    }
-            //});
-
-            // 验证邀请码
-            $signupCode.find('input').on('keyup', function (e) {
-                var code = getCodeValue();
-
-                validateCode();
-
-                if (code.length !== 6) {
-                    hideTip($signupCode);
-                    return;
-                }
-
-                if (code === "") {
-                    showTip($(this), '邀请码不能为空');
-                    return;
-                }
-
-                $.ajax({
-                    url: urlFor('account.test_invitation_code'),
-                    method: 'post',
-                    dataType: 'json',
-                    data: {
-                        code: code
-                    }
-                }).done(function (response) {
-                    if (response.result) {
-                        $signupWap.addClass('on');
-                        $signupName.focus();
-                        hideTip($signupCode);
-                    } else {
-                        if (response.code !== "") {
-                            showTip($signupCode, response.code);
-                        } else {
-                            hideTip($signupCode);
-                        }
-                    }
-                });
-            });
-
             // 注册
             $('.btn-signup').click(function () {
-                var code = getCodeValue();
                 var name = $.trim($signupName.val());
                 var email = $.trim($signupEmail.val());
                 var password = $.trim($signupPwd.val());
@@ -305,25 +233,11 @@
                     data: {
                         name: name,
                         email: email,
-                        password: password,
-                        code: code
+                        password: password
                     }
                 }).done(function (response) {
                     if (response.result) {
                         window.location = urlFor('account.select_interesting_topics');
-                        {#                        var messageHtml = "<p>账户激活邮件已发送到你的邮箱</p>";#}
-                        {##}
-                        {#                        // 显示邮件已发送的提示#}
-                        {#                        $('.signup-wap').hide();#}
-                        {#                        $('.signup-success-wap').show();#}
-                        {##}
-                        {#                        if (response.domain !== null) {#}
-                        {#                            messageHtml += "<p>请 <a href='" + response.domain + "' target='_blank'>登录</a> 激活</p>";#}
-                        {#                        } else {#}
-                        {#                            messageHtml += "<p>请登录激活</p>";#}
-                        {#                        }#}
-                        {##}
-                        {#                        $('.signup-success-wap .message').html(messageHtml);#}
                     } else {
                         if (response.name !== "") {
                             showTip($signupName, response.name);
@@ -381,76 +295,6 @@
                     }
                 });
             });
-
-            // 输入字符时，隐藏tooltip
-            $(".dc-account-wap input").on('keyup', function () {
-                hideTip($(this));
-            });
-
-            /**
-             * 获取邀请码的值
-             */
-            function getCodeValue() {
-                var code = "";
-                var current = "";
-
-                $signupCode.find('input').each(function () {
-                    current = $.trim($(this).val());
-                    if (current.length >= 1) {
-                        code += current[0];
-                    }
-                });
-
-                return code;
-            }
-
-            /**
-             * 前进到下一个邀请码输入框
-             * @param $input
-             */
-            function forwardCode($input) {
-                var $nextInput = $input.next('input');
-
-                if ($nextInput.length > 0) {
-                    $nextInput.focus();
-                }
-            }
-
-            /**
-             * 后退到上一个邀请码输入框
-             * @param $input
-             */
-            function backwardCode($input) {
-                var $previousInput = $input.prev('input');
-
-                if ($previousInput.length > 0) {
-                    $previousInput.focus();
-                }
-            }
-
-            /**
-             * 清空code
-             */
-            function cleanCode() {
-                $signupCode.each(function () {
-                    $(this).val('');
-                });
-            }
-
-            /**
-             * 检测code，若出现单格多于一个字符，则取第一个字符
-             */
-            function validateCode() {
-                $signupCode.find('input').each(function () {
-                    var current = $.trim($(this).val()).toString();
-
-                    if (current.length > 1) {
-                        $(this).val(current[0]);
-                    } else {
-                        $(this).val(current);
-                    }
-                });
-            }
         })();
     </script>
 {% endmacro %}
