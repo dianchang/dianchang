@@ -32,17 +32,10 @@ def do_signin():
     session.pop('referrer', None)
     if form.validate():
         signin_user(form.user, form.remember.data)
-        return {
-            'result': True,
-            'referrer': referrer
-        }
+        return {'result': True, 'referrer': referrer}
     else:
-        return {
-            'result': False,
-            'email': form.email.errors[0] if len(form.email.errors) else "",
-            'password': form.password.errors[0] if len(form.password.errors) else "",
-            'referrer': referrer
-        }
+        return {'result': False, 'email': _get_first_error(form.email), 'password': _get_first_error(form.password),
+                'referrer': referrer}
 
 
 @bp.route('/signup', methods=['POST'])
@@ -72,12 +65,8 @@ def signup():
         # send_activate_mail(user)
         return {'result': True, 'domain': get_domain_from_email(user.email)}
     else:
-        return {
-            'result': False,
-            'name': form.name.errors[0] if len(form.name.errors) else "",
-            'email': form.email.errors[0] if len(form.email.errors) else "",
-            'password': form.password.errors[0] if len(form.password.errors) else ""
-        }
+        return {'result': False, 'name': _get_first_error(form.name), 'email': _get_first_error(form.email),
+                'password': _get_first_error(form.password)}
 
 
 @bp.route('/signout')
@@ -96,22 +85,13 @@ def send_reset_password_mail():
     if form.validate():
         user = User.query.filter(User.email == form.email.data).first()
         if not user.is_active:
-            return {
-                'result': False,
-                'email': '该账户尚未激活'
-            }
+            return {'result': False, 'email': '该账户尚未激活'}
 
         # TODO: need to uncomment this in production
         # send_reset_password_mail(user)
-        return {
-            'result': True,
-            'domain': get_domain_from_email(user.email) or ""
-        }
+        return {'result': True, 'domain': get_domain_from_email(user.email) or ""}
     else:
-        return {
-            'result': False,
-            'email': form.email.errors[0] if len(form.email.errors) else ""
-        }
+        return {'result': False, 'email': _get_first_error(form.email)}
 
 
 @bp.route('/settings')
@@ -148,9 +128,7 @@ def reset_password():
 def do_reset_password():
     """重设密码"""
     # TODO: need to finish the reset logic
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/account/update_setting', methods=['POST'])
@@ -162,17 +140,13 @@ def update_setting():
     value = request.form.get('value')
 
     if not hasattr(g.user, key):
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     setattr(g.user, key, True if value == 'on' else False)
     db.session.add(g.user)
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/account/update_name', methods=['POST'])
@@ -180,31 +154,18 @@ def update_setting():
 @jsonify
 def update_name():
     """更新称谓"""
-    if g.user.name_edit_count == 0:
-        return {
-            'result': False
-        }
-
-    name = request.form.get('name')
-    if not name:
-        return {
-            'result': False
-        }
+    name = request.form.get('name', '').strip()
+    if g.user.name_edit_count == 0 or name == '':
+        return {'result': False}
 
     if name == g.user.name:
-        return {
-            'result': True,
-            'name_edit_count': g.user.name_edit_count
-        }
+        return {'result': True, 'name_edit_count': g.user.name_edit_count}
 
     g.user.name = name
     g.user.name_edit_count -= 1
     db.session.add(g.user)
     db.session.commit()
-    return {
-        'result': True,
-        'name_edit_count': g.user.name_edit_count
-    }
+    return {'result': True, 'name_edit_count': g.user.name_edit_count}
 
 
 @bp.route('/account/update_email', methods=['POST'])
@@ -214,28 +175,18 @@ def update_email():
     """更新邮箱"""
     email = request.form.get('email')
     if not email:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     if email == g.user.email:
         g.user.inactive_email = ""
         db.session.add(g.user)
         db.session.commit()
-
-        return {
-            'result': True,
-            'active': g.user.is_active
-        }
+        return {'result': True, 'active': g.user.is_active}
 
     g.user.inactive_email = email
     db.session.add(g.user)
     db.session.commit()
-
-    return {
-        'result': True,
-        'active': False
-    }
+    return {'result': True, 'active': False}
 
 
 @bp.route('/account/update_url_token', methods=['POST'])
@@ -246,17 +197,12 @@ def update_url_token():
     url_token = request.form.get('url_token')
 
     if not url_token:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     g.user.url_token = url_token
     db.session.add(g.user)
     db.session.commit()
-
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/account/update_password', methods=['POST'])
@@ -267,17 +213,13 @@ def update_password():
     password = request.form.get('password')
 
     if not password:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     g.user.password = password
     db.session.add(g.user)
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 INTERESTING_TOPICS_PER = 20
@@ -307,26 +249,19 @@ def select_interesting_topics():
     other_topics = Topic.other_topics()
     other_topics_total = other_topics.count()
 
-    return render_template('account/select_interesting_topics.html',
+    return render_template('account/select_interesting_topics.html', per=INTERESTING_TOPICS_PER,
                            hot_topics=hot_topics.limit(INTERESTING_TOPICS_PER),
                            hot_topics_total=hot_topics_total,
-
                            product_topics=product_topics.limit(INTERESTING_TOPICS_PER),
                            product_topics_total=product_topics_total,
-
                            organization_topics=organization_topics.limit(INTERESTING_TOPICS_PER),
                            organization_topics_total=organization_topics_total,
-
                            position_topics=position_topics.limit(INTERESTING_TOPICS_PER),
                            position_topics_total=position_topics_total,
-
                            skill_topics=skill_topics.limit(INTERESTING_TOPICS_PER),
                            skill_topics_total=skill_topics_total,
-
                            other_topics=other_topics.limit(INTERESTING_TOPICS_PER),
-                           other_topics_total=other_topics_total,
-
-                           per=INTERESTING_TOPICS_PER)
+                           other_topics_total=other_topics_total)
 
 
 @bp.route('/account/loading_interesting_topics', methods=['POST'])
@@ -456,10 +391,7 @@ def submit_product_worked_on():
             upload_token = ""
 
         macro = get_template_attribute('macros/_account.html', 'render_product_worked_on')
-        return {
-            'result': True,
-            'html': macro(product, new_topic, upload_token)
-        }
+        return {'result': True, 'html': macro(product, new_topic, upload_token)}
 
 
 @bp.route('/account/product_worked_on/<int:uid>/set_current_working_on', methods=['POST'])
@@ -475,9 +407,7 @@ def set_product_current_working_on(uid):
     product.current = True
     db.session.add(product)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/account/product_worked_on/<int:uid>/cancel_set_current_working_on', methods=['POST'])
@@ -489,9 +419,7 @@ def cancel_set_product_current_working_on(uid):
     product.current = False
     db.session.add(product)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/account/product_worked_on/<int:uid>/remove', methods=['POST'])
@@ -502,9 +430,7 @@ def remove_product(uid):
     product = WorkOnProduct.query.get_or_404(uid)
     db.session.delete(product)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/account/follow_users')
@@ -539,9 +465,7 @@ def finish_guide():
     """完成引导步骤"""
     current_step = request.form.get('step', type=int)
     if current_step < 1 or current_step > 6:
-        return {
-            'result': False
-        }
+        return {'result': False}
     if current_step < 6:
         g.user.current_guide_step = current_step + 1
     else:
@@ -549,6 +473,9 @@ def finish_guide():
         g.user.has_finish_guide_steps = True
     db.session.add(g.user)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
+
+
+def _get_first_error(field):
+    """获取field的第一条错误信息"""
+    return field.errors[0] if len(field.errors) else ""
