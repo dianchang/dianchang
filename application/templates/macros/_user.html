@@ -41,19 +41,19 @@
             {% if not g.user or g.user.id != user.id or preview %}
                 {{ user_follow_wap(user) }}
 
-                <button type="button" class="dc-hide-commands-trigger btn btn-default">
-                    <span class="fa fa-chevron-down"></span>
-
-                    <div class="dc-hide-commands">
-                        <a href="#" target="_blank">向他提问</a>
-                        <a href="javascript: void(0)"
-                           class="btn-block-user {% if g.user and user.blocked_by_user(g.user.id) %}blocked{% endif %}"
-                           data-id="{{ user.id }}">
-                            <span class="for-blocked">取消屏蔽</span>
-                            <span class="for-un-blocked">屏蔽此人</span></a>
-                        <a href="javascript: void(0)" class="btn-report-user" data-id="{{ user.id }}">举报此人</a>
-                    </div>
-                </button>
+                {#                <button type="button" class="dc-hide-commands-trigger btn btn-default">#}
+                {#                    <span class="fa fa-chevron-down"></span>#}
+                {##}
+                {#                    <div class="dc-hide-commands">#}
+                {#                        <a href="#" target="_blank">向他提问</a>#}
+                {#                        <a href="javascript: void(0)"#}
+                {#                           class="btn-block-user {% if g.user and user.blocked_by_user(g.user.id) %}blocked{% endif %}"#}
+                {#                           data-id="{{ user.id }}">#}
+                {#                            <span class="for-blocked">取消屏蔽</span>#}
+                {#                            <span class="for-un-blocked">屏蔽此人</span></a>#}
+                {#                        <a href="javascript: void(0)" class="btn-report-user" data-id="{{ user.id }}">举报此人</a>#}
+                {#                    </div>#}
+                {#                </button>#}
             {% endif %}
 
             {% if g.user and g.user.id == user.id and not preview %}
@@ -61,13 +61,13 @@
                     设置封面图</a>
                 <input type="file" class="input-upload-background" name="background"/>
 
-                <button type="button" class="dc-hide-commands-trigger btn btn-default">
-                    <span class="fa fa-chevron-down"></span>
-
-                    <div class="dc-hide-commands">
-                        <a href="{{ user.profile_url }}?preview=1" target="_blank">以他人视角查看</a>
-                    </div>
-                </button>
+                {#                <button type="button" class="dc-hide-commands-trigger btn btn-default">#}
+                {#                    <span class="fa fa-chevron-down"></span>#}
+                {##}
+                {#                    <div class="dc-hide-commands">#}
+                {#                        <a href="{{ user.profile_url }}?preview=1" target="_blank">以他人视角查看</a>#}
+                {#                    </div>#}
+                {#                </button>#}
             {% endif %}
         </div>
 
