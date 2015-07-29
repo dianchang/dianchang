@@ -74,7 +74,7 @@
 
                 <form action="" method="post">
                     <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">所属话题</label>
+                        <label for="" class="col-sm-2 control-label">父话题</label>
 
                         <div class="col-sm-10">
                             {% if topic.root %}
@@ -85,11 +85,11 @@
 
                                     {% if topic.parent_topics_locked %}
                                         <div class="text-light">
-                                            <span class="fa fa-lock"></span> 所属话题已锁定
+                                            <span class="fa fa-lock"></span> 父话题已锁定
                                         </div>
                                     {% else %}
                                         <input type="text" class="form-control" id="" name="parent-topic"
-                                               placeholder="添加所属话题" autocomplete="off">
+                                               placeholder="添加父话题" autocomplete="off">
                                         <button type="button" class="btn btn-default btn-add-parent-topic">添加</button>
                                     {% endif %}
                                 </div>
@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="form-group clearfix">
-                        <label for="" class="col-sm-2 control-label">下属话题</label>
+                        <label for="" class="col-sm-2 control-label">子话题</label>
 
                         <div class="col-sm-10">
                             <div class="input-wap">
@@ -112,11 +112,11 @@
 
                                 {% if topic.child_topics_locked %}
                                     <div class="text-light">
-                                        <span class="fa fa-lock"></span> 下属话题已被锁定
+                                        <span class="fa fa-lock"></span> 子话题已被锁定
                                     </div>
                                 {% else %}
                                     <input type="text" class="form-control" id="" name="child-topic"
-                                           placeholder="添加本话题的下属话题" autocomplete="off">
+                                           placeholder="添加本话题的子话题" autocomplete="off">
                                     <button type="button" class="btn btn-default btn-add-child-topic">添加</button>
                                 {% endif %}
                             </div>
@@ -368,14 +368,14 @@
                             <label>
                                 <input type="checkbox" name="lock" id="" value="parent_topics"
                                        {% if topic.parent_topics_locked %}checked{% endif %}>
-                                所属话题
+                                父话题
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="lock" id="" value="child_topics"
                                        {% if topic.child_topics_locked %}checked{% endif %}>
-                                下属话题
+                                子话题
                             </label>
                         </div>
                         <div class="checkbox">

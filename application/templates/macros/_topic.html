@@ -144,8 +144,8 @@
            data-id="{{ parent_topic.id }}">
             {{ parent_topic.name }}
         </a>
-        {% if not locked %}
-            <span class="btn-remove-parent-topic text-light btn-rm" title="删除所属话题"
+        {% if not locked and not parent_topic.child_topics_locked %}
+            <span class="btn-remove-parent-topic text-light btn-rm" title="删除父话题"
                   data-parent-topic-id="{{ parent_topic.id }}">×</span>
         {% endif %}
     </span>
@@ -159,8 +159,8 @@
            data-id="{{ child_topic.id }}">
             {{ child_topic.name }}
         </a>
-        {% if not locked %}
-            <span class="btn-remove-child-topic text-light btn-rm" title="删除下属话题"
+        {% if not locked and not child_topic.parent_topics_locked %}
+            <span class="btn-remove-child-topic text-light btn-rm" title="删除子话题"
                   data-child-topic-id="{{ child_topic.id }}">×</span>
         {% endif %}
     </span>
