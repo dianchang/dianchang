@@ -224,3 +224,8 @@ pre {
   margin-bottom: 15px;
   border-radius: 2px;
 }
+blockquote {
+  padding: 10px 15px;
+  margin: 0 0 15px 0;
+  font-size: 14px;
+}
