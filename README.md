@@ -7,6 +7,10 @@ http://119.254.102.136
 
 ## 开发环境搭建
 
+```
+git clone https://github.com/dianchang/dianchang.git --recursive
+```
+
 Install [FIS](http://fis.baidu.com):
 
 ```
