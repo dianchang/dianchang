@@ -10,6 +10,7 @@ from ..utils.decorators import jsonify
 from ..models import db, User, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
     HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
 from ..models._helpers import pinyin
+from ..utils.mail import send_activate_mail, send_reset_password_mail
 
 bp = Blueprint('account', __name__)
 
@@ -64,10 +65,11 @@ def signup():
             non_repeat_url_token = "%s-%d" % (url_token, suffix_number)
             suffix_number += 1
         user.url_token = non_repeat_url_token
-
         db.session.commit()
         user.save_to_es()
         signin_user(user)
+        # TODO: need to uncomment this in production
+        # send_activate_mail(user)
         return {'result': True, 'domain': get_domain_from_email(user.email)}
     else:
         return {
