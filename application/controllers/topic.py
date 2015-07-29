@@ -6,7 +6,7 @@ from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiC
     PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion, TopicClosure, \
     HomeFeed, HOME_FEED_KIND
 from ..utils.permissions import UserPermission, AdminPermission
-from ..utils.helpers import generate_lcs_html, absolute_url_for
+from ..utils.helpers import absolute_url_for, text_diff
 from ..utils._qiniu import qiniu
 from ..utils.decorators import jsonify
 from ..forms import AdminTopicForm
@@ -800,7 +800,7 @@ def edit_wiki(uid):
         if (topic.wiki or "") != form.wiki.data:
             log = PublicEditLog(kind=TOPIC_EDIT_KIND.UPDATE_WIKI, user_id=g.user.id, topic_id=uid,
                                 before=topic.wiki, after=form.wiki.data,
-                                compare=generate_lcs_html(topic.wiki, form.wiki.data))
+                                compare=text_diff(topic.wiki, form.wiki.data))
             db.session.add(log)
 
         # 记录wiki贡献者

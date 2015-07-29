@@ -6,7 +6,7 @@ from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion,
     UserTopicStatistic, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
     NOTIFICATION_KIND, InviteAnswer, User, ComposeFeed, COMPOSE_FEED_KIND, HomeFeedBackup
 from ..utils.permissions import UserPermission
-from ..utils.helpers import generate_lcs_html, absolute_url_for
+from ..utils.helpers import text_diff
 from ..utils.answer import generate_qrcode_for_answer
 from ..utils.decorators import jsonify
 
@@ -336,7 +336,7 @@ def update(uid):
         title = _add_question_mark_to_title(title)
         # Update title log
         title_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_TITLE, before=question.title, after=title,
-                                  user_id=g.user.id, compare=generate_lcs_html(question.title, title))
+                                  user_id=g.user.id, compare=text_diff(question.title, title))
         question.logs.append(title_log)
         question.title = title
 
@@ -354,7 +354,7 @@ def update(uid):
         desc = desc.strip()
         # Update desc log
         desc_log = PublicEditLog(kind=QUESTION_EDIT_KIND.UPDATE_DESC, before=question.desc, after=desc,
-                                 user_id=g.user.id, compare=generate_lcs_html(question.desc, desc))
+                                 user_id=g.user.id, compare=text_diff(question.desc, desc))
         question.logs.append(desc_log)
         question.desc = desc
     db.session.add(question)
