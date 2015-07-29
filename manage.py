@@ -5,7 +5,7 @@ from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from application import create_app
 from application.models import db, QuestionTopic, RelevantTopic, User, Answer, Question, \
-    AnswerComment, Topic
+    AnswerComment, Topic, TopicClosure
 from application.utils.answer import generate_qrcode_for_answer
 
 # Used by app debug & livereload
@@ -178,6 +178,7 @@ def relevant_topics():
 
 @manager.command
 def make_answer_qrcodes():
+    """生成回答二维码"""
     with app.app_context():
         for answer in Answer.query:
             generate_qrcode_for_answer(answer)
@@ -197,6 +198,48 @@ def index_es():
             answer.save_to_es()
         for question in Question.query:
             question.save_to_es()
+
+
+@manager.command
+def create_root_topics():
+    """创建一级、二级话题"""
+    with app.app_context():
+        root_topic = _create_topic('互联网', root=True)
+        product_topic = _create_topic('产品', parent_topic_id=root_topic.id)
+        organization_topic = _create_topic('组织', parent_topic_id=root_topic.id)
+        position_topic = _create_topic('职业', parent_topic_id=root_topic.id)
+        skill_topic = _create_topic('技能', parent_topic_id=root_topic.id)
+        people_topic = _create_topic('人', parent_topic_id=root_topic.id)
+        other_topic = _create_topic('其他', parent_topic_id=root_topic.id)
+        nc_topic = _create_topic('未分类', parent_topic_id=root_topic.id)
+
+        print("""
+ROOT_TOPIC_ID = %d,
+PRODUCT_TOPIC_ID = %d,
+ORGANIZATION_TOPIC_ID = %d,
+POSITION_TOPIC_ID = %d,
+SKILL_TOPIC_ID = %d,
+PEOPLE_TOPIC_ID = %d,
+OTHER_TOPIC_ID = %d,
+NC_TOPIC_ID = %d
+        """ % (
+            root_topic.id, product_topic.id, organization_topic.id, position_topic.id, skill_topic.id, people_topic.id,
+            other_topic.id, nc_topic.id))
+
+
+def _create_topic(name, root=False, parent_topic_id=None):
+    topic = Topic(name=name, root=root)
+    db.session.add(topic)
+    db.session.commit()
+
+    topic_closure = TopicClosure(ancestor_id=topic.id, descendant_id=topic.id, path_length=0)
+    db.session.add(topic_closure)
+    db.session.commit()
+
+    if parent_topic_id:
+        topic.add_parent_topic(parent_topic_id)
+
+    return topic
 
 
 if __name__ == "__main__":
