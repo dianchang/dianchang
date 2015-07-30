@@ -1,9 +1,8 @@
 # coding: utf-8
 import math
-from flask import render_template, Blueprint, request, redirect, g, json, current_app, get_template_attribute
+from flask import render_template, Blueprint, request, redirect, g, current_app, get_template_attribute
 from ..models import db, Question, Answer, Topic, User
 from ..utils.permissions import UserPermission
-from ..utils.uploadsets import process_site_image, images
 from ..utils.decorators import jsonify
 
 bp = Blueprint('site', __name__)

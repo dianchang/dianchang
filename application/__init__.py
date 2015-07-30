@@ -245,8 +245,7 @@ def _import_submodules_from_package(package):
     import pkgutil
 
     modules = []
-    for importer, modname, ispkg in pkgutil.iter_modules(package.__path__,
-                                                         prefix=package.__name__ + "."):
+    for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix=package.__name__ + "."):
         modules.append(__import__(modname, fromlist="dummy"))
     return modules
 

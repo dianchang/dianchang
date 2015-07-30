@@ -74,15 +74,18 @@ def activate():
     """激活账号"""
     token = request.args.get('token')
     if not token:
-        return render_template('site/message.html', title="账号激活失败", message='无效的激活链接')
+        flash('账号激活失败，无效的激活链接。')
+        return redirect(url_for('account.signin'))
 
     user_id = decode(token)
     if not user_id:
-        return render_template('site/message.html', title="账号激活失败", message='无效的激活链接')
+        flash('账号激活失败，无效的激活链接')
+        return redirect(url_for('account.signin'))
 
     user = User.query.filter(User.id == user_id).first()
     if not user:
-        return render_template('site/message.html', title="账号激活失败", message='无效的账号')
+        flash('账号激活失败，无效的账号')
+        return redirect(url_for('account.signin'))
 
     user.is_active = True
     db.session.add(user)
