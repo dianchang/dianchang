@@ -75,39 +75,6 @@ $('.btn-submit-url-token').click(function () {
     });
 });
 
-// 修改邮箱
-$('.btn-submit-email').click(function () {
-    var $commands = $(this).parents('.commands');
-    var $input = $(this).parents('.item').find('input');
-    var email = $.trim($input.val());
-    var $tip = $(this).parents('.commands').find('.tip');
-
-    if (email === "") {
-        return false;
-    }
-
-    $.ajax({
-        url: urlFor('account.update_email'),
-        method: 'post',
-        dataType: 'json',
-        data: {
-            email: email
-        }
-    }).done(function (response) {
-        if (response.result) {
-            $input.attr('disabled');
-            $commands.removeClass('edit');
-            $input.val(email).data('value', email);
-
-            if (response.active) {
-                $tip.empty()
-            } else {
-                $tip.text('尚未激活');
-            }
-        }
-    });
-});
-
 // 进入密码编辑状态
 $('.btn-edit-password').click(function () {
     var $input = $(this).parents('.item').find('input');

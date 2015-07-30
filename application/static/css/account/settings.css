@@ -28,6 +28,9 @@
   border: none;
   outline: none;
 }
+#main-wap .item .value .email {
+  margin-right: 8px;
+}
 #main-wap .item .commands {
   position: absolute;
   right: 0;

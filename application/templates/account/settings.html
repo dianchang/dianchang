@@ -56,18 +56,11 @@
         <div class="item">
             <div class="key">邮箱</div>
             <div class="value">
-                <input type="text" value="{{ g.user.inactive_email or g.user.email }}" name="email" disabled
-                       data-value="{{ g.user.inactive_email or g.user.email }}" autocomplete="off"/>
-            </div>
-            <div class="commands">
-                <span class="for-non-edit">
-                    <span class="tip">{% if g.user.inactive_email %}尚未激活{% endif %}</span>
-                    <button type="button" class="btn btn-light btn-edit-email btn-edit">更换邮箱</button>
-                </span>
-                <span class="for-edit">
-                    <button type="button" class="btn btn-primary btn-submit-email">保存</button>
-                    <a href="javascript: void(0)" class="text-light btn-cancel">取消</a>
-                </span>
+                <span class="email">{{ g.user.email }}</span>
+
+                {% if not g.user.is_active %}
+                    <span class="label label-warning">未验证</span>
+                {% endif %}
             </div>
         </div>
 
