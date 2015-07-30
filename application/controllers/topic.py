@@ -284,6 +284,8 @@ def add_parent_topic(uid):
     topic = Topic.query.get_or_404(uid)
     parent_topic_id = request.form.get('parent_topic_id', type=int)
     name = request.form.get('name', '').strip()
+    config = current_app.config
+    NC_TOPIC_ID = config.get('NC_TOPIC_ID')
 
     if topic.parent_topics_locked or (parent_topic_id is None and name == ''):
         return {'result': False}
@@ -304,6 +306,11 @@ def add_parent_topic(uid):
             or parent_topic.id in topic.descendant_topics_id_list \
             or parent_topic.id in topic.parent_topics:
         return {'result': False}
+
+    # 若该话题只有一个父话题“未分类”，则将其移除
+    parent_topics_id_list = topic.parent_topics_id_list
+    if len(parent_topics_id_list) == 1 and parent_topics_id_list[0] == NC_TOPIC_ID and parent_topic.id != NC_TOPIC_ID:
+        topic.remove_parent_topic(NC_TOPIC_ID)
 
     topic.add_parent_topic(parent_topic.id)
 
@@ -370,6 +377,8 @@ def add_child_topic(uid):
     topic = Topic.query.get_or_404(uid)
     child_topic_id = request.form.get('child_topic_id', type=int)
     name = request.form.get('name', '').strip()
+    config = current_app.config
+    NC_TOPIC_ID = config.get('NC_TOPIC_ID')
 
     if topic.child_topics_locked or (child_topic_id is None and name == ''):
         return {'result': False}
@@ -390,6 +399,11 @@ def add_child_topic(uid):
             or child_topic_id in topic.ancestor_topics_id_list \
             or child_topic_id in topic.child_topics_id_list:
         return {'result': False}
+
+    # 若子话题只有一个父话题“未分类”，则将其移除
+    parent_topics_id_list = child_topic_id.parent_topics_id_list
+    if len(parent_topics_id_list) == 1 and parent_topics_id_list[0] == NC_TOPIC_ID and topic.id != NC_TOPIC_ID:
+        child_topic.remove_parent_topic(NC_TOPIC_ID)
 
     topic.add_child_topic(child_topic.id)
 
