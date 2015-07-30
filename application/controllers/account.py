@@ -11,6 +11,7 @@ from ..models import db, User, Topic, FollowTopic, WorkOnProduct, UserTopicStati
     HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
 from ..models._helpers import pinyin
 from ..utils.mail import send_activate_mail, send_reset_password_mail
+from ..utils.security import decode
 
 bp = Blueprint('account', __name__)
 
@@ -61,12 +62,34 @@ def signup():
         db.session.commit()
         user.save_to_es()
         signin_user(user)
-        # TODO: need to uncomment this in production
-        # send_activate_mail(user)
+        send_activate_mail(user)
         return {'result': True, 'domain': get_domain_from_email(user.email)}
     else:
         return {'result': False, 'name': _get_first_error(form.name), 'email': _get_first_error(form.email),
                 'password': _get_first_error(form.password)}
+
+
+@bp.route('/account/activate')
+def activate():
+    """激活账号"""
+    token = request.args.get('token')
+    if not token:
+        return render_template('site/message.html', title="账号激活失败", message='无效的激活链接')
+
+    user_id = decode(token)
+    if not user_id:
+        return render_template('site/message.html', title="账号激活失败", message='无效的激活链接')
+
+    user = User.query.filter(User.id == user_id).first()
+    if not user:
+        return render_template('site/message.html', title="账号激活失败", message='无效的账号')
+
+    user.is_active = True
+    db.session.add(user)
+    db.session.commit()
+    signin_user(user)
+    flash('账号激活成功，欢迎来到电场。')
+    return redirect(url_for('site.index'))
 
 
 @bp.route('/signout')

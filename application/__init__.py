@@ -183,13 +183,6 @@ def register_hooks(app):
         if g.user and g.user.is_admin:
             g._before_request_time = time.time()
 
-        if g.user and not g.user.has_selected_interesting_topics \
-                and request.endpoint != 'account.select_interesting_topics' \
-                and request.endpoint != 'account.loading_interesting_topics' \
-                and request.endpoint != 'account.submit_interesting_topics' \
-                and '/static/' not in request.path:
-            return redirect(url_for('account.select_interesting_topics'))
-
         # 是否有新的撰写消息
         if not g.user:
             g.has_new_compose_feeds = False
