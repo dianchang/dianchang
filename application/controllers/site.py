@@ -1,7 +1,6 @@
 # coding: utf-8
-import math
 from flask import render_template, Blueprint, request, redirect, g, current_app, get_template_attribute
-from ..models import db, Question, Answer, Topic, User
+from ..models import Question, Answer, Topic, User
 from ..utils.permissions import UserPermission
 from ..utils.decorators import jsonify
 
@@ -34,18 +33,12 @@ def loading_home_feeds():
     """加载首页 feeds"""
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     feeds = g.user.home_feeds.limit(HOME_FEEDS_PER_PAGE).offset(offset)
     feeds_count = feeds.count()
     macro = get_template_attribute("macros/_user.html", "render_user_home_feeds")
-    return {
-        'result': True,
-        'html': macro(feeds),
-        'count': feeds_count
-    }
+    return {'result': True, 'html': macro(feeds), 'count': feeds_count}
 
 
 @bp.route('/about')
@@ -88,19 +81,13 @@ def loading_search_results():
     q = request.args.get('q')
 
     if not offset or not q:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     page = (offset / SEARCH_RESULTS_PER) + 1
     results, total, took = _get_search_results(q, page=page, per_page=SEARCH_RESULTS_PER, _type=_type)
     count = len(results)
     macro = get_template_attribute("macros/_site.html", "render_search_results")
-    return {
-        'result': True,
-        'html': macro(results, _type),
-        'count': count
-    }
+    return {'result': True, 'html': macro(results, _type), 'count': count}
 
 
 @bp.route('/qiniu_upload_callback_for_simditor', methods=['POST'])
@@ -109,10 +96,7 @@ def qiniu_upload_callback_for_simditor():
     """用于七牛上传回调"""
     key = request.form.get('key')
     cdn_host = current_app.config.get('CDN_HOST')
-    return {
-        'success': True,
-        'file_path': "%s/%s" % (cdn_host, key)
-    }
+    return {'success': True, 'file_path': "%s/%s" % (cdn_host, key)}
 
 
 def _get_search_results(q, _type='question', page=1, per_page=10):

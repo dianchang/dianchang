@@ -3,8 +3,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, json, get_template_attribute, g, redirect, url_for, abort, \
     current_app
 from ..models import db, Topic, Question, QuestionTopic, FollowTopic, TopicWikiContributor, UserTopicStatistic, \
-    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, USER_FEED_KIND, ApplyTopicDeletion, TopicClosure, \
-    HomeFeed, HOME_FEED_KIND
+    PublicEditLog, TOPIC_EDIT_KIND, Answer, TopicSynonym, UserFeed, ApplyTopicDeletion, HomeFeed, HOME_FEED_KIND
 from ..utils.permissions import UserPermission, AdminPermission
 from ..utils.helpers import absolute_url_for, text_diff
 from ..utils._qiniu import qiniu
@@ -44,19 +43,15 @@ def square():
                            product_topic=product_topic,
                            product_descendant_topics=product_descendant_topics.limit(TOPICS_PER),
                            product_total=product_total,
-
                            organization_topic=organization_topic,
                            organization_descendant_topics=organization_descendant_topics.limit(TOPICS_PER),
                            organization_total=organization_total,
-
                            position_topic=position_topic,
                            position_descendant_topics=position_descendant_topics.limit(TOPICS_PER),
                            position_total=position_total,
-
                            skill_topic=skill_topic,
                            skill_descendant_topics=skill_descendant_topics.limit(TOPICS_PER),
                            skill_total=skill_total,
-
                            other_descendant_topics=other_descendant_topics.limit(TOPICS_PER),
                            other_total=other_total)
 
@@ -70,9 +65,7 @@ def loading_topics_in_square():
     _type = request.args.get('type', 'product')
 
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     if _type == 'product':
         descendant_topics = Topic.query.get_or_404(config.get('PRODUCT_TOPIC_ID')).descendant_topics
@@ -104,18 +97,12 @@ def query():
         topics = [topic for topic in topics if topic.merge_to_topic_id is None]  # 不显示被合并的话题
         if limit:
             topics = topics[:limit]
-        topics_data = [{'name': topic.name,
-                        'id': topic.id,
-                        'avatar_url': topic.avatar_url,
-                        'followers_count': topic.followers_count}
-                       for topic in topics]
+        topics_data = [{'name': topic.name, 'id': topic.id, 'avatar_url': topic.avatar_url,
+                        'followers_count': topic.followers_count} for topic in topics]
         if with_create:
             exact_topic = Topic.query.filter(Topic.name == q).first() is not None
             if not exact_topic:
-                topics_data.insert(0, {
-                    'name': q,
-                    'create': True
-                })
+                topics_data.insert(0, {'name': q, 'create': True})
         return topics_data
     else:
         return {[]}
@@ -150,18 +137,12 @@ def loading_fantastic_answers(uid):
     topic = Topic.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     answers = topic.all_answers.order_by(Answer.score.desc()).limit(TOPIC_FANTASTIC_ANSWERS_PER).offset(offset)
     count = answers.count()
     macro = get_template_attribute("macros/_topic.html", "render_topic_fantastic_answers")
-    return {
-        'result': True,
-        'html': macro(answers, topic),
-        'count': count
-    }
+    return {'result': True, 'html': macro(answers, topic), 'count': count}
 
 
 @bp.route('/topic/<int:uid>/rank')
@@ -217,18 +198,12 @@ def loading_all_questions(uid):
     topic = Topic.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     questions = topic.all_questions.limit(ALL_QUESTIONS_PER).offset(offset)
     count = questions.count()
     macro = get_template_attribute("macros/_topic.html", "render_all_questions")
-    return {
-        'result': True,
-        'html': macro(questions, topic),
-        'count': count
-    }
+    return {'result': True, 'html': macro(questions, topic), 'count': count}
 
 
 WAITING_FOR_ANSWER_QUESTIONS_PER = 15
@@ -254,19 +229,13 @@ def loading_waiting_for_answer_questions(uid):
     topic = Topic.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     questions = topic.all_questions.filter(Question.answers_count == 0). \
         limit(WAITING_FOR_ANSWER_QUESTIONS_PER).offset(offset)
     count = questions.count()
     macro = get_template_attribute("macros/_topic.html", "render_topic_waiting_for_answer_questions")
-    return {
-        'result': True,
-        'html': macro(questions, topic),
-        'count': count
-    }
+    return {'result': True, 'html': macro(questions, topic), 'count': count}
 
 
 @bp.route('/topic/<int:uid>/logs')
@@ -331,10 +300,7 @@ def add_parent_topic(uid):
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'parent_topic_edit_wap')
-    return {
-        'result': True,
-        'html': macro(parent_topic)
-    }
+    return {'result': True, 'html': macro(parent_topic)}
 
 
 @bp.route('/topic/<int:uid>/remove_parent_topic/<int:parent_topic_id>', methods=['POST'])
@@ -424,10 +390,7 @@ def add_child_topic(uid):
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'child_topic_edit_wap')
-    return {
-        'result': True,
-        'html': macro(child_topic)
-    }
+    return {'result': True, 'html': macro(child_topic)}
 
 
 @bp.route('/topic/<int:uid>/remove_child_topic/<int:child_topic_id>', methods=['POST'])
@@ -439,9 +402,7 @@ def remove_child_topic(uid, child_topic_id):
     child_topic = Topic.query.get_or_404(child_topic_id)
 
     if topic.child_topics_locked or child_topic.parent_topics_locked:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     topic.remove_child_topic(child_topic_id)
 
@@ -460,10 +421,7 @@ def remove_child_topic(uid, child_topic_id):
     db.session.add(child_topic_log)
 
     db.session.commit()
-
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/get_by_name/<string:name>', methods=['POST'])
@@ -472,11 +430,7 @@ def remove_child_topic(uid, child_topic_id):
 def get_by_name(name):
     """通过name获取话题，若不存在则创建"""
     topic = Topic.get_by_name(name, g.user.id, create_if_not_exist=True)
-    return {
-        'id': topic.id,
-        'name': topic.name,
-        'followers_count': topic.followers_count
-    }
+    return {'id': topic.id, 'name': topic.name, 'followers_count': topic.followers_count}
 
 
 @bp.route('/topic/<int:uid>/follow', methods=['POST'])
@@ -508,11 +462,7 @@ def follow(uid):
 
         db.session.commit()
 
-        return {
-            'result': True,
-            'followed': False,
-            'followers_count': topic.followers_count
-        }
+        return {'result': True, 'followed': False, 'followers_count': topic.followers_count}
     else:
         # 关注
         follow_topic = FollowTopic(topic_id=uid, user_id=g.user.id)
@@ -545,11 +495,7 @@ def follow(uid):
 
         db.session.commit()
 
-        return {
-            'result': True,
-            'followed': True,
-            'followers_count': topic.followers_count
-        }
+        return {'result': True, 'followed': True, 'followers_count': topic.followers_count}
 
 
 @bp.route('/topic/<int:uid>/add_synonym', methods=['POST'])
@@ -572,10 +518,7 @@ def add_synonym(uid):
             db.session.commit()
             topic.save_to_es()
             macro = get_template_attribute('macros/_topic.html', 'topic_synonym_edit_wap')
-            return {
-                'result': True,
-                'html': macro(topic_synonym)
-            }
+            return {'result': True, 'html': macro(topic_synonym)}
         else:
             return {'result': False}
     else:
@@ -624,9 +567,7 @@ def update_experience(uid):
 
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/<int:uid>/apply_for_deletion', methods=['POST'])
@@ -638,9 +579,7 @@ def apply_for_deletion(uid):
     apply = ApplyTopicDeletion(user_id=g.user.id, topic_id=uid)
     db.session.add(apply)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/expert/<int:uid>/remove', methods=['POST'])
@@ -659,10 +598,7 @@ def remove_expert(uid):
     expert_topic.selected = False
     db.session.add(expert_topic)
     db.session.commit()
-
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/add_expert', methods=['POST'])
@@ -672,9 +608,7 @@ def add_expert():
     """添加擅长话题"""
     # 最多设置 8 个擅长话题
     if g.user.expert_topics.count() == 8:
-        return {
-            'result': True
-        }
+        return {'result': True}
 
     id = request.form.get('id', type=int)
     name = request.form.get('name', '').strip()
@@ -691,9 +625,7 @@ def add_expert():
         db.session.add(new_expert_topic)
     else:
         if new_expert_topic.selected:
-            return {
-                'result': True
-            }
+            return {'result': True}
         else:
             new_expert_topic.selected = True
 
@@ -729,9 +661,7 @@ def add_expert():
 def update_show_order():
     show_orders = request.form.get('show_orders')
     if not show_orders:
-        return {
-            'result': True
-        }
+        return {'result': True}
 
     # 若从未编辑过擅长话题，则首先赋予 show_order
     if not g.user.has_selected_expert_topics:
@@ -753,9 +683,7 @@ def update_show_order():
             db.session.add(expert_topic)
 
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/<int:uid>/get_data_for_card', methods=['POST'])
@@ -785,19 +713,13 @@ def update_avatar():
     topic = Topic.query.get_or_404(id)
 
     if topic.avatar_locked:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     avatar = request.form.get('key')
     topic.avatar = avatar
     db.session.add(topic)
     db.session.commit()
-    return {
-        'result': True,
-        'url': topic.avatar_url,
-        'id': topic.id
-    }
+    return {'result': True, 'url': topic.avatar_url, 'id': topic.id}
 
 
 @bp.route('/topic/<int:uid>/edit_wiki', methods=['GET', 'POST'])
@@ -844,15 +766,11 @@ def update_name(uid):
     name = request.form.get('name', '').strip()
 
     if topic.name_locked or not name:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     # 话题名称不可重复
     if Topic.query.filter(Topic.name == name, Topic.id != uid).first():
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     # Update name log
     if topic.name != name:
@@ -865,9 +783,7 @@ def update_name(uid):
     db.session.add(topic)
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/<int:uid>/lock', methods=['POST'])
@@ -879,16 +795,12 @@ def lock(uid):
     target = request.form.get('target')
 
     if not target:
-        return {
-            'result': True
-        }
+        return {'result': True}
 
     attr = '%s_locked' % target
 
     if not hasattr(topic, attr):
-        return {
-            'result': True
-        }
+        return {'result': True}
 
     locked = bool(getattr(topic, attr))
     setattr(topic, attr, not locked)
@@ -930,10 +842,7 @@ def lock(uid):
     db.session.add(topic)
     db.session.commit()
 
-    return {
-        'result': True,
-        'locked': not locked
-    }
+    return {'result': True, 'locked': not locked}
 
 
 @bp.route('/topic/<int:uid>/update_kind', methods=['POST'])
@@ -945,9 +854,7 @@ def update_kind(uid):
     kind = request.form.get('kind', type=int)
 
     if topic.topic_kind_locked or not kind or kind < 1 or kind > 6:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     # log
     if topic.kind != kind:
@@ -959,9 +866,7 @@ def update_kind(uid):
     db.session.add(topic)
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/<int:uid>/update_other_kind', methods=['POST'])
@@ -974,9 +879,7 @@ def update_other_kind(uid):
     topic.other_kind = kind
     db.session.add(topic)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/topic/<int:uid>/merge_to', methods=['POST'])
@@ -987,25 +890,19 @@ def merge_to(uid):
     topic = Topic.query.get_or_404(uid)
 
     if topic.merge_topic_locked or topic.merge_to_topic_id:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     merge_to_topic_id = request.form.get('merge_to_topic_id', type=int)
     name = request.form.get('name', '').strip()
 
     if merge_to_topic_id:
         if uid == merge_to_topic_id:
-            return {
-                'result': False
-            }
+            return {'result': False}
         merge_to_topic = Topic.query.get_or_404(merge_to_topic_id)
     else:
         merge_to_topic = Topic.get_by_name(name)
         if not merge_to_topic:
-            return {
-                'result': False
-            }
+            return {'result': False}
 
     topic.merge_to_topic_id = merge_to_topic.id
 
@@ -1056,12 +953,7 @@ def merge_to(uid):
     db.session.add(merge_in_log)
 
     db.session.commit()
-
-    return {
-        'id': merge_to_topic.id,
-        'name': merge_to_topic.name,
-        'result': True
-    }
+    return {'id': merge_to_topic.id, 'name': merge_to_topic.name, 'result': True}
 
 
 @bp.route('/topic/<int:uid>/unmerge_from/<int:unmerge_from_topic_id>', methods=['POST'])
@@ -1073,9 +965,7 @@ def unmerge_from(uid, unmerge_from_topic_id):
     unmerge_from_topic = Topic.query.get_or_404(unmerge_from_topic_id)
 
     if topic.merge_topic_locked or topic.merge_to_topic_id != unmerge_from_topic_id:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     topic.merge_to_topic_id = None
 
@@ -1124,6 +1014,4 @@ def unmerge_from(uid, unmerge_from_topic_id):
 
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}

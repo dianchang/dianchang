@@ -1,9 +1,8 @@
 # coding: utf-8
-from datetime import date
-from flask import Blueprint, render_template, json, g, request, redirect, url_for, get_template_attribute
+from flask import Blueprint, render_template, g, request, get_template_attribute
 from ..models import db, Answer, UpvoteAnswer, UserTopicStatistic, DownvoteAnswer, ThankAnswer, NohelpAnswer, \
-    AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
-    NOTIFICATION_KIND, UserUpvoteStatistic, HomeFeedBackup
+    AnswerDraft, AnswerComment, LikeAnswerComment, UserFeed, HomeFeed, HOME_FEED_KIND, Notification, \
+    UserUpvoteStatistic, HomeFeedBackup
 from ..utils.permissions import UserPermission
 from ..utils.decorators import jsonify
 
@@ -150,10 +149,7 @@ def downvote(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return {
-            'result': True,
-            'downvoted': False
-        }
+        return {'result': True, 'downvoted': False}
     else:  # 反对
         downvote_answer = DownvoteAnswer(user_id=g.user.id)
         answer.downvotes.append(downvote_answer)
@@ -171,10 +167,7 @@ def downvote(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return {
-            'result': True,
-            'downvoted': True
-        }
+        return {'result': True, 'downvoted': True}
 
 
 @bp.route('/answer/<int:uid>/thank', methods=['POST'])
@@ -219,10 +212,7 @@ def nohelp(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return {
-            'result': True,
-            'nohelped': False
-        }
+        return {'result': True, 'nohelped': False}
     else:  # 没有帮助
         nohelp_answer = NohelpAnswer(user_id=g.user.id)
         answer.nohelps.append(nohelp_answer)
@@ -231,10 +221,7 @@ def nohelp(uid):
         db.session.add(answer)
         db.session.commit()
 
-        return {
-            'result': True,
-            'nohelped': True
-        }
+        return {'result': True, 'nohelped': True}
 
 
 @bp.route('/answer/draft/<int:uid>/remove', methods=['POST'])
@@ -247,9 +234,7 @@ def remove_draft(uid):
     db.session.add(g.user)
     db.session.delete(draft)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/answer/comment/<int:uid>/like', methods=['POST'])
@@ -338,7 +323,4 @@ def load_comments_wap(uid):
     """加载回答的评论wap"""
     answer = Answer.query.get_or_404(uid)
     macro = get_template_attribute('macros/_answer.html', 'render_answer_comments')
-    return {
-        'result': True,
-        'html': macro(answer)
-    }
+    return {'result': True, 'html': macro(answer)}

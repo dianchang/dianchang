@@ -1,10 +1,10 @@
 # coding: utf-8
 from datetime import datetime
-from flask import Blueprint, render_template, redirect, url_for, request, g, abort, json, get_template_attribute, \
+from flask import Blueprint, render_template, request, g, abort, get_template_attribute, \
     current_app
 from ..models import db, Question, Answer, Topic, QuestionTopic, FollowQuestion, QUESTION_EDIT_KIND, PublicEditLog, \
-    UserTopicStatistic, AnswerDraft, UserFeed, USER_FEED_KIND, HomeFeed, HOME_FEED_KIND, Notification, \
-    NOTIFICATION_KIND, InviteAnswer, User, ComposeFeed, COMPOSE_FEED_KIND, HomeFeedBackup
+    UserTopicStatistic, AnswerDraft, UserFeed, HomeFeed, HOME_FEED_KIND, Notification, InviteAnswer, User, ComposeFeed, \
+    HomeFeedBackup
 from ..utils.permissions import UserPermission
 from ..utils.helpers import text_diff
 from ..utils.answer import generate_qrcode_for_answer
@@ -92,9 +92,7 @@ def add():
     title = _add_question_mark_to_title(title)
 
     if not title:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     question = Question(title=title, desc=desc, user_id=g.user.id, anonymous=anonymous)
 
@@ -158,10 +156,7 @@ def add():
 
     db.session.commit()
 
-    return {
-        'result': True,
-        'id': question.id
-    }
+    return {'result': True, 'id': question.id}
 
 
 @bp.route('/question/<int:uid>/add_topic', methods=['POST'])
@@ -223,11 +218,7 @@ def add_topic(uid):
     db.session.commit()
 
     macro = get_template_attribute('macros/_topic.html', 'topic_wap')
-    return {
-        'result': True,
-        'id': topic.id,
-        'html': macro(topic)
-    }
+    return {'result': True, 'id': topic.id, 'html': macro(topic)}
 
 
 @bp.route('/question/<int:uid>/remove_topic/<int:topic_id>', methods=['POST'])
@@ -266,9 +257,7 @@ def remove_topic(uid, topic_id):
     db.session.add(topic)
     db.session.commit()
 
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/question/<int:uid>/follow', methods=['POST'])
@@ -309,11 +298,7 @@ def follow(uid):
         db.session.add(home_feed_backup)
 
         db.session.commit()
-        return {
-            'result': True,
-            'followed': True,
-            'followers_count': question.followers_count
-        }
+        return {'result': True, 'followed': True, 'followers_count': question.followers_count}
 
 
 @bp.route('/question/<int:uid>/logs')
@@ -361,11 +346,7 @@ def update(uid):
     db.session.commit()
     question.save_to_es()  # 更新es中的question
 
-    return {
-        'result': True,
-        'title': question.title,
-        'desc': question.desc
-    }
+    return {'result': True, 'title': question.title, 'desc': question.desc}
 
 
 @bp.route('/question/similar', methods=['POST'])
@@ -377,10 +358,7 @@ def similar():
         return ""
     similar_questions, total, took = Question.query_from_es(title, only_title=True, page=1, per_page=5)
     macro = get_template_attribute('macros/_question.html', 'similar_questions')
-    return {
-        'count': len(similar_questions),
-        'html': macro(similar_questions)
-    }
+    return {'count': len(similar_questions), 'html': macro(similar_questions)}
 
 
 @bp.route('/question/<int:uid>/save_answer_draft', methods=['POST'])
@@ -405,9 +383,7 @@ def save_answer_draft(uid):
         db.session.add(g.user)
         db.session.add(draft)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/question/<int:uid>/answer', methods=['POST'])
@@ -421,9 +397,7 @@ def answer(uid):
     experience = request.form.get('experience')
 
     if not content:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     # 保存回答
     answer = Answer(question_id=uid, content=content, user_id=g.user.id, topic_experience=experience)
@@ -507,10 +481,7 @@ def answer(uid):
     db.session.commit()
 
     macro = get_template_attribute("macros/_answer.html", "render_answer_in_question")
-    return {
-        'result': True,
-        'html': macro(answer)
-    }
+    return {'result': True, 'html': macro(answer)}
 
 
 @bp.route('/question/<int:uid>/invite/<int:user_id>', methods=['POST'])

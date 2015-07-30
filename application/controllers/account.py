@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import render_template, Blueprint, redirect, request, url_for, flash, g, json, session, \
+from flask import render_template, Blueprint, redirect, request, url_for, flash, g, session, \
     get_template_attribute, current_app
 from ..forms import SigninForm, SignupForm, ForgotPasswordForm
 from ..utils.account import signin_user, signout_user
@@ -7,8 +7,7 @@ from ..utils.permissions import VisitorPermission, UserPermission
 from ..utils.helpers import get_domain_from_email, absolute_url_for
 from ..utils._qiniu import qiniu
 from ..utils.decorators import jsonify
-from ..models import db, User, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
-    HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
+from ..models import db, User, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, UserFeed
 from ..models._helpers import pinyin
 from ..utils.mail import send_activate_mail, send_reset_password_mail as _send_reset_password_mail
 from ..utils.security import decode

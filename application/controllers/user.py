@@ -1,9 +1,8 @@
 # coding: utf-8
-from datetime import datetime, date
-from flask import Blueprint, render_template, url_for, json, g, request, get_template_attribute
-from ..models import db, User, FollowUser, Notification, NOTIFICATION_KIND, UserFeed, USER_FEED_KIND, \
-    UserUpvoteStatistic, ComposeFeed, COMPOSE_FEED_KIND, InviteAnswer, NOTIFICATION_KIND_TYPE, \
-    HomeFeedBackup, HomeFeed
+from datetime import datetime
+from flask import Blueprint, render_template, g, request, get_template_attribute
+from ..models import db, User, FollowUser, Notification, UserFeed, USER_FEED_KIND, UserUpvoteStatistic, ComposeFeed, \
+    COMPOSE_FEED_KIND, InviteAnswer, NOTIFICATION_KIND_TYPE, HomeFeedBackup, HomeFeed
 from ..utils.permissions import UserPermission
 from ..utils._qiniu import qiniu
 from ..utils.helpers import absolute_url_for
@@ -42,17 +41,11 @@ def loading_user_feeds(uid):
     user = User.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
     feeds = user.feeds.limit(USER_FEEDS_PER).offset(offset)
     feeds_count = feeds.count()
     macro = get_template_attribute("macros/_user.html", "render_user_feeds")
-    return {
-        'result': True,
-        'html': macro(feeds),
-        'count': feeds_count
-    }
+    return {'result': True, 'html': macro(feeds), 'count': feeds_count}
 
 
 @bp.route('/people/<int:uid>/qa')
@@ -85,19 +78,13 @@ def loading_qa(uid):
     user = User.query.get_or_404(uid)
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
     feeds = user.feeds. \
         filter(UserFeed.kind.in_([USER_FEED_KIND.ASK_QUESTION, USER_FEED_KIND.ANSWER_QUESTION])). \
         limit(USER_FEEDS_PER).offset(offset)
     feeds_count = feeds.count()
     macro = get_template_attribute("macros/_user.html", "render_user_feeds")
-    return {
-        'result': True,
-        'html': macro(feeds),
-        'count': feeds_count
-    }
+    return {'result': True, 'html': macro(feeds), 'count': feeds_count}
 
 
 @bp.route('/people/<int:uid>/achievements')
@@ -140,7 +127,6 @@ def follow(uid):
             db.session.delete(home_feed)
 
         db.session.commit()
-
         return {'result': True, 'followed': False, 'followers_count': user.followers.count()}
     else:
         # 关注
@@ -172,7 +158,6 @@ def follow(uid):
             db.session.add(home_feed)
 
         db.session.commit()
-
         return {'result': True, 'followed': True, 'followers_count': user.followers.count()}
 
 
@@ -246,11 +231,7 @@ def loading_notifications():
         NOTIFICATIONS_PER).offset(offset)
     count = notifications.count()
     macro = get_template_attribute("macros/_user.html", "render_all_notifications")
-    return {
-        'result': True,
-        'html': macro(notifications),
-        'count': count
-    }
+    return {'result': True, 'html': macro(notifications), 'count': count}
 
 
 COMPOSE_FEEDS_PER = 10
@@ -282,18 +263,12 @@ def loading_compose_feeds():
     """加载撰写feed"""
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     feeds = g.user.compose_feeds.filter(~ComposeFeed.ignore).limit(COMPOSE_FEEDS_PER).offset(offset)
     feeds_count = feeds.count()
     macro = get_template_attribute("macros/_user.html", "render_compose_feeds")
-    return {
-        'result': True,
-        'html': macro(feeds),
-        'count': feeds_count
-    }
+    return {'result': True, 'html': macro(feeds), 'count': feeds_count}
 
 
 @bp.route('/compose_feed/<int:uid>/ignore', methods=['POST'])
@@ -309,9 +284,7 @@ def ignore_compose_feed(uid):
         invitation.ignore = True
         db.session.add(invitation)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/compose_feed/<int:uid>/recover', methods=['POST'])
@@ -327,9 +300,7 @@ def recover_compose_feed(uid):
         invitation.ignore = False
         db.session.add(invitation)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 DRAFTS_PER = 10
@@ -352,18 +323,12 @@ def loading_drafts():
     """加载草稿"""
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     drafts = g.user.drafts.limit(DRAFTS_PER).offset(offset)
     drafts_count = drafts.count()
     macro = get_template_attribute("macros/_user.html", "render_drafts")
-    return {
-        'result': True,
-        'html': macro(drafts),
-        'count': drafts_count
-    }
+    return {'result': True, 'html': macro(drafts), 'count': drafts_count}
 
 
 @bp.route('/user/update_desc', methods=['POST'])
@@ -375,10 +340,7 @@ def update_desc():
     g.user.desc = desc
     db.session.add(g.user)
     db.session.commit()
-
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/user/update_meta_info', methods=['POST'])
@@ -394,9 +356,7 @@ def update_meta_info():
     g.user.position = position
     db.session.add(g.user)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/user/query', methods=['POST'])
@@ -410,11 +370,7 @@ def query():
     results = []
     for user in users:
         if user.id != exclude_id:
-            results.append({
-                'id': user.id,
-                'name': user.name,
-                'avatar': user.avatar_url
-            })
+            results.append({'id': user.id, 'name': user.name, 'avatar': user.avatar_url})
     return results
 
 
@@ -438,18 +394,12 @@ def loading_followed_questions():
     """加载关注的问题"""
     offset = request.args.get('offset', type=int)
     if not offset:
-        return {
-            'result': False
-        }
+        return {'result': False}
 
     questions = g.user.followed_questions.limit(FOLLOWED_QUESTIONS_PER).offset(offset)
     count = questions.count()
     macro = get_template_attribute("macros/_user.html", "render_followed_questions")
-    return {
-        'result': True,
-        'html': macro(questions),
-        'count': count
-    }
+    return {'result': True, 'html': macro(questions), 'count': count}
 
 
 @bp.route('/user/<int:uid>/get_data_for_card', methods=['POST'])
@@ -512,9 +462,7 @@ def read_user_notifications():
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
-    return {
-        'result': True,
-    }
+    return {'result': True}
 
 
 @bp.route('/user/read_message_notifications', methods=['POST'])
@@ -527,9 +475,7 @@ def read_message_notifications():
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/user/read_thanks_notifications', methods=['POST'])
@@ -542,9 +488,7 @@ def read_thanks_notifications():
         noti.unread = False
         db.session.add(noti)
     db.session.commit()
-    return {
-        'result': True
-    }
+    return {'result': True}
 
 
 @bp.route('/user/update_avatar', methods=['POST'])
@@ -557,10 +501,7 @@ def update_avatar():
     user.avatar = avatar
     db.session.add(user)
     db.session.commit()
-    return {
-        'result': True,
-        'url': user.avatar_url
-    }
+    return {'result': True, 'url': user.avatar_url}
 
 
 @bp.route('/user/update_background', methods=['POST'])
@@ -573,10 +514,7 @@ def update_background():
     user.background = background
     db.session.add(user)
     db.session.commit()
-    return {
-        'result': True,
-        'url': user.background_url
-    }
+    return {'result': True, 'url': user.background_url}
 
 
 @bp.route('/user/<int:uid>/get_followed_users_html', methods=['POST'])
@@ -586,10 +524,7 @@ def get_followed_users_html(uid):
     """获取关注的用户HTML"""
     user = User.query.get_or_404(uid)
     macro = get_template_attribute('macros/_user.html', 'render_followed_users')
-    return {
-        'result': True,
-        'html': macro(user.followings.limit(15))
-    }
+    return {'result': True, 'html': macro(user.followings.limit(15))}
 
 
 @bp.route('/user/<int:uid>/get_followed_topics_html', methods=['POST'])
@@ -599,10 +534,7 @@ def get_followed_topics_html(uid):
     """获取关注的话题HTML"""
     user = User.query.get_or_404(uid)
     macro = get_template_attribute('macros/_user.html', 'render_followed_topics')
-    return {
-        'result': True,
-        'html': macro(user.followed_topics.limit(15))
-    }
+    return {'result': True, 'html': macro(user.followed_topics.limit(15))}
 
 
 @bp.route('/user/<int:uid>/get_followers_html', methods=['POST'])
@@ -612,10 +544,7 @@ def get_followers_html(uid):
     """获取关注者HTML"""
     user = User.query.get_or_404(uid)
     macro = get_template_attribute('macros/_user.html', 'render_followers')
-    return {
-        'result': True,
-        'html': macro(user.followers.limit(15))
-    }
+    return {'result': True, 'html': macro(user.followers.limit(15))}
 
 
 def _generate_user_image_upload_token(user):
