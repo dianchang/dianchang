@@ -227,6 +227,8 @@ def notifications():
     for noti in g.user.notifications.filter(Notification.unread):
         noti.unread = False
         db.session.add(noti)
+    g.user.last_read_notifications_at = datetime.now()
+    db.session.add(g.user)
     db.session.commit()
     return template_html
 
@@ -267,6 +269,8 @@ def compose():
         feed.unread = False
         db.session.add(feed)
 
+    g.user.last_read_compose_feeds_at = datetime.now()
+    db.session.add(g.user)
     db.session.commit()
     return html
 
@@ -487,6 +491,9 @@ def get_notifications_html():
     user_notifications_macro = get_template_attribute('macros/_user.html', 'render_user_notifications')
     user_notifications_html = user_notifications_macro(user_notifications.limit(20))
 
+    g.user.last_read_notifications_at = datetime.now()
+    db.session.add(g.user)
+    db.session.commit()
     return {
         'result': True,
         'message_notifications_html': message_notifications_html,
