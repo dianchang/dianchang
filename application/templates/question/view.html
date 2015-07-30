@@ -83,8 +83,6 @@
                             <span class="fa fa-chevron-down"></span>
 
                             <div class="dc-hide-commands">
-                                {#                                <a href="#">问题重定向</a>#}
-                                {#                                <a href="#">使用匿名身份</a>#}
                                 <a href="{{ url_for('question.logs', uid=question.id) }}">查看问题日志</a>
                             </div>
                         </button>
@@ -108,7 +106,6 @@
             <div class="col-md-8">
                 {% set answers_count = question.answers_count %}
 
-                {# 切换组件 #}
                 <div class="content-tabs clearfix">
                     <a href="javascript: void(0)">
                         <span class="answers-count">{{ answers_count }}</span> 人回答</a>
@@ -140,9 +137,6 @@
 
                     <div class="recommend-wap">
                         {% for candidate in invite_candidates %}
-                            {#                            {% if loop.index % 4 == 1 %}#}
-                            {#                                <div class="hehe">#}
-                            {#                            {% endif %}#}
                             <div class="item media">
                                 <div class="media-left">
                                     <a href="{{ candidate.user.profile_url }}">
@@ -169,10 +163,6 @@
                                     </button>
                                 </div>
                             </div>
-                            {##}
-                            {#                            {% if loop.index % 4 == 0 or invite_candidates|length - loop.index == 0 %}#}
-                            {#                                </div>#}
-                            {#                            {% endif %}#}
                         {% else %}
                             <div class="text-center text-light tip">
                                 暂无推荐回答者

@@ -498,7 +498,8 @@ $('.btn-go-to-my-answer').click(function () {
 
 // 跳转到邀请回答
 $('.btn-go-to-invitation-wap').click(function () {
-    $('.invitation-tab-item').click();
+    $('.btn-toggle-invitation').addClass('active');
+    $('.invitation-wap').show('fast');
     $(window).scrollTo("0%");
 });
 
