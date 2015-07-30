@@ -15,7 +15,7 @@ HOME_FEEDS_PER_PAGE = 15
 def index():
     """首页"""
     if not g.user:
-        answers = Answer.query.order_by(Answer.created_at.desc()).limit(5)
+        answers = Answer.query.filter(Answer.score > 0).order_by(Answer.created_at.desc()).limit(5)
         return render_template('site/index.html', answers=answers)
     else:
         feeds = g.user.home_feeds.limit(HOME_FEEDS_PER_PAGE)
