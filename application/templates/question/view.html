@@ -306,12 +306,6 @@
                                 <input type="radio" name="options" id="option1" autocomplete="off" checked>
                                 {{ g.user.name }}
                             </label>
-                            {% if g.user.organization %}
-                                <label class="btn btn-default" data-identity="organization-anonymous">
-                                    <input type="radio" name="options" id="option2" autocomplete="off">
-                                    匿名{{ g.user.organization }}员工
-                                </label>
-                            {% endif %}
                             <label class="btn btn-default" data-identity="anonymous">
                                 <input type="radio" name="options" id="option3" autocomplete="off">
                                 匿名用户
