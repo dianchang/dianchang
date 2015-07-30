@@ -295,6 +295,10 @@
                     }
                 });
             });
+
+            $forgotPwdEmail.on('keyup', function () {
+                hideTip($forgotPwdEmail);
+            });
         })();
     </script>
 {% endmacro %}
@@ -313,7 +317,7 @@
             </div>
 
             <form autocomplete="off">
-                <input type="password" name="password" class="form-control" placeholder="新密码"/>
+                <input type="password" name="password" class="form-control" placeholder="新密码" autocomplete="off"/>
                 <button type="button" class="btn-reset-pwd btn btn-primary btn-lg btn-block">重置</button>
             </form>
         </div>
@@ -343,11 +347,12 @@
                 }
 
                 $.ajax({
-                    url: urlFor('account.reset_password'),
+                    url: urlFor('account.do_reset_password'),
                     dataType: 'json',
                     method: 'post',
                     data: {
-                        'password': pwd
+                        'password': pwd,
+                        'token': getJsonFromUrl().token
                     }
                 }).done(function (response) {
                     if (response.result) {
@@ -355,7 +360,7 @@
                         $messageWap.show();
                         hideTip($pwdInput);
                     } else {
-                        showTip($pwdInput, '密码重置失败');
+                        showTip($pwdInput, response.password);
                     }
                 });
             });

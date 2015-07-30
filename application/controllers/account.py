@@ -10,7 +10,7 @@ from ..utils.decorators import jsonify
 from ..models import db, User, Topic, FollowTopic, WorkOnProduct, UserTopicStatistic, \
     HomeFeedBackup, HomeFeed, UserFeed, USER_FEED_KIND
 from ..models._helpers import pinyin
-from ..utils.mail import send_activate_mail, send_reset_password_mail
+from ..utils.mail import send_activate_mail, send_reset_password_mail as _send_reset_password_mail
 from ..utils.security import decode
 
 bp = Blueprint('account', __name__)
@@ -74,7 +74,7 @@ def activate():
     """激活账号"""
     token = request.args.get('token')
     if not token:
-        flash('账号激活失败，无效的激活链接。')
+        flash('账号激活失败，无效的激活链接')
         return redirect(url_for('account.signin'))
 
     user_id = decode(token)
@@ -112,12 +112,59 @@ def send_reset_password_mail():
         user = User.query.filter(User.email == form.email.data).first()
         if not user.is_active:
             return {'result': False, 'email': '该账户尚未激活'}
-
-        # TODO: need to uncomment this in production
-        # send_reset_password_mail(user)
+        _send_reset_password_mail(user)
         return {'result': True, 'domain': get_domain_from_email(user.email) or ""}
     else:
         return {'result': False, 'email': _get_first_error(form.email)}
+
+
+@bp.route('/reset_password')
+@VisitorPermission()
+def reset_password():
+    """重设密码"""
+    token = request.args.get('token')
+    if not token:
+        flash('无效的密码重置链接')
+        return redirect(url_for('account.send_reset_password_mail'))
+
+    user_id = decode(token)
+    if not user_id:
+        flash('无效的密码重置链接')
+        return redirect(url_for('account.send_reset_password_mail'))
+
+    user = User.query.filter(User.id == user_id).first()
+    if not user:
+        flash('无效的密码重置链接')
+        return redirect(url_for('account.send_reset_password_mail'))
+
+    return render_template('account/reset_password.html')
+
+
+@bp.route('/do_reset_password', methods=['POST'])
+@VisitorPermission()
+@jsonify
+def do_reset_password():
+    """重设密码"""
+    password = request.form.get('password')
+    if not password:
+        return {'result': False, 'password': '密码不能为空'}
+
+    token = request.form.get('token')
+    if not token:
+        return {'result': False}
+
+    user_id = decode(token)
+    if not user_id:
+        return {'result': False}
+
+    user = User.query.filter(User.id == user_id).first()
+    if not user:
+        return {'result': False}
+
+    user.password = password
+    db.session.add(user)
+    db.session.commit()
+    return {'result': True}
 
 
 @bp.route('/settings')
@@ -139,22 +186,6 @@ def notification_settings():
 def privacy_settings():
     """隐私设置"""
     return render_template('account/privacy_settings.html')
-
-
-@bp.route('/reset_password')
-@VisitorPermission()
-def reset_password():
-    """重设密码"""
-    return render_template('account/reset_password.html')
-
-
-@bp.route('/reset_password', methods=['POST'])
-@VisitorPermission()
-@jsonify
-def do_reset_password():
-    """重设密码"""
-    # TODO: need to finish the reset logic
-    return {'result': True}
 
 
 @bp.route('/account/update_setting', methods=['POST'])
